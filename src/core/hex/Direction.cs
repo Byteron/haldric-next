@@ -1,0 +1,1 @@
+public enum Direction { NE, SW, W, NW, E, SE }
