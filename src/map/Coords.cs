@@ -25,6 +25,16 @@ public struct Coords
         get { return Hex.Offset2World(Offset); }
     }
 
+    public static Coords FromCube(Vector3 cube)
+    {
+        var coords = new Coords();
+
+        var axial = Hex.Cube2Axial(cube);
+        coords.X = (int)axial.x;
+        coords.Z = (int)axial.z;
+        
+        return coords;
+    }
 
     public static Coords FromOffset(float x, float z)
     {
@@ -35,7 +45,6 @@ public struct Coords
         coords.Z = (int)axial.z;
         
         return coords;
-
     }
 
     public static Coords FromWorld(Vector3 position)
