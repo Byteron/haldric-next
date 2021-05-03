@@ -33,5 +33,3 @@ directional_shadow_max_distance = 250.0
 script = null
 
 [node name="CameraOperator" parent="." instance=ExtResource( 2 )]
-walk_speed = 100
-max_distance = 200

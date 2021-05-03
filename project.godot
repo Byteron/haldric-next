@@ -8,16 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node3D",
-"class": @"CameraOperator",
-"language": @"GDScript",
-"path": "res://src/camera/CameraOperator.gd"
-} ]
-_global_script_class_icons={
-@"CameraOperator": ""
-}
-
 [application]
 
 config/name="Haldric Next"
