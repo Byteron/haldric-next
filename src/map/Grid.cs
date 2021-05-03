@@ -11,7 +11,7 @@ public struct Grid : IEcsAutoReset<Grid>
         Width = width;
         Height = height;
     }
-    
+
     public void AutoReset(ref Grid c)
     {
         c.Width = 0;

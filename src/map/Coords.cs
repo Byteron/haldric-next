@@ -32,7 +32,7 @@ public struct Coords
         var axial = Hex.Cube2Axial(cube);
         coords.X = (int)axial.x;
         coords.Z = (int)axial.z;
-        
+
         return coords;
     }
 
@@ -43,7 +43,7 @@ public struct Coords
         var axial = Hex.Offset2Axial(new Vector3(x, 0, z));
         coords.X = (int)axial.x;
         coords.Z = (int)axial.z;
-        
+
         return coords;
     }
 
