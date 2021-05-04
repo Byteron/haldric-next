@@ -52,8 +52,6 @@ public partial class CameraOperator : Node3D
             _rotationIndex = _rotationIndex == -1 ? _rotationIndex + _rotations.Length : _rotationIndex;
             _targetRotation = _rotations[_rotationIndex];
         }
-
-        GD.Print("RotationIndex: ", _rotationIndex, " | Rotation: ", _targetRotation);
     }
 
     public override void _Process(float delta)
