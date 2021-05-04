@@ -6,6 +6,12 @@ public struct Locations : IEcsAutoReset<Locations>
 {
     Dictionary<Vector3, EcsEntity> _dict;
 
+    public Dictionary<Vector3, EcsEntity> Dict { get { return _dict; }}
+    
+    public Dictionary<Vector3, EcsEntity>.ValueCollection Values { get { return _dict.Values; }}
+
+    public int Count { get { return _dict.Count; }}
+
     public bool Has(Vector3 cell)
     {
         return _dict.ContainsKey(cell);
@@ -31,11 +37,6 @@ public struct Locations : IEcsAutoReset<Locations>
         {
             _dict.Add(cell, entity);
         }
-    }
-
-    public Dictionary<Vector3, EcsEntity> GetDict()
-    {
-        return _dict;
     }
 
     public void AutoReset(ref Locations c)

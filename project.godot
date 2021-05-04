@@ -14,6 +14,10 @@ config/name="Haldric Next"
 run/main_scene="res://src/main/Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Scenes="*res://src/global/Scenes.tscn"
+
 [display]
 
 window/size/width=1920
