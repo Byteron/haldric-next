@@ -16,6 +16,7 @@ sky_material = SubResource( 1 )
 background_mode = 2
 sky = SubResource( 2 )
 tonemap_mode = 2
+sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = true
 

@@ -42,6 +42,8 @@ public class MapSpawnSystem : IEcsInitSystem
                 var locEntity = _world.NewEntity();
 
                 locEntity.Replace(Coords.FromOffset(x, z));
+                locEntity.Replace(new Elevation((int) (GD.Randi() % 2)));
+                locEntity.Replace(new ElevationStep(GD.Randf() * 10f));
                 
                 ref var coords = ref locEntity.Get<Coords>();
 

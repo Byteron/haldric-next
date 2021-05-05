@@ -10,8 +10,6 @@ public class Metrics
     public const float SolidFactor = 0.75f;
     public const float BlendFactor = 1f - SolidFactor;
 
-    public const float ElevationStep = 1.5f;
-
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
 
@@ -38,7 +36,7 @@ public class Metrics
         Color sample = SampleNoise(position);
 
         position.x += (sample.r * 2f - 1f) * CellPerturbStrength;
-        position.z += (sample.b * 2f - 1f) * CellPerturbStrength;
+        position.z += (sample.g * 2f - 1f) * CellPerturbStrength;
         position.y += (sample.b * 2f - 1f) * CellPerturbStrength;
 
         return position;
