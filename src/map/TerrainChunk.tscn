@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/map/TerrainChunk.cs" type="Script" id=1]
 [ext_resource path="res://src/map/TerrainMesh.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/map/TerrainFeaturePopulator.tscn" type="PackedScene" id=3]
 
 [node name="TerrainChunk" type="Node3D"]
 script = ExtResource( 1 )
 
 [node name="TerrainMesh" parent="." instance=ExtResource( 2 )]
+
+[node name="Features" parent="." instance=ExtResource( 3 )]

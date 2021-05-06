@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/map/TerrainFeaturePopulator.cs" type="Script" id=1]
+[ext_resource path="res://assets/graphics/models/forest.tres" type="ArrayMesh" id=2]
+
+[node name="TerrainFeaturePopulator" type="Node3D"]
+script = ExtResource( 1 )
+_forestMesh = ExtResource( 2 )

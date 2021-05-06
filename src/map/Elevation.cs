@@ -2,30 +2,20 @@ using Leopotam.Ecs;
 
 public struct Elevation : IEcsAutoReset<Elevation>
 {
-    public int Value;
+    public int Level;
+    public float Step;
 
-    public Elevation(int value)
+    public float Height { get { return Level * Step; }}
+    
+    public Elevation(int level, float step)
     {
-        Value = value;
+        Level = level;
+        Step = step;
     }
 
     public void AutoReset(ref Elevation c)
     {
-        c.Value = 0;
-    }
-}
-
-public struct ElevationStep : IEcsAutoReset<ElevationStep>
-{
-    public float Value;
-
-    public ElevationStep(float value)
-    {
-        Value = value;
-    }
-
-    public void AutoReset(ref ElevationStep c)
-    {
-        c.Value = 0f;
+        c.Level = 0;
+        c.Step = 0f;
     }
 }

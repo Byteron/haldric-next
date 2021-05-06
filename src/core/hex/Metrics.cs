@@ -4,11 +4,8 @@ public class Metrics
 {
     public const float OuterToInner = 0.866025404f;
     public const float InnerToOuter = 1f / OuterToInner;
-    public const float OuterRadius = 10f;
+    public const float OuterRadius = 5f;
     public const float InnerRadius = OuterRadius * OuterToInner;
-
-    public const float SolidFactor = 0.75f;
-    public const float BlendFactor = 1f - SolidFactor;
 
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
@@ -37,14 +34,13 @@ public class Metrics
 
         position.x += (sample.r * 2f - 1f) * CellPerturbStrength;
         position.z += (sample.g * 2f - 1f) * CellPerturbStrength;
-        position.y += (sample.b * 2f - 1f) * CellPerturbStrength;
 
         return position;
     }
 
-    public static Vector3 GetBridge(Direction direction)
+    public static Vector3 GetBridge(Direction direction, PlateauArea plateauArea)
     {
-        return (corners[(int)direction] + corners[(int)direction.Next()]) * BlendFactor;
+        return (corners[(int)direction] + corners[(int)direction.Next()]) * plateauArea.BlendFactor;
     }
 
     public static Vector3 GetFirstCorner(Direction direction)
@@ -57,18 +53,18 @@ public class Metrics
         return corners[(int)direction.Next()];
     }
 
-    public static Vector3 GetFirstSolidCorner(Direction direction)
+    public static Vector3 GetFirstSolidCorner(Direction direction, PlateauArea plateauArea)
     {
-        return corners[(int)direction] * SolidFactor;
+        return corners[(int)direction] * plateauArea.SolidFactor;
     }
 
-    public static Vector3 GetSecondSolidCorner(Direction direction)
+    public static Vector3 GetSecondSolidCorner(Direction direction, PlateauArea plateauArea)
     {
-        return corners[(int)direction.Next()] * SolidFactor;
+        return corners[(int)direction.Next()] * plateauArea.SolidFactor;
     }
 
-    public static Vector3 GetSolidEdgeMiddle(Direction direction)
+    public static Vector3 GetSolidEdgeMiddle(Direction direction, PlateauArea plateauArea)
     {
-        return (corners[(int)direction] + corners[(int)direction.Next()]) * (0.5f * SolidFactor);
+        return (corners[(int)direction] + corners[(int)direction.Next()]) * (0.5f * plateauArea.SolidFactor);
     }
 }

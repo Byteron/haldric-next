@@ -1,6 +1,9 @@
 using Godot;
 using Leopotam.Ecs;
 
+struct Forest { }
+struct Castle { }
+
 public class MapSpawnSystem : IEcsInitSystem
 {
     EcsWorld _world;
@@ -35,16 +38,37 @@ public class MapSpawnSystem : IEcsInitSystem
 
     private void InitializeLocations(Grid grid, Locations locations)
     {
-        for(int z = 0; z < grid.Height; z++)
+        for (int z = 0; z < grid.Height; z++)
         {
-            for(int x = 0; x < grid.Height; x++)
+            for (int x = 0; x < grid.Height; x++)
             {
                 var locEntity = _world.NewEntity();
 
                 locEntity.Replace(Coords.FromOffset(x, z));
-                locEntity.Replace(new Elevation((int) (GD.Randi() % 2)));
-                locEntity.Replace(new ElevationStep(GD.Randf() * 10f));
-                
+
+                // Mountains
+                if (GD.Randf() < 0.1)
+                {
+                    locEntity.Replace(new Elevation(5, GD.Randf() * 1.5f + 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+                }
+                // Normal
+                else
+                {
+                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+
+                    // Forest
+                    if (GD.Randf() < 0.2)
+                    {
+                        locEntity.Get<Forest>();
+                    }
+                    else if (GD.Randf() < 0.2)
+                    {
+                        locEntity.Get<Castle>();
+                    }
+                }
+
                 ref var coords = ref locEntity.Get<Coords>();
 
                 locations.Set(coords.Cube, locEntity);

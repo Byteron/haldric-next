@@ -1,6 +1,29 @@
 using Godot;
 using Leopotam.Ecs;
 
+public struct EdgeVertices
+{
+    public Vector3 v1, v2, v3, v4, v5;
+
+    public EdgeVertices(Vector3 corner1, Vector3 corner2)
+    {
+        v1 = corner1;
+        v2 = corner1.Lerp(corner2, 0.25f);
+        v3 = corner1.Lerp(corner2, 0.5f);
+        v4 = corner1.Lerp(corner2, 0.75f);
+        v5 = corner2;
+    }
+
+    public EdgeVertices(Vector3 corner1, Vector3 corner2, float outerStep)
+    {
+        v1 = corner1;
+        v2 = corner1.Lerp(corner2, outerStep);
+        v3 = corner1.Lerp(corner2, 0.5f);
+        v4 = corner1.Lerp(corner2, 1f - outerStep);
+        v5 = corner2;
+    }
+}
+
 public partial class TerrainChunk : Node3D
 {
     private static Color Weight1 = new Color(1f, 0f, 0f);
@@ -12,10 +35,12 @@ public partial class TerrainChunk : Node3D
     private Locations _locations;
 
     private TerrainMesh _terrain;
+    private TerrainFeaturePopulator _features;
 
     public override void _Ready()
     {
         _terrain = GetNode<TerrainMesh>("TerrainMesh");
+        _features = GetNode<TerrainFeaturePopulator>("Features");
     }
 
     public void Build(Locations locations)
@@ -57,25 +82,34 @@ public partial class TerrainChunk : Node3D
 
     private void Triangulate(Direction direction, EcsEntity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        ref var elevationStep = ref locEntity.Get<ElevationStep>();
+        ref var plateauArea = ref locEntity.Get<PlateauArea>();
 
-        Vector3 center = coords.World;
+        Vector3 center = locEntity.Get<Coords>().World;
+        center.y = elevation.Height;
 
-        center.y = elevation.Value * elevationStep.Value;
+        EdgeVertices e = new EdgeVertices(
+            center + Metrics.GetFirstSolidCorner(direction, plateauArea),
+            center + Metrics.GetSecondSolidCorner(direction, plateauArea)
+        );
 
-        Vector3 v1 = center + Metrics.GetFirstSolidCorner(direction);
-        Vector3 v2 = center + Metrics.GetSecondSolidCorner(direction);
+        TriangulatePlateau(center, e);
 
-        _terrain.AddTriangle(center, v1, v2);
-        // _terrain.AddTriangleUnperturbed(center, v1, v2);
+        if (direction <= Direction.W)
+        {
+            TriangulateConnection(direction, locEntity, e);
+        }
 
-        TriangulateConnection(direction, locEntity, v1, v2);
+        if (locEntity.Has<Forest>())
+        {
+            _features.AddFeature(center);
+        }
     }
 
-    private void TriangulateConnection(Direction direction, EcsEntity locEntity, Vector3 v1, Vector3 v2)
+    private void TriangulateConnection(Direction direction, EcsEntity locEntity, EdgeVertices e1)
     {
+        ref var coords = ref locEntity.Get<Coords>();
+        ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
         if (!neighbors.Has(direction))
@@ -85,31 +119,81 @@ public partial class TerrainChunk : Node3D
 
         var nLocEntity = neighbors.Get(direction);
 
+        ref var nCoords = ref nLocEntity.Get<Coords>();
         ref var nElevation = ref nLocEntity.Get<Elevation>();
-        ref var nEevationStep = ref nLocEntity.Get<ElevationStep>();
+        ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
 
-        var v3 = v1 + Metrics.GetBridge(direction);
-        var v4 = v2 + Metrics.GetBridge(direction);
+        var bridge = Metrics.GetBridge(direction, nPlateauArea);
+        bridge.y = (nCoords.World.y + nElevation.Height) - (coords.World.y + elevation.Height);
 
-        v3.y = v4.y = nElevation.Value * nEevationStep.Value;
+        var e2 = new EdgeVertices(
+            e1.v1 + bridge,
+            e1.v5 + bridge
+        );
 
-        _terrain.AddQuad(v1, v2, v3, v4);
-        // _terrain.AddQuadUnperturbed(v1, v2, v3, v4);
+        TriangulateSlope(e1, e2);
 
-        if (neighbors.Has(direction.Next()) && direction <= Direction.SW)
+        if (direction <= Direction.SW && neighbors.Has(direction.Next()))
         {
             var nextLocEntity = neighbors.Get(direction.Next());
-            
+
             ref var nextElevation = ref nextLocEntity.Get<Elevation>();
-            ref var nextEevationStep = ref nextLocEntity.Get<ElevationStep>();
+            ref var nextPlateauArea = ref nextLocEntity.Get<PlateauArea>();
 
-            var v5 = v2 + Metrics.GetBridge(direction.Next());
-            v5.y = nextElevation.Value * nextEevationStep.Value;
-            _terrain.AddQuad(v1, v2, v3, v4);
-            // _terrain.AddQuadUnperturbed(v1, v2, v3, v4);
-            _terrain.AddTriangle(v2, v4, v5);
-            // _terrain.AddTriangleUnperturbed(v2, v4, v5);
+            var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
+            v6.y = nextElevation.Height;
+
+            if (elevation.Level <= nElevation.Level)
+            {
+                if (elevation.Level <= nElevation.Level)
+                {
+                    TriangulateCorner(e1.v5, e2.v5, v6);
+                }
+                else
+                {
+                    TriangulateCorner(v6, e1.v5, e2.v5);
+                }
+            }
+            else if (nElevation.Level <= nextElevation.Level)
+            {
+                TriangulateCorner(e2.v5, v6, e1.v5);
+            }
+            else
+            {
+                TriangulateCorner(v6, e1.v5, e2.v5);
+            }
         }
+    }
 
+    private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right)
+    {
+        _terrain.AddTriangle(bottom, left, right);
+        // _terrain.AddTriangleUnperturbed(bottom, left, right);
+    }
+
+    private void TriangulatePlateau(Vector3 center, EdgeVertices edge)
+    {
+        _terrain.AddTriangle(center, edge.v1, edge.v2);
+        _terrain.AddTriangle(center, edge.v2, edge.v3);
+        _terrain.AddTriangle(center, edge.v3, edge.v4);
+        _terrain.AddTriangle(center, edge.v4, edge.v5);
+
+        // _terrain.AddTriangleUnperturbed(center, edge.v1, edge.v2);
+        // _terrain.AddTriangleUnperturbed(center, edge.v2, edge.v3);
+        // _terrain.AddTriangleUnperturbed(center, edge.v3, edge.v4);
+        // _terrain.AddTriangleUnperturbed(center, edge.v4, edge.v5);
+    }
+
+    void TriangulateSlope(EdgeVertices e1, EdgeVertices e2)
+    {
+        _terrain.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
+        _terrain.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
+        _terrain.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
+        _terrain.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
+
+        // _terrain.AddQuadUnperturbed(e1.v1, e1.v2, e2.v1, e2.v2);
+        // _terrain.AddQuadUnperturbed(e1.v2, e1.v3, e2.v2, e2.v3);
+        // _terrain.AddQuadUnperturbed(e1.v3, e1.v4, e2.v3, e2.v4);
+        // _terrain.AddQuadUnperturbed(e1.v4, e1.v5, e2.v4, e2.v5);
     }
 }

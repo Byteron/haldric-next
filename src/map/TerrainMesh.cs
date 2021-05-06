@@ -1,29 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 
-public struct EdgeVertices
-{
-	public Vector3 v1, v2, v3, v4, v5;
-
-	public EdgeVertices(Vector3 corner1, Vector3 corner2)
-	{
-		v1 = corner1;
-		v2 = corner1.Lerp(corner2, 0.25f);
-		v3 = corner1.Lerp(corner2, 0.5f);
-		v4 = corner1.Lerp(corner2, 0.75f);
-		v5 = corner2;
-	}
-
-	public EdgeVertices(Vector3 corner1, Vector3 corner2, float outerStep)
-	{
-		v1 = corner1;
-		v2 = corner1.Lerp(corner2, outerStep);
-		v3 = corner1.Lerp(corner2, 0.5f);
-		v4 = corner1.Lerp(corner2, 1f - outerStep);
-		v5 = corner2;
-	}
-}
-
 public partial class TerrainMesh : MeshInstance3D
 {
 
@@ -221,63 +198,14 @@ public partial class TerrainMesh : MeshInstance3D
 
 	public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
 	{
-		int vertexIndex = vertices.Count;
-
-		v1 = Metrics.Perturb(v1);
-		v2 = Metrics.Perturb(v2);
-		v3 = Metrics.Perturb(v3);
-		v4 = Metrics.Perturb(v4);
-
-		vertices.Add(v1);
-		vertices.Add(v2);
-		vertices.Add(v3);
-
-		vertices.Add(v3);
-		vertices.Add(v2);
-		vertices.Add(v4);
-
-		normals.Add(CalculateNormal(v1, v3, v2));
-		normals.Add(CalculateNormal(v2, v1, v3));
-		normals.Add(CalculateNormal(v3, v2, v1));
-
-		normals.Add(CalculateNormal(v3, v4, v2));
-		normals.Add(CalculateNormal(v2, v3, v4));
-		normals.Add(CalculateNormal(v4, v2, v3));
-
-		triangles.Add(vertexIndex);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 1);
-		triangles.Add(vertexIndex + 1);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 3);
+		AddTriangle(v2, v1, v3);
+		AddTriangle(v2, v3, v4);
 	}
 
 	public void AddQuadUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
 	{
-		int vertexIndex = vertices.Count;
-
-		vertices.Add(v1);
-		vertices.Add(v2);
-		vertices.Add(v3);
-
-		vertices.Add(v3);
-		vertices.Add(v2);
-		vertices.Add(v4);
-
-		normals.Add(CalculateNormal(v1, v3, v2));
-		normals.Add(CalculateNormal(v2, v1, v3));
-		normals.Add(CalculateNormal(v3, v2, v1));
-
-		normals.Add(CalculateNormal(v3, v4, v2));
-		normals.Add(CalculateNormal(v2, v3, v4));
-		normals.Add(CalculateNormal(v4, v2, v3));
-
-		triangles.Add(vertexIndex);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 1);
-		triangles.Add(vertexIndex + 1);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 3);
+		AddTriangleUnperturbed(v2, v1, v3);
+		AddTriangleUnperturbed(v2, v3, v4);
 	}
 
 	public void AddQuadUV(float uMin, float uMax, float vMin, float vMax)
