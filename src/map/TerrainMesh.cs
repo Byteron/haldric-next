@@ -4,286 +4,106 @@ using System.Collections.Generic;
 public partial class TerrainMesh : MeshInstance3D
 {
 
-	private List<Vector3> vertices, normals, cellIndices;
-	private List<Vector2> uvs = new List<Vector2>();
-	private List<Vector2> uv2s = new List<Vector2>();
-	private List<Color> cellWeights;
+	[Export] private bool  _useMesh, _useCollider;
 
-	private List<int> triangles;
+	private CollisionShape3D _collisionShape;
 
+	private SurfaceTool _surfaceTool;
 
-	[Export] private bool useCollder, useMesh, useCellData, useUVCoordinates, useUV2Coordinates;
-
-	private CollisionShape3D collisionShape;
+	private int _vertexIndex = 0;
 
 	public override void _Ready()
 	{
-		collisionShape = GetNode<CollisionShape3D>("StaticBody3D/CollisionShape3D");
+		_collisionShape = GetNode<CollisionShape3D>("StaticBody3D/CollisionShape3D");
+		_surfaceTool = new SurfaceTool();
 	}
 
 	public void Clear()
 	{
-		vertices = ListPool<Vector3>.Get();
-		triangles = ListPool<int>.Get();
-		normals = ListPool<Vector3>.Get();
-
-		if (useCellData)
-		{
-			cellWeights = ListPool<Color>.Get();
-			cellIndices = ListPool<Vector3>.Get();
-		}
-
-		if (useUVCoordinates)
-		{
-			uvs = ListPool<Vector2>.Get();
-		}
-
-		if (useUV2Coordinates)
-		{
-			uv2s = ListPool<Vector2>.Get();
-		}
+		_vertexIndex = 0;
+		_surfaceTool.Clear();
+		_surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
 	}
 
 	public void Apply()
 	{
-		var mesh = new ArrayMesh();
-		var arrays = new Godot.Collections.Array();
+		_surfaceTool.Index();
+		var material = new StandardMaterial3D();
+		material.AlbedoColor = new Color("70483c");
+		_surfaceTool.SetMaterial(material);
+		_surfaceTool.GenerateNormals();
 
-		arrays.Resize((int)ArrayMesh.ArrayType.Max);
+		Mesh = _surfaceTool.Commit();
 
-		bool drawMesh = false;
-
-		// GD.Print(Name);
-
-		if (vertices.Count > 0)
+		if (_useCollider)
 		{
-			//GD.Print("vertices: ", vertices.Count);
-			//GD.Print("Normals: ", normals.Count);
-			//GD.Print("triangles: ", triangles.Count);
-			arrays[(int)ArrayMesh.ArrayType.Vertex] = vertices.ToArray();
-			arrays[(int)ArrayMesh.ArrayType.Normal] = normals.ToArray();
-			// arrays[(int)ArrayMesh.ArrayType.Index] = triangles.ToArray();
-			ListPool<Vector3>.Add(vertices);
-			ListPool<Vector3>.Add(normals);
-			ListPool<int>.Add(triangles);
-			drawMesh = true;
+			_collisionShape.Shape = Mesh.CreateTrimeshShape();
 		}
 
-		if (useCellData && cellWeights.Count > 0)
-		{
-			// ("Weights: ", cellWeights.Count);
-			// GD.Print("Indices: ", cellIndices.Count);
-			arrays[(int)ArrayMesh.ArrayType.Color] = cellWeights.ToArray();
-
-			Vector2[] xy = new Vector2[cellIndices.Count];
-			Vector2[] xz = new Vector2[cellIndices.Count];
-
-			for (int i = 0; i < cellIndices.Count; i++)
-			{
-				xy[i] = new Vector2(cellIndices[i].x, cellIndices[i].y);
-				xz[i] = new Vector2(cellIndices[i].x, cellIndices[i].z);
-			}
-
-			arrays[(int)ArrayMesh.ArrayType.TexUv] = xy;
-			arrays[(int)ArrayMesh.ArrayType.TexUv2] = xz;
-
-			ListPool<Color>.Add(cellWeights);
-			ListPool<Vector3>.Add(cellIndices);
-
-			drawMesh = true;
-		}
-
-		if (useUVCoordinates && uvs.Count > 0)
-		{
-			// GD.Print("UVs: ", uvs.Count);
-			arrays[(int)ArrayMesh.ArrayType.TexUv] = uvs.ToArray();
-			ListPool<Vector2>.Add(uvs);
-			drawMesh = true;
-		}
-
-		if (useUV2Coordinates && uv2s.Count > 0)
-		{
-			// GD.Print("UV2s: ", uv2s.Count);
-			arrays[(int)ArrayMesh.ArrayType.TexUv2] = uv2s.ToArray();
-			ListPool<Vector2>.Add(uv2s);
-			drawMesh = true;
-		}
-
-		if (drawMesh)
-		{
-			mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
-		}
-
-		Mesh = mesh;
-
-		if (useCollder)
-		{
-			collisionShape.Shape = Mesh.CreateTrimeshShape();
-		}
-
-		if (!useMesh)
+		if (!_useMesh)
 		{
 			Mesh = null;
 		}
-
 	}
 
-	public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
+	public void AddTrianglePerturbed(Vector3 v1, Vector3 v2, Vector3 v3)
 	{
-		int vertexIndex = vertices.Count;
-
 		v1 = Metrics.Perturb(v1);
 		v2 = Metrics.Perturb(v2);
 		v3 = Metrics.Perturb(v3);
 
-		vertices.Add(v1);
-		vertices.Add(v3);
-		vertices.Add(v2);
-
-		normals.Add(CalculateNormal(v1, v3, v2));
-		normals.Add(CalculateNormal(v3, v2, v1));
-		normals.Add(CalculateNormal(v2, v1, v3));
-
-		triangles.Add(vertexIndex);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 1);
+		AddTriangle(v1, v2, v3);
 	}
 
-	public void AddTriangleUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3)
+	public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 	{
-		int vertexIndex = vertices.Count;
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v1);
 
-		vertices.Add(v1);
-		vertices.Add(v3);
-		vertices.Add(v2);
-
-		normals.Add(CalculateNormal(v1, v3, v2));
-		normals.Add(CalculateNormal(v3, v2, v1));
-		normals.Add(CalculateNormal(v2, v1, v3));
-
-		triangles.Add(vertexIndex);
-		triangles.Add(vertexIndex + 2);
-		triangles.Add(vertexIndex + 1);
-	}
-
-	public void AddTriangleUV(Vector2 uv1, Vector2 uv2, Vector2 uv3)
-	{
-		uvs.Add(uv1);
-		uvs.Add(uv3);
-		uvs.Add(uv2);
-	}
-
-	public void AddTriangleUV2(Vector2 uv1, Vector2 uv2, Vector2 uv3)
-	{
-		uv2s.Add(uv1);
-		uv2s.Add(uv3);
-		uv2s.Add(uv2);
-	}
-
-	public void AddTriangleCellData(Vector3 indices, Color weights1, Color weights2, Color weights3)
-	{
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v2);
 		
-		cellWeights.Add(weights1);
-		cellWeights.Add(weights3);
-		cellWeights.Add(weights2);
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v3);
+
+		_surfaceTool.AddIndex(_vertexIndex);
+		_surfaceTool.AddIndex(_vertexIndex + 1);
+		_surfaceTool.AddIndex(_vertexIndex + 2);
+
+		_vertexIndex += 3;
 	}
 
-	public void AddTriangleCellData(Vector3 indices, Color weights)
+	public void AddQuadPerturbed(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
 	{
-		AddTriangleCellData(indices, weights, weights, weights);
+		v1 = Metrics.Perturb(v1);
+		v2 = Metrics.Perturb(v2);
+		v3 = Metrics.Perturb(v3);
+		v4 = Metrics.Perturb(v4);
+
+		AddQuad(v1, v2, v3, v4);
 	}
 
 	public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
 	{
-		AddTriangle(v2, v1, v3);
-		AddTriangle(v2, v3, v4);
-	}
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v1);
 
-	public void AddQuadUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
-	{
-		AddTriangleUnperturbed(v2, v1, v3);
-		AddTriangleUnperturbed(v2, v3, v4);
-	}
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v2);
+		
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v3);
 
-	public void AddQuadUV(float uMin, float uMax, float vMin, float vMax)
-	{
-		Vector2 v1 = new Vector2(uMin, vMin);
-		Vector2 v2 = new Vector2(uMax, vMin);
-		Vector2 v3 = new Vector2(uMin, vMax);
-		Vector2 v4 = new Vector2(uMax, vMax);
+		_surfaceTool.SetSmoothGroup((uint)_vertexIndex);
+		_surfaceTool.AddVertex(v4);
 
-		AddQuadUV(v1, v2, v3, v4);
-	}
+		_surfaceTool.AddIndex(_vertexIndex);
+		_surfaceTool.AddIndex(_vertexIndex + 1);
+		_surfaceTool.AddIndex(_vertexIndex + 2);
+		_surfaceTool.AddIndex(_vertexIndex + 2);
+		_surfaceTool.AddIndex(_vertexIndex + 1);
+		_surfaceTool.AddIndex(_vertexIndex + 3);
 
-	public void AddQuadUV2(float uMin, float uMax, float vMin, float vMax)
-	{
-		Vector2 v1 = new Vector2(uMin, vMin);
-		Vector2 v2 = new Vector2(uMax, vMin);
-		Vector2 v3 = new Vector2(uMin, vMax);
-		Vector2 v4 = new Vector2(uMax, vMax);
-
-		AddQuadUV2(v1, v2, v3, v4);
-	}
-
-	public void AddQuadUV(Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
-	{
-		uvs.Add(uv1);
-		uvs.Add(uv2);
-		uvs.Add(uv3);
-		uvs.Add(uv3);
-		uvs.Add(uv2);
-		uvs.Add(uv4);
-	}
-
-	public void AddQuadUV2(Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
-	{
-		uv2s.Add(uv1);
-		uv2s.Add(uv2);
-		uv2s.Add(uv3);
-		uv2s.Add(uv3);
-		uv2s.Add(uv2);
-		uv2s.Add(uv4);
-	}
-
-	public void AddQuadCellData(
-		Vector3 indices,
-		Color weights1, Color weights2, Color weights3, Color weights4)
-	{
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-		cellIndices.Add(indices);
-
-		cellWeights.Add(weights1);
-		cellWeights.Add(weights2);
-		cellWeights.Add(weights3);
-		cellWeights.Add(weights3);
-		cellWeights.Add(weights2);
-		cellWeights.Add(weights4);
-	}
-
-	public void AddQuadCellData(Vector3 indices, Color weights1, Color weights2)
-	{
-		AddQuadCellData(indices, weights1, weights1, weights2, weights2);
-	}
-
-	public void AddQuadCellData(Vector3 indices, Color weights)
-	{
-		AddQuadCellData(indices, weights, weights, weights, weights);
-	}
-
-	public Vector3 CalculateNormal(Vector3 a, Vector3 b, Vector3 c)
-	{
-		Vector3 normal = (c - b).Cross(a - b).Normalized();
-		if (normal.y < 0)
-		{
-			normal = -normal;
-		}
-		return normal;
+		_vertexIndex += 4;
 	}
 }

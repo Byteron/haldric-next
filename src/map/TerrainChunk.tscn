@@ -8,5 +8,7 @@
 script = ExtResource( 1 )
 
 [node name="TerrainMesh" parent="." instance=ExtResource( 2 )]
+_useMesh = true
+_useCollider = true
 
 [node name="Features" parent="." instance=ExtResource( 3 )]

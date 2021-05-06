@@ -10,7 +10,7 @@ public class Metrics
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
 
-    public const float CellPerturbStrength = 2.5f;
+    public const float CellPerturbStrength = 5f;
 
     public static readonly Vector3[] corners = {
         new Vector3(0f, 0f, OuterRadius),

@@ -167,29 +167,34 @@ public partial class TerrainChunk : Node3D
 
     private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right)
     {
-        _terrain.AddTriangle(bottom, left, right);
-        // _terrain.AddTriangleUnperturbed(bottom, left, right);
+        _terrain.AddTrianglePerturbed(left, bottom, right);
+        // _terrain.AddTriangle(left, bottom, right);
     }
 
     private void TriangulatePlateau(Vector3 center, EdgeVertices edge)
     {
-        _terrain.AddTriangle(center, edge.v1, edge.v2);
-        _terrain.AddTriangle(center, edge.v2, edge.v3);
-        _terrain.AddTriangle(center, edge.v3, edge.v4);
-        _terrain.AddTriangle(center, edge.v4, edge.v5);
+        _terrain.AddTrianglePerturbed(edge.v1, center, edge.v2);
+        _terrain.AddTrianglePerturbed(edge.v2, center, edge.v3);
+        _terrain.AddTrianglePerturbed(edge.v3, center, edge.v4);
+        _terrain.AddTrianglePerturbed(edge.v4, center, edge.v5);
 
-        // _terrain.AddTriangleUnperturbed(center, edge.v1, edge.v2);
-        // _terrain.AddTriangleUnperturbed(center, edge.v2, edge.v3);
-        // _terrain.AddTriangleUnperturbed(center, edge.v3, edge.v4);
-        // _terrain.AddTriangleUnperturbed(center, edge.v4, edge.v5);
+        // _terrain.AddTriangle(edge.v1, center, edge.v2);
+        // _terrain.AddTriangle(edge.v2, center, edge.v3);
+        // _terrain.AddTriangle(edge.v3, center, edge.v4);
+        // _terrain.AddTriangle(edge.v4, center, edge.v5);
     }
 
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2)
-    {
-        _terrain.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
-        _terrain.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
-        _terrain.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
-        _terrain.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
+    {   
+        _terrain.AddQuadPerturbed(e1.v1, e1.v2, e2.v1, e2.v2);
+        _terrain.AddQuadPerturbed(e1.v2, e1.v3, e2.v2, e2.v3);
+        _terrain.AddQuadPerturbed(e1.v3, e1.v4, e2.v3, e2.v4);
+        _terrain.AddQuadPerturbed(e1.v4, e1.v5, e2.v4, e2.v5);
+
+        // _terrain.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
+        // _terrain.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
+        // _terrain.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
+        // _terrain.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
 
         // _terrain.AddQuadUnperturbed(e1.v1, e1.v2, e2.v1, e2.v2);
         // _terrain.AddQuadUnperturbed(e1.v2, e1.v3, e2.v2, e2.v3);
