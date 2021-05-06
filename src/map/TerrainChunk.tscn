@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/map/TerrainChunk.cs" type="Script" id=1]
 [ext_resource path="res://src/map/TerrainMesh.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/map/TerrainFeaturePopulator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/graphics/models/castle_wall.tres" type="ArrayMesh" id=4]
+[ext_resource path="res://assets/graphics/models/castle_tower.tres" type="ArrayMesh" id=5]
 
 [node name="TerrainChunk" type="Node3D"]
 script = ExtResource( 1 )
@@ -12,3 +14,5 @@ _useMesh = true
 _useCollider = true
 
 [node name="Features" parent="." instance=ExtResource( 3 )]
+_wallMesh = ExtResource( 4 )
+_towerMesh = ExtResource( 5 )
