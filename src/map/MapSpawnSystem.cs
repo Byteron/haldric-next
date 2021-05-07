@@ -37,10 +37,17 @@ public class MapSpawnSystem : IEcsInitSystem
         ref var locations = ref mapEntity.Get<Locations>();
         ref var grid = ref mapEntity.Get<Grid>();
 
+        InitializeHoveredCoords();
         InitializeLocations(grid, locations);
         InitializeNeighbors(locations);
 
         SendUpdateMapEvent();
+    }
+
+    private void InitializeHoveredCoords()
+    {
+        var hoveredCoordsEntity = _world.NewEntity();
+        hoveredCoordsEntity.Get<HoveredCoords>();
     }
 
     private void InitializeLocations(Grid grid, Locations locations)
