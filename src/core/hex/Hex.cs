@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public class Hex
@@ -21,7 +22,7 @@ public class Hex
         return new Vector3(axial.x, -axial.x - axial.z, axial.z);
     }
 
-    public static Vector3 World2Offset(Vector3 position)
+    public static Vector3 World2Axial(Vector3 position)
     {
         var fx = position.x / (Metrics.InnerRadius * 2.0f);
         var fy = -fx;
@@ -101,5 +102,21 @@ public class Hex
         }
 
         return neighbors;
+    }
+
+    public static Vector3[] GetCellsInRange(Vector3 cube, int radius)
+    {
+        List<Vector3> cells = new List<Vector3>();
+
+        for (int x = -radius; x < radius + 1; x++)
+        {
+            for (int y = Mathf.Max(-radius, -x - radius); y < Mathf.Min(radius + 1, -x + radius + 1); y++)
+            {
+                var z = -x - y;
+                cells.Add(cube + new Vector3(x, y, z));
+            }
+        }
+        
+        return cells.ToArray();
     }
 }

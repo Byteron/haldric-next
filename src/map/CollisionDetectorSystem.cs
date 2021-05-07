@@ -29,7 +29,6 @@ public class CollisionDetectorSystem : IEcsRunSystem
                 foreach (var i in _filter)
                 {
                     _filter.GetEntity(i).Get<HoveredCoords>().Coords = coords;
-                    GD.Print(coords);
                 }
 
                 previousCell = coords.Axial;
@@ -38,7 +37,7 @@ public class CollisionDetectorSystem : IEcsRunSystem
         }
     }
 
-    public Dictionary ShootRay()
+    private Dictionary ShootRay()
     {
         var spaceState = _parent.GetWorld3d().DirectSpaceState;
         var viewport = _parent.GetViewport();

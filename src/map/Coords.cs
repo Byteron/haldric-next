@@ -51,8 +51,7 @@ public struct Coords
     {
         var coords = new Coords();
 
-        var offset = Hex.World2Offset(position);
-        var axial = Hex.Offset2Axial(offset);
+        var axial = Hex.World2Axial(position);
         coords.X = (int)axial.x;
         coords.Z = (int)axial.z;
 

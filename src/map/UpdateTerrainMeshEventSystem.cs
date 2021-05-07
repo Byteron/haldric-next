@@ -37,8 +37,6 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            GD.Print("UpdateTerrainMeshEvent Sent!");
-
             foreach (var j in _maps)
             {
                 var mapEntity = _maps.GetEntity(j);
@@ -171,10 +169,12 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
         // _terrain.AddTrianglePerturbed(edge.v3, center, edge.v4);
         // _terrain.AddTrianglePerturbed(edge.v4, center, edge.v5);
 
-        _terrainMesh.AddTriangle(edge.v1, center, edge.v2);
-        _terrainMesh.AddTriangle(edge.v2, center, edge.v3);
-        _terrainMesh.AddTriangle(edge.v3, center, edge.v4);
-        _terrainMesh.AddTriangle(edge.v4, center, edge.v5);
+        _terrainMesh.AddTriangle(edge.v1, center, edge.v5);
+
+        // _terrainMesh.AddTriangle(edge.v1, center, edge.v2);
+        // _terrainMesh.AddTriangle(edge.v2, center, edge.v3);
+        // _terrainMesh.AddTriangle(edge.v3, center, edge.v4);
+        // _terrainMesh.AddTriangle(edge.v4, center, edge.v5);
     }
 
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2)
@@ -184,9 +184,11 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
         // _terrain.AddQuadPerturbed(e1.v3, e1.v4, e2.v3, e2.v4);
         // _terrain.AddQuadPerturbed(e1.v4, e1.v5, e2.v4, e2.v5);
 
-        _terrainMesh.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
-        _terrainMesh.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
-        _terrainMesh.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
-        _terrainMesh.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
+        _terrainMesh.AddQuad(e1.v1, e1.v5, e2.v1, e2.v5);
+
+        // _terrainMesh.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
+        // _terrainMesh.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
+        // _terrainMesh.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
+        // _terrainMesh.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
     }
 }

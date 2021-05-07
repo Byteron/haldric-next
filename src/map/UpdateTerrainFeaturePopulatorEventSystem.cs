@@ -14,8 +14,6 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            GD.Print("UpdateTerrainFeaturePopulatorEvent Sent!");
-
             foreach (var j in _maps)
             {
                 var mapEntity = _maps.GetEntity(j);

@@ -16,11 +16,9 @@ public class MapSpawnSystem : IEcsInitSystem
 
     public void Init()
     {
-        GD.Print("New Map Created!");
-
         var mapEntity = _world.NewEntity();
 
-        mapEntity.Replace(new Grid(40, 40));
+        mapEntity.Replace(new Grid(20, 20));
 
         var terrainMesh = new TerrainMesh();
         var terrainCollider = new TerrainCollider();

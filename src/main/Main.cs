@@ -5,8 +5,8 @@ using Leopotam.Ecs;
 public partial class Main : Node3D
 {
     EcsWorld _world;
-    EcsSystems _processSystems;
     EcsSystems _inputSystems;
+    EcsSystems _processSystems;
 
     public override void _Ready()
     {
@@ -20,6 +20,7 @@ public partial class Main : Node3D
         
         _processSystems
             .Add(new MapSpawnSystem(this))
+            .Add(new EditorEditSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem());
