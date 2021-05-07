@@ -12,7 +12,9 @@ public partial class Main : Node3D
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
 
-        _systems.Add(new MapSpawnSystem(this)).Add(new UpdateMapEventSystem());
+        _systems
+            .Add(new MapSpawnSystem(this))
+            .Add(new UpdateMapEventSystem());
 
         _systems.Init();
     }

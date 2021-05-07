@@ -13,6 +13,6 @@ script = ExtResource( 1 )
 _useMesh = true
 _useCollider = true
 
-[node name="Features" parent="." instance=ExtResource( 3 )]
+[node name="TerrainFeaturePopulator" parent="." instance=ExtResource( 3 )]
 _wallMesh = ExtResource( 4 )
 _towerMesh = ExtResource( 5 )

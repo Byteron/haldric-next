@@ -40,7 +40,7 @@ public partial class TerrainChunk : Node3D
     public override void _Ready()
     {
         _terrain = GetNode<TerrainMesh>("TerrainMesh");
-        _features = GetNode<TerrainFeaturePopulator>("Features");
+        _features = GetNode<TerrainFeaturePopulator>("TerrainFeaturePopulator");
     }
 
     public void Build(Locations locations)

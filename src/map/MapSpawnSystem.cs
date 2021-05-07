@@ -47,13 +47,13 @@ public class MapSpawnSystem : IEcsInitSystem
                 locEntity.Replace(Coords.FromOffset(x, z));
 
                 // Mountains
-                // if (GD.Randf() < 0.1)
-                // {
-                //     locEntity.Replace(new Elevation(5, GD.Randf() * 1.5f + 1.5f));
-                //     locEntity.Replace(new PlateauArea(0.75f));
-                // }
-                // // Normal
-                // else
+                if (GD.Randf() < 0.1)
+                {
+                    locEntity.Replace(new Elevation(5, GD.Randf() * 1.5f + 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+                }
+                // Normal
+                else
                 {
                     locEntity.Replace(new Elevation((int)GD.Randi() % 3, 2.0f));
                     locEntity.Replace(new PlateauArea(0.75f));
