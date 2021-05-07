@@ -1,63 +1,29 @@
 using Godot;
 using Leopotam.Ecs;
 
-public struct EdgeVertices
+public class TerrainMeshBuilder
 {
-    public Vector3 v1, v2, v3, v4, v5;
+    Locations _locations;
+    TerrainMesh _terrain;
 
-    public EdgeVertices(Vector3 corner1, Vector3 corner2)
+    public TerrainMeshBuilder Create(TerrainMesh terainMesh = null)
     {
-        v1 = corner1;
-        v2 = corner1.Lerp(corner2, 0.25f);
-        v3 = corner1.Lerp(corner2, 0.5f);
-        v4 = corner1.Lerp(corner2, 0.75f);
-        v5 = corner2;
+        _terrain = terainMesh ?? new TerrainMesh();
+
+        return this;
     }
 
-    public EdgeVertices(Vector3 corner1, Vector3 corner2, float outerStep)
-    {
-        v1 = corner1;
-        v2 = corner1.Lerp(corner2, outerStep);
-        v3 = corner1.Lerp(corner2, 0.5f);
-        v4 = corner1.Lerp(corner2, 1f - outerStep);
-        v5 = corner2;
-    }
-}
-
-public partial class TerrainChunk : Node3D
-{
-    private static Color Weight1 = new Color(1f, 0f, 0f);
-    private static Color Weight2 = new Color(0f, 1f, 0f);
-    private static Color Weight3 = new Color(0f, 0f, 1f);
-
-    private bool _enabled = false;
-
-    private Locations _locations;
-
-    private TerrainMesh _terrain;
-    private TerrainFeaturePopulator _features;
-
-    public override void _Ready()
-    {
-        _terrain = GetNode<TerrainMesh>("TerrainMesh");
-        _features = GetNode<TerrainFeaturePopulator>("TerrainFeaturePopulator");
-    }
-
-    public void Build(Locations locations)
+    public TerrainMeshBuilder WithLocations(Locations locations)
     {
         _locations = locations;
-        _enabled = true;
-        CallDeferred("Triangulate");
+
+        return this;
     }
 
-    private void Triangulate()
+    public TerrainMesh Build()
     {
-        if (_enabled)
-        {
-            Triangulate(_locations);
-        }
-
-        _enabled = false;
+        Triangulate(_locations);
+        return _terrain;
     }
 
     private void Triangulate(Locations locations)
@@ -98,16 +64,6 @@ public partial class TerrainChunk : Node3D
         if (direction <= Direction.W)
         {
             TriangulateConnection(direction, locEntity, e);
-        }
-
-        if (locEntity.Has<Forest>())
-        {
-            _features.AddFeature(locEntity);
-        }
-
-        if (locEntity.Has<Castle>())
-        {
-            _features.AddCastle(locEntity);
         }
     }
 

@@ -22,10 +22,17 @@ public class MapSpawnSystem : IEcsInitSystem
 
         mapEntity.Replace(new Grid(40, 40));
 
-        var mapView = Scenes.Instance.MapView.Instance<MapView>();
-        _parent.AddChild(mapView);
-
-        mapEntity.Replace(new ViewHandle<MapView>(mapView));
+        var terrainMesh = new TerrainMesh();
+        var terrainCollider = new TerrainCollider();
+        var terrainFeaturePopulator = new TerrainFeaturePopulator();
+        
+        _parent.AddChild(terrainMesh);
+        _parent.AddChild(terrainCollider);
+        _parent.AddChild(terrainFeaturePopulator);
+        
+        mapEntity.Replace(new NodeHandle<TerrainCollider>(terrainCollider));
+        mapEntity.Replace(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
+        mapEntity.Replace(new NodeHandle<TerrainMesh>(terrainMesh));
 
         ref var locations = ref mapEntity.Get<Locations>();
         ref var grid = ref mapEntity.Get<Grid>();
@@ -33,7 +40,7 @@ public class MapSpawnSystem : IEcsInitSystem
         InitializeLocations(grid, locations);
         InitializeNeighbors(locations);
 
-        UpdateMap();
+        SendUpdateMapEvent();
     }
 
     private void InitializeLocations(Grid grid, Locations locations)
@@ -98,7 +105,7 @@ public class MapSpawnSystem : IEcsInitSystem
         }
     }
 
-    private void UpdateMap()
+    private void SendUpdateMapEvent()
     {
         var updateMapEventEntity = _world.NewEntity();
         updateMapEventEntity.Get<UpdateMapEvent>();

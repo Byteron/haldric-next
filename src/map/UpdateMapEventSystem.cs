@@ -5,25 +5,29 @@ public struct UpdateMapEvent {}
 
 public class UpdateMapEventSystem : IEcsRunSystem
 {
+    EcsWorld _world;
     EcsFilter<UpdateMapEvent> _events;
-    EcsFilter<ViewHandle<MapView>, Locations> _maps;
 
     public void Run()
     {
         foreach (var i in _events)
         {
-            GD.Print("UpdateMapEvent Sent!");
-            foreach (var j in _maps)
-            {
-                var mapEntity = _maps.GetEntity(j);
-
-                ref var locations = ref mapEntity.Get<Locations>();
-                ref var mapView = ref mapEntity.Get<ViewHandle<MapView>>();
-
-                mapView.Node.Build(locations);
-            }
+            SendUpdateTerrainMeshEvent();
+            SendUpdateTerrainFeaturePopulatorEvent();
 
             _events.GetEntity(i).Destroy();
         }
+    }
+
+    private void SendUpdateTerrainMeshEvent()
+    {
+        var updateTerrainMeshEvent = _world.NewEntity();
+        updateTerrainMeshEvent.Get<UpdateTerrainMeshEvent>();
+    }
+
+    private void SendUpdateTerrainFeaturePopulatorEvent()
+    {
+        var updateTerrainFeaturePopulatorEvent = _world.NewEntity();
+        updateTerrainFeaturePopulatorEvent.Get<UpdateTerrainFeaturePopulatorEvent>();
     }
 }

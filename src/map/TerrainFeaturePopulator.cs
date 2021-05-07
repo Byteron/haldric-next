@@ -4,11 +4,16 @@ using Leopotam.Ecs;
 
 public partial class TerrainFeaturePopulator : Node3D
 {
-    [Export] Mesh _forestMesh;
-    [Export] Mesh _wallMesh;
-    [Export] Mesh _towerMesh;
+    [Export] Mesh _forestMesh = GD.Load<Mesh>("res://assets/graphics/models/forest.tres");
+    [Export] Mesh _wallMesh = GD.Load<Mesh>("res://assets/graphics/models/keep_wall.tres");
+    [Export] Mesh _towerMesh = GD.Load<Mesh>("res://assets/graphics/models/keep_tower.tres");
 
     Node3D container = new Node3D();
+
+    public TerrainFeaturePopulator()
+    {
+        Name = "TerrainFeaturePopuplator";
+    }
 
     public override void _Ready()
     {
@@ -24,7 +29,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void Apply()
     {
-
+        // this currently does nothing, but should do something later on
     }
 
     public void AddFeature(EcsEntity locEntity)

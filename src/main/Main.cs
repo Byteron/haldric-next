@@ -14,7 +14,9 @@ public partial class Main : Node3D
 
         _systems
             .Add(new MapSpawnSystem(this))
-            .Add(new UpdateMapEventSystem());
+            .Add(new UpdateMapEventSystem())
+            .Add(new UpdateTerrainMeshEventSystem())
+            .Add(new UpdateTerrainFeaturePopulatorEventSystem());
 
         _systems.Init();
     }

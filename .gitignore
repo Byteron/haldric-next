@@ -6,6 +6,9 @@
 .godot/
 export.cfg
 
+# VS Code
+.vscode/
+
 # Excluded because it may contain sensitive information like keystore passwords
 export_presets.cfg
 

@@ -1,20 +1,18 @@
 using Godot;
-using System.Collections.Generic;
 
 public partial class TerrainMesh : MeshInstance3D
 {
-
-	[Export] private bool  _useMesh, _useCollider;
-
-	private CollisionShape3D _collisionShape;
-
 	private SurfaceTool _surfaceTool;
 
 	private int _vertexIndex = 0;
+	
+	public TerrainMesh()
+	{
+		Name = "TerrainMesh";
+	}
 
 	public override void _Ready()
 	{
-		_collisionShape = GetNode<CollisionShape3D>("StaticBody3D/CollisionShape3D");
 		_surfaceTool = new SurfaceTool();
 	}
 
@@ -34,16 +32,6 @@ public partial class TerrainMesh : MeshInstance3D
 		_surfaceTool.GenerateNormals();
 
 		Mesh = _surfaceTool.Commit();
-
-		if (_useCollider)
-		{
-			_collisionShape.Shape = Mesh.CreateTrimeshShape();
-		}
-
-		if (!_useMesh)
-		{
-			Mesh = null;
-		}
 	}
 
 	public void AddTrianglePerturbed(Vector3 v1, Vector3 v2, Vector3 v3)
