@@ -18,7 +18,7 @@ public class MapSpawnSystem : IEcsInitSystem
     {
         var mapEntity = _world.NewEntity();
 
-        mapEntity.Replace(new Grid(20, 20));
+        mapEntity.Replace(new Grid(40, 40));
 
         var terrainMesh = new TerrainMesh();
         var terrainCollider = new TerrainCollider();
@@ -61,24 +61,37 @@ public class MapSpawnSystem : IEcsInitSystem
                 // Mountains
                 if (GD.Randf() < 0.1)
                 {
-                    locEntity.Replace(new Elevation(5, GD.Randf() * 1.5f + 1.5f));
+                    locEntity.Replace(Data.Instance.Terrains["Mm"]);
+                    locEntity.Replace(new Elevation(5, 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+                }
+                // Keep
+                else if (GD.Randf() < 0.05)
+                {
+                    locEntity.Replace(Data.Instance.Terrains["Kh"]);
+                    locEntity.Replace(new Elevation(3, 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+                }
+                // Castle
+                else if (GD.Randf() < 0.15)
+                {
+                    locEntity.Replace(Data.Instance.Terrains["Ch"]);
+                    locEntity.Replace(new Elevation(2, 1.5f));
+                    locEntity.Replace(new PlateauArea(0.75f));
+                }
+                // Forest
+                else if (GD.Randf() < 0.3)
+                {
+                    locEntity.Replace(Data.Instance.Terrains["Ff"]);
+                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 1.5f));
                     locEntity.Replace(new PlateauArea(0.75f));
                 }
                 // Normal
                 else
                 {
-                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 2.0f));
+                    locEntity.Replace(Data.Instance.Terrains["Gg"]);
+                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 1.5f));
                     locEntity.Replace(new PlateauArea(0.75f));
-
-                    // Forest
-                    if (GD.Randf() < 0.2)
-                    {
-                        locEntity.Get<Forest>();
-                    }
-                    else if (GD.Randf() < 0.3)
-                    {
-                        locEntity.Get<Castle>();
-                    }
                 }
 
                 ref var coords = ref locEntity.Get<Coords>();

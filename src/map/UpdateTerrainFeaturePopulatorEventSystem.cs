@@ -53,14 +53,21 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        if (locEntity.Has<Forest>())
+        ref var terrain = ref locEntity.Get<Terrain>();
+
+        if (Data.Instance.Decorations.ContainsKey(terrain.Code))
         {
-            _terrainFeaturePopulator.AddFeature(locEntity);
+            _terrainFeaturePopulator.AddDecoration(locEntity);
         }
 
-        if (locEntity.Has<Castle>())
+        if (Data.Instance.WallTowers.ContainsKey(terrain.Code))
         {
-            _terrainFeaturePopulator.AddCastle(locEntity);
+            _terrainFeaturePopulator.AddTowers(locEntity);
+        }
+
+        if (Data.Instance.WallSegments.ContainsKey(terrain.Code))
+        {
+            _terrainFeaturePopulator.AddWalls(locEntity);
         }
     }
 }
