@@ -68,10 +68,11 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     private void EditLocation(EcsEntity editorEntity, EcsEntity locEntity)
     {
         ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
-
+        ref var terrain = ref locEntity.Get<Terrain>();
         ref var elevation = ref locEntity.Get<Elevation>();
 
         elevation.Level = editorView.Elevation;
+        terrain = editorView.Terrain;
     }
 
     private void SendUpdateMapEvent()
