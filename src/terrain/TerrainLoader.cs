@@ -7,6 +7,7 @@ public abstract class TerrainLoader
     public Dictionary<string, TerrainGraphic> Decorations = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
 
     private string _root = "res://";
 
@@ -57,5 +58,11 @@ public abstract class TerrainLoader
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
         WallTowers.Add(code, graphic);
+    }
+
+    public void NewKeepPlateau(string code, string image_stem)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        KeepPlateaus.Add(code, graphic);
     }
 }

@@ -10,6 +10,7 @@ public partial class Data : Node
     public Dictionary<string, TerrainGraphic> Decorations = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
     
     public override void _Ready()
     {
@@ -29,6 +30,7 @@ public partial class Data : Node
         Decorations.Clear();
         WallSegments.Clear();
         WallTowers.Clear();
+        KeepPlateaus.Clear();
 
         var terrainScript = new TerrainScript();
 
@@ -40,7 +42,6 @@ public partial class Data : Node
         Decorations = terrainScript.Decorations;
         WallSegments = terrainScript.WallSegments;
         WallTowers = terrainScript.WallTowers;
-
-        GD.Print(Terrains);
+        KeepPlateaus = terrainScript.KeepPlateaus;
     }
 }

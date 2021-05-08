@@ -18,7 +18,7 @@ public class MapSpawnSystem : IEcsInitSystem
     {
         var mapEntity = _world.NewEntity();
 
-        mapEntity.Replace(new Grid(40, 40));
+        mapEntity.Replace(new Grid(20, 20));
 
         var terrainMesh = new TerrainMesh();
         var terrainCollider = new TerrainCollider();

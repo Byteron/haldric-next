@@ -12,7 +12,7 @@ public class TerrainScript : TerrainLoader
         NewTerrain("Forest", "Ff", new List<TerrainType>() { TerrainType.Flat, TerrainType.Forested });
         NewTerrain("Mountains", "Mm", null);
 
-        NewDecoration("Kh", "keep_plateau");
+        NewKeepPlateau("Kh", "keep_plateau");
         NewWallSegment("Kh", "keep_wall");
         NewWallTower("Kh", "keep_tower");
 

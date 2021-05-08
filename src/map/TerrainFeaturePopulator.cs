@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using Leopotam.Ecs;
 
 public partial class TerrainFeaturePopulator : Node3D
@@ -41,6 +40,19 @@ public partial class TerrainFeaturePopulator : Node3D
         container.AddChild(forest);
     }
 
+    public void AddKeepPlateau(EcsEntity locEntity)
+    {
+        ref var terrain = ref locEntity.Get<Terrain>();
+
+        var position = locEntity.Get<Coords>().World;
+        position.y = locEntity.Get<Elevation>().Height + 1.5f;
+
+        var plateau = new MeshInstance3D();
+        plateau.Mesh = Data.Instance.KeepPlateaus[terrain.Code].Mesh;
+        plateau.Translation = position;
+        container.AddChild(plateau);
+    }
+
     public void AddWalls(EcsEntity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
@@ -65,13 +77,14 @@ public partial class TerrainFeaturePopulator : Node3D
             var nLocEntity = neighbors.Get(direction);
             
             ref var nElevation = ref nLocEntity.Get<Elevation>();
+            ref var nTerrain = ref nLocEntity.Get<Terrain>();
             
             if (elevation.Level < nElevation.Level)
             {
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level)
+            if (elevation.Level == nElevation.Level && Data.Instance.WallSegments.ContainsKey(nTerrain.Code))
             {
                 continue;
             }
@@ -110,13 +123,14 @@ public partial class TerrainFeaturePopulator : Node3D
             var nLocEntity = neighbors.Get(direction);
             
             ref var nElevation = ref nLocEntity.Get<Elevation>();
+            ref var nTerrain = ref nLocEntity.Get<Terrain>();
             
             if (elevation.Level < nElevation.Level)
             {
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level)
+            if (elevation.Level == nElevation.Level && Data.Instance.WallTowers.ContainsKey(nTerrain.Code))
             {
                 continue;
             }

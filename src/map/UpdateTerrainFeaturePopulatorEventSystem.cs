@@ -69,5 +69,10 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
         {
             _terrainFeaturePopulator.AddWalls(locEntity);
         }
+
+        if (Data.Instance.KeepPlateaus.ContainsKey(terrain.Code))
+        {
+            _terrainFeaturePopulator.AddKeepPlateau(locEntity);
+        }
     }
 }
