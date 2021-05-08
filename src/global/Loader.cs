@@ -67,7 +67,8 @@ public static class Loader
 
     private static FileData GetFileData(string path, bool loadResource)
     {
-        var fileData = new FileData {
+        var fileData = new FileData
+        {
             Id = path.GetFile().BaseName(),
             Path = path,
             Data = loadResource ? GD.Load(path) : null

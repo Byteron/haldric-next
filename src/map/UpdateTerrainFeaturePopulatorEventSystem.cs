@@ -1,7 +1,7 @@
 using Godot;
 using Leopotam.Ecs;
 
-public struct UpdateTerrainFeaturePopulatorEvent {}
+public struct UpdateTerrainFeaturePopulatorEvent { }
 
 public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 {
@@ -19,9 +19,9 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
                 var mapEntity = _maps.GetEntity(j);
 
                 _terrainFeaturePopulator = mapEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
-                
+
                 ref var locations = ref mapEntity.Get<Locations>();
-                
+
                 Populate(locations);
 
                 var terrainCollider = mapEntity.Get<NodeHandle<TerrainCollider>>().Node;
@@ -53,24 +53,25 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        ref var terrain = ref locEntity.Get<TerrainData>();
+        ref var terrainEntity = ref locEntity.Get<HasTerrain>().Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
 
-        if (Data.Instance.Decorations.ContainsKey(terrain.Code))
+        if (Data.Instance.Decorations.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddDecoration(locEntity);
         }
 
-        if (Data.Instance.WallTowers.ContainsKey(terrain.Code))
+        if (Data.Instance.WallTowers.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddTowers(locEntity);
         }
 
-        if (Data.Instance.WallSegments.ContainsKey(terrain.Code))
+        if (Data.Instance.WallSegments.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddWalls(locEntity);
         }
 
-        if (Data.Instance.KeepPlateaus.ContainsKey(terrain.Code))
+        if (Data.Instance.KeepPlateaus.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddKeepPlateau(locEntity);
         }

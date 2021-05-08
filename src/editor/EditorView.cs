@@ -1,14 +1,15 @@
 using Godot;
 using System;
+using Leopotam.Ecs;
 
 public partial class EditorView : CanvasLayer
 {
-    public int BrushSize { get { return (int) _brushSizeSlider.Value; } }
-    public int Elevation { get { return (int) _elevationSlider.Value; } }
+    public int BrushSize { get { return (int)_brushSizeSlider.Value; } }
+    public int Elevation { get { return (int)_elevationSlider.Value; } }
 
-    public TerrainData TerrainData { get { return _selectedTerrain; } }
+    public EcsEntity TerrainEntity { get { return _selectedTerrain; } }
 
-    TerrainData _selectedTerrain;
+    EcsEntity _selectedTerrain;
 
     HSlider _brushSizeSlider;
     HSlider _elevationSlider;
@@ -16,7 +17,7 @@ public partial class EditorView : CanvasLayer
     Control _terrains;
 
     public override void _Ready()
-    {   
+    {
         _terrains = GetNode<Control>("Terrains/VBoxContainer");
 
         _elevationSlider = GetNode<HSlider>("PanelContainer/VBoxContainer/Elevation/HSlider");
@@ -26,7 +27,7 @@ public partial class EditorView : CanvasLayer
     }
 
     public void InitializeTerrains()
-    {   
+    {
         _selectedTerrain = Data.Instance.Terrains["Gg"];
 
         foreach (var item in Data.Instance.Terrains)

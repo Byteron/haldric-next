@@ -12,9 +12,12 @@ public enum TerrainType
 	Fortified,
 }
 
-public struct TerrainData
+public struct TerrainTypes
 {
-    public string Name;
-    public string Code;
-    public List<TerrainType> Types;
+    List<TerrainType> Value;
+
+    public TerrainTypes(List<TerrainType> types)
+    {
+        Value = types;
+    }
 }

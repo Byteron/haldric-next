@@ -1,7 +1,7 @@
 using Godot;
 using Leopotam.Ecs;
 
-public struct Editor {}
+public struct Editor { }
 
 public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 {
@@ -32,13 +32,13 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
     public void Run()
     {
-        foreach(var i in _locations)
+        foreach (var i in _locations)
         {
             if (_hoveredCoords.IsEmpty() || _locations.IsEmpty() || _editors.IsEmpty())
             {
                 return;
             }
-            
+
             var editorEntity = _editors.GetEntity(0);
 
             ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
@@ -67,11 +67,12 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     private void EditLocation(EcsEntity editorEntity, EcsEntity locEntity)
     {
         ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
-        ref var terrainData = ref locEntity.Get<TerrainData>();
+        ref var hasTerrain = ref locEntity.Get<HasTerrain>();
         ref var elevation = ref locEntity.Get<Elevation>();
 
         elevation.Level = editorView.Elevation;
-        terrainData = editorView.TerrainData;
+        hasTerrain.Entity.Destroy();
+        hasTerrain.Entity = editorView.TerrainEntity.Copy();
     }
 
     private void SendUpdateMapEvent()

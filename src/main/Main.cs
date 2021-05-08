@@ -12,12 +12,15 @@ public partial class Main : Node3D
     {
         _world = new EcsWorld();
 
+        Data.Instance.World = _world;
+        Data.Instance.Scan();
+
         _inputSystems = new EcsSystems(_world);
         _processSystems = new EcsSystems(_world);
 
         _inputSystems
             .Add(new CollisionDetectorSystem(this));
-        
+
         _processSystems
             .Add(new MapSpawnSystem(this))
             .Add(new EditorEditSystem(this))
@@ -27,6 +30,7 @@ public partial class Main : Node3D
 
         _inputSystems.Init();
         _processSystems.Init();
+
     }
 
     public override void _UnhandledInput(InputEvent @event)

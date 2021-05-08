@@ -1,7 +1,7 @@
 using Godot;
 using Leopotam.Ecs;
 
-public struct UpdateTerrainMeshEvent {}
+public struct UpdateTerrainMeshEvent { }
 
 public struct EdgeVertices
 {
@@ -42,9 +42,9 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
                 var mapEntity = _maps.GetEntity(j);
 
                 _terrainMesh = mapEntity.Get<NodeHandle<TerrainMesh>>().Node;
-                
+
                 ref var locations = ref mapEntity.Get<Locations>();
-                
+
                 Triangulate(locations);
 
                 var terrainCollider = mapEntity.Get<NodeHandle<TerrainCollider>>().Node;
@@ -164,11 +164,6 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
 
     private void TriangulatePlateau(Vector3 center, EdgeVertices edge)
     {
-        // _terrain.AddTrianglePerturbed(edge.v1, center, edge.v2);
-        // _terrain.AddTrianglePerturbed(edge.v2, center, edge.v3);
-        // _terrain.AddTrianglePerturbed(edge.v3, center, edge.v4);
-        // _terrain.AddTrianglePerturbed(edge.v4, center, edge.v5);
-
         _terrainMesh.AddTriangle(edge.v1, center, edge.v5);
 
         // _terrainMesh.AddTriangle(edge.v1, center, edge.v2);
@@ -178,12 +173,7 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
     }
 
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2)
-    {   
-        // _terrain.AddQuadPerturbed(e1.v1, e1.v2, e2.v1, e2.v2);
-        // _terrain.AddQuadPerturbed(e1.v2, e1.v3, e2.v2, e2.v3);
-        // _terrain.AddQuadPerturbed(e1.v3, e1.v4, e2.v3, e2.v4);
-        // _terrain.AddQuadPerturbed(e1.v4, e1.v5, e2.v4, e2.v5);
-
+    {
         _terrainMesh.AddQuad(e1.v1, e1.v5, e2.v1, e2.v5);
 
         // _terrainMesh.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);

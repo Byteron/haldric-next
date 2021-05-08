@@ -1,36 +1,38 @@
 using Godot;
 using System.Collections.Generic;
+using Leopotam.Ecs;
 
 public class TerrainBuilder
 {
-    private TerrainData _terrainData = new TerrainData();
+    EcsWorld _world;
+
+    private EcsEntity _terrainEntity;
+
+    public TerrainBuilder(EcsWorld world)
+    {
+        _world = world;
+    }
 
     public TerrainBuilder Create()
     {
-        _terrainData = new TerrainData();
+        _terrainEntity = _world.NewEntity();
         return this;
     }
 
     public TerrainBuilder WithCode(string code)
     {
-        _terrainData.Code = code;
-        return this;
-    }
-
-    public TerrainBuilder WithName(string name)
-    {
-        _terrainData.Name = name;
+        _terrainEntity.Replace(new TerrainCode(code));
         return this;
     }
 
     public TerrainBuilder WithTypes(List<TerrainType> types)
     {
-        _terrainData.Types = types;
+        _terrainEntity.Replace(new TerrainTypes(types));
         return this;
     }
 
-    public TerrainData Build()
+    public EcsEntity Build()
     {
-        return _terrainData;
+        return _terrainEntity;
     }
 }

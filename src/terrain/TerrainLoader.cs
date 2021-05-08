@@ -1,9 +1,12 @@
 using Godot;
 using System.Collections.Generic;
+using Leopotam.Ecs;
 
 public abstract class TerrainLoader
 {
-    public Dictionary<string, TerrainData> Terrains = new Dictionary<string, TerrainData>();
+    public EcsWorld World;
+
+    public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
     public Dictionary<string, TerrainGraphic> Decorations = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
@@ -13,13 +16,16 @@ public abstract class TerrainLoader
 
     private Dictionary<string, Mesh> _meshes = new Dictionary<string, Mesh>();
 
-    private TerrainBuilder _terrainBuilder = new TerrainBuilder();
+    private TerrainBuilder _terrainBuilder;
+    
     private TerrainGraphicBuilder _terrainGraphicBuilder = new TerrainGraphicBuilder();
 
     public abstract void Load();
 
     public void Open(string path)
     {
+        _terrainBuilder = new TerrainBuilder(World);
+
         _meshes.Clear();
         _root = path;
 
@@ -36,9 +42,9 @@ public abstract class TerrainLoader
         }
     }
 
-    public void NewTerrain(string name, string code, List<TerrainType> types)
+    public void NewTerrain(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.Create().WithName(name).WithCode(code).WithTypes(types).Build();
+        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).Build();
         Terrains.Add(code, terrain);
     }
 
