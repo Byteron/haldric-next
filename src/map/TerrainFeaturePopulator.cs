@@ -46,7 +46,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void AddDecoration(EcsEntity locEntity)
     {
-        ref var terrain = ref locEntity.Get<Terrain>();
+        ref var terrain = ref locEntity.Get<TerrainData>();
 
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height;
@@ -56,7 +56,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void AddKeepPlateau(EcsEntity locEntity)
     {
-        ref var terrain = ref locEntity.Get<Terrain>();
+        ref var terrain = ref locEntity.Get<TerrainData>();
 
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height + 1.5f;
@@ -67,7 +67,7 @@ public partial class TerrainFeaturePopulator : Node3D
     public void AddWalls(EcsEntity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
-        ref var terrain = ref locEntity.Get<Terrain>();
+        ref var terrain = ref locEntity.Get<TerrainData>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
@@ -88,7 +88,7 @@ public partial class TerrainFeaturePopulator : Node3D
             var nLocEntity = neighbors.Get(direction);
             
             ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrain = ref nLocEntity.Get<Terrain>();
+            ref var nTerrain = ref nLocEntity.Get<TerrainData>();
             
             if (elevation.Level < nElevation.Level)
             {
@@ -109,7 +109,7 @@ public partial class TerrainFeaturePopulator : Node3D
     public void AddTowers(EcsEntity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
-        ref var terrain = ref locEntity.Get<Terrain>();
+        ref var terrain = ref locEntity.Get<TerrainData>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
@@ -130,7 +130,7 @@ public partial class TerrainFeaturePopulator : Node3D
             var nLocEntity = neighbors.Get(direction);
             
             ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrain = ref nLocEntity.Get<Terrain>();
+            ref var nTerrain = ref nLocEntity.Get<TerrainData>();
             
             if (elevation.Level < nElevation.Level)
             {

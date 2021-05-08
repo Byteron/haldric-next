@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 public class TerrainBuilder
 {
-    private Terrain _terrainData = new Terrain();
+    private TerrainData _terrainData = new TerrainData();
 
     public TerrainBuilder Create()
     {
-        _terrainData = new Terrain();
+        _terrainData = new TerrainData();
         return this;
     }
 
@@ -29,7 +29,7 @@ public class TerrainBuilder
         return this;
     }
 
-    public Terrain Build()
+    public TerrainData Build()
     {
         return _terrainData;
     }

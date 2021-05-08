@@ -53,7 +53,7 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        ref var terrain = ref locEntity.Get<Terrain>();
+        ref var terrain = ref locEntity.Get<TerrainData>();
 
         if (Data.Instance.Decorations.ContainsKey(terrain.Code))
         {

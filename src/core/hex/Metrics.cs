@@ -7,6 +7,8 @@ public class Metrics
     public const float OuterRadius = 5f;
     public const float InnerRadius = OuterRadius * OuterToInner;
 
+    public const float ElevationStep = 1.5f;
+    
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
 

@@ -1,5 +1,3 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 
 public enum TerrainType
@@ -14,7 +12,7 @@ public enum TerrainType
 	Fortified,
 }
 
-public struct Terrain
+public struct TerrainData
 {
     public string Name;
     public string Code;

@@ -6,9 +6,9 @@ public partial class EditorView : CanvasLayer
     public int BrushSize { get { return (int) _brushSizeSlider.Value; } }
     public int Elevation { get { return (int) _elevationSlider.Value; } }
 
-    public Terrain Terrain { get { return _selectedTerrain; } }
+    public TerrainData TerrainData { get { return _selectedTerrain; } }
 
-    Terrain _selectedTerrain;
+    TerrainData _selectedTerrain;
 
     HSlider _brushSizeSlider;
     HSlider _elevationSlider;

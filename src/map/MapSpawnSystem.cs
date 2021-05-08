@@ -18,7 +18,7 @@ public class MapSpawnSystem : IEcsInitSystem
     {
         var mapEntity = _world.NewEntity();
 
-        mapEntity.Replace(new Grid(50, 50));
+        mapEntity.Replace(new Grid(20, 20));
 
         var terrainMesh = new TerrainMesh();
         var terrainCollider = new TerrainCollider();
@@ -57,42 +57,9 @@ public class MapSpawnSystem : IEcsInitSystem
                 var locEntity = _world.NewEntity();
 
                 locEntity.Replace(Coords.FromOffset(x, z));
-
-                // Mountains
-                if (GD.Randf() < 0.1)
-                {
-                    locEntity.Replace(Data.Instance.Terrains["Mm"]);
-                    locEntity.Replace(new Elevation(5, 1.5f));
-                    locEntity.Replace(new PlateauArea(0.75f));
-                }
-                // Keep
-                else if (GD.Randf() < 0.05)
-                {
-                    locEntity.Replace(Data.Instance.Terrains["Kh"]);
-                    locEntity.Replace(new Elevation(3, 1.5f));
-                    locEntity.Replace(new PlateauArea(0.75f));
-                }
-                // Castle
-                else if (GD.Randf() < 0.15)
-                {
-                    locEntity.Replace(Data.Instance.Terrains["Ch"]);
-                    locEntity.Replace(new Elevation(2, 1.5f));
-                    locEntity.Replace(new PlateauArea(0.75f));
-                }
-                // Forest
-                else if (GD.Randf() < 0.3)
-                {
-                    locEntity.Replace(Data.Instance.Terrains["Ff"]);
-                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 1.5f));
-                    locEntity.Replace(new PlateauArea(0.75f));
-                }
-                // Normal
-                else
-                {
-                    locEntity.Replace(Data.Instance.Terrains["Gg"]);
-                    locEntity.Replace(new Elevation((int)GD.Randi() % 3, 1.5f));
-                    locEntity.Replace(new PlateauArea(0.75f));
-                }
+                locEntity.Replace(Data.Instance.Terrains["Gg"]);
+                locEntity.Replace(new Elevation(0));
+                locEntity.Replace(new PlateauArea(0.75f));
 
                 ref var coords = ref locEntity.Get<Coords>();
 
