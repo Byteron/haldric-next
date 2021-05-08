@@ -10,8 +10,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -81.0
-offset_top = -100.0
+offset_left = -122.0
+offset_top = -125.0
+grow_horizontal = 0
+grow_vertical = 0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
@@ -20,17 +22,17 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 offset_left = 7.0
 offset_top = 7.0
-offset_right = 74.0
-offset_bottom = 93.0
+offset_right = 115.0
+offset_bottom = 140.0
 script = null
 
 [node name="BrushSize" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
-offset_right = 67.0
+offset_right = 108.0
 offset_bottom = 37.0
 script = null
 
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/BrushSize"]
-offset_right = 67.0
+offset_right = 108.0
 offset_bottom = 17.0
 size_flags_horizontal = 3
 text = "Brush Size"
@@ -40,7 +42,7 @@ script = null
 
 [node name="HSlider" type="HSlider" parent="PanelContainer/VBoxContainer/BrushSize"]
 offset_top = 21.0
-offset_right = 67.0
+offset_right = 108.0
 offset_bottom = 37.0
 size_flags_horizontal = 3
 max_value = 5.0
@@ -48,19 +50,31 @@ script = null
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 offset_top = 41.0
-offset_right = 67.0
+offset_right = 108.0
 offset_bottom = 45.0
 script = null
 
 [node name="Elevation" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 offset_top = 49.0
-offset_right = 67.0
-offset_bottom = 86.0
+offset_right = 108.0
+offset_bottom = 101.0
 script = null
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Elevation"]
-offset_right = 67.0
-offset_bottom = 17.0
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Elevation"]
+offset_right = 108.0
+offset_bottom = 24.0
+script = null
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/Elevation/HBoxContainer"]
+offset_right = 24.0
+offset_bottom = 24.0
+script = null
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Elevation/HBoxContainer"]
+offset_left = 28.0
+offset_top = 3.0
+offset_right = 108.0
+offset_bottom = 20.0
 size_flags_horizontal = 3
 text = "Elevation"
 align = 1
@@ -68,27 +82,50 @@ structured_text_bidi_override_options = [  ]
 script = null
 
 [node name="HSlider" type="HSlider" parent="PanelContainer/VBoxContainer/Elevation"]
-offset_top = 21.0
-offset_right = 67.0
-offset_bottom = 37.0
+offset_top = 28.0
+offset_right = 108.0
+offset_bottom = 44.0
 size_flags_horizontal = 3
 max_value = 5.0
 script = null
 
-[node name="Terrains" type="PanelContainer" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -14.0
-offset_right = 14.0
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer/Elevation"]
+offset_top = 48.0
+offset_right = 108.0
+offset_bottom = 52.0
+script = null
+
+[node name="Terrains" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+offset_top = 105.0
+offset_right = 108.0
+offset_bottom = 133.0
 grow_vertical = 0
 script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Terrains"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 7.0
-offset_bottom = 7.0
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Terrains"]
+offset_right = 108.0
+offset_bottom = 24.0
+script = null
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/Terrains/HBoxContainer"]
+offset_right = 24.0
+offset_bottom = 24.0
+script = null
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Terrains/HBoxContainer"]
+offset_left = 28.0
+offset_top = 3.0
+offset_right = 108.0
+offset_bottom = 20.0
+size_flags_horizontal = 3
+text = "Terrain"
+align = 1
+structured_text_bidi_override_options = [  ]
+script = null
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/Terrains"]
+offset_top = 28.0
+offset_right = 108.0
+offset_bottom = 28.0
+columns = 2
 script = null

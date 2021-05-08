@@ -2,6 +2,10 @@ using Godot;
 using System.Collections.Generic;
 using Leopotam.Ecs;
 
+
+struct RecruitFrom {}
+struct RecruitTo {}
+
 public class TerrainBuilder
 {
     EcsWorld _world;
@@ -28,6 +32,18 @@ public class TerrainBuilder
     public TerrainBuilder WithTypes(List<TerrainType> types)
     {
         _terrainEntity.Replace(new TerrainTypes(types));
+        return this;
+    }
+
+    public TerrainBuilder WithRecruitFrom()
+    {
+        _terrainEntity.Get<RecruitFrom>();
+        return this;
+    }
+
+    public TerrainBuilder WithRecruitTo()
+    {
+        _terrainEntity.Get<RecruitTo>();
         return this;
     }
 

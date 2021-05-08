@@ -99,13 +99,16 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level && Data.Instance.WallSegments.ContainsKey(nTerrainCode))
+            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<RecruitFrom>())
+            {
+                continue;
+            }
+            if (elevation.Level == nElevation.Level && !terrainEntity.Has<RecruitFrom>() && terrainEntity.Has<RecruitTo>() && nTerrainEntity.Has<RecruitTo>())
             {
                 continue;
             }
 
             var wallPosition = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
-
             AddRenderData(Data.Instance.WallSegments[terrainCode].Mesh, wallPosition, new Vector3(0f, 0f, Mathf.Deg2Rad(rotation)));
         }
     }
@@ -143,7 +146,11 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level && Data.Instance.WallTowers.ContainsKey(nTerrainCode))
+            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<RecruitFrom>())
+            {
+                continue;
+            }
+            if (elevation.Level == nElevation.Level && !terrainEntity.Has<RecruitFrom>() && terrainEntity.Has<RecruitTo>() && nTerrainEntity.Has<RecruitTo>())
             {
                 continue;
             }

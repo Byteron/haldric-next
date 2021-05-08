@@ -48,25 +48,37 @@ public abstract class TerrainLoader
         Terrains.Add(code, terrain);
     }
 
-    public void NewDecoration(string code, string image_stem)
+    public void NewCastle(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithRecruitTo().Build();
+        Terrains.Add(code, terrain);
+    }
+
+    public void NewKeep(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithRecruitFrom().WithRecruitTo().Build();
+        Terrains.Add(code, terrain);
+    }
+
+    public void AddDecorationGraphic(string code, string image_stem)
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
         Decorations.Add(code, graphic);
     }
 
-    public void NewWallSegment(string code, string image_stem)
+    public void AddWallSegmentGraphic(string code, string image_stem)
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
         WallSegments.Add(code, graphic);
     }
 
-    public void NewWallTower(string code, string image_stem)
+    public void AddWallTowerGraphic(string code, string image_stem)
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
         WallTowers.Add(code, graphic);
     }
 
-    public void NewKeepPlateau(string code, string image_stem)
+    public void AddKeepPlateauGraphic(string code, string image_stem)
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
         KeepPlateaus.Add(code, graphic);
