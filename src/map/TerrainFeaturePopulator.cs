@@ -1,30 +1,47 @@
+using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
+struct RenderData
+{
+    public Vector3 Position;
+    public Vector3 Rotation;
+}
+
 public partial class TerrainFeaturePopulator : Node3D
 {
-    Node3D container = new Node3D();
+    private Dictionary<int, RID> _multiMeshInstances = new Dictionary<int, RID>();
+    private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
+    private Dictionary<int, RID> _rids = new Dictionary<int, RID>();
 
     public TerrainFeaturePopulator()
     {
         Name = "TerrainFeaturePopuplator";
     }
 
-    public override void _Ready()
-    {
-        Clear();
-    }
-
     public void Clear()
     {
-        container?.QueueFree();
-        container = new Node3D();
-        AddChild(container);
+        _renderData.Clear();
     }
 
     public void Apply()
     {
-        // this currently does nothing, but should do something later on
+        foreach (var item in _renderData)
+        {
+            var multiMeshId = item.Key;
+            var renderDatas = item.Value;
+
+            RenderingServer.MultimeshAllocateData(_rids[multiMeshId], renderDatas.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+
+            int index = 0;
+            foreach(var renderData in renderDatas)
+            {
+                var xform = new Transform(Basis.Identity, renderData.Position);
+                xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.z);
+                RenderingServer.MultimeshInstanceSetTransform(_rids[multiMeshId], index, xform);
+                index += 1;
+            }
+        }
     }
 
     public void AddDecoration(EcsEntity locEntity)
@@ -34,10 +51,7 @@ public partial class TerrainFeaturePopulator : Node3D
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height;
 
-        var forest = new MeshInstance3D();
-        forest.Mesh = Data.Instance.Decorations[terrain.Code].Mesh;
-        forest.Translation = position;
-        container.AddChild(forest);
+        AddRenderData(Data.Instance.Decorations[terrain.Code].Mesh, position, Vector3.Zero);
     }
 
     public void AddKeepPlateau(EcsEntity locEntity)
@@ -47,10 +61,7 @@ public partial class TerrainFeaturePopulator : Node3D
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height + 1.5f;
 
-        var plateau = new MeshInstance3D();
-        plateau.Mesh = Data.Instance.KeepPlateaus[terrain.Code].Mesh;
-        plateau.Translation = position;
-        container.AddChild(plateau);
+        AddRenderData(Data.Instance.KeepPlateaus[terrain.Code].Mesh, position, Vector3.Zero);
     }
 
     public void AddWalls(EcsEntity locEntity)
@@ -90,12 +101,8 @@ public partial class TerrainFeaturePopulator : Node3D
             }
             
             var wallPosition = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
-
-            var wall = new MeshInstance3D();
-            wall.Mesh = Data.Instance.WallSegments[terrain.Code].Mesh;
-            wall.Translation = wallPosition;
-            wall.RotationDegrees = new Vector3(0f, rotation, 0f);
-            container.AddChild(wall);
+            
+            AddRenderData(Data.Instance.WallSegments[terrain.Code].Mesh, wallPosition, new Vector3(0f, 0f, Mathf.Deg2Rad(rotation)));
         }
     }
 
@@ -137,11 +144,48 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var towerPosition = center + Metrics.GetFirstCorner(direction);
 
-            var tower = new MeshInstance3D();
-            tower.Mesh = Data.Instance.WallTowers[terrain.Code].Mesh;
-            tower.Translation = towerPosition;
-            tower.RotationDegrees = new Vector3(0f, rotation, 0f);
-            container.AddChild(tower);
+            AddRenderData(Data.Instance.WallTowers[terrain.Code].Mesh, towerPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
         }
+    }
+
+    public void AddRenderData(Mesh mesh, Vector3 origin, Vector3 rotation)
+    {
+        if (!_multiMeshInstances.ContainsKey(mesh.GetRid().GetId()))
+        {
+            _multiMeshInstances.Add(mesh.GetRid().GetId(), NewMultiMesh(mesh));
+        }
+
+        var multiMeshRid = _multiMeshInstances[mesh.GetRid().GetId()];
+
+        if (!_rids.ContainsKey(multiMeshRid.GetId()))
+        {
+            _rids.Add(multiMeshRid.GetId(), multiMeshRid);
+        }
+
+        if (!_renderData.ContainsKey(multiMeshRid.GetId()))
+        {
+            _renderData.Add(multiMeshRid.GetId(), new List<RenderData>());
+        }
+
+        var renderDatas = _renderData[multiMeshRid.GetId()];
+
+        var renderData = new RenderData();
+        renderData.Position = origin;
+        renderData.Rotation = rotation;
+        renderDatas.Add(renderData);
+    }
+
+    private RID NewMultiMesh(Mesh mesh)
+    {
+        var multimesh = RenderingServer.MultimeshCreate();
+        
+        RID instance = RenderingServer.InstanceCreate();
+        RID scenario = GetWorld3d().Scenario;
+
+        RenderingServer.MultimeshSetMesh(multimesh, mesh.GetRid());
+        RenderingServer.InstanceSetScenario(instance, scenario);
+        RenderingServer.InstanceSetBase(instance, multimesh);
+
+        return multimesh;
     }
 }
