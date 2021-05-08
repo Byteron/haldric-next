@@ -75,8 +75,6 @@ editor_select={
 
 [rendering]
 
-shadows/directional_shadow/soft_shadow_quality=4
-shadows/shadows/soft_shadow_quality=4
 camera/depth_of_field/depth_of_field_bokeh_quality=3
 environment/ssao/quality=4
 anti_aliasing/quality/msaa=1
