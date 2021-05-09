@@ -10,6 +10,7 @@ public class TerrainScript : TerrainLoader
         NewCastle("Ch", new List<TerrainType>() { TerrainType.Flat, TerrainType.Fortified });
         NewKeep("Kh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Fortified });
         NewTerrain("Ff", new List<TerrainType>() { TerrainType.Flat, TerrainType.Forested });
+        NewTerrain("Vh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Settled });
 
         AddKeepPlateauGraphic("Kh", "keep_plateau");
         AddWallSegmentGraphic("Kh", "keep_wall");
@@ -19,5 +20,7 @@ public class TerrainScript : TerrainLoader
         AddWallTowerGraphic("Ch", "castle_tower");
 
         AddDecorationGraphic("Ff", "forest");
+        AddDecorationGraphic("Vh", "village");
+        AddDecorationGraphic("Vh", "village_main");
     }
 }

@@ -7,7 +7,7 @@ public abstract class TerrainLoader
     public EcsWorld World;
 
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
-    public Dictionary<string, TerrainGraphic> Decorations = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
@@ -63,7 +63,14 @@ public abstract class TerrainLoader
     public void AddDecorationGraphic(string code, string image_stem)
     {
         var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
-        Decorations.Add(code, graphic);
+
+        if (!Decorations.ContainsKey(code))
+        {
+            Decorations.Add(code, new List<TerrainGraphic>());
+        }
+
+        var list = Decorations[code];
+        list.Add(graphic);
     }
 
     public void AddWallSegmentGraphic(string code, string image_stem)

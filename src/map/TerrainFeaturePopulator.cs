@@ -52,7 +52,10 @@ public partial class TerrainFeaturePopulator : Node3D
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height;
 
-        AddRenderData(Data.Instance.Decorations[terrainCode].Mesh, position, Vector3.Zero);
+        foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode])
+        {
+            AddRenderData(terrainGraphic.Mesh, position, Vector3.Zero);
+        }
     }
 
     public void AddKeepPlateau(EcsEntity locEntity)
