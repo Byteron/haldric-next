@@ -90,17 +90,30 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     {
         ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
 
-        if (editorView.UseElevation)
-        {
-            ref var elevation = ref locEntity.Get<Elevation>();
-            elevation.Level = editorView.Elevation;
-        }
+        ref var terrainEntity = ref locEntity.Get<HasTerrain>().Entity;
+        ref var elevation = ref locEntity.Get<Elevation>();
+
+        var wasWater = terrainEntity.Has<HasWater>() ? true : false;
 
         if (editorView.UseTerrain)
         {
-            ref var hasTerrain = ref locEntity.Get<HasTerrain>();
-            hasTerrain.Entity.Destroy();
-            hasTerrain.Entity = editorView.TerrainEntity.Copy();
+            terrainEntity.Destroy();
+            terrainEntity = editorView.TerrainEntity.Copy();
+
+            if (!wasWater && terrainEntity.Has<HasWater>())
+            {
+                elevation.Level -= 1;
+            }
+        }
+
+        if (editorView.UseElevation)
+        {
+            elevation.Level = editorView.Elevation;
+
+            if (terrainEntity.Has<HasWater>())
+            {
+                elevation.Level -= 1;
+            }
         }
     }
 

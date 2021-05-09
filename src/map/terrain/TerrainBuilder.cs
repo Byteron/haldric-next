@@ -2,9 +2,9 @@ using Godot;
 using System.Collections.Generic;
 using Leopotam.Ecs;
 
-
 struct RecruitFrom {}
 struct RecruitTo {}
+struct HasWater {}
 
 public class TerrainBuilder
 {
@@ -32,6 +32,12 @@ public class TerrainBuilder
     public TerrainBuilder WithTypes(List<TerrainType> types)
     {
         _terrainEntity.Replace(new TerrainTypes(types));
+        return this;
+    }
+
+    public TerrainBuilder WithHasWater()
+    {
+        _terrainEntity.Get<HasWater>();
         return this;
     }
 

@@ -49,6 +49,12 @@ public abstract class TerrainLoader
         Terrains.Add(code, terrain);
     }
 
+    public void NewWater(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithHasWater().Build();
+        Terrains.Add(code, terrain);
+    }
+
     public void NewCastle(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithRecruitTo().Build();
