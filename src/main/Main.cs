@@ -20,7 +20,8 @@ public partial class Main : Node3D
 
         _inputSystems
             .Add(new EditorEditSystem(this))
-            .Add(new CollisionDetectorSystem(this));
+            .Add(new CollisionDetectorSystem(this))
+            .Add(new LocationHighlightSystem(this));
 
         _processSystems
             .Add(new MapSpawnSystem(this))
