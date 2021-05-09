@@ -11,6 +11,7 @@ public class TerrainScript : TerrainLoader
         NewKeep("Kh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Fortified });
         NewTerrain("Ff", new List<TerrainType>() { TerrainType.Flat, TerrainType.Forested });
         NewTerrain("Vh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Settled });
+        NewTerrain("Ww", new List<TerrainType>() { TerrainType.Aqueous });
 
         AddKeepPlateauGraphic("Kh", "keep_plateau");
         AddWallSegmentGraphic("Kh", "keep_wall");
@@ -22,5 +23,6 @@ public class TerrainScript : TerrainLoader
         AddDecorationGraphic("Ff", "forest");
         AddDecorationGraphic("Vh", "village");
         AddDecorationGraphic("Vh", "village_main");
+        AddWaterGraphic("Ww", "water");
     }
 }

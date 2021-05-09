@@ -1,0 +1,34 @@
+[gd_resource type="PlaneMesh" load_steps=5 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+
+uniform sampler2D image : hint_albedo;
+
+void vertex()
+{
+	vec4 noise = texture(image, (VERTEX.xz * 0.1) + TIME * 0.1);
+	VERTEX.y += noise.r * 0.5;
+}
+
+void fragment()
+{
+	ALBEDO = vec3(0.3, 0.5, 0.6);
+	ALPHA = 0.6;
+}"
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/image = SubResource( 4 )
+
+[resource]
+material = SubResource( 2 )
+size = Vector2( 12, 12 )
+subdivide_width = 10
+subdivide_depth = 10

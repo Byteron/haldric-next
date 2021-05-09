@@ -10,6 +10,7 @@ public partial class Data : Node
 
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
+    public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
@@ -28,6 +29,7 @@ public partial class Data : Node
     {
         Terrains.Clear();
         Decorations.Clear();
+        WaterGraphics.Clear();
         WallSegments.Clear();
         WallTowers.Clear();
         KeepPlateaus.Clear();
@@ -41,6 +43,7 @@ public partial class Data : Node
 
         Terrains = terrainScript.Terrains;
         Decorations = terrainScript.Decorations;
+        WaterGraphics = terrainScript.WaterGraphics;
         WallSegments = terrainScript.WallSegments;
         WallTowers = terrainScript.WallTowers;
         KeepPlateaus = terrainScript.KeepPlateaus;

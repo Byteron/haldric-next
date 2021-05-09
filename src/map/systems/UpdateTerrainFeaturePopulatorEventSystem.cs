@@ -94,5 +94,10 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
         {
             _terrainFeaturePopulator.AddKeepPlateau(locEntity);
         }
+
+        if (Data.Instance.WaterGraphics.ContainsKey(terrainCode.Value))
+        {
+            _terrainFeaturePopulator.AddWater(locEntity);
+        }
     }
 }

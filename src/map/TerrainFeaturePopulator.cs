@@ -75,6 +75,17 @@ public partial class TerrainFeaturePopulator : Node3D
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
     }
 
+    public void AddWater(EcsEntity locEntity)
+    {
+        ref var terrainEntity = ref locEntity.Get<HasTerrain>().Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
+
+        var position = locEntity.Get<Coords>().World;
+        position.y = locEntity.Get<Elevation>().Height + 1.0f;
+
+        AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
+    }
+
     public void AddWalls(EcsEntity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
