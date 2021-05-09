@@ -10,9 +10,8 @@ struct RenderData
 
 public partial class TerrainFeaturePopulator : Node3D
 {
-    private Dictionary<int, RID> _multiMeshInstances = new Dictionary<int, RID>();
+    private Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
     private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
-    private Dictionary<int, RID> _rids = new Dictionary<int, RID>();
 
     public TerrainFeaturePopulator()
     {
@@ -22,23 +21,30 @@ public partial class TerrainFeaturePopulator : Node3D
     public void Clear()
     {
         _renderData.Clear();
+
+        foreach (var rid in _multiMeshRids.Values)
+        {
+            RenderingServer.MultimeshAllocateData(rid, 0, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshSetVisibleInstances(rid, 0);
+        }
     }
 
     public void Apply()
     {
         foreach (var item in _renderData)
         {
-            var multiMeshId = item.Key;
+            var meshId = item.Key;
             var renderDatas = item.Value;
 
-            RenderingServer.MultimeshAllocateData(_rids[multiMeshId], renderDatas.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshAllocateData(_multiMeshRids[meshId], renderDatas.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshSetVisibleInstances(_multiMeshRids[meshId], renderDatas.Count);
 
             int index = 0;
             foreach (var renderData in renderDatas)
             {
                 var xform = new Transform(Basis.Identity, renderData.Position);
                 xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.z);
-                RenderingServer.MultimeshInstanceSetTransform(_rids[multiMeshId], index, xform);
+                RenderingServer.MultimeshInstanceSetTransform(_multiMeshRids[meshId], index, xform);
                 index += 1;
             }
         }
@@ -166,24 +172,19 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void AddRenderData(Mesh mesh, Vector3 origin, Vector3 rotation)
     {
-        if (!_multiMeshInstances.ContainsKey(mesh.GetRid().GetId()))
+        var meshId = mesh.GetRid().GetId();
+
+        if (!_multiMeshRids.ContainsKey(meshId))
         {
-            _multiMeshInstances.Add(mesh.GetRid().GetId(), NewMultiMesh(mesh));
+            _multiMeshRids.Add(meshId, NewMultiMesh(mesh));
         }
 
-        var multiMeshRid = _multiMeshInstances[mesh.GetRid().GetId()];
-
-        if (!_rids.ContainsKey(multiMeshRid.GetId()))
+        if (!_renderData.ContainsKey(meshId))
         {
-            _rids.Add(multiMeshRid.GetId(), multiMeshRid);
+            _renderData.Add(meshId, new List<RenderData>());
         }
 
-        if (!_renderData.ContainsKey(multiMeshRid.GetId()))
-        {
-            _renderData.Add(multiMeshRid.GetId(), new List<RenderData>());
-        }
-
-        var renderDatas = _renderData[multiMeshRid.GetId()];
+        var renderDatas = _renderData[meshId];
 
         var renderData = new RenderData();
         renderData.Position = origin;

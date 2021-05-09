@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
-public struct UpdateMapEvent {}
+public struct UpdateMapEvent
+{
+    public List<Vector3i> Chunks;
+
+    public UpdateMapEvent(List<Vector3i> chunks = null)
+    {
+        Chunks = chunks;
+    }
+}
 
 public class UpdateMapEventSystem : IEcsRunSystem
 {
@@ -12,22 +21,25 @@ public class UpdateMapEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            SendUpdateTerrainMeshEvent();
-            SendUpdateTerrainFeaturePopulatorEvent();
+            var entity = _events.GetEntity(i);
+            var updateEvent = _events.GetEntity(i).Get<UpdateMapEvent>();
 
-            _events.GetEntity(i).Destroy();
+            SendUpdateTerrainMeshEvent(updateEvent);
+            SendUpdateTerrainFeaturePopulatorEvent(updateEvent);
+
+            entity.Destroy();
         }
     }
 
-    private void SendUpdateTerrainMeshEvent()
+    private void SendUpdateTerrainMeshEvent(UpdateMapEvent e)
     {
         var updateTerrainMeshEvent = _world.NewEntity();
-        updateTerrainMeshEvent.Get<UpdateTerrainMeshEvent>();
+        updateTerrainMeshEvent.Replace(new UpdateTerrainMeshEvent(e.Chunks));
     }
 
-    private void SendUpdateTerrainFeaturePopulatorEvent()
+    private void SendUpdateTerrainFeaturePopulatorEvent(UpdateMapEvent e)
     {
         var updateTerrainFeaturePopulatorEvent = _world.NewEntity();
-        updateTerrainFeaturePopulatorEvent.Get<UpdateTerrainFeaturePopulatorEvent>();
+        updateTerrainFeaturePopulatorEvent.Replace(new UpdateTerrainFeaturePopulatorEvent(e.Chunks));
     }
 }

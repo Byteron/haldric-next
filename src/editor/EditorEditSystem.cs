@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
@@ -10,9 +11,11 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     Node3D _parent;
 
     EcsFilter<HoveredCoords> _hoveredCoords;
-    EcsFilter<Locations> _locations;
+    EcsFilter<Locations, Map> _locations;
 
     EcsFilter<Editor> _editors;
+
+    Vector3 _previousCoords;
 
     public EditorEditSystem(Node3D parent)
     {
@@ -46,8 +49,12 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
             ref var locations = ref _locations.GetEntity(0).Get<Locations>();
             ref var hoveredCoords = ref _hoveredCoords.GetEntity(0).Get<HoveredCoords>();
 
-            if (Input.IsActionPressed("editor_select"))
+            if (hoveredCoords.Coords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
             {
+                _previousCoords = hoveredCoords.Coords.Cube;
+                
+                var chunks = new List<Vector3i>();
+
                 foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Coords.Cube, editorView.BrushSize))
                 {
                     if (!locations.Has(cube))
@@ -57,9 +64,24 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
                     var locEntity = locations.Get(cube);
                     EditLocation(editorEntity, locEntity);
+
+                    var chunkCell = locEntity.Get<Vector3i>();
+
+                    if (!chunks.Contains(chunkCell))
+                    {
+                        chunks.Add(chunkCell);
+                        chunks.Add(chunkCell + new Vector3i(1, 0, 1));
+                        chunks.Add(chunkCell + new Vector3i(1, 0, 0));
+                        chunks.Add(chunkCell + new Vector3i(1, 0, -1));
+                        chunks.Add(chunkCell + new Vector3i(-1, 0, 1));
+                        chunks.Add(chunkCell + new Vector3i(-1, 0, 0));
+                        chunks.Add(chunkCell + new Vector3i(-1, 0, -1));
+                        chunks.Add(chunkCell + new Vector3i(0, 0, 1));
+                        chunks.Add(chunkCell + new Vector3i(0, 0, -1));
+                    }
                 }
 
-                SendUpdateMapEvent();
+                SendUpdateMapEvent(chunks);
             }
         }
     }
@@ -82,9 +104,9 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
         }
     }
 
-    private void SendUpdateMapEvent()
+    private void SendUpdateMapEvent(List<Vector3i> chunks)
     {
         var updateMapEventEntity = _world.NewEntity();
-        updateMapEventEntity.Get<UpdateMapEvent>();
+        updateMapEventEntity.Replace(new UpdateMapEvent(chunks));
     }
 }

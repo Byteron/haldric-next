@@ -19,11 +19,11 @@ public partial class Main : Node3D
         _processSystems = new EcsSystems(_world);
 
         _inputSystems
+            .Add(new EditorEditSystem(this))
             .Add(new CollisionDetectorSystem(this));
 
         _processSystems
             .Add(new MapSpawnSystem(this))
-            .Add(new EditorEditSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem());

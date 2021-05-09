@@ -1,12 +1,21 @@
+using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
-public struct UpdateTerrainFeaturePopulatorEvent { }
+public struct UpdateTerrainFeaturePopulatorEvent
+{
+    public List<Vector3i> Chunks;
+
+    public UpdateTerrainFeaturePopulatorEvent(List<Vector3i> chunks = null)
+    {
+        Chunks = chunks;
+    }
+}
 
 public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 {
     EcsFilter<UpdateTerrainFeaturePopulatorEvent> _events;
-    EcsFilter<Locations, NodeHandle<TerrainFeaturePopulator>> _maps;
+    EcsFilter<Locations, NodeHandle<TerrainFeaturePopulator>, NodeHandle<TerrainCollider>> _chunks;
 
     TerrainFeaturePopulator _terrainFeaturePopulator;
 
@@ -14,17 +23,27 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            foreach (var j in _maps)
+            foreach (var j in _chunks)
             {
-                var mapEntity = _maps.GetEntity(j);
+                var eventEntity = _events.GetEntity(i);
+                var chunkEntity = _chunks.GetEntity(j);
 
-                _terrainFeaturePopulator = mapEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
+                var updateEvent = eventEntity.Get<UpdateTerrainFeaturePopulatorEvent>();
 
-                ref var locations = ref mapEntity.Get<Locations>();
+                var chunkCell = chunkEntity.Get<Vector3i>();
+
+                if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
+                {
+                    continue;
+                }
+
+                _terrainFeaturePopulator = chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
+
+                ref var locations = ref chunkEntity.Get<Locations>();
 
                 Populate(locations);
 
-                var terrainCollider = mapEntity.Get<NodeHandle<TerrainCollider>>().Node;
+                var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
             }
 
             _events.GetEntity(i).Destroy();

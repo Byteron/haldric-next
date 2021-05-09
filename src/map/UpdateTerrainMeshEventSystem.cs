@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
-public struct UpdateTerrainMeshEvent { }
+public struct UpdateTerrainMeshEvent
+{
+    public List<Vector3i> Chunks;
+
+    public UpdateTerrainMeshEvent(List<Vector3i> chunks = null)
+    {
+        Chunks = chunks;
+    }
+}
 
 public struct EdgeVertices
 {
@@ -29,7 +38,7 @@ public struct EdgeVertices
 public class UpdateTerrainMeshEventSystem : IEcsRunSystem
 {
     EcsFilter<UpdateTerrainMeshEvent> _events;
-    EcsFilter<Locations, NodeHandle<TerrainMesh>, NodeHandle<TerrainCollider>> _maps;
+    EcsFilter<Locations, NodeHandle<TerrainMesh>, NodeHandle<TerrainCollider>> _chunks;
 
     TerrainMesh _terrainMesh;
 
@@ -37,17 +46,27 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            foreach (var j in _maps)
+            foreach (var j in _chunks)
             {
-                var mapEntity = _maps.GetEntity(j);
+                var eventEntity = _events.GetEntity(i);
+                var chunkEntity = _chunks.GetEntity(j);
 
-                _terrainMesh = mapEntity.Get<NodeHandle<TerrainMesh>>().Node;
+                var updateEvent = eventEntity.Get<UpdateTerrainFeaturePopulatorEvent>();
 
-                ref var locations = ref mapEntity.Get<Locations>();
+                var chunkCell = chunkEntity.Get<Vector3i>();
+
+                if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
+                {
+                    continue;
+                }
+
+                _terrainMesh = chunkEntity.Get<NodeHandle<TerrainMesh>>().Node;
+
+                ref var locations = ref chunkEntity.Get<Locations>();
 
                 Triangulate(locations);
 
-                var terrainCollider = mapEntity.Get<NodeHandle<TerrainCollider>>().Node;
+                var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
 
                 terrainCollider.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
             }

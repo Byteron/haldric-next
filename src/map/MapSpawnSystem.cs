@@ -1,8 +1,25 @@
 using Godot;
 using Leopotam.Ecs;
 
-struct Forest { }
-struct Castle { }
+public struct Chunk { }
+public struct Map { }
+
+public struct ChunkSize
+{
+    public int X;
+    public int Z;
+
+    public ChunkSize(int x, int z)
+    {
+        X = x;
+        Z = z;
+    }
+
+    public Vector3 ToVector3()
+    {
+        return new Vector3(X, 0f, Z);
+    }
+}
 
 public class MapSpawnSystem : IEcsInitSystem
 {
@@ -18,26 +35,20 @@ public class MapSpawnSystem : IEcsInitSystem
     {
         var mapEntity = _world.NewEntity();
 
-        mapEntity.Replace(new Grid(20, 20));
+        mapEntity.Replace(new Grid(40, 40));
+        mapEntity.Replace(new ChunkSize(5, 5));
 
-        var terrainMesh = new TerrainMesh();
-        var terrainCollider = new TerrainCollider();
-        var terrainFeaturePopulator = new TerrainFeaturePopulator();
-        
-        _parent.AddChild(terrainMesh);
-        _parent.AddChild(terrainCollider);
-        _parent.AddChild(terrainFeaturePopulator);
-        
-        mapEntity.Replace(new NodeHandle<TerrainCollider>(terrainCollider));
-        mapEntity.Replace(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
-        mapEntity.Replace(new NodeHandle<TerrainMesh>(terrainMesh));
+        mapEntity.Get<Map>();
 
         ref var locations = ref mapEntity.Get<Locations>();
         ref var grid = ref mapEntity.Get<Grid>();
+        ref var chunkSize = ref mapEntity.Get<ChunkSize>();
+        ref var chunks = ref mapEntity.Get<Chunks>();
 
         InitializeHoveredCoords();
         InitializeLocations(grid, locations);
         InitializeNeighbors(locations);
+        InitializeChunks(chunks, chunkSize, grid, locations);
 
         SendUpdateMapEvent();
     }
@@ -46,6 +57,54 @@ public class MapSpawnSystem : IEcsInitSystem
     {
         var hoveredCoordsEntity = _world.NewEntity();
         hoveredCoordsEntity.Get<HoveredCoords>();
+    }
+
+    private void InitializeChunks(Chunks chunks, ChunkSize chunkSize, Grid grid, Locations locations)
+    {
+        for (int z = 0; z < grid.Height; z++)
+        {
+            for (int x = 0; x < grid.Height; x++)
+            {
+                var coords = Coords.FromOffset(x, z);
+                var chunkCell = (coords.Offset / chunkSize.ToVector3());
+                var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
+
+                if (!chunks.Has(chunkCelli))
+                {
+                    chunks.Set(chunkCelli, _world.NewEntity());
+                }
+
+                var chunkEntity = chunks.Get(chunkCelli);
+                ref var chunkLocations = ref chunkEntity.Get<Locations>();
+                var locEntity = locations.Get(coords.Cube);
+
+                chunkLocations.Set(coords.Cube, locEntity);
+
+                chunkEntity.Replace(chunkCelli);
+                locEntity.Replace(chunkCelli);
+            }
+        }
+
+        var chunkCount = 0;
+        foreach (var chunkEntity in chunks.Values)
+        {
+            var terrainMesh = new TerrainMesh();
+            var terrainCollider = new TerrainCollider();
+            var terrainFeaturePopulator = new TerrainFeaturePopulator();
+
+            _parent.AddChild(terrainMesh);
+            _parent.AddChild(terrainCollider);
+            _parent.AddChild(terrainFeaturePopulator);
+
+            chunkEntity.Get<Chunk>();
+            chunkEntity.Replace(new NodeHandle<TerrainCollider>(terrainCollider));
+            chunkEntity.Replace(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
+            chunkEntity.Replace(new NodeHandle<TerrainMesh>(terrainMesh));
+
+            chunkCount += 1;
+        }
+
+        GD.Print(chunkCount, " Chunks Created");
     }
 
     private void InitializeLocations(Grid grid, Locations locations)
