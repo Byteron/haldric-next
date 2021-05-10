@@ -1,5 +1,16 @@
 using Godot;
+using Godot.Collections;
 using Leopotam.Ecs;
+
+public struct CreateMapEvent
+{
+    public Dictionary MapData;
+
+    public CreateMapEvent(Dictionary mapData)
+    {
+        MapData = mapData;
+    }
+}
 
 public struct Chunk { }
 public struct Map { }
@@ -21,42 +32,92 @@ public struct ChunkSize
     }
 }
 
-public class MapSpawnSystem : IEcsInitSystem
+public class CreateMapEventSystem : IEcsRunSystem
 {
     EcsWorld _world;
+    EcsFilter<CreateMapEvent> _events;
     Node _parent;
 
-    public MapSpawnSystem(Node parent)
+    public CreateMapEventSystem(Node parent)
     {
         _parent = parent;
     }
 
-    public void Init()
+    public void Run()
     {
-        var mapEntity = _world.NewEntity();
+        foreach (var i in _events)
+        {
+            var eventEntity = _events.GetEntity(i);
+            var createEvent = eventEntity.Get<CreateMapEvent>();
 
-        mapEntity.Replace(new Grid(40, 40));
-        mapEntity.Replace(new ChunkSize(5, 5));
+            var mapData = createEvent.MapData;
+            var mapEntity = _world.NewEntity();
 
-        mapEntity.Get<Map>();
+            mapEntity.Get<Map>();
 
-        ref var locations = ref mapEntity.Get<Locations>();
-        ref var grid = ref mapEntity.Get<Grid>();
-        ref var chunkSize = ref mapEntity.Get<ChunkSize>();
-        ref var chunks = ref mapEntity.Get<Chunks>();
+            mapEntity.Replace(new ChunkSize(5, 5));
 
-        InitializeHoveredCoords();
-        InitializeLocations(grid, locations);
-        InitializeNeighbors(locations);
-        InitializeChunks(chunks, chunkSize, grid, locations);
+            ref var locations = ref mapEntity.Get<Locations>();
+            ref var grid = ref mapEntity.Get<Grid>();
+            ref var chunkSize = ref mapEntity.Get<ChunkSize>();
+            ref var chunks = ref mapEntity.Get<Chunks>();
 
-        SendUpdateMapEvent();
+            InitializeFromMapData(mapEntity, mapData);
+            InitializeHoveredCoords();
+            InitializeNeighbors(locations);
+            InitializeChunks(chunks, chunkSize, grid, locations);
+
+            SendUpdateMapEvent();
+
+            eventEntity.Destroy();
+        }
     }
 
     private void InitializeHoveredCoords()
     {
         var hoveredCoordsEntity = _world.NewEntity();
         hoveredCoordsEntity.Get<HoveredCoords>();
+    }
+
+    private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)
+    {
+        var width = System.Convert.ToInt32(mapData["Width"]);
+        var height = System.Convert.ToInt32(mapData["Height"]);
+
+        mapEntity.Replace(new Grid(width, height));
+
+        ref var locations = ref mapEntity.Get<Locations>();
+
+        GD.Print(mapData["Locations"].GetType());
+
+        var locationsData = (Dictionary)mapData["Locations"];
+
+        foreach (var cellString in locationsData.Keys)
+        {
+            GD.Print(cellString);
+
+            Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
+            var locEntity = Main.Instance.World.NewEntity();
+
+            locEntity.Replace(Coords.FromCube(cell));
+            locEntity.Replace(new PlateauArea(0.75f));
+
+            var locationData = (Dictionary)locationsData[cellString];
+
+            var terrainCodes = (Godot.Collections.Array)locationData["Terrain"];
+            var elevation = System.Convert.ToInt32(locationData["Elevation"]);
+
+            locEntity.Replace(new Elevation(elevation));
+
+            locEntity.Replace(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
+
+            if (terrainCodes.Count == 2)
+            {
+                locEntity.Replace(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
+            }
+
+            locations.Set(cell, locEntity);
+        }
     }
 
     private void InitializeChunks(Chunks chunks, ChunkSize chunkSize, Grid grid, Locations locations)
@@ -85,7 +146,6 @@ public class MapSpawnSystem : IEcsInitSystem
             }
         }
 
-        var chunkCount = 0;
         foreach (var chunkEntity in chunks.Values)
         {
             var terrainMesh = new TerrainMesh();
@@ -100,30 +160,6 @@ public class MapSpawnSystem : IEcsInitSystem
             chunkEntity.Replace(new NodeHandle<TerrainCollider>(terrainCollider));
             chunkEntity.Replace(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
             chunkEntity.Replace(new NodeHandle<TerrainMesh>(terrainMesh));
-
-            chunkCount += 1;
-        }
-
-        GD.Print(chunkCount, " Chunks Created");
-    }
-
-    private void InitializeLocations(Grid grid, Locations locations)
-    {
-        for (int z = 0; z < grid.Height; z++)
-        {
-            for (int x = 0; x < grid.Height; x++)
-            {
-                var locEntity = _world.NewEntity();
-
-                locEntity.Replace(Coords.FromOffset(x, z));
-                locEntity.Replace(new HasBaseTerrain(Data.Instance.Terrains["Gg"].Copy()));
-                locEntity.Replace(new Elevation(0));
-                locEntity.Replace(new PlateauArea(0.75f));
-
-                ref var coords = ref locEntity.Get<Coords>();
-
-                locations.Set(coords.Cube, locEntity);
-            }
         }
     }
 

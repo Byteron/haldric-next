@@ -1,0 +1,2531 @@
+{
+    "Width": 20,
+    "Height": 20,
+    "Locations": {
+        "(0, -0, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -1, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -2, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -3, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -4, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -5, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -6, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -7, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -8, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -9, 0)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -10, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(11, -11, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(12, -12, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -13, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -14, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(15, -15, 0)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(16, -16, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(17, -17, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(18, -18, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(19, -19, 0)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -1, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -2, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -3, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -4, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -5, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -6, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -7, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -8, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -9, 1)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(9, -10, 1)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -11, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(11, -12, 1)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(12, -13, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -14, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -15, 1)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(15, -16, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(16, -17, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(17, -18, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(18, -19, 1)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -1, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -2, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(1, -3, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(2, -4, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(3, -5, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -6, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -7, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(6, -8, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(7, -9, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(8, -10, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(9, -11, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(10, -12, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(11, -13, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(12, -14, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -15, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -16, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(15, -17, 2)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(16, -18, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(17, -19, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(18, -20, 2)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -2, 3)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -3, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(1, -4, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(2, -5, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(3, -6, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(4, -7, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(5, -8, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(6, -9, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(7, -10, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(8, -11, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(9, -12, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(10, -13, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(11, -14, 3)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 1
+        },
+        "(12, -15, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(13, -16, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(14, -17, 3)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(15, -18, 3)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(16, -19, 3)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(17, -20, 3)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-2, -2, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -3, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -4, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -5, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(2, -6, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(3, -7, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(4, -8, 4)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 1
+        },
+        "(5, -9, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(6, -10, 4)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 1
+        },
+        "(7, -11, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 1
+        },
+        "(8, -12, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 1
+        },
+        "(9, -13, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(10, -14, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(11, -15, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(12, -16, 4)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(13, -17, 4)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -18, 4)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(15, -19, 4)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(16, -20, 4)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(17, -21, 4)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-2, -3, 5)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -4, 5)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -5, 5)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -6, 5)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -7, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(3, -8, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(4, -9, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(5, -10, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(6, -11, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(7, -12, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(8, -13, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(9, -14, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(10, -15, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(11, -16, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(12, -17, 5)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(13, -18, 5)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(14, -19, 5)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(15, -20, 5)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(16, -21, 5)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-3, -3, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -4, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -5, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -6, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(1, -7, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(2, -8, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 1
+        },
+        "(3, -9, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 1
+        },
+        "(4, -10, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(5, -11, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(6, -12, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(7, -13, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(8, -14, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(9, -15, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 2
+        },
+        "(10, -16, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(11, -17, 6)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(12, -18, 6)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(13, -19, 6)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(14, -20, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(15, -21, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(16, -22, 6)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -4, 7)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -5, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -6, 7)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 0
+        },
+        "(0, -7, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(1, -8, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(2, -9, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(3, -10, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(4, -11, 7)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(5, -12, 7)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(6, -13, 7)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(7, -14, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 5
+        },
+        "(8, -15, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(9, -16, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(10, -17, 7)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(11, -18, 7)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(12, -19, 7)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(13, -20, 7)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -21, 7)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(15, -22, 7)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -4, 8)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -5, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -6, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -7, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(0, -8, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(1, -9, 8)": {
+            "Terrain": [
+                "Kh"
+            ],
+            "Elevation": 5
+        },
+        "(2, -10, 8)": {
+            "Terrain": [
+                "Kh"
+            ],
+            "Elevation": 5
+        },
+        "(3, -11, 8)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(4, -12, 8)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 4
+        },
+        "(5, -13, 8)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 4
+        },
+        "(6, -14, 8)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(7, -15, 8)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 3
+        },
+        "(8, -16, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(9, -17, 8)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 2
+        },
+        "(10, -18, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(11, -19, 8)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(12, -20, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(13, -21, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(14, -22, 8)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(15, -23, 8)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -5, 9)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -6, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -7, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-1, -8, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(0, -9, 9)": {
+            "Terrain": [
+                "Kh"
+            ],
+            "Elevation": 5
+        },
+        "(1, -10, 9)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 4
+        },
+        "(2, -11, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(3, -12, 9)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 4
+        },
+        "(4, -13, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(5, -14, 9)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(6, -15, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(7, -16, 9)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 3
+        },
+        "(8, -17, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(9, -18, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(10, -19, 9)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(11, -20, 9)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(12, -21, 9)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -22, 9)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -23, 9)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -5, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -6, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -7, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -8, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-1, -9, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(0, -10, 10)": {
+            "Terrain": [
+                "Kh"
+            ],
+            "Elevation": 5
+        },
+        "(1, -11, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 4
+        },
+        "(2, -12, 10)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": 3
+        },
+        "(3, -13, 10)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": 3
+        },
+        "(4, -14, 10)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 4
+        },
+        "(5, -15, 10)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(6, -16, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(7, -17, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(8, -18, 10)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 2
+        },
+        "(9, -19, 10)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(10, -20, 10)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(11, -21, 10)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(12, -22, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -23, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(14, -24, 10)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -6, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -7, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -8, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -9, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-1, -10, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(0, -11, 11)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(1, -12, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 4
+        },
+        "(2, -13, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 4
+        },
+        "(3, -14, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 4
+        },
+        "(4, -15, 11)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(5, -16, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(6, -17, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(7, -18, 11)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(8, -19, 11)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(9, -20, 11)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(10, -21, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(11, -22, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(12, -23, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -24, 11)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -6, 12)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -7, 12)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -8, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -9, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-2, -10, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(-1, -11, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(0, -12, 12)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(1, -13, 12)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(2, -14, 12)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(3, -15, 12)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(4, -16, 12)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 3
+        },
+        "(5, -17, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(6, -18, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(7, -19, 12)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(8, -20, 12)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(9, -21, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -22, 12)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(11, -23, 12)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(12, -24, 12)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(13, -25, 12)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -7, 13)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -8, 13)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -9, 13)": {
+            "Terrain": [
+                "Gg",
+                "Vh"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -10, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-2, -11, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(-1, -12, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(0, -13, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(1, -14, 13)": {
+            "Terrain": [
+                "Ch",
+                "Vh"
+            ],
+            "Elevation": 5
+        },
+        "(2, -15, 13)": {
+            "Terrain": [
+                "Ch"
+            ],
+            "Elevation": 5
+        },
+        "(3, -16, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(4, -17, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(5, -18, 13)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(6, -19, 13)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(7, -20, 13)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(8, -21, 13)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -22, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -23, 13)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(11, -24, 13)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(12, -25, 13)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -7, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -8, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -9, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -10, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -11, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-2, -12, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 1
+        },
+        "(-1, -13, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(0, -14, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(1, -15, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(2, -16, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 3
+        },
+        "(3, -17, 14)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(4, -18, 14)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(5, -19, 14)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(6, -20, 14)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(7, -21, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -22, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -23, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -24, 14)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(11, -25, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(12, -26, 14)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -8, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -9, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -10, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -11, 15)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -12, 15)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -13, 15)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -14, 15)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(0, -15, 15)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(1, -16, 15)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(2, -17, 15)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(3, -18, 15)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(4, -19, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -20, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -21, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -22, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -23, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -24, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(10, -25, 15)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(11, -26, 15)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-8, -8, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -9, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -10, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -11, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -12, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -13, 16)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(-2, -14, 16)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-1, -15, 16)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(0, -16, 16)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(1, -17, 16)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(2, -18, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -19, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -20, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -21, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -22, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -23, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -24, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -25, 16)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -26, 16)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(11, -27, 16)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-8, -9, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -10, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -11, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -12, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -13, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-3, -14, 17)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-2, -15, 17)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-1, -16, 17)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(0, -17, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -18, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -19, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -20, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -21, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -22, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -23, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -24, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(8, -25, 17)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(9, -26, 17)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(10, -27, 17)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-9, -9, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-8, -10, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -11, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -12, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -13, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-4, -14, 18)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-3, -15, 18)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-2, -16, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -17, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -18, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -19, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -20, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -21, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -22, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -23, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -24, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -25, 18)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(8, -26, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(9, -27, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(10, -28, 18)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-9, -10, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-8, -11, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-7, -12, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-6, -13, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-5, -14, 19)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-4, -15, 19)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-3, -16, 19)": {
+            "Terrain": [
+                "Ww"
+            ],
+            "Elevation": -1
+        },
+        "(-2, -17, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(-1, -18, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(0, -19, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(1, -20, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(2, -21, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(3, -22, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(4, -23, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(5, -24, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(6, -25, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        },
+        "(7, -26, 19)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(8, -27, 19)": {
+            "Terrain": [
+                "Gg"
+            ],
+            "Elevation": 0
+        },
+        "(9, -28, 19)": {
+            "Terrain": [
+                "Gg",
+                "Ff"
+            ],
+            "Elevation": 0
+        }
+    }
+}

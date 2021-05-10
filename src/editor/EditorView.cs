@@ -54,4 +54,16 @@ public partial class EditorView : CanvasLayer
     {
         _selectedTerrain = Data.Instance.Terrains[code];
     }
+
+    public void OnSaveButtonPressed()
+    {
+        var entity = Main.Instance.World.NewEntity();
+        entity.Replace(new SaveMapEvent("map"));
+    }
+
+    public void OnLoadButtonPressed()
+    {
+        var entity = Main.Instance.World.NewEntity();
+        entity.Replace(new LoadMapEvent("map"));
+    }
 }

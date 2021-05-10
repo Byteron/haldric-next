@@ -129,3 +129,37 @@ offset_right = 108.0
 offset_bottom = 28.0
 columns = 2
 script = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 114.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="HBoxContainer"]
+offset_right = 55.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+text = "Save"
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadButton" type="Button" parent="HBoxContainer"]
+offset_left = 59.0
+offset_right = 114.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+text = "Load"
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]

@@ -52,7 +52,7 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
             if (hoveredCoords.Coords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
             {
                 _previousCoords = hoveredCoords.Coords.Cube;
-                
+
                 var chunks = new List<Vector3i>();
 
                 foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Coords.Cube, editorView.BrushSize))
@@ -100,19 +100,16 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
         {
             if (editorView.TerrainEntity.Has<OverlayTerrain>())
             {
-                ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
-
-                if (!overlayTerrainEntity.IsNull())
-                {
-                    overlayTerrainEntity.Destroy();
-                }
-
-                overlayTerrainEntity = editorView.TerrainEntity.Copy();
+                locEntity.Get<HasOverlayTerrain>().Entity = editorView.TerrainEntity;
             }
             else
             {
-                baseTerrainEntity.Destroy();
-                baseTerrainEntity = editorView.TerrainEntity.Copy();
+                if (locEntity.Has<HasOverlayTerrain>())
+                {
+                    locEntity.Del<HasOverlayTerrain>();
+                }
+
+                baseTerrainEntity = editorView.TerrainEntity;
             }
 
             if (!wasWater && baseTerrainEntity.Has<HasWater>())

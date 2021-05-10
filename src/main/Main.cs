@@ -4,12 +4,18 @@ using Leopotam.Ecs;
 
 public partial class Main : Node3D
 {
+    public static Main Instance { get; private set; }
+
     EcsWorld _world;
     EcsSystems _inputSystems;
     EcsSystems _processSystems;
 
+    public EcsWorld World { get { return _world; } }
+
     public override void _Ready()
     {
+        Instance = this;
+
         _world = new EcsWorld();
 
         Data.Instance.World = _world;
@@ -24,10 +30,14 @@ public partial class Main : Node3D
             .Add(new LocationHighlightSystem(this));
 
         _processSystems
-            .Add(new MapSpawnSystem(this))
+            .Add(new SpawnMapSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
-            .Add(new UpdateTerrainFeaturePopulatorEventSystem());
+            .Add(new UpdateTerrainFeaturePopulatorEventSystem())
+            .Add(new SaveMapEventSystem())
+            .Add(new LoadMapEventSystem())
+            .Add(new DestroyMapEventSystem())
+            .Add(new CreateMapEventSystem(this));
 
         _inputSystems.Init();
         _processSystems.Init();
