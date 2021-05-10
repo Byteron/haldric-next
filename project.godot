@@ -75,6 +75,7 @@ editor_select={
 
 [rendering]
 
+global_illumination/gi_probes/anisotropic=true
 camera/depth_of_field/depth_of_field_bokeh_quality=3
 environment/ssao/quality=4
 anti_aliasing/quality/msaa=1
