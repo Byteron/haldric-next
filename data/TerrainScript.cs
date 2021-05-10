@@ -6,12 +6,13 @@ public class TerrainScript : TerrainLoader
     {
         Open("res://assets/graphics/models/");
 
-        NewTerrain("Gg", new List<TerrainType>() { TerrainType.Flat });
-        NewCastle("Ch", new List<TerrainType>() { TerrainType.Flat, TerrainType.Fortified });
-        NewKeep("Kh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Fortified });
-        NewTerrain("Ff", new List<TerrainType>() { TerrainType.Flat, TerrainType.Forested });
-        NewTerrain("Vh", new List<TerrainType>() { TerrainType.Flat, TerrainType.Settled });
+        NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
+        NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
+        NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });
         NewWater("Ww", new List<TerrainType>() { TerrainType.Aqueous });
+        
+        NewOverlay("Vh", new List<TerrainType>() { TerrainType.Settled });
+        NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });
 
         AddKeepPlateauGraphic("Kh", "keep_plateau");
         AddWallSegmentGraphic("Kh", "keep_wall");

@@ -2,6 +2,8 @@ using Godot;
 using System.Collections.Generic;
 using Leopotam.Ecs;
 
+struct BaseTerrain {}
+struct OverlayTerrain {}
 struct RecruitFrom {}
 struct RecruitTo {}
 struct HasWater {}
@@ -17,9 +19,16 @@ public class TerrainBuilder
         _world = world;
     }
 
-    public TerrainBuilder Create()
+    public TerrainBuilder CreateBase()
     {
         _terrainEntity = _world.NewEntity();
+        _terrainEntity.Get<BaseTerrain>();
+        return this;
+    }
+    public TerrainBuilder CreateOverlay()
+    {
+        _terrainEntity = _world.NewEntity();
+        _terrainEntity.Get<OverlayTerrain>();
         return this;
     }
 

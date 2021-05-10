@@ -43,27 +43,33 @@ public abstract class TerrainLoader
         }
     }
 
-    public void NewTerrain(string code, List<TerrainType> types)
+    public void NewBase(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).Build();
         Terrains.Add(code, terrain);
     }
 
     public void NewWater(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithHasWater().Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasWater().Build();
         Terrains.Add(code, terrain);
     }
 
     public void NewCastle(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithRecruitTo().Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
         Terrains.Add(code, terrain);
     }
 
     public void NewKeep(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.Create().WithCode(code).WithTypes(types).WithRecruitFrom().WithRecruitTo().Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitFrom().WithRecruitTo().Build();
+        Terrains.Add(code, terrain);
+    }
+
+    public void NewOverlay(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
         Terrains.Add(code, terrain);
     }
 

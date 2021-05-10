@@ -90,17 +90,32 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     {
         ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
 
-        ref var terrainEntity = ref locEntity.Get<HasTerrain>().Entity;
+        ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
+
         ref var elevation = ref locEntity.Get<Elevation>();
 
-        var wasWater = terrainEntity.Has<HasWater>() ? true : false;
+        var wasWater = baseTerrainEntity.Has<HasWater>() ? true : false;
 
         if (editorView.UseTerrain)
         {
-            terrainEntity.Destroy();
-            terrainEntity = editorView.TerrainEntity.Copy();
+            if (editorView.TerrainEntity.Has<OverlayTerrain>())
+            {
+                ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
 
-            if (!wasWater && terrainEntity.Has<HasWater>())
+                if (!overlayTerrainEntity.IsNull())
+                {
+                    overlayTerrainEntity.Destroy();
+                }
+
+                overlayTerrainEntity = editorView.TerrainEntity.Copy();
+            }
+            else
+            {
+                baseTerrainEntity.Destroy();
+                baseTerrainEntity = editorView.TerrainEntity.Copy();
+            }
+
+            if (!wasWater && baseTerrainEntity.Has<HasWater>())
             {
                 elevation.Level -= 1;
             }
@@ -110,7 +125,7 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
         {
             elevation.Level = editorView.Elevation;
 
-            if (terrainEntity.Has<HasWater>())
+            if (baseTerrainEntity.Has<HasWater>())
             {
                 elevation.Level -= 1;
             }

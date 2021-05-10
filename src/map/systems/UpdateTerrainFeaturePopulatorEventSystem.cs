@@ -72,12 +72,26 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        ref var terrainEntity = ref locEntity.Get<HasTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
+        ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
 
+
+        Populate(locEntity, baseTerrainCode);
+        
+        if (locEntity.Has<HasOverlayTerrain>())
+        {
+            ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
+            ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+
+            Populate(locEntity, overlayTerrainCode);
+        }
+    }
+
+    private void Populate(EcsEntity locEntity, TerrainCode terrainCode)
+    {
         if (Data.Instance.Decorations.ContainsKey(terrainCode.Value))
         {
-            _terrainFeaturePopulator.AddDecoration(locEntity);
+            _terrainFeaturePopulator.AddDecoration(locEntity, terrainCode.Value);
         }
 
         if (Data.Instance.WallTowers.ContainsKey(terrainCode.Value))
@@ -92,12 +106,12 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
         if (Data.Instance.KeepPlateaus.ContainsKey(terrainCode.Value))
         {
-            _terrainFeaturePopulator.AddKeepPlateau(locEntity);
+            _terrainFeaturePopulator.AddKeepPlateau(locEntity, terrainCode.Value);
         }
 
         if (Data.Instance.WaterGraphics.ContainsKey(terrainCode.Value))
         {
-            _terrainFeaturePopulator.AddWater(locEntity);
+            _terrainFeaturePopulator.AddWater(locEntity, terrainCode.Value);
         }
     }
 }

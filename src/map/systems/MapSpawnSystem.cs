@@ -116,7 +116,7 @@ public class MapSpawnSystem : IEcsInitSystem
                 var locEntity = _world.NewEntity();
 
                 locEntity.Replace(Coords.FromOffset(x, z));
-                locEntity.Replace(new HasTerrain(Data.Instance.Terrains["Gg"].Copy()));
+                locEntity.Replace(new HasBaseTerrain(Data.Instance.Terrains["Gg"].Copy()));
                 locEntity.Replace(new Elevation(0));
                 locEntity.Replace(new PlateauArea(0.75f));
 
