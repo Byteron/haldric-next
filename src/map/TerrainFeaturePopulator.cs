@@ -12,10 +12,19 @@ public partial class TerrainFeaturePopulator : Node3D
 {
     private Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
     private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
+    private List<RID> _rids = new List<RID>();
 
     public TerrainFeaturePopulator()
     {
         Name = "TerrainFeaturePopuplator";
+    }
+
+    public override void _ExitTree()
+    {
+        foreach (var rid in _rids)
+        {
+            RenderingServer.FreeRid(rid);
+        }
     }
 
     public void Clear()
@@ -204,6 +213,9 @@ public partial class TerrainFeaturePopulator : Node3D
         RenderingServer.MultimeshSetMesh(multimesh, mesh.GetRid());
         RenderingServer.InstanceSetScenario(instance, scenario);
         RenderingServer.InstanceSetBase(instance, multimesh);
+
+        _rids.Add(multimesh);
+        _rids.Add(instance);
 
         return multimesh;
     }

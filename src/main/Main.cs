@@ -9,10 +9,14 @@ public partial class Main : Node3D
     EcsSystems _inputSystems;
     EcsSystems _processSystems;
 
+    Label _label;
+
     public EcsWorld World { get { return _world; } }
 
     public override void _Ready()
     {
+        _label = GetNode<Label>("CanvasLayer/Label");
+
         Instance = this;
 
         _world = new EcsWorld();
@@ -51,5 +55,9 @@ public partial class Main : Node3D
     public override void _Process(float delta)
     {
         _processSystems.Run();
+        _label.Text = "";
+        _label.Text += "\nFPS: " + Engine.GetFramesPerSecond();
+        _label.Text += "\nEntities: " + _world.GetStats().ActiveEntities;
+        _label.Text += "\nComponents: " + _world.GetStats().Components;
     }
 }

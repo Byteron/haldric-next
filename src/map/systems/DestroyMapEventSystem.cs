@@ -53,6 +53,14 @@ public class DestroyMapEventSystem : IEcsRunSystem
             foreach (var j in _maps)
             {
                 var mapEntity = _maps.GetEntity(j);
+
+                ref var locations = ref mapEntity.Get<Locations>();
+
+                foreach (var locEntity in locations.Values)
+                {
+                    locEntity.Destroy();
+                }
+                
                 mapEntity.Destroy();
             }
 

@@ -55,7 +55,7 @@ public class CreateMapEventSystem : IEcsRunSystem
 
             mapEntity.Get<Map>();
 
-            mapEntity.Replace(new ChunkSize(5, 5));
+            mapEntity.Replace(new ChunkSize(4, 4));
 
             ref var locations = ref mapEntity.Get<Locations>();
             ref var grid = ref mapEntity.Get<Grid>();
