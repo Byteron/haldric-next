@@ -60,12 +60,11 @@ public class CreateMapEventSystem : IEcsRunSystem
             ref var locations = ref mapEntity.Get<Locations>();
             ref var grid = ref mapEntity.Get<Grid>();
             ref var chunkSize = ref mapEntity.Get<ChunkSize>();
-            ref var chunks = ref mapEntity.Get<Chunks>();
 
             InitializeFromMapData(mapEntity, mapData);
             InitializeHoveredCoords();
             InitializeNeighbors(locations);
-            InitializeChunks(chunks, chunkSize, grid, locations);
+            InitializeChunks(chunkSize, grid, locations);
 
             SendUpdateMapEvent();
 
@@ -116,8 +115,10 @@ public class CreateMapEventSystem : IEcsRunSystem
         }
     }
 
-    private void InitializeChunks(Chunks chunks, ChunkSize chunkSize, Grid grid, Locations locations)
+    private void InitializeChunks(ChunkSize chunkSize, Grid grid, Locations locations)
     {
+        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsEntity>();
+
         for (int z = 0; z < grid.Height; z++)
         {
             for (int x = 0; x < grid.Height; x++)
@@ -126,12 +127,12 @@ public class CreateMapEventSystem : IEcsRunSystem
                 var chunkCell = (coords.Offset / chunkSize.ToVector3());
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
 
-                if (!chunks.Has(chunkCelli))
+                if (!chunks.ContainsKey(chunkCelli))
                 {
-                    chunks.Set(chunkCelli, _world.NewEntity());
+                    chunks.Add(chunkCelli, _world.NewEntity());
                 }
 
-                var chunkEntity = chunks.Get(chunkCelli);
+                var chunkEntity = chunks[chunkCelli];
                 ref var chunkLocations = ref chunkEntity.Get<Locations>();
                 var locEntity = locations.Get(coords.Cube);
 
