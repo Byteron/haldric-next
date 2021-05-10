@@ -81,7 +81,19 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
                     }
                 }
 
-                SendUpdateMapEvent(chunks);
+                if (!editorView.UseTerrain && ! editorView.UseElevation)
+                {
+                    continue;
+                }
+                
+                if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
+                {
+                    SendFeaturesUpdateEvent(chunks);
+                }
+                else
+                {
+                    SendUpdateMapEvent(chunks);
+                }
             }
         }
     }
@@ -131,7 +143,13 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
     private void SendUpdateMapEvent(List<Vector3i> chunks)
     {
-        var updateMapEventEntity = _world.NewEntity();
-        updateMapEventEntity.Replace(new UpdateMapEvent(chunks));
+        var eventEntity = _world.NewEntity();
+        eventEntity.Replace(new UpdateMapEvent(chunks));
+    }
+
+    private void SendFeaturesUpdateEvent(List<Vector3i> chunks)
+    {
+        var eventEntity = _world.NewEntity();
+        eventEntity.Replace(new UpdateTerrainFeaturePopulatorEvent(chunks));
     }
 }

@@ -51,7 +51,7 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
                 var eventEntity = _events.GetEntity(i);
                 var chunkEntity = _chunks.GetEntity(j);
 
-                var updateEvent = eventEntity.Get<UpdateTerrainFeaturePopulatorEvent>();
+                var updateEvent = eventEntity.Get<UpdateTerrainMeshEvent>();
 
                 var chunkCell = chunkEntity.Get<Vector3i>();
 

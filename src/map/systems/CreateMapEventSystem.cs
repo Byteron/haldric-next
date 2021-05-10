@@ -88,14 +88,10 @@ public class CreateMapEventSystem : IEcsRunSystem
 
         ref var locations = ref mapEntity.Get<Locations>();
 
-        GD.Print(mapData["Locations"].GetType());
-
         var locationsData = (Dictionary)mapData["Locations"];
 
         foreach (var cellString in locationsData.Keys)
         {
-            GD.Print(cellString);
-
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
             var locEntity = Main.Instance.World.NewEntity();
 

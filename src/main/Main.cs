@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using Leopotam.Ecs;
 
 public partial class Main : Node3D

@@ -5,6 +5,9 @@ using Leopotam.Ecs;
 
 public class SpawnMapSystem : IEcsInitSystem
 {
+    static int DefaultWidth = 40;
+    static int DefaultHeight = 40;
+
     EcsWorld _world;
     Node _parent;
 
@@ -17,21 +20,18 @@ public class SpawnMapSystem : IEcsInitSystem
     {
         var dict = new Dictionary();
 
-        dict.Add("Width", 20);
-        dict.Add("Height", 20);
+        dict.Add("Width", DefaultWidth);
+        dict.Add("Height", DefaultHeight);
 
         var locsDict = new Dictionary();
 
-        for (int z = 0; z < 20; z++)
+        for (int z = 0; z < DefaultHeight; z++)
         {
-            for (int x = 0; x < 20; x++)
+            for (int x = 0; x < DefaultWidth; x++)
             {
-
                 var coords = Coords.FromOffset(x, z);
 
                 var locDict = new Dictionary();
-
-                GD.Print(z, x, coords.Axial, coords.Cube);
 
                 locDict.Add("Terrain", new List<string>() { "Gg" });
                 locDict.Add("Elevation", 0);
