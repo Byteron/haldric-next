@@ -4,44 +4,19 @@ using Leopotam.Ecs;
 
 public abstract class TerrainLoader
 {
-    public EcsWorld World;
-
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
 
-    private string _root = "res://";
-
-    private Dictionary<string, Mesh> _meshes = new Dictionary<string, Mesh>();
-
-    private TerrainBuilder _terrainBuilder;
+    private TerrainBuilder _terrainBuilder = new TerrainBuilder(Main.Instance.World);
     
     private TerrainGraphicBuilder _terrainGraphicBuilder = new TerrainGraphicBuilder();
 
     public abstract void Load();
-
-    public void Open(string path)
-    {
-        _terrainBuilder = new TerrainBuilder(World);
-
-        _meshes.Clear();
-        _root = path;
-
-        foreach (var fileData in Loader.LoadDir(path, new List<string>() { "tres", "res", "mesh", "obj" }))
-        {
-            var semiPath = fileData.Path.BaseName().Replace(_root, "");
-
-            if (semiPath.BeginsWith("/"))
-            {
-                semiPath.Remove(0, 1);
-            }
-
-            _meshes.Add(semiPath, fileData.Data as Mesh);
-        }
-    }
 
     public void NewBase(string code, List<TerrainType> types)
     {
@@ -73,9 +48,14 @@ public abstract class TerrainLoader
         Terrains.Add(code, terrain);
     }
 
-    public void AddDecorationGraphic(string code, string image_stem)
+    public void AddTerrainTexture(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        TerrainTextures.Add(code, LoadAsset<Texture2D>(path));
+    }
+
+    public void AddDecorationGraphic(string code, string path)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
 
         if (!Decorations.ContainsKey(code))
         {
@@ -86,28 +66,33 @@ public abstract class TerrainLoader
         list.Add(graphic);
     }
 
-    public void AddWaterGraphic(string code, string image_stem)
+    public void AddWaterGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
 
         WaterGraphics.Add(code, graphic);
     }
 
-    public void AddWallSegmentGraphic(string code, string image_stem)
+    public void AddWallSegmentGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
         WallSegments.Add(code, graphic);
     }
 
-    public void AddWallTowerGraphic(string code, string image_stem)
+    public void AddWallTowerGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
         WallTowers.Add(code, graphic);
     }
 
-    public void AddKeepPlateauGraphic(string code, string image_stem)
+    public void AddKeepPlateauGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(_meshes[image_stem]).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
         KeepPlateaus.Add(code, graphic);
+    }
+
+    private T LoadAsset<T>(string path) where T: Reference
+    {
+        return GD.Load<T>("res://" + path);
     }
 }

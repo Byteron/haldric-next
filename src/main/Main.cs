@@ -21,7 +21,6 @@ public partial class Main : Node3D
 
         _world = new EcsWorld();
 
-        Data.Instance.World = _world;
         Data.Instance.Scan();
 
         _inputSystems = new EcsSystems(_world);

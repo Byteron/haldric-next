@@ -4,8 +4,6 @@ public class TerrainScript : TerrainLoader
 {
     public override void Load()
     {
-        Open("res://assets/graphics/models/");
-
         NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
         NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
         NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });
@@ -14,16 +12,21 @@ public class TerrainScript : TerrainLoader
         NewOverlay("Vh", new List<TerrainType>() { TerrainType.Settled });
         NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });
 
-        AddKeepPlateauGraphic("Kh", "keep_plateau");
-        AddWallSegmentGraphic("Kh", "keep_wall");
-        AddWallTowerGraphic("Kh", "keep_tower");
+        AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
+        AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
+        AddTerrainTexture("Kh", "assets/graphics/images/stone.png");
+        AddTerrainTexture("Ww", "assets/graphics/images/mud.png");
 
-        AddWallSegmentGraphic("Ch", "castle_wall");
-        AddWallTowerGraphic("Ch", "castle_tower");
+        AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres");
+        AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
+        AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
 
-        AddDecorationGraphic("Ff", "forest");
-        AddDecorationGraphic("Vh", "village");
-        AddDecorationGraphic("Vh", "village_main");
-        AddWaterGraphic("Ww", "water");
+        AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
+        AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
+
+        AddDecorationGraphic("Ff", "assets/graphics/models/forest.tres");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village.tres");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_main.tres");
+        AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
     }
 }
