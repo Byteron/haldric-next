@@ -29,10 +29,11 @@ public partial class Main : Node3D
         _inputSystems
             .Add(new EditorEditSystem(this))
             .Add(new CollisionDetectorSystem(this))
-            .Add(new LocationHighlightSystem(this));
+            .Add(new LocationHighlightSystem());
 
         _processSystems
             .Add(new SpawnMapSystem(this))
+            .Add(new SpawnUnitEventSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())

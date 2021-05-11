@@ -137,6 +137,13 @@ public class CreateMapEventSystem : IEcsRunSystem
             for (int x = 0; x < grid.Height; x++)
             {
                 var coords = Coords.FromOffset(x, z);
+
+                if (GD.Randf() < 0.1)
+                {
+                    var spawnUnitEventEntity = _world.NewEntity();
+                    spawnUnitEventEntity.Replace(new SpawnUnitEvent(coords));
+                }
+                
                 var chunkCell = (coords.Offset / chunkSize.ToVector3());
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
 

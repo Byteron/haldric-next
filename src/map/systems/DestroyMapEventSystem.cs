@@ -10,6 +10,7 @@ public class DestroyMapEventSystem : IEcsRunSystem
     EcsFilter<Chunk> _chunks;
     EcsFilter<Highlighter> _highlighter;
     EcsFilter<HoveredCoords> _hoveredCoords;
+    EcsFilter<NodeHandle<UnitView>> _units;
 
     public void Run()
     {
@@ -31,6 +32,17 @@ public class DestroyMapEventSystem : IEcsRunSystem
                 terrainFeaturePopulator.QueueFree();
 
                 chunkEntity.Destroy();
+            }
+
+            foreach (var j in _units)
+            {
+                var unitEntity = _units.GetEntity(j);
+
+                ref var view = ref unitEntity.Get<NodeHandle<UnitView>>().Node;
+
+                view.QueueFree();
+
+                unitEntity.Destroy();
             }
 
             foreach (var j in _highlighter)
