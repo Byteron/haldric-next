@@ -29,13 +29,14 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void Clear()
     {
-        _renderData.Clear();
-
-        foreach (var rid in _multiMeshRids.Values)
+        foreach (var rid in _rids)
         {
-            RenderingServer.MultimeshAllocateData(rid, 0, RenderingServer.MultimeshTransformFormat.Transform3d);
-            RenderingServer.MultimeshSetVisibleInstances(rid, 0);
+            RenderingServer.FreeRid(rid);
         }
+
+        _multiMeshRids.Clear();
+        _rids.Clear();
+        _renderData.Clear();
     }
 
     public void Apply()
