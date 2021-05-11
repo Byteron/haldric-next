@@ -3,31 +3,11 @@ using Leopotam.Ecs;
 
 struct Highlighter {}
 
-public class LocationHighlightSystem : IEcsInitSystem, IEcsRunSystem
+public class LocationHighlightSystem : IEcsRunSystem
 {
-    Node3D _parent;
-
-    EcsWorld _world;
     EcsFilter<HoveredCoords> _hoveredCoords;
     EcsFilter<Highlighter> _highlighter;
     EcsFilter<Locations, Map> _maps;
-
-    public LocationHighlightSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
-    public void Init()
-    {
-        var entity = _world.NewEntity();
-
-        var view = Scenes.Instance.LocationHighlight.Instance<Node3D>();
-
-        _parent.AddChild(view);
-
-        entity.Replace(new NodeHandle<Node3D>(view));
-        entity.Get<Highlighter>();
-    }
 
     public void Run()
     {

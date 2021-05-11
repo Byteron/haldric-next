@@ -61,6 +61,7 @@ public class CreateMapEventSystem : IEcsRunSystem
             ref var grid = ref mapEntity.Get<Grid>();
             ref var chunkSize = ref mapEntity.Get<ChunkSize>();
 
+            InitializeHighlighter();
             InitializeFromMapData(mapEntity, mapData);
             InitializeHoveredCoords();
             InitializeNeighbors(locations);
@@ -70,6 +71,18 @@ public class CreateMapEventSystem : IEcsRunSystem
 
             eventEntity.Destroy();
         }
+    }
+
+    private void InitializeHighlighter()
+    {
+        var entity = _world.NewEntity();
+
+        var view = Scenes.Instance.LocationHighlight.Instance<Node3D>();
+
+        _parent.AddChild(view);
+
+        entity.Replace(new NodeHandle<Node3D>(view));
+        entity.Get<Highlighter>();
     }
 
     private void InitializeHoveredCoords()
