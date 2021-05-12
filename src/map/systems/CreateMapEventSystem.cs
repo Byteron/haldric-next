@@ -15,6 +15,8 @@ public struct CreateMapEvent
 public struct Chunk { }
 public struct Map { }
 
+public struct MapCursor {}
+
 public struct ChunkSize
 {
     public int X;
@@ -61,9 +63,8 @@ public class CreateMapEventSystem : IEcsRunSystem
             ref var grid = ref mapEntity.Get<Grid>();
             ref var chunkSize = ref mapEntity.Get<ChunkSize>();
 
-            InitializeHighlighter();
+            InitializeMapCursor();
             InitializeFromMapData(mapEntity, mapData);
-            InitializeHoveredCoords();
             InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
 
@@ -73,22 +74,18 @@ public class CreateMapEventSystem : IEcsRunSystem
         }
     }
 
-    private void InitializeHighlighter()
+    private void InitializeMapCursor()
     {
-        var entity = _world.NewEntity();
+        var cursorEntity = _world.NewEntity();
+        cursorEntity.Get<MapCursor>();
+        cursorEntity.Get<HoveredLocation>();
 
         var view = Scenes.Instance.LocationHighlight.Instance<Node3D>();
 
         _parent.AddChild(view);
 
-        entity.Replace(new NodeHandle<Node3D>(view));
-        entity.Get<Highlighter>();
-    }
-
-    private void InitializeHoveredCoords()
-    {
-        var hoveredCoordsEntity = _world.NewEntity();
-        hoveredCoordsEntity.Get<HoveredCoords>();
+        cursorEntity.Replace(new NodeHandle<Node3D>(view));
+        cursorEntity.Get<Highlighter>();
     }
 
     private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)

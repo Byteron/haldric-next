@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using Leopotam.Ecs;
 
 public struct SpawnUnitEvent
@@ -9,16 +8,6 @@ public struct SpawnUnitEvent
     public SpawnUnitEvent(Coords coords)
     {
         Coords = coords;
-    }
-}
-
-public struct HasUnit
-{
-    public EcsEntity Entity;
-
-    public HasUnit(EcsEntity entity)
-    {
-        Entity = entity;
     }
 }
 

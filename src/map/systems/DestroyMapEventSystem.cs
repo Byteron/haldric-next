@@ -8,8 +8,7 @@ public class DestroyMapEventSystem : IEcsRunSystem
     EcsFilter<DestroyMapEvent> _events;
     EcsFilter<Map> _maps;
     EcsFilter<Chunk> _chunks;
-    EcsFilter<Highlighter> _highlighter;
-    EcsFilter<HoveredCoords> _hoveredCoords;
+    EcsFilter<MapCursor> _mapCursors;
     EcsFilter<NodeHandle<UnitView>> _units;
 
     public void Run()
@@ -45,21 +44,15 @@ public class DestroyMapEventSystem : IEcsRunSystem
                 unitEntity.Destroy();
             }
 
-            foreach (var j in _highlighter)
+            foreach (var j in _mapCursors)
             {
-                var highlighterEntity = _highlighter.GetEntity(j);
+                var cursorEntity = _mapCursors.GetEntity(j);
 
-                ref var highlighter = ref highlighterEntity.Get<NodeHandle<Node3D>>().Node;
+                ref var highlighter = ref cursorEntity.Get<NodeHandle<Node3D>>().Node;
 
                 highlighter.QueueFree();
 
-                highlighterEntity.Destroy();
-            }
-
-            foreach (var j in _hoveredCoords)
-            {
-                var mapEntity = _hoveredCoords.GetEntity(j);
-                mapEntity.Destroy();
+                cursorEntity.Destroy();
             }
 
             foreach (var j in _maps)

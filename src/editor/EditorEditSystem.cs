@@ -10,7 +10,7 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
     Node3D _parent;
 
-    EcsFilter<HoveredCoords> _hoveredCoords;
+    EcsFilter<HoveredLocation> _hoveredLocations;
     EcsFilter<Locations, Map> _locations;
 
     EcsFilter<Editor> _editors;
@@ -37,7 +37,15 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     {
         foreach (var i in _locations)
         {
-            if (_hoveredCoords.IsEmpty() || _locations.IsEmpty() || _editors.IsEmpty())
+            if (_hoveredLocations.IsEmpty() || _locations.IsEmpty() || _editors.IsEmpty())
+            {
+                return;
+            }
+
+            ref var locations = ref _locations.GetEntity(0).Get<Locations>();
+            var locEntity = _hoveredLocations.GetEntity(0).Get<HoveredLocation>().Entity;
+
+            if (locEntity == EcsEntity.Null)
             {
                 return;
             }
@@ -46,26 +54,24 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
             ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
 
-            ref var locations = ref _locations.GetEntity(0).Get<Locations>();
-            ref var hoveredCoords = ref _hoveredCoords.GetEntity(0).Get<HoveredCoords>();
-
-            if (hoveredCoords.Coords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
+            ref var hoveredCoords = ref locEntity.Get<Coords>();
+            if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
             {
-                _previousCoords = hoveredCoords.Coords.Cube;
+                _previousCoords = hoveredCoords.Cube;
 
                 var chunks = new List<Vector3i>();
 
-                foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Coords.Cube, editorView.BrushSize))
+                foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube, editorView.BrushSize))
                 {
                     if (!locations.Has(cube))
                     {
                         continue;
                     }
 
-                    var locEntity = locations.Get(cube);
-                    EditLocation(editorEntity, locEntity);
+                    var nLocEntity = locations.Get(cube);
+                    EditLocation(editorEntity, nLocEntity);
 
-                    var chunkCell = locEntity.Get<Vector3i>();
+                    var chunkCell = nLocEntity.Get<Vector3i>();
 
                     if (!chunks.Contains(chunkCell))
                     {

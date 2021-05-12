@@ -2,21 +2,29 @@ using Godot;
 using Godot.Collections;
 using Leopotam.Ecs;
 
-public class CollisionDetectorSystem : IEcsRunSystem
+public class UpdateMapCursorSystem : IEcsRunSystem
 {
-    private EcsFilter<HoveredCoords> _filter;
+    private EcsFilter<HoveredLocation> _hoveredLocation;
+    private EcsFilter<Locations, Map> _locations;
 
     private Node3D _parent;
 
     private Vector3 previousCell = Vector3.Zero;
 
-    public CollisionDetectorSystem(Node3D parent)
+    public UpdateMapCursorSystem(Node3D parent)
     {
         _parent = parent;
     }
 
     public void Run()
     {
+        if (_locations.IsEmpty())
+        {
+            return;
+        }
+
+        ref var locations = ref _locations.GetEntity(0).Get<Locations>();
+
         var result = ShootRay();
 
         if (result.Contains("position"))
@@ -26,9 +34,10 @@ public class CollisionDetectorSystem : IEcsRunSystem
 
             if (previousCell != coords.Axial)
             {
-                foreach (var i in _filter)
+                foreach(var i in _hoveredLocation)
                 {
-                    _filter.GetEntity(i).Get<HoveredCoords>().Coords = coords;
+                    var locEntity = locations.Get(coords.Cube);
+                    _hoveredLocation.GetEntity(i).Get<HoveredLocation>().Entity = locEntity;
                 }
 
                 previousCell = coords.Axial;

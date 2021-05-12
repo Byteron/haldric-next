@@ -46,9 +46,29 @@ _maxDistance = 250.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = null
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatsLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 14.0
+structured_text_bidi_override_options = [  ]
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UnitLabel" type="Label" parent="CanvasLayer/VBoxContainer" groups=[
+"UnitLabel",
+]]
+offset_top = 18.0
+offset_right = 40.0
+offset_bottom = 32.0
 structured_text_bidi_override_options = [  ]
 script = null
 __meta__ = {

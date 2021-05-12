@@ -15,7 +15,7 @@ public partial class Main : Node3D
 
     public override void _Ready()
     {
-        _label = GetNode<Label>("CanvasLayer/Label");
+        _label = GetNode<Label>("CanvasLayer/VBoxContainer/StatsLabel");
 
         Instance = this;
 
@@ -28,7 +28,8 @@ public partial class Main : Node3D
 
         _inputSystems
             .Add(new EditorEditSystem(this))
-            .Add(new CollisionDetectorSystem(this))
+            .Add(new UpdateMapCursorSystem(this))
+            .Add(new SelectUnitSystem(this))
             .Add(new LocationHighlightSystem());
 
         _processSystems

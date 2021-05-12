@@ -5,20 +5,26 @@ struct Highlighter {}
 
 public class LocationHighlightSystem : IEcsRunSystem
 {
-    EcsFilter<HoveredCoords> _hoveredCoords;
+    EcsFilter<HoveredLocation> _hoveredLocations;
     EcsFilter<Highlighter> _highlighter;
     EcsFilter<Locations, Map> _maps;
 
     public void Run()
     {
-        if (_highlighter.IsEmpty() || _hoveredCoords.IsEmpty() || _maps.IsEmpty())
+        if (_highlighter.IsEmpty() || _hoveredLocations.IsEmpty() || _maps.IsEmpty())
         {
             return;
         }
 
-        var coords = _hoveredCoords.GetEntity(0).Get<HoveredCoords>().Coords;
-        var location = _maps.GetEntity(0).Get<Locations>().Get(coords.Cube);
-        var height = location.Get<Elevation>().Height;
+        var locEntity = _hoveredLocations.GetEntity(0).Get<HoveredLocation>().Entity;
+
+        if (locEntity == EcsEntity.Null)
+        {
+            return;
+        }
+        
+        ref var coords = ref locEntity.Get<Coords>();
+        var height = locEntity.Get<Elevation>().Height;
         var view = _highlighter.GetEntity(0).Get<NodeHandle<Node3D>>().Node;
 
         var position = coords.World;
