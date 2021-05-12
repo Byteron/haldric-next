@@ -21,10 +21,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public override void _ExitTree()
     {
-        foreach (var rid in _rids)
-        {
-            RenderingServer.FreeRid(rid);
-        }
+        Clear();
     }
 
     public void Clear()
