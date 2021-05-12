@@ -24,7 +24,7 @@ public class TerrainScript : TerrainLoader
         AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
         AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 
-        AddDecorationGraphic("Ff", "assets/graphics/models/forest.tres");
+        AddDecorationGraphic("Ff", "assets/graphics/models/forest_low_poly.tres");
         AddDecorationGraphic("Vh", "assets/graphics/models/village.tres");
         AddDecorationGraphic("Vh", "assets/graphics/models/village_main.tres");
         AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
