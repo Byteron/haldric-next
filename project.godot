@@ -75,6 +75,7 @@ editor_select={
 
 [rendering]
 
+shadows/directional_shadow/size=8192
 global_illumination/gi_probes/anisotropic=true
 camera/depth_of_field/depth_of_field_bokeh_quality=3
 environment/ssao/quality=4

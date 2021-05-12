@@ -32,9 +32,9 @@ script = null
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform( -0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, 0.5, -0.5, 0, 0, 0 )
 shadow_enabled = true
-shadow_bias = 0.005
+shadow_bias = 0.003
+shadow_normal_bias = 0.0
 directional_shadow_mode = 1
-directional_shadow_blend_splits = true
 directional_shadow_max_distance = 1000.0
 script = null
 
