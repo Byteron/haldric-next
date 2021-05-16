@@ -29,12 +29,13 @@ public partial class Main : Node3D
         _inputSystems
             .Add(new EditorEditSystem(this))
             .Add(new UpdateMapCursorSystem(this))
-            .Add(new SelectUnitSystem(this))
+            .Add(new SelectLocationSystem(this))
             .Add(new UpdateTerrainInfoSystem())
             .Add(new LocationHighlightSystem());
 
         _processSystems
             .Add(new SpawnMapSystem(this))
+            .Add(new MoveUnitSystem())
             .Add(new SpawnUnitEventSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
@@ -42,7 +43,11 @@ public partial class Main : Node3D
             .Add(new SaveMapEventSystem())
             .Add(new LoadMapEventSystem())
             .Add(new DestroyMapEventSystem())
-            .Add(new CreateMapEventSystem(this));
+            .Add(new CreateMapEventSystem(this))
+            .Add(new MoveUnitCommandSystem());
+
+        var commanderEntity = _world.NewEntity();
+        commanderEntity.Get<Commander>();
 
         _inputSystems.Init();
         _processSystems.Init();

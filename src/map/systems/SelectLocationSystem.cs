@@ -1,13 +1,13 @@
 using Godot;
 using Leopotam.Ecs;
 
-public class SelectUnitSystem : IEcsRunSystem
+public class SelectLocationSystem : IEcsRunSystem
 {
     EcsFilter<MapCursor> _filter;
 
     Node3D _parent;
 
-    public SelectUnitSystem(Node3D parent)
+    public SelectLocationSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -31,18 +31,18 @@ public class SelectUnitSystem : IEcsRunSystem
         {
             if (locEntity.Has<HasUnit>())
             {
-                var unitEntity = locEntity.Get<HasUnit>().Entity;
+                cursorEntity.Replace(new HasLocation(locEntity));
 
+                var unitEntity = locEntity.Get<HasUnit>().Entity;
                 var name = unitEntity.Get<NodeHandle<UnitView>>().Node.Name;
 
-                cursorEntity.Replace(new HasUnit(unitEntity));
                 _parent.GetTree().CallGroup("UnitLabel", "set", "text", "Unit Selected: " + name);
             }
         }
 
         if (Input.IsActionJustPressed("deselect_unit"))
         {
-            cursorEntity.Del<HasUnit>();
+            cursorEntity.Del<HasLocation>();
             _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
         }
     }
