@@ -12,12 +12,14 @@ public class MoveCommand : Command
         FromLocEntity = from;
         ToLocEntity = to;
     }
-    
+
     public override void Revert()
     {
         var temp = FromLocEntity;
         FromLocEntity = ToLocEntity;
         ToLocEntity = temp;
+
+        IsReverted = true;
     }
 }
 
@@ -36,7 +38,7 @@ public class MoveUnitCommandSystem : IEcsRunSystem
             {
                 return;
             }
-            
+
             // only process move commands
             if (!(commander.Peek() is MoveCommand))
             {
@@ -44,7 +46,7 @@ public class MoveUnitCommandSystem : IEcsRunSystem
             }
 
             var command = commander.Dequeue() as MoveCommand;
-            
+
             // source location does not have a unit to move
             if (!command.FromLocEntity.Has<HasUnit>())
             {
@@ -62,7 +64,7 @@ public class MoveUnitCommandSystem : IEcsRunSystem
 
             ref var targetCoords = ref command.ToLocEntity.Get<Coords>();
             ref var targetElevation = ref command.ToLocEntity.Get<Elevation>();
-            
+
             var newPos = targetCoords.World;
             newPos.y = targetElevation.Height;
 

@@ -12,7 +12,7 @@ public struct Commander : IEcsAutoReset<Commander>
     }
 
     public void Enqueue(Command command)
-    {   
+    {
         Queue.Enqueue(command);
     }
 
@@ -20,7 +20,7 @@ public struct Commander : IEcsAutoReset<Commander>
     {
         var command = Queue.Dequeue();
 
-        if (command.IsRevertable)
+        if (command.IsRevertable && !command.IsReverted)
         {
             History.Push(command);
         }

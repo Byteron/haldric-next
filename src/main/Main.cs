@@ -30,6 +30,7 @@ public partial class Main : Node3D
             .Add(new EditorEditSystem(this))
             .Add(new UpdateMapCursorSystem(this))
             .Add(new SelectLocationSystem(this))
+            .Add(new CommanderUndoSystem())
             .Add(new UpdateTerrainInfoSystem())
             .Add(new LocationHighlightSystem());
 
