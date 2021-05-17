@@ -1,5 +1,6 @@
 using Godot;
 using Leopotam.Ecs;
+using System.Linq;
 
 public struct CreateUnitEvent
 {
@@ -44,12 +45,13 @@ public class CreateUnitEventSystem : IEcsRunSystem
             var locEntity = locations.Get(createEvent.Coords.Cube);
             ref var elevation = ref locEntity.Get<Elevation>();
 
-            var unitEntity = Data.Instance.Units[createEvent.Id].Copy();
+            string key = Data.Instance.Units.Keys.ToArray<string>()[GD.Randi() % Data.Instance.Units.Count];
+            var unitEntity = Data.Instance.Units[key].Copy();
             
             var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instance<UnitView>();
             
             unitEntity.Del<AssetHandle<PackedScene>>();
-            
+
             _parent.AddChild(unitView);
 
             var translation = createEvent.Coords.World;
