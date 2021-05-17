@@ -5,9 +5,9 @@ public struct AssetHandle<T> : IEcsAutoReset<AssetHandle<T>> where T : Resource
 {
     public T Asset;
 
-    public AssetHandle(T node)
+    public AssetHandle(T asset)
     {
-        Asset = node;
+        Asset = asset;
     }
 
     public void AutoReset(ref AssetHandle<T> c)

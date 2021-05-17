@@ -37,7 +37,7 @@ public partial class Main : Node3D
         _processSystems
             .Add(new SpawnMapSystem(this))
             .Add(new MoveUnitSystem())
-            .Add(new SpawnUnitEventSystem(this))
+            .Add(new CreateUnitEventSystem(this))
             .Add(new UpdateMapEventSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())

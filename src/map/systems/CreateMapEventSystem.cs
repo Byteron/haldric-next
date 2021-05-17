@@ -138,7 +138,7 @@ public class CreateMapEventSystem : IEcsRunSystem
                 if (GD.Randf() < 0.1)
                 {
                     var spawnUnitEventEntity = _world.NewEntity();
-                    spawnUnitEventEntity.Replace(new SpawnUnitEvent(coords));
+                    spawnUnitEventEntity.Replace(new CreateUnitEvent("Soldier", coords));
                 }
                 
                 var chunkCell = (coords.Offset / chunkSize.ToVector3());

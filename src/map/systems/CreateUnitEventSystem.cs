@@ -1,25 +1,27 @@
 using Godot;
 using Leopotam.Ecs;
 
-public struct SpawnUnitEvent
+public struct CreateUnitEvent
 {
     public Coords Coords;
+    public string Id;
 
-    public SpawnUnitEvent(Coords coords)
+    public CreateUnitEvent(string id, Coords coords)
     {
+        Id = id;
         Coords = coords;
     }
 }
 
-public class SpawnUnitEventSystem : IEcsRunSystem
+public class CreateUnitEventSystem : IEcsRunSystem
 {
     Node3D _parent;
 
     EcsWorld _world;
-    EcsFilter<SpawnUnitEvent> _events;
+    EcsFilter<CreateUnitEvent> _events;
     EcsFilter<Locations, Map> _maps;
 
-    public SpawnUnitEventSystem(Node3D parent)
+    public CreateUnitEventSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -34,26 +36,28 @@ public class SpawnUnitEventSystem : IEcsRunSystem
         foreach (var i in _events)
         {
             var eventEntity = _events.GetEntity(i);
-            ref var spawnEvent = ref eventEntity.Get<SpawnUnitEvent>();
+            ref var createEvent = ref eventEntity.Get<CreateUnitEvent>();
 
             var mapEntity = _maps.GetEntity(0);
             ref var locations = ref mapEntity.Get<Locations>();
 
-            var locEntity = locations.Get(spawnEvent.Coords.Cube);
+            var locEntity = locations.Get(createEvent.Coords.Cube);
             ref var elevation = ref locEntity.Get<Elevation>();
 
-            var unitEntity = _world.NewEntity();
+            var unitEntity = Data.Instance.Units[createEvent.Id].Copy();
             
-            var unitView = Scenes.Instance.UnitView.Instance<UnitView>();
+            var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instance<UnitView>();
+            
+            unitEntity.Del<AssetHandle<PackedScene>>();
             
             _parent.AddChild(unitView);
 
-            var translation = spawnEvent.Coords.World;
+            var translation = createEvent.Coords.World;
             translation.y = elevation.Height;
 
             unitView.Translation = translation;
 
-            unitEntity.Replace(spawnEvent.Coords);
+            unitEntity.Replace(createEvent.Coords);
             unitEntity.Replace(new NodeHandle<UnitView>(unitView));
 
             locEntity.Replace(new HasUnit(unitEntity));

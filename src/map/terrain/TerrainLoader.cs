@@ -12,7 +12,7 @@ public abstract class TerrainLoader
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
 
-    private TerrainBuilder _terrainBuilder = new TerrainBuilder(Main.Instance.World);
+    private TerrainBuilder _terrainBuilder = new TerrainBuilder();
     
     private TerrainGraphicBuilder _terrainGraphicBuilder = new TerrainGraphicBuilder();
 

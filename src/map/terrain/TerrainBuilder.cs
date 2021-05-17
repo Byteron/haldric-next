@@ -10,24 +10,17 @@ struct HasWater {}
 
 public class TerrainBuilder
 {
-    EcsWorld _world;
-
     private EcsEntity _terrainEntity;
-
-    public TerrainBuilder(EcsWorld world)
-    {
-        _world = world;
-    }
 
     public TerrainBuilder CreateBase()
     {
-        _terrainEntity = _world.NewEntity();
+        _terrainEntity = Main.Instance.World.NewEntity();
         _terrainEntity.Get<BaseTerrain>();
         return this;
     }
     public TerrainBuilder CreateOverlay()
     {
-        _terrainEntity = _world.NewEntity();
+        _terrainEntity = Main.Instance.World.NewEntity();
         _terrainEntity.Get<OverlayTerrain>();
         return this;
     }

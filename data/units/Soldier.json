@@ -1,0 +1,7 @@
+{
+    "id": "Soldier",
+    "hp": 10,
+    "xp": 40,
+    "mp": 5,
+    "view": "res://src/unit/UnitView.tscn"
+}

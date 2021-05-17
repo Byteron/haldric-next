@@ -34,9 +34,10 @@ public class SelectLocationSystem : IEcsRunSystem
                 cursorEntity.Replace(new HasLocation(locEntity));
 
                 var unitEntity = locEntity.Get<HasUnit>().Entity;
-                var name = unitEntity.Get<NodeHandle<UnitView>>().Node.Name;
+                var id = unitEntity.Get<Id>().Value;
+                var hp = unitEntity.Get<Health>().Value;
 
-                _parent.GetTree().CallGroup("UnitLabel", "set", "text", "Unit Selected: " + name);
+                _parent.GetTree().CallGroup("UnitLabel", "set", "text", string.Format("Id: {0}\nHP: {1}", id, hp));
             }
         }
 

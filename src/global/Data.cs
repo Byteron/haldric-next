@@ -6,14 +6,16 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
+    public Dictionary<string, EcsEntity> Units = new Dictionary<string, EcsEntity>();
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
+
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
-    
+
     public Dictionary<string, uint> TextureArrayIds = new Dictionary<string, uint>();
     public Texture2DArray TextureArray { get; private set; }
 
@@ -24,7 +26,25 @@ public partial class Data : Node
 
     public void Scan()
     {
+        LoadUnits();
         LoadTerrain();
+    }
+
+    private void LoadUnits()
+    {
+        Units.Clear();
+
+        foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"json"}, false))
+        {
+            var file = new File();
+            file.Open(data.Path, File.ModeFlags.Read);
+            var jsonString = file.GetAsText();
+            var unit = UnitFactory.CreateFromJSON(jsonString);
+            var id = unit.Get<Id>().Value;
+            Units.Add(id, unit);
+        }
+
+        GD.Print(Units);
     }
 
     private void LoadTerrain()
