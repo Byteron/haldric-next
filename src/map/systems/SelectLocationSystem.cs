@@ -35,9 +35,12 @@ public class SelectLocationSystem : IEcsRunSystem
 
                 var unitEntity = locEntity.Get<HasUnit>().Entity;
                 var id = unitEntity.Get<Id>().Value;
-                var hp = unitEntity.Get<Health>().Value;
+                var hp = unitEntity.Get<Attribute<Health>>().Value;
+                var xp = unitEntity.Get<Attribute<Experience>>().Value;
+                var mp = unitEntity.Get<Attribute<Moves>>().Value;
+                var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp, xp, mp);
 
-                _parent.GetTree().CallGroup("UnitLabel", "set", "text", string.Format("Id: {0}\nHP: {1}", id, hp));
+                _parent.GetTree().CallGroup("UnitLabel", "set", "text", s);
             }
         }
 

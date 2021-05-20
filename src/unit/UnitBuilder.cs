@@ -1,33 +1,27 @@
 using Godot;
 using Leopotam.Ecs;
 
-struct Health
+struct Health { } // For Attribute<T>
+
+struct Experience { } // For Attribute<T>
+
+struct Moves { } // For Attribute<T>
+
+struct Attribute<T>
 {
     public int Value;
+    public int Max;
 
-    public Health(int value)
+    public Attribute(int max)
     {
-        Value = value;
+        Max = max;
+        Value = Max;
     }
-}
 
-struct Experience
-{
-    public int Value;
-
-    public Experience(int value)
+    public void Increase(int amount)
     {
-        Value = value;
-    }
-}
-
-struct Moves
-{
-    public int Value;
-
-    public Moves(int value)
-    {
-        Value = value;
+        int sum = Value + amount;
+        Value = sum > Max ? Max : sum;
     }
 }
 
@@ -59,19 +53,19 @@ public class UnitBuilder
 
     public UnitBuilder WithHealth(int hp)
     {
-        _entity.Replace(new Health(hp));
+        _entity.Replace(new Attribute<Health>(hp));
         return this;
     }
 
     public UnitBuilder WithExperience(int xp)
     {
-        _entity.Replace(new Experience(xp));
+        _entity.Replace(new Attribute<Experience>(xp));
         return this;
     }
 
     public UnitBuilder WithMoves(int mp)
     {
-        _entity.Replace(new Moves(mp));
+        _entity.Replace(new Attribute<Moves>(mp));
         return this;
     }
 
