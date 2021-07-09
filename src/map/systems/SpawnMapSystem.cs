@@ -48,8 +48,15 @@ public class SpawnMapSystem : IEcsInitSystem
         }
 
         dict.Add("Locations", locsDict);
+        
+        var json = new JSON();
+        var jsonString = json.Stringify(dict);
+        if (json.Parse(jsonString) != Error.Ok)
+        {
+            GD.PushError("JSON could not be parsed");
+        }
 
-        dict = JSON.Parse(JSON.Print(dict)).Result as Dictionary;
+        dict = json.GetData() as Dictionary;
 
         var eventEntity = _world.NewEntity();
         eventEntity.Replace(new CreateMapEvent(dict));

@@ -26,7 +26,7 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     {
         var editorEntity = _world.NewEntity();
 
-        var editorView = Scenes.Instance.EditorView.Instance<EditorView>();
+        var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
         _parent.AddChild(editorView);
 
         editorEntity.Replace(new NodeHandle<EditorView>(editorView));

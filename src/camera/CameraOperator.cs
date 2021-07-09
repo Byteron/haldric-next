@@ -25,7 +25,7 @@ public partial class CameraOperator : Node3D
         _gimbalV = GetNode<Node3D>("HorizontalGimbal/VerticalGimbal");
         _camera = GetNode<Camera3D>("HorizontalGimbal/VerticalGimbal/Camera");
 
-        _gimbalH.Translation = _cameraOffset;
+        _gimbalH.Position = _cameraOffset;
     }
 
     public override void _Input(InputEvent e)
@@ -68,14 +68,14 @@ public partial class CameraOperator : Node3D
     {
         _zoom = Mathf.Lerp(_zoom, _targetZoom, 0.1f);
 
-        var rotationDegrees = _gimbalV.RotationDegrees;
-        rotationDegrees.x = Mathf.Lerp(0, -90, _zoomCurve.Interpolate(_zoom));
-        _gimbalV.RotationDegrees = rotationDegrees;
+        var gimbalVRotation = _gimbalV.Rotation;
+        gimbalVRotation.x = Mathf.Deg2Rad(Mathf.Lerp(0, -90, _zoomCurve.Interpolate(_zoom)));
+        _gimbalV.Rotation = gimbalVRotation;
 
-        _camera.Translation = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
+        _camera.Position = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
 
         var rotation = Rotation;
-        rotation.y = Mathf.LerpAngle(Mathf.Deg2Rad(RotationDegrees.y), Mathf.Deg2Rad(_targetRotation), 0.08f);
+        rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.Deg2Rad(_targetRotation), 0.08f);
         Rotation = rotation;
     }
 

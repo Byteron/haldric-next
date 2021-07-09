@@ -48,16 +48,16 @@ public class CreateUnitEventSystem : IEcsRunSystem
             string key = Data.Instance.Units.Keys.ToArray<string>()[GD.Randi() % Data.Instance.Units.Count];
             var unitEntity = Data.Instance.Units[key].Copy();
             
-            var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instance<UnitView>();
+            var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instantiate<UnitView>();
             
             unitEntity.Del<AssetHandle<PackedScene>>();
 
             _parent.AddChild(unitView);
 
-            var translation = createEvent.Coords.World;
-            translation.y = elevation.Height;
+            var position = createEvent.Coords.World;
+            position.y = elevation.Height;
 
-            unitView.Translation = translation;
+            unitView.Position = position;
 
             unitEntity.Replace(createEvent.Coords);
             unitEntity.Replace(new NodeHandle<UnitView>(unitView));

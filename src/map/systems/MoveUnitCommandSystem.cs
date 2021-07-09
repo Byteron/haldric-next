@@ -68,7 +68,7 @@ public class MoveUnitCommandSystem : IEcsRunSystem
             var newPos = targetCoords.World;
             newPos.y = targetElevation.Height;
 
-            unitView.Translation = newPos;
+            unitView.Position = newPos;
 
             command.FromLocEntity.Del<HasUnit>();
             command.ToLocEntity.Replace(new HasUnit(unitEntity));

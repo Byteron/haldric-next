@@ -49,7 +49,7 @@ public partial class TerrainFeaturePopulator : Node3D
             int index = 0;
             foreach (var renderData in renderDatas)
             {
-                var xform = new Transform(Basis.Identity, renderData.Position);
+                var xform = new Transform3D(Basis.Identity, renderData.Position);
                 xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.z);
                 RenderingServer.MultimeshInstanceSetTransform(_multiMeshRids[meshId], index, xform);
                 index += 1;

@@ -8,7 +8,9 @@ public class UnitFactory
 
     public static EcsEntity CreateFromJSON(string jsonString)
     {
-        var dict = JSON.Parse(jsonString).Result as Dictionary;
+        var json = new JSON();
+        json.Parse(jsonString);
+        var dict = json.GetData() as Dictionary;
 
         var unit = _builder
             .Create()

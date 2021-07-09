@@ -45,8 +45,10 @@ public class LoadMapEventSystem : IEcsRunSystem
         }
 
         var jsonString = file.GetAsText();
-
-        return JSON.Parse(jsonString).Result as Dictionary;
+        
+        var json = new JSON();
+        json.Parse(jsonString);
+        return json.GetData() as Dictionary;
     }
 
     public void SendMapChangeEvents(Dictionary mapData)

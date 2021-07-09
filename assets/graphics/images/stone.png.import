@@ -10,7 +10,7 @@ metadata={
 [deps]
 
 source_file="res://assets/graphics/images/stone.png"
-dest_files=[ "res://.godot/imported/stone.png-8d4530aca6ad7bd76bd6abff8a3085ad.stex" ]
+dest_files=["res://.godot/imported/stone.png-8d4530aca6ad7bd76bd6abff8a3085ad.stex"]
 
 [params]
 
@@ -27,7 +27,7 @@ roughness/mode=0
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
-process/invert_color=false
+process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
 detect_3d/compress_to=1

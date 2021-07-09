@@ -4,6 +4,7 @@
 code = "shader_type spatial;
 
 uniform sampler2D image : hint_albedo;
+uniform vec4 color : hint_color;
 
 void vertex()
 {
@@ -13,22 +14,23 @@ void vertex()
 
 void fragment()
 {
-	ALBEDO = vec3(0.3, 0.5, 0.6);
-	ALPHA = 0.6;
+	ALBEDO = color.rgb;
+	ALPHA = color.a;
 }"
 
-[sub_resource type="OpenSimplexNoise" id=3]
+[sub_resource type="OpenSimplexNoise" id=2]
 
-[sub_resource type="NoiseTexture" id=4]
+[sub_resource type="NoiseTexture" id=3]
 seamless = true
-noise = SubResource( 3 )
+noise = SubResource( 2 )
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 1 )
-shader_param/image = SubResource( 4 )
+shader_param/color = Color( 0.0156863, 0.0941176, 0.211765, 1 )
+shader_param/image = SubResource( 3 )
 
 [resource]
-material = SubResource( 2 )
+material = SubResource( 4 )
 size = Vector2( 12, 12 )
 subdivide_width = 10
 subdivide_depth = 10

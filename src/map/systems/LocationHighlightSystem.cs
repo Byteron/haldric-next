@@ -32,6 +32,6 @@ public class LocationHighlightSystem : IEcsRunSystem
 
         GD.Print(coords.ToString());
 
-        view.Translation = position;
+        view.Position = position;
     }
 }

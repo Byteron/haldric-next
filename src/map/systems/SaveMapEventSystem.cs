@@ -72,7 +72,8 @@ public class SaveMapEventSystem : IEcsRunSystem
 
     public void SaveToFile(string name, Dictionary saveData)
     {
-        var jsonString = (string)JSON.Print(saveData);
+        var json = new JSON();
+        var jsonString = (string)json.Stringify(saveData);
         var file = new File();
         file.Open(Path + name + ".json", File.ModeFlags.Write);
         file.StoreString(jsonString);

@@ -80,7 +80,7 @@ public class CreateMapEventSystem : IEcsRunSystem
         cursorEntity.Get<MapCursor>();
         cursorEntity.Get<HoveredLocation>();
 
-        var view = Scenes.Instance.LocationHighlight.Instance<Node3D>();
+        var view = Scenes.Instance.LocationHighlight.Instantiate<Node3D>();
 
         _parent.AddChild(view);
 
