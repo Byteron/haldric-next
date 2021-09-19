@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
+uid="uid://dvhpu0igkiow7"
 path="res://.godot/imported/Castle_placeholder.glb-e8df6f27dbdacb03b52a7efa7ca699e3.scn"
 
 [deps]
 
 source_file="res://assets/graphics/models/Castle_placeholder.glb"
-dest_files=[ "res://.godot/imported/Castle_placeholder.glb-e8df6f27dbdacb03b52a7efa7ca699e3.scn" ]
+dest_files=["res://.godot/imported/Castle_placeholder.glb-e8df6f27dbdacb03b52a7efa7ca699e3.scn"]
 
 [params]
 

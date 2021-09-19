@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
+uid="uid://m1yxav6wha2s"
 path="res://.godot/imported/Unit.gltf-22397a5800c5f1d6a9a83c646874e5e2.scn"
 
 [deps]
 
 source_file="res://assets/graphics/models/Unit.gltf"
-dest_files=[ "res://.godot/imported/Unit.gltf-22397a5800c5f1d6a9a83c646874e5e2.scn" ]
+dest_files=["res://.godot/imported/Unit.gltf-22397a5800c5f1d6a9a83c646874e5e2.scn"]
 
 [params]
 

@@ -33,6 +33,11 @@ public class CreateUnitEventSystem : IEcsRunSystem
         {
             return;
         }
+        
+        if (Data.Instance.Units.Count == 0)
+        {
+            return;
+        }
 
         foreach (var i in _events)
         {

@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
+uid="uid://cmf12de5x1ndr"
 path="res://.godot/imported/Forest_placeholder_combined.glb-7433db0980c5b21c2718ded64508f068.scn"
 
 [deps]
 
 source_file="res://assets/graphics/models/Forest_placeholder_combined.glb"
-dest_files=[ "res://.godot/imported/Forest_placeholder_combined.glb-7433db0980c5b21c2718ded64508f068.scn" ]
+dest_files=["res://.godot/imported/Forest_placeholder_combined.glb-7433db0980c5b21c2718ded64508f068.scn"]
 
 [params]
 

@@ -51,7 +51,7 @@ public static class Loader
             }
             else
             {
-                if (!extentions.Contains(subPath.Extension()))
+                if (!extentions.Contains(subPath.GetExtension()))
                 {
                     continue;
                 }
@@ -69,7 +69,7 @@ public static class Loader
     {
         var fileData = new FileData
         {
-            Id = path.GetFile().BaseName(),
+            Id = path.GetFile().GetBaseName(),
             Path = path,
             Data = loadResource ? GD.Load(path) : null
         };

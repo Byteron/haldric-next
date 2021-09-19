@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
+uid="uid://mjkboywupdhv"
 path="res://.godot/imported/Village_placeholder.glb-b1a662ecb0344bd2917143bf0579c833.scn"
 
 [deps]
 
 source_file="res://assets/graphics/models/Village_placeholder.glb"
-dest_files=[ "res://.godot/imported/Village_placeholder.glb-b1a662ecb0344bd2917143bf0579c833.scn" ]
+dest_files=["res://.godot/imported/Village_placeholder.glb-b1a662ecb0344bd2917143bf0579c833.scn"]
 
 [params]
 

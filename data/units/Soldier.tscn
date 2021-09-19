@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://b0d141op0n52o"]
 
-[ext_resource path="res://src/unit/UnitView.cs" type="Script" id=1]
-[ext_resource path="res://assets/graphics/models/Infantry.glb" type="PackedScene" id=2]
+[ext_resource type="Script" path="res://src/unit/UnitView.cs" id="1_btudn"]
 
-[node name="SoldierView" type="Node3D"]
-script = ExtResource( 1 )
+[sub_resource type="BoxMesh" id="BoxMesh_ru1p6"]
 
-[node name="Infantry" parent="." instance=ExtResource( 2 )]
+[node name="Soldier" type="Node3D"]
+script = ExtResource( "1_btudn" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25861, 0)
+mesh = SubResource( "BoxMesh_ru1p6" )
+surface_material_override/0 = null
+script = null

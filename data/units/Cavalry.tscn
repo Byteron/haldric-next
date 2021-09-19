@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://dyu1trl1i8crb"]
 
-[ext_resource path="res://src/unit/UnitView.cs" type="Script" id=1]
-[ext_resource path="res://assets/graphics/models/Unit.gltf" type="PackedScene" id=2]
+[ext_resource type="Script" path="res://src/unit/UnitView.cs" id="1_uiqnj"]
 
-[node name="CavalryView" type="Node3D"]
-script = ExtResource( 1 )
+[sub_resource type="BoxMesh" id="BoxMesh_8xqvs"]
 
-[node name="Unit" parent="." instance=ExtResource( 2 )]
+[node name="Cavalry" type="Node3D"]
+script = ExtResource( "1_uiqnj" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.986312, 0)
+mesh = SubResource( "BoxMesh_8xqvs" )
+surface_material_override/0 = null
+script = null

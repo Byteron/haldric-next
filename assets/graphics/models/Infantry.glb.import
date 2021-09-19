@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
+uid="uid://cix3ampxnldrp"
 path="res://.godot/imported/Infantry.glb-c620943993cd4565add4b40360e40e3e.scn"
 
 [deps]
 
 source_file="res://assets/graphics/models/Infantry.glb"
-dest_files=[ "res://.godot/imported/Infantry.glb-c620943993cd4565add4b40360e40e3e.scn" ]
+dest_files=["res://.godot/imported/Infantry.glb-c620943993cd4565add4b40360e40e3e.scn"]
 
 [params]
 

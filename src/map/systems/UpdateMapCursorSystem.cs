@@ -51,7 +51,7 @@ public class UpdateMapCursorSystem : IEcsRunSystem
         var spaceState = _parent.GetWorld3d().DirectSpaceState;
         var viewport = _parent.GetViewport();
 
-        var camera = viewport.GetCamera();
+        var camera = viewport.GetCamera3d();
         var mousePosition = viewport.GetMousePosition();
 
         var from = camera.ProjectRayOrigin(mousePosition);
