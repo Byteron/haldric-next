@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cix3ampxnldrp"
+uid="uid://dktd4g232kerc"
 path="res://.godot/imported/Infantry.glb-c620943993cd4565add4b40360e40e3e.scn"
 
 [deps]
@@ -23,6 +23,7 @@ meshes/light_baking=2
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
 animation/import=true
+animation/bake_reset_animation=true
 animation/fps=15
 import_script/path=""
 _subresources={
