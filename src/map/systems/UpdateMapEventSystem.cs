@@ -21,8 +21,8 @@ public class UpdateMapEventSystem : IEcsRunSystem
     {
         foreach (var i in _events)
         {
-            var entity = _events.GetEntity(i);
-            var updateEvent = _events.GetEntity(i).Get<UpdateMapEvent>();
+            var eventEntity = _events.GetEntity(i);
+            var updateEvent = eventEntity.Get<UpdateMapEvent>();
 
             SendUpdateTerrainMeshEvent(updateEvent);
             SendUpdateTerrainFeaturePopulatorEvent(updateEvent);
