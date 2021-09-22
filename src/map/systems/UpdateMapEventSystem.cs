@@ -26,8 +26,6 @@ public class UpdateMapEventSystem : IEcsRunSystem
 
             SendUpdateTerrainMeshEvent(updateEvent);
             SendUpdateTerrainFeaturePopulatorEvent(updateEvent);
-
-            entity.Destroy();
         }
     }
 

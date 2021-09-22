@@ -65,11 +65,9 @@ public class DestroyMapEventSystem : IEcsRunSystem
                 {
                     locEntity.Destroy();
                 }
-                
+
                 mapEntity.Destroy();
             }
-
-            eventEntity.Destroy();
         }
     }
 }

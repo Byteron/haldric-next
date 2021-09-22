@@ -15,7 +15,7 @@ public struct CreateMapEvent
 public struct Chunk { }
 public struct Map { }
 
-public struct MapCursor {}
+public struct MapCursor { }
 
 public struct ChunkSize
 {
@@ -69,8 +69,6 @@ public class CreateMapEventSystem : IEcsRunSystem
             InitializeChunks(chunkSize, grid, locations);
 
             SendUpdateMapEvent();
-
-            eventEntity.Destroy();
         }
     }
 
@@ -140,7 +138,7 @@ public class CreateMapEventSystem : IEcsRunSystem
                     var spawnUnitEventEntity = _world.NewEntity();
                     spawnUnitEventEntity.Replace(new CreateUnitEvent("Soldier", coords));
                 }
-                
+
                 var chunkCell = (coords.Offset / chunkSize.ToVector3());
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
 

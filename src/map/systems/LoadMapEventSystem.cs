@@ -29,8 +29,6 @@ public class LoadMapEventSystem : IEcsRunSystem
             var saveData = LoadFromFile(loadMapEvent.Name);
 
             SendMapChangeEvents(saveData);
-
-            eventEntity.Destroy();
         }
     }
 
@@ -45,7 +43,7 @@ public class LoadMapEventSystem : IEcsRunSystem
         }
 
         var jsonString = file.GetAsText();
-        
+
         var json = new JSON();
         json.Parse(jsonString);
         return json.GetData() as Dictionary;

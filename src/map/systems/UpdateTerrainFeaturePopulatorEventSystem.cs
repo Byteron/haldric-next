@@ -45,8 +45,6 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
                 var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
             }
-
-            _events.GetEntity(i).Destroy();
         }
     }
 
@@ -77,7 +75,7 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
 
         Populate(locEntity, baseTerrainCode);
-        
+
         if (locEntity.Has<HasOverlayTerrain>())
         {
             ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;

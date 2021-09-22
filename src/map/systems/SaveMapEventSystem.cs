@@ -65,8 +65,6 @@ public class SaveMapEventSystem : IEcsRunSystem
             saveData.Add("Locations", locationsData);
 
             SaveToFile(saveMapEvent.Name, saveData);
-
-            eventEntity.Destroy();
         }
     }
 

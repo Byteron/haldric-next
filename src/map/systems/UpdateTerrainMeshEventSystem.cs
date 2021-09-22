@@ -38,8 +38,8 @@ public struct EdgeVertices
 public class UpdateTerrainMeshEventSystem : IEcsRunSystem
 {
     public static readonly Color ColorRed = new Color(1.0f, 0f, 0f);
-	public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
-	public static readonly Color ColorBlue = new Color(0f, 0f, 1.0f);
+    public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
+    public static readonly Color ColorBlue = new Color(0f, 0f, 1.0f);
 
     EcsFilter<UpdateTerrainMeshEvent> _events;
     EcsFilter<Locations, NodeHandle<TerrainMesh>, NodeHandle<TerrainCollider>> _chunks;
@@ -74,8 +74,6 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
 
                 terrainCollider.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
             }
-
-            _events.GetEntity(i).Destroy();
         }
     }
 

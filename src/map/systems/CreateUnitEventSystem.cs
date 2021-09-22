@@ -33,7 +33,7 @@ public class CreateUnitEventSystem : IEcsRunSystem
         {
             return;
         }
-        
+
         if (Data.Instance.Units.Count == 0)
         {
             return;
@@ -52,9 +52,9 @@ public class CreateUnitEventSystem : IEcsRunSystem
 
             string key = Data.Instance.Units.Keys.ToArray<string>()[GD.Randi() % Data.Instance.Units.Count];
             var unitEntity = Data.Instance.Units[key].Copy();
-            
+
             var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instantiate<UnitView>();
-            
+
             unitEntity.Del<AssetHandle<PackedScene>>();
 
             _parent.AddChild(unitView);
@@ -68,8 +68,6 @@ public class CreateUnitEventSystem : IEcsRunSystem
             unitEntity.Replace(new NodeHandle<UnitView>(unitView));
 
             locEntity.Replace(new HasUnit(unitEntity));
-
-            eventEntity.Destroy();
         }
     }
 }
