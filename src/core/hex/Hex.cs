@@ -3,7 +3,8 @@ using Godot;
 
 public class Hex
 {
-    private static readonly Vector3[] NeighborTable = new Vector3[6] {
+    private static readonly Vector3[] _neighborTable = new Vector3[6]
+    {
         new Vector3(0, -1, 1), // NE
         new Vector3(1, -1, 0), // SW
         new Vector3(1, 0, -1), // W
@@ -24,22 +25,22 @@ public class Hex
 
     public static Vector3 World2Axial(Vector3 position)
     {
-        var fx = position.x / (Metrics.InnerRadius * 2.0f);
-        var fy = -fx;
+        float fx = position.x / (Metrics.InnerRadius * 2.0f);
+        float fy = -fx;
 
-        var offset = position.z / (Metrics.OuterRadius * 3.0f);
+        float offset = position.z / (Metrics.OuterRadius * 3.0f);
         fx -= offset;
         fy -= offset;
 
-        var x = Mathf.Round(fx);
-        var y = Mathf.Round(fy);
-        var z = Mathf.Round(-fx -fy);
+        float x = Mathf.Round(fx);
+        float y = Mathf.Round(fy);
+        float z = Mathf.Round(-fx - fy);
 
         if (x + y + z != 0)
         {
-            var dx = Mathf.Abs(fx - x);
-            var dy = Mathf.Abs(fy - y);
-            var dz = Mathf.Abs(-fx - fy - z);
+            float dx = Mathf.Abs(fx - x);
+            float dy = Mathf.Abs(fy - y);
+            float dz = Mathf.Abs(-fx - fy - z);
 
             if (dx > dy && dx > dz)
             {
@@ -57,39 +58,43 @@ public class Hex
 
     public static Vector3 Offset2World(Vector3 offset)
     {
-        var x = ((int)offset.x + (int)offset.z * 0.5f - (int)offset.z / 2) * (Metrics.InnerRadius * 2.0f);
-        var z = (int)offset.z * Metrics.OuterRadius * 1.5f;
-	    return new Vector3(x, 0, z);
+        float zOffset = System.Math.Abs(offset.z);
+        float x = ((int)offset.x + (int)zOffset * 0.5f - (int)zOffset / 2) * (Metrics.InnerRadius * 2.0f);
+        float z = (int)offset.z * Metrics.OuterRadius * 1.5f;
+        return new Vector3(x, 0, z);
     }
 
     public static Vector3 Axial2Offset(Vector3 axial)
     {
-        return new Vector3(axial.x + axial.z / 2, 0, axial.z);
+        Vector3 cube = Axial2Cube(axial);
+        Vector3 offset = Cube2Offset(cube);
+        return offset;
     }
 
     public static Vector3 Offset2Axial(Vector3 offset)
     {
-        return new Vector3(offset.x - offset.z / 2, 0, offset.z);
+        Vector3 cube = Offset2Cube(offset);
+        Vector3 axial = Cube2Axial(cube);
+        return axial;
     }
 
     public static Vector3 Cube2Offset(Vector3 cube)
     {
-        var x = cube.x + (cube.z - ((int)cube.x & 1)) / 2;
-        var z = cube.z;
-        return new Vector3(x, 0, z);
+        cube.x += (cube.z - ((int)cube.z & 1)) / 2;
+        cube.y = 0;
+        return cube;
     }
 
     public static Vector3 Offset2Cube(Vector3 offset)
     {
-        var x = offset.x - (offset.z - ((int)offset.z & 1)) / 2;
-        var z = offset.z;
-        var y = -x - z;
-        return new Vector3(x, y, z);
+        offset.x -= (offset.z - ((int)offset.z & 1)) / 2;
+        offset.y = -offset.x - offset.z;
+        return offset;
     }
 
     public static Vector3 GetNeighbor(Vector3 cube, Direction direction)
     {
-        return cube + NeighborTable[(int)direction];
+        return cube + _neighborTable[(int)direction];
     }
 
     public static Vector3[] GetNeighbors(Vector3 cube)
@@ -112,11 +117,11 @@ public class Hex
         {
             for (int y = Mathf.Max(-radius, -x - radius); y < Mathf.Min(radius + 1, -x + radius + 1); y++)
             {
-                var z = -x - y;
+                float z = -x - y;
                 cells.Add(cube + new Vector3(x, y, z));
             }
         }
-        
+
         return cells.ToArray();
     }
 }
