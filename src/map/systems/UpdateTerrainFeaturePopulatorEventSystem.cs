@@ -50,8 +50,6 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
 
     private void Populate(Locations locations)
     {
-        _terrainFeaturePopulator.Clear();
-
         foreach (var item in locations.Dict)
         {
             Populate(item.Value);

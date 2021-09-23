@@ -1,14 +1,26 @@
+using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using Leopotam.Ecs;
 
 public struct CreateMapEvent
 {
+    public int Width;
+    public int Height;
     public Dictionary MapData;
 
     public CreateMapEvent(Dictionary mapData)
     {
         MapData = mapData;
+        Width = 0;
+        Height = 0;
+    }
+
+    public CreateMapEvent(int width, int height)
+    {
+        Width = width;
+        Height = height;
+        MapData = null;
     }
 }
 
@@ -52,7 +64,6 @@ public class CreateMapEventSystem : IEcsRunSystem
             var eventEntity = _events.GetEntity(i);
             var createEvent = eventEntity.Get<CreateMapEvent>();
 
-            var mapData = createEvent.MapData;
             var mapEntity = _world.NewEntity();
 
             mapEntity.Get<Map>();
@@ -64,7 +75,13 @@ public class CreateMapEventSystem : IEcsRunSystem
             ref var chunkSize = ref mapEntity.Get<ChunkSize>();
 
             InitializeMapCursor();
-            InitializeFromMapData(mapEntity, mapData);
+
+            if (createEvent.MapData == null)
+            {
+                createEvent.MapData = GetMapDataFromDimensions(createEvent.Width, createEvent.Height);
+            }
+
+            InitializeFromMapData(mapEntity, createEvent.MapData);
             InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
 
@@ -84,6 +101,51 @@ public class CreateMapEventSystem : IEcsRunSystem
 
         cursorEntity.Replace(new NodeHandle<Node3D>(view));
         cursorEntity.Get<Highlighter>();
+    }
+
+    private Dictionary GetMapDataFromDimensions(int width, int height)
+    {
+        var dict = new Dictionary();
+
+        dict.Add("Width", width);
+        dict.Add("Height", height);
+
+        var locsDict = new Dictionary();
+
+        for (int z = 0; z < height; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                var coords = Coords.FromOffset(x, z);
+
+                var locDict = new Dictionary();
+
+                locDict.Add("Terrain", new List<string>() { "Gg" });
+                locDict.Add("Elevation", 0);
+
+                if (locsDict.Contains(coords.Cube))
+                {
+                    locsDict[coords.Cube] = locDict;
+                }
+                else
+                {
+                    locsDict.Add(coords.Cube, locDict);
+                }
+            }
+        }
+
+        dict.Add("Locations", locsDict);
+        
+        var json = new JSON();
+        var jsonString = json.Stringify(dict);
+        if (json.Parse(jsonString) != Error.Ok)
+        {
+            GD.PushError("JSON could not be parsed");
+        }
+
+        dict = json.GetData() as Dictionary;
+
+        return dict;
     }
 
     private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)

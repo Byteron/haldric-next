@@ -25,11 +25,6 @@ public class DestroyMapEventSystem : IEcsRunSystem
                 ref var terrainMesh = ref chunkEntity.Get<NodeHandle<TerrainMesh>>().Node;
                 ref var terrainCollider = ref chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
                 ref var terrainFeaturePopulator = ref chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
-
-                terrainMesh.QueueFree();
-                terrainCollider.QueueFree();
-                terrainFeaturePopulator.QueueFree();
-
                 chunkEntity.Destroy();
             }
 
@@ -39,8 +34,6 @@ public class DestroyMapEventSystem : IEcsRunSystem
 
                 ref var view = ref unitEntity.Get<NodeHandle<UnitView>>().Node;
 
-                view.QueueFree();
-
                 unitEntity.Destroy();
             }
 
@@ -49,8 +42,6 @@ public class DestroyMapEventSystem : IEcsRunSystem
                 var cursorEntity = _mapCursors.GetEntity(j);
 
                 ref var highlighter = ref cursorEntity.Get<NodeHandle<Node3D>>().Node;
-
-                highlighter.QueueFree();
 
                 cursorEntity.Destroy();
             }

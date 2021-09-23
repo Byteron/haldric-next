@@ -22,15 +22,22 @@ public partial class EditorView : CanvasLayer
 
     Control _terrains;
 
+    TextEdit _widthTextEdit;
+    TextEdit _heightTextEdit;
+
+
     public override void _Ready()
     {
-        _terrains = GetNode<Control>("PanelContainer/VBoxContainer/Terrains/GridContainer");
+        _terrains = GetNode<Control>("Tools/VBoxContainer/Terrains/GridContainer");
 
-        _elevationSlider = GetNode<HSlider>("PanelContainer/VBoxContainer/Elevation/HSlider");
-        _brushSizeSlider = GetNode<HSlider>("PanelContainer/VBoxContainer/BrushSize/HSlider");
+        _elevationSlider = GetNode<HSlider>("Tools/VBoxContainer/Elevation/HSlider");
+        _brushSizeSlider = GetNode<HSlider>("Tools/VBoxContainer/BrushSize/HSlider");
 
-        _elevationCheckBox = GetNode<CheckBox>("PanelContainer/VBoxContainer/Elevation/HBoxContainer/CheckBox");
-        _terrainCheckBox = GetNode<CheckBox>("PanelContainer/VBoxContainer/Terrains/HBoxContainer/CheckBox");
+        _elevationCheckBox = GetNode<CheckBox>("Tools/VBoxContainer/Elevation/HBoxContainer/CheckBox");
+        _terrainCheckBox = GetNode<CheckBox>("Tools/VBoxContainer/Terrains/HBoxContainer/CheckBox");
+
+        _widthTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Width/TextEdit");
+        _heightTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Height/TextEdit");
 
         InitializeTerrains();
     }
@@ -48,6 +55,15 @@ public partial class EditorView : CanvasLayer
             button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
             _terrains.AddChild(button);
         }
+    }
+
+    public void OnCreateButtonPressed()
+    {
+        int width = int.Parse(_widthTextEdit.Text);
+        int height = int.Parse(_heightTextEdit.Text);
+
+        Main.Instance.World.NewEntity().Replace(new DestroyMapEvent());
+        Main.Instance.World.NewEntity().Replace(new CreateMapEvent(width, height));
     }
 
     public void OnTerrainSelected(string code)

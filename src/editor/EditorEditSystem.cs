@@ -31,6 +31,8 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
 
         editorEntity.Replace(new NodeHandle<EditorView>(editorView));
         editorEntity.Get<Editor>();
+
+        _world.NewEntity().Replace(new CreateMapEvent(40, 40));
     }
 
     public void Run()

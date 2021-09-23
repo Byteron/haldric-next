@@ -31,7 +31,6 @@ public partial class Main : Node3D
             .Add(new LocationHighlightSystem());
 
         _processSystems
-            .Add(new SpawnMapSystem(this))
             .Add(new MoveUnitSystem())
             .Add(new CreateUnitEventSystem(this)).OneFrame<CreateUnitEvent>()
             .Add(new UpdateMapEventSystem()).OneFrame<UpdateMapEvent>()
