@@ -56,27 +56,34 @@ public partial class CameraOperator : Node3D
 
     public override void _Process(float delta)
     {
+        UpdatePosition(delta);
+        UpdateRotation(delta);
+        UpdateZoom();
+    }
+
+    private void UpdatePosition(float delta)
+    {
         var transform = Transform;
         transform.origin = Transform.origin + GetRelativeWalkInput() * _walkSpeed * delta;
         Transform = transform;
-
-        ProcessGimbalV(delta);
-
     }
 
-    private void ProcessGimbalV(float delta)
+    private void UpdateRotation(float delta)
+    {
+        _camera.Position = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
+
+        var rotation = Rotation;
+        rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.Deg2Rad(_targetRotation), 0.08f);
+        Rotation = rotation;
+    }
+
+    private void UpdateZoom()
     {
         _zoom = Mathf.Lerp(_zoom, _targetZoom, 0.1f);
 
         var gimbalVRotation = _gimbalV.Rotation;
         gimbalVRotation.x = Mathf.Deg2Rad(Mathf.Lerp(0, -90, _zoomCurve.Interpolate(_zoom)));
         _gimbalV.Rotation = gimbalVRotation;
-
-        _camera.Position = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
-
-        var rotation = Rotation;
-        rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.Deg2Rad(_targetRotation), 0.08f);
-        Rotation = rotation;
     }
 
     private Vector3 GetRelativeWalkInput()
