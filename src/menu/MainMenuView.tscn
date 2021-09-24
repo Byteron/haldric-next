@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqqsfiaxjm64h"]
+
+[ext_resource type="Script" path="res://src/menu/MainMenuView.cs" id="1_30ybv"]
+
+[node name="MainMenuView" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_30ybv" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+offset_left = 925.0
+offset_top = 492.0
+offset_right = 995.0
+offset_bottom = 587.0
+script = null
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
+offset_right = 70.0
+offset_bottom = 29.0
+text = "PLAY"
+script = null
+
+[node name="EditorButton" type="Button" parent="CenterContainer/VBoxContainer"]
+offset_top = 33.0
+offset_right = 70.0
+offset_bottom = 62.0
+text = "EDITOR"
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
+offset_top = 66.0
+offset_right = 70.0
+offset_bottom = 95.0
+text = "QUIT"
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/EditorButton" to="." method="OnEditorButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="OnQuitButtonPressed"]

@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bloxoriksyw5s"]
 
-[ext_resource path="res://src/global/Scenes.cs" type="Script" id=1]
-[ext_resource path="res://src/editor/EditorView.tscn" type="PackedScene" id=2]
-[ext_resource path="res://src/map/cursor/LocationHighlight.tscn" type="PackedScene" id=3]
+[ext_resource type="Script" path="res://src/global/Scenes.cs" id="1"]
+[ext_resource type="PackedScene" uid="uid://dkitgyn3cq0tq" path="res://src/editor/EditorView.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://src/map/cursor/LocationHighlight.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cqqsfiaxjm64h" path="res://src/menu/MainMenuView.tscn" id="3_wqxn1"]
 
 [node name="Scenes" type="Node"]
-script = ExtResource( 1 )
-EditorView = ExtResource( 2 )
-LocationHighlight = ExtResource( 3 )
+script = ExtResource( "1" )
+EditorView = ExtResource( "2" )
+MainMenuView = ExtResource( "3_wqxn1" )
+LocationHighlight = ExtResource( "3" )

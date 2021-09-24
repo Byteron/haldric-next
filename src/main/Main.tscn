@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://yurgn4hd50i4"]
+[gd_scene load_steps=7 format=3 uid="uid://yurgn4hd50i4"]
 
 [ext_resource type="Script" path="res://src/main/Main.cs" id="1"]
 [ext_resource type="PackedScene" path="res://src/camera/CameraOperator.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://btru6joy2lvq4" path="res://src/game_state/GameStateController.tscn" id="2_reoo5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_adh88"]
 sky_top_color = Color(0.568627, 0.698039, 0.807843, 1)
@@ -33,15 +34,17 @@ shadow_enabled = true
 directional_shadow_max_distance = 1000.0
 script = null
 
+[node name="GameStateController" parent="." instance=ExtResource( "2_reoo5" )]
+
 [node name="CameraOperator" parent="." instance=ExtResource( "2" )]
 _cameraOffset = Vector3(0, 5, 0)
 _walkSpeed = 50.0
 _maxDistance = 150.0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
 script = null
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = null
@@ -49,7 +52,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StatsLabel" type="Label" parent="CanvasLayer/VBoxContainer" groups=["StatsLabel"]]
+[node name="StatsLabel" type="Label" parent="HUD/VBoxContainer" groups=["StatsLabel"]]
 offset_right = 40.0
 offset_bottom = 23.0
 structured_text_bidi_override_options = []
@@ -58,7 +61,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TerrainLabel" type="Label" parent="CanvasLayer/VBoxContainer" groups=["TerrainLabel"]]
+[node name="TerrainLabel" type="Label" parent="HUD/VBoxContainer" groups=["TerrainLabel"]]
 offset_top = 27.0
 offset_right = 40.0
 offset_bottom = 50.0
@@ -68,7 +71,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UnitLabel" type="Label" parent="CanvasLayer/VBoxContainer" groups=["UnitLabel"]]
+[node name="UnitLabel" type="Label" parent="HUD/VBoxContainer" groups=["UnitLabel"]]
 offset_top = 54.0
 offset_right = 40.0
 offset_bottom = 77.0

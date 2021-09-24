@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using Leopotam.Ecs;
 
-public struct Editor { }
-
-public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
+public class EditorEditSystem : IEcsRunSystem
 {
     EcsWorld _world;
 
@@ -13,26 +11,13 @@ public class EditorEditSystem : IEcsInitSystem, IEcsRunSystem
     EcsFilter<HoveredLocation> _hoveredLocations;
     EcsFilter<Locations, Map> _locations;
 
-    EcsFilter<Editor> _editors;
+    EcsFilter<NodeHandle<EditorView>> _editors;
 
     Vector3 _previousCoords;
 
     public EditorEditSystem(Node3D parent)
     {
         _parent = parent;
-    }
-
-    public void Init()
-    {
-        var editorEntity = _world.NewEntity();
-
-        var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
-        _parent.AddChild(editorView);
-
-        editorEntity.Replace(new NodeHandle<EditorView>(editorView));
-        editorEntity.Get<Editor>();
-
-        _world.NewEntity().Replace(new CreateMapEvent(40, 40));
     }
 
     public void Run()
