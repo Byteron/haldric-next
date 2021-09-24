@@ -14,7 +14,6 @@ public partial class EditorState : GameState
 
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
 
-        // AddEventSystem<CreateUnitEvent>(new CreateUnitEventSystem(this));
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
@@ -46,7 +45,7 @@ public partial class EditorState : GameState
     {
         if (e.IsActionPressed("ui_cancel"))
         {
-            gameStates.ChangeState(new MainMenuState(_world));
+            gameStates.PopState();
         }
     }
 }

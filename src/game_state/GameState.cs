@@ -5,9 +5,11 @@ public partial class GameState : Node3D
 {
     protected EcsWorld _world = null;
 
+    private EcsSystems _initSystems = null;
     private EcsSystems _inputSystems = null;
     private EcsSystems _updateSystems = null;
     private EcsSystems _eventSystems = null;
+    private EcsSystems _destroySystems = null;
 
     public GameState(EcsWorld world)
     {
@@ -18,15 +20,25 @@ public partial class GameState : Node3D
         _eventSystems = new EcsSystems(world);
     }
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
         _inputSystems.Init();
         _updateSystems.Init();
         _eventSystems.Init();
     }
 
+    public override void _ExitTree()
+    {
+        _inputSystems.Destroy();
+        _updateSystems.Destroy();
+        _eventSystems.Destroy();
+    }
+
     public virtual void Enter(GameStateController gameStates) { }
     public virtual void Exit(GameStateController gameStates) { }
+    public virtual void Pause(GameStateController gameStates) { }
+    public virtual void Continue(GameStateController gameStates) { }
+
     public virtual void Update(GameStateController gameStates, float delta) { }
     public virtual void Input(GameStateController gameStates, InputEvent e) { }
 

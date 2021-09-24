@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
 
 public partial class GameStateController : Node3D
 {
     Stack<GameState> _states = new Stack<GameState>();
-    
+
     public override void _UnhandledInput(InputEvent e)
     {
         if (_states.Count == 0)
@@ -33,6 +32,12 @@ public partial class GameStateController : Node3D
 
     public void PushState(GameState newState)
     {
+        if (_states.Count > 0)
+        {
+            var currentState = _states.Peek();
+            currentState.Pause(this);
+        }
+
         newState.Name = newState.GetType().ToString();
         _states.Push(newState);
         AddChild(newState);
@@ -47,10 +52,16 @@ public partial class GameStateController : Node3D
         }
 
         var currentState = _states.Pop();
-        RemoveChild(currentState);
         currentState.Exit(this);
         currentState.RunEventSystems();
+        RemoveChild(currentState);
         currentState.QueueFree();
+
+        if (_states.Count > 0)
+        {
+            currentState = _states.Peek();
+            currentState.Continue(this);
+        }
 
     }
 

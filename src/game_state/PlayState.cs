@@ -42,7 +42,7 @@ public partial class PlayState : GameState
     {
         if (e.IsActionPressed("ui_cancel"))
         {
-            gameStates.ChangeState(new MainMenuState(_world));
+            gameStates.PopState();
         }
     }
 }

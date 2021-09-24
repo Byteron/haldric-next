@@ -1,10 +1,10 @@
 using Leopotam.Ecs;
 
-public partial class MainMenuState : GameState
+public partial class ApplicationState : GameState
 {
     EcsEntity _menuEntity;
 
-    public MainMenuState(EcsWorld world) : base(world)
+    public ApplicationState(EcsWorld world) : base(world)
     { 
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
     }
@@ -18,6 +18,18 @@ public partial class MainMenuState : GameState
         AddChild(menuView);
 
         _menuEntity.Replace(new NodeHandle<MainMenuView>(menuView));
+    }
+
+    public override void Continue(GameStateController gameStates)
+    {
+        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        menuView.Show();
+    }
+
+    public override void Pause(GameStateController gameStates)
+    {
+        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        menuView.Hide();
     }
 
     public override void Exit(GameStateController gameStates)

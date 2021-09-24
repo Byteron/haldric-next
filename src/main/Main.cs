@@ -24,6 +24,6 @@ public partial class Main : Node3D
         commanderEntity.Get<Commander>();
 
         _gameController = GetNode<GameStateController>("GameStateController");
-        _gameController.PushState(new MainMenuState(_world));
+        _gameController.PushState(new ApplicationState(_world));
     }
 }
