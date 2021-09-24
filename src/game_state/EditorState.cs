@@ -15,7 +15,7 @@ public partial class EditorState : GameState
         AddUpdateSystem(new MoveUnitCommandSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
 
-        AddEventSystem<CreateUnitEvent>(new CreateUnitEventSystem(this));
+        // AddEventSystem<CreateUnitEvent>(new CreateUnitEventSystem(this));
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());

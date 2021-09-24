@@ -195,11 +195,11 @@ public class CreateMapEventSystem : IEcsRunSystem
             {
                 var coords = Coords.FromOffset(x, z);
 
-                if (GD.Randf() < 0.1)
-                {
-                    var spawnUnitEventEntity = _world.NewEntity();
-                    spawnUnitEventEntity.Replace(new CreateUnitEvent("Soldier", coords));
-                }
+                // if (GD.Randf() < 0.1)
+                // {
+                //     var spawnUnitEventEntity = _world.NewEntity();
+                //     spawnUnitEventEntity.Replace(new CreateUnitEvent("Soldier", coords));
+                // }
 
                 var chunkCell = (coords.Offset / chunkSize.ToVector3());
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
