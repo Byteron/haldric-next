@@ -2,6 +2,8 @@ using Leopotam.Ecs;
 
 public partial class EditorState : GameState
 {
+    EcsEntity _editorEntity;
+
     public EditorState(EcsWorld world) : base(world)
     {
         AddInputSystem(new UpdateMapCursorSystem(this));
@@ -27,12 +29,12 @@ public partial class EditorState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var editorEntity = _world.NewEntity();
+        _editorEntity = _world.NewEntity();
 
         var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
         AddChild(editorView);
 
-        editorEntity.Replace(new NodeHandle<EditorView>(editorView));
+        _editorEntity.Replace(new NodeHandle<EditorView>(editorView));
 
         _world.NewEntity().Replace(new CreateMapEvent(40, 40));
     }
@@ -40,6 +42,7 @@ public partial class EditorState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _world.NewEntity().Replace(new DestroyMapEvent());
+        _editorEntity.Destroy();
     }
 
     public override void Input(GameStateController gameStates, Godot.InputEvent e)

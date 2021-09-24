@@ -23,7 +23,6 @@ Data="*res://src/global/Data.cs"
 
 window/size/width=1920
 window/size/height=1080
-window/size/always_on_top=true
 window/vsync/use_vsync=false
 
 [input]
