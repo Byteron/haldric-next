@@ -5,11 +5,9 @@ public partial class GameState : Node3D
 {
     protected EcsWorld _world = null;
 
-    private EcsSystems _initSystems = null;
     private EcsSystems _inputSystems = null;
     private EcsSystems _updateSystems = null;
     private EcsSystems _eventSystems = null;
-    private EcsSystems _destroySystems = null;
 
     public GameState(EcsWorld world)
     {

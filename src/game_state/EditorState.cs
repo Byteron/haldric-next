@@ -12,6 +12,7 @@ public partial class EditorState : GameState
         AddInputSystem(new UpdateTerrainInfoSystem());
         AddInputSystem(new LocationHighlightSystem());
 
+        AddUpdateSystem(new CameraOperatorSystem(this));
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());

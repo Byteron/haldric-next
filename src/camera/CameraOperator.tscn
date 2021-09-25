@@ -1,18 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://ck521xh8okc2b"]
 
-[ext_resource path="res://src/camera/CameraOperator.cs" type="Script" id=1]
+[ext_resource type="Script" path="res://src/camera/CameraOperator.cs" id="1"]
 
-[sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 1.58455, 0, 0, Vector2( 0.742972, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0334996, 0.0, 0, 0 ]
+[sub_resource type="Curve" id="1"]
+_data = [Vector2(0, 0), 0.0, 1.58455, 0, 0, Vector2(0.742972, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0334996, 0.0, 0, 0]
 
 [node name="CameraOperator" type="Node3D"]
-script = ExtResource( 1 )
-_walkSpeed = 200.0
-_maxDistance = 500.0
-_zoomCurve = SubResource( 1 )
+script = ExtResource( "1" )
+_walkSpeed = 100.0
+_maxDistance = 250.0
+_zoomCurve = SubResource( "1" )
 
 [node name="HorizontalGimbal" type="Node3D" parent="."]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+transform = Transform3D(-1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0)
 script = null
 
 [node name="VerticalGimbal" type="Node3D" parent="HorizontalGimbal"]

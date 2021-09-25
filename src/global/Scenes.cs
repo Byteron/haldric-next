@@ -7,7 +7,10 @@ public partial class Scenes : Node
 
     [Export] public PackedScene EditorView;
     [Export] public PackedScene MainMenuView;
+
     [Export] public PackedScene LocationHighlight;
+    
+    [Export] public PackedScene CameraOperator;
     
     public override void _Ready()
     {

@@ -10,6 +10,7 @@ public partial class PlayState : GameState
         AddInputSystem(new UpdateTerrainInfoSystem());
         AddInputSystem(new LocationHighlightSystem());
 
+        AddUpdateSystem(new CameraOperatorSystem(this));
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new MoveUnitCommandSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
@@ -24,7 +25,7 @@ public partial class PlayState : GameState
     }
 
     public override void Enter(GameStateController gameStates)
-    {
+    {   
         _world.NewEntity().Replace(new LoadMapEvent("map"));
 
         _world.NewEntity().Replace(new CreateUnitEvent("Soldier", Coords.FromOffset(5, 5)));

@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://yurgn4hd50i4"]
+[gd_scene load_steps=6 format=3 uid="uid://yurgn4hd50i4"]
 
 [ext_resource type="Script" path="res://src/main/Main.cs" id="1"]
-[ext_resource type="PackedScene" path="res://src/camera/CameraOperator.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://btru6joy2lvq4" path="res://src/game_state/GameStateController.tscn" id="2_reoo5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_adh88"]
@@ -20,6 +19,7 @@ tonemap_mode = 3
 sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = true
+volumetric_fog_density = 0.001
 
 [node name="Main" type="Node3D"]
 script = ExtResource( "1" )
@@ -35,11 +35,6 @@ directional_shadow_max_distance = 1000.0
 script = null
 
 [node name="GameStateController" parent="." instance=ExtResource( "2_reoo5" )]
-
-[node name="CameraOperator" parent="." instance=ExtResource( "2" )]
-_cameraOffset = Vector3(0, 5, 0)
-_walkSpeed = 50.0
-_maxDistance = 150.0
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = null

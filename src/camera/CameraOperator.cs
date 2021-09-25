@@ -32,43 +32,47 @@ public partial class CameraOperator : Node3D
     {
         if (e.IsActionPressed("camera_zoom_out"))
         {
-            _targetZoom = Mathf.Clamp(_targetZoom - 0.05f, 0, 1);
+            ZoomOut();
         }
 
         if (e.IsActionPressed("camera_zoom_in"))
         {
-            _targetZoom = Mathf.Clamp(_targetZoom + 0.05f, 0, 1);
-        }
-
-        if (e.IsActionPressed("camera_turn_left"))
-        {
-            _rotationIndex = (_rotationIndex + 1) % _rotations.Length;
-            _targetRotation = _rotations[_rotationIndex];
-        }
-
-        if (e.IsActionPressed("camera_turn_right"))
-        {
-            _rotationIndex -= 1;
-            _rotationIndex = _rotationIndex == -1 ? _rotationIndex + _rotations.Length : _rotationIndex;
-            _targetRotation = _rotations[_rotationIndex];
+            ZoomIn();
         }
     }
 
-    public override void _Process(float delta)
+    public void ZoomIn()
     {
-        UpdatePosition(delta);
-        UpdateRotation(delta);
-        UpdateZoom();
+        _targetZoom = Mathf.Clamp(_targetZoom + 0.05f, 0, 1);
     }
 
-    private void UpdatePosition(float delta)
+    public void ZoomOut()
     {
+        _targetZoom = Mathf.Clamp(_targetZoom - 0.05f, 0, 1);
+    }
+
+    public void TurnLeft()
+    {
+        _rotationIndex = (_rotationIndex + 1) % _rotations.Length;
+        _targetRotation = _rotations[_rotationIndex];
+    }
+
+    public void TurnRight()
+    {
+        _rotationIndex -= 1;
+        _rotationIndex = _rotationIndex == -1 ? _rotationIndex + _rotations.Length : _rotationIndex;
+        _targetRotation = _rotations[_rotationIndex];
+    }
+
+    public void UpdatePosition(Vector3 direction)
+    {
+        
         var transform = Transform;
-        transform.origin = Transform.origin + GetRelativeWalkInput() * _walkSpeed * delta;
+        transform.origin = Transform.origin + direction * _walkSpeed * (float) GetProcessDeltaTime();
         Transform = transform;
     }
 
-    private void UpdateRotation(float delta)
+    public void UpdateRotation()
     {
         _camera.Position = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
 
@@ -77,7 +81,7 @@ public partial class CameraOperator : Node3D
         Rotation = rotation;
     }
 
-    private void UpdateZoom()
+    public void UpdateZoom()
     {
         _zoom = Mathf.Lerp(_zoom, _targetZoom, 0.1f);
 
@@ -86,18 +90,8 @@ public partial class CameraOperator : Node3D
         _gimbalV.Rotation = gimbalVRotation;
     }
 
-    private Vector3 GetRelativeWalkInput()
+    public Vector3 GetRelativeWalkInput(Vector3 walkInput)
     {
-        return GetWalkInput().Rotated(new Vector3(0, 1, 0), Rotation.y);
-    }
-
-    private Vector3 GetWalkInput()
-    {
-        int left = Input.IsActionPressed("camera_left") ? 1 : 0;
-        int right = Input.IsActionPressed("camera_right") ? 1 : 0;
-        int forward = Input.IsActionPressed("camera_forward") ? 1 : 0;
-        int back = Input.IsActionPressed("camera_back") ? 1 : 0;
-
-        return new Vector3(left - right, 0, forward - back).Normalized();
+        return walkInput.Rotated(new Vector3(0, 1, 0), Rotation.y);
     }
 }
