@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct UpdateMapEvent
 {
@@ -12,12 +12,12 @@ public struct UpdateMapEvent
     }
 }
 
-public class UpdateMapEventSystem : IEcsRunSystem
+public class UpdateMapEventSystem : IEcsSystem
 {
     EcsWorld _world;
     EcsFilter<UpdateMapEvent> _events;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

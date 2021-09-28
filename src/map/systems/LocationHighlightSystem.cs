@@ -1,15 +1,15 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 struct Highlighter {}
 
-public class LocationHighlightSystem : IEcsRunSystem
+public class LocationHighlightSystem : IEcsSystem
 {
     EcsFilter<HoveredLocation> _hoveredLocations;
     EcsFilter<Highlighter> _highlighter;
     EcsFilter<Locations, Map> _maps;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_highlighter.IsEmpty() || _hoveredLocations.IsEmpty() || _maps.IsEmpty())
         {

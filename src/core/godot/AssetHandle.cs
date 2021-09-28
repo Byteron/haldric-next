@@ -1,5 +1,5 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct AssetHandle<T> : IEcsAutoReset<AssetHandle<T>> where T : Resource
 {

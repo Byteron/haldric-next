@@ -1,8 +1,8 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public partial class ApplicationState : GameState
 {
-    EcsEntity _menuEntity;
+    EcsPackedEntity _menuEntityPacked;
 
     public ApplicationState(EcsWorld world) : base(world)
     { 
@@ -11,29 +11,30 @@ public partial class ApplicationState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-
-        _menuEntity = _world.NewEntity();
-
         var menuView = Scenes.Instance.MainMenuView.Instantiate<MainMenuView>();
         AddChild(menuView);
-
-        _menuEntity.Replace(new NodeHandle<MainMenuView>(menuView));
+     
+        int menuEntity = _world.Spawn().Add(new NodeHandle<MainMenuView>(menuView)).Entity();
+        _menuEntityPacked = _world.PackEntity(menuEntity);
     }
 
     public override void Continue(GameStateController gameStates)
     {
-        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        _menuEntityPacked.Unpack(_world, out var menuEntity);
+        var menuView = _world.Entity(menuEntity).Get<NodeHandle<MainMenuView>>().Node;
         menuView.Show();
     }
 
     public override void Pause(GameStateController gameStates)
     {
-        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        _menuEntityPacked.Unpack(_world, out var menuEntity);
+        var menuView = _world.Entity(menuEntity).Get<NodeHandle<MainMenuView>>().Node;
         menuView.Hide();
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _menuEntity.Destroy();
+        _menuEntityPacked.Unpack(_world, out var menuEntity);
+        _world.DespawnEntity(menuEntity);
     }
 }

@@ -1,4 +1,4 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public class MoveCommand : Command
 {
@@ -23,11 +23,11 @@ public class MoveCommand : Command
     }
 }
 
-public class MoveUnitCommandSystem : IEcsRunSystem
+public class MoveUnitCommandSystem : IEcsSystem
 {
     EcsFilter<Commander> _filter;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _filter)
         {

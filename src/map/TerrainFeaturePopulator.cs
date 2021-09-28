@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 struct RenderData
 {

@@ -1,9 +1,9 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct DestroyMapEvent { }
 
-public class DestroyMapEventSystem : IEcsRunSystem
+public class DestroyMapEventSystem : IEcsSystem
 {
     EcsFilter<DestroyMapEvent> _events;
     EcsFilter<Map> _maps;
@@ -11,7 +11,7 @@ public class DestroyMapEventSystem : IEcsRunSystem
     EcsFilter<MapCursor> _mapCursors;
     EcsFilter<NodeHandle<UnitView>> _units;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

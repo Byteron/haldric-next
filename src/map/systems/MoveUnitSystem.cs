@@ -1,12 +1,12 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class MoveUnitSystem : IEcsRunSystem
+public class MoveUnitSystem : IEcsSystem
 {
     EcsFilter<MapCursor> _filter;
     EcsFilter<Commander> _commander;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_filter.IsEmpty() || _commander.IsEmpty())
         {

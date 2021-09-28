@@ -1,8 +1,8 @@
 using Godot;
 using Godot.Collections;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class UpdateMapCursorSystem : IEcsRunSystem
+public class UpdateMapCursorSystem : IEcsSystem
 {
     private EcsFilter<HoveredLocation> _hoveredLocation;
     private EcsFilter<Locations, Map> _locations;
@@ -16,7 +16,7 @@ public class UpdateMapCursorSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_locations.IsEmpty())
         {

@@ -1,6 +1,6 @@
 using Godot;
 using Godot.Collections;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct LoadMapEvent
 {
@@ -12,14 +12,14 @@ public struct LoadMapEvent
     }
 }
 
-public class LoadMapEventSystem : IEcsRunSystem
+public class LoadMapEventSystem : IEcsSystem
 {
     public static string Path = "res://data/maps/";
     EcsWorld _world;
     EcsFilter<LoadMapEvent> _events;
     EcsFilter<Locations, Map> _maps;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

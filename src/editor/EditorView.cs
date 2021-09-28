@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public partial class EditorView : CanvasLayer
 {
@@ -62,8 +62,8 @@ public partial class EditorView : CanvasLayer
         int width = int.Parse(_widthTextEdit.Text);
         int height = int.Parse(_heightTextEdit.Text);
 
-        Main.Instance.World.NewEntity().Replace(new DestroyMapEvent());
-        Main.Instance.World.NewEntity().Replace(new CreateMapEvent(width, height));
+        Main.Instance.World.Spawn().Add(new DestroyMapEvent());
+        Main.Instance.World.Spawn().Add(new CreateMapEvent(width, height));
     }
 
     public void OnTerrainSelected(string code)
@@ -73,13 +73,11 @@ public partial class EditorView : CanvasLayer
 
     public void OnSaveButtonPressed()
     {
-        var entity = Main.Instance.World.NewEntity();
-        entity.Replace(new SaveMapEvent("map"));
+        Main.Instance.World.Spawn().Add(new SaveMapEvent("map"));
     }
 
     public void OnLoadButtonPressed()
     {
-        var entity = Main.Instance.World.NewEntity();
-        entity.Replace(new LoadMapEvent("map"));
+        Main.Instance.World.Spawn().Add(new LoadMapEvent("map"));
     }
 }

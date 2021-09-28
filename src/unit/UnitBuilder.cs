@@ -1,5 +1,5 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 struct Health { } // For Attribute<T>
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct UpdateTerrainMeshEvent
 {
@@ -35,7 +35,7 @@ public struct EdgeVertices
     }
 }
 
-public class UpdateTerrainMeshEventSystem : IEcsRunSystem
+public class UpdateTerrainMeshEventSystem : IEcsSystem
 {
     public static readonly Color ColorRed = new Color(1.0f, 0f, 0f);
     public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
@@ -46,7 +46,7 @@ public class UpdateTerrainMeshEventSystem : IEcsRunSystem
 
     TerrainMesh _terrainMesh;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

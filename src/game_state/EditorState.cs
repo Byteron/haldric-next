@@ -1,8 +1,8 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public partial class EditorState : GameState
 {
-    EcsEntity _editorEntity;
+    EcsPackedEntity _editorEntityPacked;
 
     public EditorState(EcsWorld world) : base(world)
     {
@@ -26,20 +26,21 @@ public partial class EditorState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        _editorEntity = _world.NewEntity();
 
         var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
         AddChild(editorView);
 
-        _editorEntity.Replace(new NodeHandle<EditorView>(editorView));
+        var editorEntity = _world.Spawn().Add(new NodeHandle<EditorView>(editorView)).Entity();
+        _editorEntityPacked = _world.PackEntity(editorEntity);
 
-        _world.NewEntity().Replace(new CreateMapEvent(40, 40));
+        _world.Spawn().Add(new CreateMapEvent(40, 40));
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _world.NewEntity().Replace(new DestroyMapEvent());
-        _editorEntity.Destroy();
+        _world.Spawn().Add(new DestroyMapEvent());
+        _editorEntityPacked.Unpack(_world, out var editorEntity); 
+        _world.DespawnEntity(editorEntity);
     }
 
     public override void Input(GameStateController gameStates, Godot.InputEvent e)

@@ -1,4 +1,4 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct PlateauArea : IEcsAutoReset<PlateauArea>
 {

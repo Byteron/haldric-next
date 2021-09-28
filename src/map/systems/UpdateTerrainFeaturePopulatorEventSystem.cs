@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct UpdateTerrainFeaturePopulatorEvent
 {
@@ -12,14 +12,14 @@ public struct UpdateTerrainFeaturePopulatorEvent
     }
 }
 
-public class UpdateTerrainFeaturePopulatorEventSystem : IEcsRunSystem
+public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 {
     EcsFilter<UpdateTerrainFeaturePopulatorEvent> _events;
     EcsFilter<Locations, NodeHandle<TerrainFeaturePopulator>, NodeHandle<TerrainCollider>> _chunks;
 
     TerrainFeaturePopulator _terrainFeaturePopulator;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

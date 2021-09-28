@@ -1,7 +1,7 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class SelectLocationSystem : IEcsRunSystem
+public class SelectLocationSystem : IEcsSystem
 {
     EcsFilter<MapCursor> _filter;
 
@@ -12,7 +12,7 @@ public class SelectLocationSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_filter.IsEmpty())
         {

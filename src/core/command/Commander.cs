@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public struct Commander : IEcsAutoReset<Commander>
+public struct Commander
 {
     private Stack<Command> History;
     private Queue<Command> Queue;
@@ -48,11 +48,5 @@ public struct Commander : IEcsAutoReset<Commander>
     public void ClearHistory()
     {
         History.Clear();
-    }
-
-    public void AutoReset(ref Commander c)
-    {
-        c.History = new Stack<Command>();
-        c.Queue = new Queue<Command>();
     }
 }

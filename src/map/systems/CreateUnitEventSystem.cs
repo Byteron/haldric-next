@@ -1,5 +1,5 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 using System.Linq;
 
 public struct CreateUnitEvent
@@ -14,7 +14,7 @@ public struct CreateUnitEvent
     }
 }
 
-public class CreateUnitEventSystem : IEcsRunSystem
+public class CreateUnitEventSystem : IEcsSystem
 {
     Node3D _parent;
 
@@ -27,7 +27,7 @@ public class CreateUnitEventSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_maps.IsEmpty())
         {

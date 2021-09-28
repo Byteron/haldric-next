@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct CreateMapEvent
 {
@@ -46,10 +46,9 @@ public struct ChunkSize
     }
 }
 
-public class CreateMapEventSystem : IEcsRunSystem
+public class CreateMapEventSystem : IEcsSystem
 {
     EcsWorld _world;
-    EcsFilter<CreateMapEvent> _events;
     Node _parent;
 
     public CreateMapEventSystem(Node parent)
@@ -57,22 +56,26 @@ public class CreateMapEventSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        _world = world;
+
+        var query = world.Query<CreateMapEvent>().End();
+
+        foreach (var eventEntity in query)
         {
-            var eventEntity = _events.GetEntity(i);
-            var createEvent = eventEntity.Get<CreateMapEvent>();
 
-            var mapEntity = _world.NewEntity();
+            var createEvent = query.Get<CreateMapEvent>(eventEntity);
 
-            mapEntity.Get<Map>();
+            var mapEntityRef = _world.Spawn()
+                .Add<Map>()
+                .Add<Grid>()
+                .Add<Locations>()
+                .Add(new ChunkSize(4, 4));
 
-            mapEntity.Replace(new ChunkSize(4, 4));
-
-            ref var locations = ref mapEntity.Get<Locations>();
-            ref var grid = ref mapEntity.Get<Grid>();
-            ref var chunkSize = ref mapEntity.Get<ChunkSize>();
+            ref var locations = ref mapEntityRef.Get<Locations>();
+            ref var grid = ref mapEntityRef.Get<Grid>();
+            ref var chunkSize = ref mapEntityRef.Get<ChunkSize>();
 
             InitializeMapCursor();
 
@@ -81,7 +84,7 @@ public class CreateMapEventSystem : IEcsRunSystem
                 createEvent.MapData = GetMapDataFromDimensions(createEvent.Width, createEvent.Height);
             }
 
-            InitializeFromMapData(mapEntity, createEvent.MapData);
+            InitializeFromMapData(mapEntityRef, createEvent.MapData);
             InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
 
@@ -91,16 +94,16 @@ public class CreateMapEventSystem : IEcsRunSystem
 
     private void InitializeMapCursor()
     {
-        var cursorEntity = _world.NewEntity();
-        cursorEntity.Get<MapCursor>();
-        cursorEntity.Get<HoveredLocation>();
+        var cursorEntityRef = _world.Spawn();
+        cursorEntityRef.Add<MapCursor>();
+        cursorEntityRef.Add<HoveredLocation>();
 
         var view = Scenes.Instance.LocationHighlight.Instantiate<Node3D>();
 
         _parent.AddChild(view);
 
-        cursorEntity.Replace(new NodeHandle<Node3D>(view));
-        cursorEntity.Get<Highlighter>();
+        cursorEntityRef.Add(new NodeHandle<Node3D>(view));
+        cursorEntityRef.Add<Highlighter>();
     }
 
     private Dictionary GetMapDataFromDimensions(int width, int height)
@@ -148,46 +151,46 @@ public class CreateMapEventSystem : IEcsRunSystem
         return dict;
     }
 
-    private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)
+    private void InitializeFromMapData(EcsEntityRef mapEntityRef, Dictionary mapData)
     {
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        mapEntity.Replace(new Grid(width, height));
+        mapEntityRef.Add(new Grid(width, height));
 
-        ref var locations = ref mapEntity.Get<Locations>();
+        ref var locations = ref mapEntityRef.Get<Locations>();
 
         var locationsData = (Dictionary)mapData["Locations"];
 
         foreach (var cellString in locationsData.Keys)
         {
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
-            var locEntity = Main.Instance.World.NewEntity();
+            var locEntityRef = Main.Instance.World.Spawn();
 
-            locEntity.Replace(Coords.FromCube(cell));
-            locEntity.Replace(new PlateauArea(0.75f));
+            locEntityRef.Add(Coords.FromCube(cell));
+            locEntityRef.Add(new PlateauArea(0.75f));
 
             var locationData = (Dictionary)locationsData[cellString];
 
             var terrainCodes = (Godot.Collections.Array)locationData["Terrain"];
             var elevation = System.Convert.ToInt32(locationData["Elevation"]);
 
-            locEntity.Replace(new Elevation(elevation));
+            locEntityRef.Add(new Elevation(elevation));
 
-            locEntity.Replace(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
+            locEntityRef.Add(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
 
             if (terrainCodes.Count == 2)
             {
-                locEntity.Replace(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
+                locEntityRef.Add(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
             }
 
-            locations.Set(cell, locEntity);
+            locations.Set(cell, _world.PackEntity(locEntityRef.Entity()));
         }
     }
 
     private void InitializeChunks(ChunkSize chunkSize, Grid grid, Locations locations)
     {
-        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsEntity>();
+        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsPackedEntity>();
 
         for (int z = 0; z < grid.Height; z++)
         {
@@ -200,21 +203,26 @@ public class CreateMapEventSystem : IEcsRunSystem
 
                 if (!chunks.ContainsKey(chunkCelli))
                 {
-                    chunks.Add(chunkCelli, _world.NewEntity());
+                    chunks.Add(chunkCelli, _world.PackEntity(_world.SpawnEntity()));
                 }
 
-                var chunkEntity = chunks[chunkCelli];
-                ref var chunkLocations = ref chunkEntity.Get<Locations>();
-                var locEntity = locations.Get(coords.Cube);
+                var chunkPackedEntity = chunks[chunkCelli];
+                chunkPackedEntity.Unpack(_world, out var chunkEntity);
+                var chunkEntityRef = _world.Entity(chunkEntity);
+                ref var chunkLocations = ref chunkEntityRef.Get<Locations>();
 
-                chunkLocations.Set(coords.Cube, locEntity);
+                var locPackedEntity = locations.Get(coords.Cube);
+                chunkLocations.Set(coords.Cube, locPackedEntity);
 
-                chunkEntity.Replace(chunkCelli);
-                locEntity.Replace(chunkCelli);
+                locPackedEntity.Unpack(_world, out var locEntity);
+                var locEntityRef = _world.Entity(locEntity);
+                
+                chunkEntityRef.Add(chunkCelli);
+                locEntityRef.Add(chunkCelli);
             }
         }
 
-        foreach (var chunkEntity in chunks.Values)
+        foreach (var chunkPackedEntity in chunks.Values)
         {
             var terrainMesh = new TerrainMesh();
             var terrainCollider = new TerrainCollider();
@@ -223,20 +231,26 @@ public class CreateMapEventSystem : IEcsRunSystem
             _parent.AddChild(terrainMesh);
             _parent.AddChild(terrainCollider);
             _parent.AddChild(terrainFeaturePopulator);
+            
+            chunkPackedEntity.Unpack(_world, out var chunkEntity);
+            var chunkEntityRef = _world.Entity(chunkEntity);
 
-            chunkEntity.Get<Chunk>();
-            chunkEntity.Replace(new NodeHandle<TerrainCollider>(terrainCollider));
-            chunkEntity.Replace(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
-            chunkEntity.Replace(new NodeHandle<TerrainMesh>(terrainMesh));
+            chunkEntityRef.Add<Chunk>();
+            chunkEntityRef.Add(new NodeHandle<TerrainCollider>(terrainCollider));
+            chunkEntityRef.Add(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
+            chunkEntityRef.Add(new NodeHandle<TerrainMesh>(terrainMesh));
         }
     }
 
     private void InitializeNeighbors(Locations locations)
     {
-        foreach (var entity in locations.Values)
+        foreach (var packdEntity in locations.Values)
         {
-            ref var coords = ref entity.Get<Coords>();
-            ref var neighbors = ref entity.Get<Neighbors>();
+            packdEntity.Unpack(_world, out var entity);
+            var entityRef = _world.Entity(entity);
+
+            ref var coords = ref entityRef.Get<Coords>();
+            ref var neighbors = ref entityRef.Get<Neighbors>();
 
             for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
             {
@@ -247,8 +261,8 @@ public class CreateMapEventSystem : IEcsRunSystem
                     continue;
                 }
 
-                var nEntity = locations.Get(nCell);
-                neighbors.Set(direction, nEntity);
+                var nPackedEntity = locations.Get(nCell);
+                neighbors.Set(direction, nPackedEntity);
             }
         }
     }

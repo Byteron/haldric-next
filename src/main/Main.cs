@@ -1,5 +1,6 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
+using Bitron.Ecs.Resources;
 
 public partial class Main : Node3D
 {
@@ -20,8 +21,7 @@ public partial class Main : Node3D
 
         Data.Instance.Scan();
         
-        var commanderEntity = _world.NewEntity();
-        commanderEntity.Get<Commander>();
+        _world.AddResource(new Commander());
 
         _gameController = GetNode<GameStateController>("GameStateController");
         _gameController.PushState(new ApplicationState(_world));

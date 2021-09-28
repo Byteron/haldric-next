@@ -1,11 +1,11 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class UpdateTerrainInfoSystem : IEcsRunSystem
+public class UpdateTerrainInfoSystem : IEcsSystem
 {
     EcsFilter<MapCursor> _filter;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _filter)
         {

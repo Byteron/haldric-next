@@ -1,5 +1,5 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public partial class AStarHex : AStar2D
 {

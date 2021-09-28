@@ -1,9 +1,8 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class UpdateStatsInfoSystem : IEcsRunSystem
+public class UpdateStatsInfoSystem : IEcsSystem
 {
-    EcsWorld _world;
     Node3D _parent;
 
     public UpdateStatsInfoSystem(Node3D parent)
@@ -11,11 +10,11 @@ public class UpdateStatsInfoSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         var s = "FPS: " + Engine.GetFramesPerSecond();
-        s += "\nEntities: " + _world.GetStats().ActiveEntities;
-        s += "\nComponents: " + _world.GetStats().Components;
+        s += "\nEntities: " + world.GetAllocatedEntitiesCount();
+        s += "\nComponents: " + world.GetComponentsCount();
         
         _parent.GetTree().CallGroup("StatsLabel", "set", "text", s);
     }

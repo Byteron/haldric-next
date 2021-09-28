@@ -1,11 +1,11 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class CommanderUndoSystem : IEcsRunSystem
+public class CommanderUndoSystem : IEcsSystem
 {
     EcsFilter<Commander> _filter;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _filter)
         {

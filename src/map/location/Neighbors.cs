@@ -1,35 +1,26 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public struct Neighbors : IEcsAutoReset<Neighbors>
+public struct Neighbors
 {
-    private EcsEntity[] _array;
+    private EcsPackedEntity[] _array;
 
     public bool Has(Direction direction)
     {
-        return _array[(int)direction] != EcsEntity.Null;
+        return _array[(int)direction] != default;
     }
 
-    public EcsEntity Get(Direction direction)
+    public EcsPackedEntity Get(Direction direction)
     {
         return _array[(int)direction];
     }
 
-    public void Set(Direction direction, EcsEntity entity)
+    public void Set(Direction direction, EcsPackedEntity entity)
     {
         _array[(int)direction] = entity;
     }
 
-    public EcsEntity[] GetArray()
+    public EcsPackedEntity[] GetArray()
     {
         return _array;
-    }
-
-    public void AutoReset(ref Neighbors c)
-    {
-        c._array = new EcsEntity[6];
-        for (int i = 0; i < 6; i++)
-        {
-            c._array[i] = EcsEntity.Null;
-        }
     }
 }

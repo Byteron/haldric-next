@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class EditorEditSystem : IEcsRunSystem
+public class EditorEditSystem : IEcsSystem
 {
     EcsWorld _world;
 
@@ -20,7 +20,7 @@ public class EditorEditSystem : IEcsRunSystem
         _parent = parent;
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _locations)
         {
@@ -136,13 +136,11 @@ public class EditorEditSystem : IEcsRunSystem
 
     private void SendUpdateMapEvent(List<Vector3i> chunks)
     {
-        var eventEntity = _world.NewEntity();
-        eventEntity.Replace(new UpdateMapEvent(chunks));
+        _world.Spawn().Add(new UpdateMapEvent(chunks));
     }
 
     private void SendFeaturesUpdateEvent(List<Vector3i> chunks)
     {
-        var eventEntity = _world.NewEntity();
-        eventEntity.Replace(new UpdateTerrainFeaturePopulatorEvent(chunks));
+        _world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
     }
 }

@@ -1,7 +1,7 @@
 using Godot;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
-public class CameraOperatorSystem : IEcsRunSystem, IEcsInitSystem, IEcsDestroySystem
+public class CameraOperatorSystem : IEcsSystem, IEcsInitSystem, IEcsDestroySystem
 {
     EcsWorld _world;
     EcsFilter<NodeHandle<CameraOperator>> _filter;
@@ -32,7 +32,7 @@ public class CameraOperatorSystem : IEcsRunSystem, IEcsInitSystem, IEcsDestroySy
         }
     }
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         if (_filter.IsEmpty())
         {

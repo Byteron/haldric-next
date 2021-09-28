@@ -1,4 +1,4 @@
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public partial class PlayState : GameState
 {
@@ -26,17 +26,17 @@ public partial class PlayState : GameState
 
     public override void Enter(GameStateController gameStates)
     {   
-        _world.NewEntity().Replace(new LoadMapEvent("map"));
+        _world.Spawn().Add(new LoadMapEvent("map"));
 
-        _world.NewEntity().Replace(new CreateUnitEvent("Soldier", Coords.FromOffset(5, 5)));
-        _world.NewEntity().Replace(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 5)));
-        _world.NewEntity().Replace(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 6)));
-        _world.NewEntity().Replace(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 7)));
+        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(5, 5)));
+        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 5)));
+        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 6)));
+        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 7)));
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _world.NewEntity().Replace(new DestroyMapEvent());
+        _world.Spawn().Add(new DestroyMapEvent());
     }
 
     public override void Input(GameStateController gameStates, Godot.InputEvent e)

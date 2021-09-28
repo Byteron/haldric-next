@@ -1,14 +1,14 @@
 using Godot;
 using System.Collections.Generic;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct Locations : IEcsAutoReset<Locations>
 {
-    Dictionary<Vector3, EcsEntity> _dict;
+    Dictionary<Vector3, EcsPackedEntity> _dict;
 
-    public Dictionary<Vector3, EcsEntity> Dict { get { return _dict; } }
+    public Dictionary<Vector3, EcsPackedEntity> Dict { get { return _dict; } }
 
-    public Dictionary<Vector3, EcsEntity>.ValueCollection Values { get { return _dict.Values; } }
+    public Dictionary<Vector3, EcsPackedEntity>.ValueCollection Values { get { return _dict.Values; } }
 
     public int Count { get { return _dict.Count; } }
 
@@ -17,21 +17,21 @@ public struct Locations : IEcsAutoReset<Locations>
         return _dict.ContainsKey(cell);
     }
 
-    public EcsEntity Get(Vector3 cell)
+    public EcsPackedEntity Get(Vector3 cell)
     {
         if (_dict.ContainsKey(cell))
         {
             return _dict[cell];
         }
 
-        return EcsEntity.Null;
+        return default;
     }
 
-    public void Set(Vector3 cell, EcsEntity entity)
+    public void Set(Vector3 cell, EcsPackedEntity entity)
     {
         if (_dict == null)
         {
-            _dict = new Dictionary<Vector3, EcsEntity>();
+            _dict = new Dictionary<Vector3, EcsPackedEntity>();
         }
 
         if (_dict.ContainsKey(cell))
@@ -51,6 +51,6 @@ public struct Locations : IEcsAutoReset<Locations>
 
     public void AutoReset(ref Locations c)
     {
-        c._dict = new Dictionary<Vector3, EcsEntity>();
+        c._dict = new Dictionary<Vector3, EcsPackedEntity>();
     }
 }

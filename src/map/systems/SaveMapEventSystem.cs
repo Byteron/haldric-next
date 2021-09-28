@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
-using Leopotam.Ecs;
+using Bitron.Ecs;
 
 public struct SaveMapEvent
 {
@@ -13,14 +13,14 @@ public struct SaveMapEvent
     }
 }
 
-public class SaveMapEventSystem : IEcsRunSystem
+public class SaveMapEventSystem : IEcsSystem
 {
     public static string Path = "res://data/maps/";
 
     EcsFilter<SaveMapEvent> _events;
     EcsFilter<Locations, Map> _maps;
 
-    public void Run()
+    public void Run(EcsWorld world)
     {
         foreach (var i in _events)
         {

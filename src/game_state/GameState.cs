@@ -1,35 +1,35 @@
-using Leopotam.Ecs;
 using Godot;
+using Bitron.Ecs;
 
 public partial class GameState : Node3D
 {
     protected EcsWorld _world = null;
 
-    private EcsSystems _inputSystems = null;
-    private EcsSystems _updateSystems = null;
-    private EcsSystems _eventSystems = null;
+    private EcsSystemGroup _inputSystems = null;
+    private EcsSystemGroup _updateSystems = null;
+    private EcsSystemGroup _eventSystems = null;
 
     public GameState(EcsWorld world)
     {
         _world = world;
 
-        _inputSystems = new EcsSystems(world);
-        _updateSystems = new EcsSystems(world);
-        _eventSystems = new EcsSystems(world);
+        _inputSystems = new EcsSystemGroup();
+        _updateSystems = new EcsSystemGroup();
+        _eventSystems = new EcsSystemGroup();
     }
 
     public override void _EnterTree()
     {
-        _inputSystems.Init();
-        _updateSystems.Init();
-        _eventSystems.Init();
+        _inputSystems.Init(_world);
+        _updateSystems.Init(_world);
+        _eventSystems.Init(_world);
     }
 
     public override void _ExitTree()
     {
-        _inputSystems.Destroy();
-        _updateSystems.Destroy();
-        _eventSystems.Destroy();
+        _inputSystems.Destroy(_world);
+        _updateSystems.Destroy(_world);
+        _eventSystems.Destroy(_world);
     }
 
     public virtual void Enter(GameStateController gameStates) { }
@@ -42,17 +42,17 @@ public partial class GameState : Node3D
 
     public void RunInputSystems()
     {
-        _inputSystems.Run();
+        _inputSystems.Run(_world);
     }
 
     public void RunUpdateSystems()
     {
-        _updateSystems.Run();
+        _updateSystems.Run(_world);
     }
 
     public void RunEventSystems()
     {
-        _eventSystems.Run();
+        _eventSystems.Run(_world);
     }
 
     protected void AddInputSystem(IEcsSystem system)
