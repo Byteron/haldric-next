@@ -15,7 +15,7 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new MoveUnitCommandSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem(this));
+        AddUpdateSystem(new UpdateStatsInfoSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -30,6 +30,11 @@ public partial class PlayState : GameState
 
     public override void Enter(GameStateController gameStates)
     {   
+        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        AddChild(hudView);
+
+        _world.AddResource(hudView);
+
         _world.Spawn().Add(new LoadMapEvent("map"));
 
         _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(5, 5)));
@@ -40,6 +45,7 @@ public partial class PlayState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
+        _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DestroyMapEvent());
     }
 

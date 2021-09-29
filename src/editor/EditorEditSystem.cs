@@ -17,15 +17,8 @@ public class EditorEditSystem : IEcsSystem
     {
         var hoveredLocationQuery = world.Query<HoveredLocation>().End();
         var locationsQuery = world.Query<Locations>().Inc<Map>().End();
-        var editorQuery = world.Query<NodeHandle<EditorView>>().End();
 
-        EditorView editorView = null;
-
-        foreach (var e in editorQuery)
-        {
-            editorView = editorQuery.Get<NodeHandle<EditorView>>(e).Node;
-        }
-
+        var editorView = world.GetResource<EditorView>();
 
         foreach (var locationsEntity in locationsQuery)
         {
@@ -102,6 +95,11 @@ public class EditorEditSystem : IEcsSystem
         {
             if (editorView.TerrainEntity.Has<OverlayTerrain>())
             {
+                if (!locEntity.Has<HasOverlayTerrain>())
+                {
+                    locEntity.Add<HasOverlayTerrain>();
+                }
+
                 locEntity.Get<HasOverlayTerrain>().Entity = editorView.TerrainEntity;
             }
             else

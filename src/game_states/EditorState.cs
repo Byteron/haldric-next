@@ -2,8 +2,6 @@ using Bitron.Ecs;
 
 public partial class EditorState : GameState
 {
-    EcsEntity _editorEntity;
-
     public EditorState(EcsWorld world) : base(world)
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
@@ -15,7 +13,7 @@ public partial class EditorState : GameState
         AddInputSystem(new LocationHighlightSystem());
 
         AddUpdateSystem(new UpdateCameraOperatorSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem(this));
+        AddUpdateSystem(new UpdateStatsInfoSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -30,18 +28,23 @@ public partial class EditorState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
+        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        AddChild(hudView);
+
+        _world.AddResource(hudView);
 
         var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
         AddChild(editorView);
 
-        _editorEntity = _world.Spawn().Add(new NodeHandle<EditorView>(editorView));
+        _world.AddResource(editorView);
 
         _world.Spawn().Add(new CreateMapEvent(40, 40));
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _editorEntity.Despawn();
+        _world.RemoveResource<EditorView>();
+        _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DestroyMapEvent());
     }
 

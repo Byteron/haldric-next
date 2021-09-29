@@ -5,8 +5,14 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<HoveredLocation>().End();
+        if (!world.HasResource<HUDView>())
+        {
+            return;
+        }
+        
+        var hudView = world.GetResource<HUDView>();
 
+        var query = world.Query<HoveredLocation>().End();
         foreach (var entityId in query)
         {
             var locEntity = query.Get<HoveredLocation>(entityId).Entity;
@@ -27,7 +33,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
                 overlayTerrainCode = "^" + overlayTerrainEntity.Get<TerrainCode>().Value;
             }
 
-            Main.Instance.GetTree().CallGroup("TerrainLabel", "set", "text", string.Format("Terrain: {0}{1}\nElevation: {2}", baseTerrainCode, overlayTerrainCode, elevation));
+            hudView.TerrainLabel.Text = string.Format("Terrain: {0}{1}\nElevation: {2}", baseTerrainCode, overlayTerrainCode, elevation);
         }
     }
 }

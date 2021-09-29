@@ -7,6 +7,8 @@ public partial class Scenes : Node
 
     [Export] public PackedScene EditorView;
     [Export] public PackedScene MainMenuView;
+    [Export] public PackedScene DebugView;
+    [Export] public PackedScene HUDView;
 
     [Export] public PackedScene LocationHighlight;
     
