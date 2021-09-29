@@ -1,6 +1,5 @@
 using Godot;
 using Bitron.Ecs;
-using Bitron.Ecs.Resources;
 
 public partial class Main : Node3D
 {

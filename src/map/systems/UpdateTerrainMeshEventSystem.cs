@@ -41,22 +41,20 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
     public static readonly Color ColorBlue = new Color(0f, 0f, 1.0f);
 
-    EcsFilter<UpdateTerrainMeshEvent> _events;
-    EcsFilter<Locations, NodeHandle<TerrainMesh>, NodeHandle<TerrainCollider>> _chunks;
-
     TerrainMesh _terrainMesh;
 
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        var eventQuery = world.Query<UpdateTerrainMeshEvent>().End();
+        var chunkQuery = world.Query<Locations>().Inc<NodeHandle<TerrainMesh>>().Inc<NodeHandle<TerrainCollider>>().End();
+
+        foreach (var eventEntityId in eventQuery)
         {
-            foreach (var j in _chunks)
+            var updateEvent = eventQuery.Get<UpdateTerrainMeshEvent>(eventEntityId);
+
+            foreach (var chunkEntityId in chunkQuery)
             {
-                var eventEntity = _events.GetEntity(i);
-                var chunkEntity = _chunks.GetEntity(j);
-
-                var updateEvent = eventEntity.Get<UpdateTerrainMeshEvent>();
-
+                var chunkEntity = world.Entity(chunkEntityId);
                 var chunkCell = chunkEntity.Get<Vector3i>();
 
                 if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))

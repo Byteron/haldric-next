@@ -3,8 +3,6 @@ using Bitron.Ecs;
 
 public class SelectLocationSystem : IEcsSystem
 {
-    EcsFilter<MapCursor> _filter;
-
     Node3D _parent;
 
     public SelectLocationSystem(Node3D parent)
@@ -14,40 +12,43 @@ public class SelectLocationSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        if (_filter.IsEmpty())
-        {
-            return;
-        }
 
-        var cursorEntity = _filter.GetEntity(0);
-        ref var locEntity = ref cursorEntity.Get<HoveredLocation>().Entity;
-        
-        if (locEntity == EcsEntity.Null)
-        {
-            return;
-        }
+        var cursorQuery = world.Query<MapCursor>().End();
 
-        if (Input.IsActionJustPressed("select_unit"))
+        foreach (var cursorEntityId in cursorQuery)
         {
-            if (locEntity.Has<HasUnit>())
+            var cursorEntity = world.Entity(cursorEntityId);
+
+            var locEntity = cursorEntity.Get<HoveredLocation>().Entity;
+            
+            if (!locEntity.IsAlive())
             {
-                cursorEntity.Replace(new HasLocation(locEntity));
+                return;
+            }
 
-                var unitEntity = locEntity.Get<HasUnit>().Entity;
-                var id = unitEntity.Get<Id>().Value;
-                var hp = unitEntity.Get<Attribute<Health>>().Value;
-                var xp = unitEntity.Get<Attribute<Experience>>().Value;
-                var mp = unitEntity.Get<Attribute<Moves>>().Value;
-                var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp, xp, mp);
+            if (Input.IsActionJustPressed("select_unit"))
+            {
+                if (locEntity.Has<HasUnit>())
+                {
+                    cursorEntity.Add(new HasLocation(locEntity));
 
-                _parent.GetTree().CallGroup("UnitLabel", "set", "text", s);
+                    var unitEntity = locEntity.Get<HasUnit>().Entity;
+                    var id = unitEntity.Get<Id>().Value;
+                    var hp = unitEntity.Get<Attribute<Health>>().Value;
+                    var xp = unitEntity.Get<Attribute<Experience>>().Value;
+                    var mp = unitEntity.Get<Attribute<Moves>>().Value;
+                    var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp, xp, mp);
+
+                    _parent.GetTree().CallGroup("UnitLabel", "set", "text", s);
+                }
+            }
+
+            if (Input.IsActionJustPressed("deselect_unit"))
+            {
+                cursorEntity.Remove<HasLocation>();
+                _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
             }
         }
 
-        if (Input.IsActionJustPressed("deselect_unit"))
-        {
-            cursorEntity.Del<HasLocation>();
-            _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
-        }
     }
 }

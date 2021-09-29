@@ -11,6 +11,6 @@ public struct HasLocation : IEcsAutoReset<HasLocation>
     
     public void AutoReset(ref HasLocation c)
     {
-        c.Entity = EcsEntity.Null;
+        c.Entity = default;
     }
 }

@@ -14,36 +14,33 @@ public struct UpdateTerrainFeaturePopulatorEvent
 
 public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 {
-    EcsFilter<UpdateTerrainFeaturePopulatorEvent> _events;
-    EcsFilter<Locations, NodeHandle<TerrainFeaturePopulator>, NodeHandle<TerrainCollider>> _chunks;
-
     TerrainFeaturePopulator _terrainFeaturePopulator;
 
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        var eventQuery = world.Query<UpdateTerrainFeaturePopulatorEvent>().End();
+        var chunksQuery = world.Query<Locations>().Inc<NodeHandle<TerrainFeaturePopulator>>().Inc<NodeHandle<TerrainCollider>>().End();
+
+        foreach (var eventEntityId in eventQuery)
         {
-            foreach (var j in _chunks)
+            foreach (var chunkEntityId in chunksQuery)
             {
-                var eventEntity = _events.GetEntity(i);
-                var chunkEntity = _chunks.GetEntity(j);
+                var updateEvent = eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
 
-                var updateEvent = eventEntity.Get<UpdateTerrainFeaturePopulatorEvent>();
-
-                var chunkCell = chunkEntity.Get<Vector3i>();
+                var chunkCell = chunksQuery.Get<Vector3i>(chunkEntityId);
 
                 if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
                 {
                     continue;
                 }
 
-                _terrainFeaturePopulator = chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
+                _terrainFeaturePopulator = chunksQuery.Get<NodeHandle<TerrainFeaturePopulator>>(chunkEntityId).Node;
 
-                ref var locations = ref chunkEntity.Get<Locations>();
+                ref var locations = ref chunksQuery.Get<Locations>(chunkEntityId);
 
                 Populate(locations);
 
-                var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
+                var terrainCollider = chunksQuery.Get<NodeHandle<TerrainCollider>>(chunkEntityId).Node;
             }
         }
     }

@@ -3,16 +3,15 @@ using Bitron.Ecs;
 
 public class UpdateTerrainInfoSystem : IEcsSystem
 {
-    EcsFilter<MapCursor> _filter;
-
     public void Run(EcsWorld world)
     {
-        foreach (var i in _filter)
-        {
-            var cursorEntity = _filter.GetEntity(i);
-            var locEntity = cursorEntity.Get<HoveredLocation>().Entity;
+        var query = world.Query<HoveredLocation>().End();
 
-            if (locEntity == EcsEntity.Null)
+        foreach (var entityId in query)
+        {
+            var locEntity = query.Get<HoveredLocation>(entityId).Entity;
+
+            if (!locEntity.IsAlive())
             {
                 continue;
             }

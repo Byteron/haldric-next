@@ -6,12 +6,8 @@ public class UnitFactory
 {
     static UnitBuilder _builder = new UnitBuilder();
 
-    public static EcsEntity CreateFromJSON(string jsonString)
+    public static EcsEntity CreateFromDict(Dictionary dict)
     {
-        var json = new JSON();
-        json.Parse(jsonString);
-        var dict = json.GetData() as Dictionary;
-
         var unit = _builder
             .Create()
             .WithId((string)dict["id"])

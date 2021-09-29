@@ -2,24 +2,24 @@ using Bitron.Ecs;
 
 public struct Neighbors
 {
-    private EcsPackedEntity[] _array;
+    private EcsEntity[] _array;
 
     public bool Has(Direction direction)
     {
-        return _array[(int)direction] != default;
+        return _array[(int)direction].IsAlive();
     }
 
-    public EcsPackedEntity Get(Direction direction)
+    public EcsEntity Get(Direction direction)
     {
         return _array[(int)direction];
     }
 
-    public void Set(Direction direction, EcsPackedEntity entity)
+    public void Set(Direction direction, EcsEntity entity)
     {
         _array[(int)direction] = entity;
     }
 
-    public EcsPackedEntity[] GetArray()
+    public EcsEntity[] GetArray()
     {
         return _array;
     }

@@ -4,9 +4,6 @@ using Bitron.Ecs;
 
 public class UpdateMapCursorSystem : IEcsSystem
 {
-    private EcsFilter<HoveredLocation> _hoveredLocation;
-    private EcsFilter<Locations, Map> _locations;
-
     private Node3D _parent;
 
     private Vector3 previousCell = Vector3.Zero;
@@ -18,31 +15,31 @@ public class UpdateMapCursorSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        if (_locations.IsEmpty())
+        var cursorQuery = world.Query<HoveredLocation>().End();
+        var mapQuery = world.Query<Locations>().Inc<Map>().End();
+
+        foreach (var mapEntityId in mapQuery)
         {
-            return;
-        }
+            ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
 
-        ref var locations = ref _locations.GetEntity(0).Get<Locations>();
+            var result = ShootRay();
 
-        var result = ShootRay();
-
-        if (result.Contains("position"))
-        {
-            var position = (Vector3)result["position"];
-            var coords = Coords.FromWorld(position);
-
-            if (previousCell != coords.Axial)
+            if (result.Contains("position"))
             {
-                foreach(var i in _hoveredLocation)
+                var position = (Vector3)result["position"];
+                var coords = Coords.FromWorld(position);
+
+                if (previousCell != coords.Axial)
                 {
-                    var locEntity = locations.Get(coords.Cube);
-                    _hoveredLocation.GetEntity(i).Get<HoveredLocation>().Entity = locEntity;
+                    foreach (var cursorEntityId in cursorQuery)
+                    {
+                        var locEntity = locations.Get(coords.Cube);
+                        cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity = locEntity;
+                    }
+
+                    previousCell = coords.Axial;
                 }
-
-                previousCell = coords.Axial;
             }
-
         }
     }
 

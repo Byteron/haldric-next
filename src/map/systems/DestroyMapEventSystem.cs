@@ -5,59 +5,41 @@ public struct DestroyMapEvent { }
 
 public class DestroyMapEventSystem : IEcsSystem
 {
-    EcsFilter<DestroyMapEvent> _events;
-    EcsFilter<Map> _maps;
-    EcsFilter<Chunk> _chunks;
-    EcsFilter<MapCursor> _mapCursors;
-    EcsFilter<NodeHandle<UnitView>> _units;
-
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        var eventQuery = world.Query<DestroyMapEvent>().End();
+        var mapQuery = world.Query<Map>().Inc<Locations>().End();
+        var chunkQuery = world.Query<Chunk>().End();
+        var cursorQuery = world.Query<MapCursor>().End();
+        var unitQuery = world.Query<NodeHandle<UnitView>>().End();
+
+        foreach (var _ in eventQuery)
         {
-            var eventEntity = _events.GetEntity(i);
-            var destroyEvent = eventEntity.Get<DestroyMapEvent>();
-
-            foreach (var j in _chunks)
+            foreach (var entityId in chunkQuery)
             {
-                var chunkEntity = _chunks.GetEntity(j);
-
-                ref var terrainMesh = ref chunkEntity.Get<NodeHandle<TerrainMesh>>().Node;
-                ref var terrainCollider = ref chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
-                ref var terrainFeaturePopulator = ref chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
-                chunkEntity.Destroy();
+                world.DespawnEntity(entityId);
             }
 
-            foreach (var j in _units)
+            foreach (var entityId in unitQuery)
             {
-                var unitEntity = _units.GetEntity(j);
-
-                ref var view = ref unitEntity.Get<NodeHandle<UnitView>>().Node;
-
-                unitEntity.Destroy();
+                world.DespawnEntity(entityId);
             }
 
-            foreach (var j in _mapCursors)
+            foreach (var entityId in cursorQuery)
             {
-                var cursorEntity = _mapCursors.GetEntity(j);
-
-                ref var highlighter = ref cursorEntity.Get<NodeHandle<Node3D>>().Node;
-
-                cursorEntity.Destroy();
+                world.DespawnEntity(entityId);
             }
 
-            foreach (var j in _maps)
+            foreach (var entityId in mapQuery)
             {
-                var mapEntity = _maps.GetEntity(j);
-
-                ref var locations = ref mapEntity.Get<Locations>();
+                ref var locations = ref mapQuery.Get<Locations>(entityId);
 
                 foreach (var locEntity in locations.Values)
                 {
-                    locEntity.Destroy();
+                    locEntity.Despawn();
                 }
 
-                mapEntity.Destroy();
+                world.DespawnEntity(entityId);
             }
         }
     }

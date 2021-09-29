@@ -4,14 +4,7 @@ using Bitron.Ecs;
 
 public class EditorEditSystem : IEcsSystem
 {
-    EcsWorld _world;
-
     Node3D _parent;
-
-    EcsFilter<HoveredLocation> _hoveredLocations;
-    EcsFilter<Locations, Map> _locations;
-
-    EcsFilter<NodeHandle<EditorView>> _editors;
 
     Vector3 _previousCoords;
 
@@ -22,79 +15,77 @@ public class EditorEditSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        foreach (var i in _locations)
+        var hoveredLocationQuery = world.Query<HoveredLocation>().End();
+        var locationsQuery = world.Query<Locations>().Inc<Map>().End();
+
+        var editorView = world.GetResource<NodeHandle<EditorView>>().Node;
+
+
+        foreach (var locationsEntity in locationsQuery)
         {
-            if (_hoveredLocations.IsEmpty() || _locations.IsEmpty() || _editors.IsEmpty())
+            foreach (var hoveredLocationEntity in hoveredLocationQuery)
             {
-                return;
-            }
+                ref var locations = ref locationsQuery.Get<Locations>(locationsEntity);
+                var locEntity = hoveredLocationQuery.Get<HoveredLocation>(hoveredLocationEntity).Entity;
 
-            ref var locations = ref _locations.GetEntity(0).Get<Locations>();
-            var locEntity = _hoveredLocations.GetEntity(0).Get<HoveredLocation>().Entity;
-
-            if (locEntity == EcsEntity.Null)
-            {
-                return;
-            }
-
-            var editorEntity = _editors.GetEntity(0);
-
-            ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
-
-            ref var hoveredCoords = ref locEntity.Get<Coords>();
-            if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
-            {
-                _previousCoords = hoveredCoords.Cube;
-
-                var chunks = new List<Vector3i>();
-
-                foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube, editorView.BrushSize))
+                if (!locEntity.IsAlive())
                 {
-                    if (!locations.Has(cube))
+                    return;
+                }
+
+                ref var hoveredCoords = ref locEntity.Get<Coords>();
+                if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
+                {
+                    _previousCoords = hoveredCoords.Cube;
+
+                    var chunks = new List<Vector3i>();
+
+                    foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube, editorView.BrushSize))
+                    {
+                        if (!locations.Has(cube))
+                        {
+                            continue;
+                        }
+
+                        var nLocEntity = locations.Get(cube);
+                        EditLocation(editorView, nLocEntity);
+
+                        var chunkCell = nLocEntity.Get<Vector3i>();
+
+                        if (!chunks.Contains(chunkCell))
+                        {
+                            chunks.Add(chunkCell);
+                            chunks.Add(chunkCell + new Vector3i(1, 0, 1));
+                            chunks.Add(chunkCell + new Vector3i(1, 0, 0));
+                            chunks.Add(chunkCell + new Vector3i(1, 0, -1));
+                            chunks.Add(chunkCell + new Vector3i(-1, 0, 1));
+                            chunks.Add(chunkCell + new Vector3i(-1, 0, 0));
+                            chunks.Add(chunkCell + new Vector3i(-1, 0, -1));
+                            chunks.Add(chunkCell + new Vector3i(0, 0, 1));
+                            chunks.Add(chunkCell + new Vector3i(0, 0, -1));
+                        }
+                    }
+
+                    if (!editorView.UseTerrain && ! editorView.UseElevation)
                     {
                         continue;
                     }
-
-                    var nLocEntity = locations.Get(cube);
-                    EditLocation(editorEntity, nLocEntity);
-
-                    var chunkCell = nLocEntity.Get<Vector3i>();
-
-                    if (!chunks.Contains(chunkCell))
+                    
+                    if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
                     {
-                        chunks.Add(chunkCell);
-                        chunks.Add(chunkCell + new Vector3i(1, 0, 1));
-                        chunks.Add(chunkCell + new Vector3i(1, 0, 0));
-                        chunks.Add(chunkCell + new Vector3i(1, 0, -1));
-                        chunks.Add(chunkCell + new Vector3i(-1, 0, 1));
-                        chunks.Add(chunkCell + new Vector3i(-1, 0, 0));
-                        chunks.Add(chunkCell + new Vector3i(-1, 0, -1));
-                        chunks.Add(chunkCell + new Vector3i(0, 0, 1));
-                        chunks.Add(chunkCell + new Vector3i(0, 0, -1));
+                        SendFeaturesUpdateEvent(world, chunks);
                     }
-                }
-
-                if (!editorView.UseTerrain && ! editorView.UseElevation)
-                {
-                    continue;
-                }
-                
-                if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
-                {
-                    SendFeaturesUpdateEvent(chunks);
-                }
-                else
-                {
-                    SendUpdateMapEvent(chunks);
+                    else
+                    {
+                        SendUpdateMapEvent(world, chunks);
+                    }
                 }
             }
         }
     }
 
-    private void EditLocation(EcsEntity editorEntity, EcsEntity locEntity)
+    private void EditLocation(EditorView editorView, EcsEntity locEntity)
     {
-        ref var editorView = ref editorEntity.Get<NodeHandle<EditorView>>().Node;
-
         ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
 
         ref var elevation = ref locEntity.Get<Elevation>();
@@ -111,7 +102,7 @@ public class EditorEditSystem : IEcsSystem
             {
                 if (locEntity.Has<HasOverlayTerrain>())
                 {
-                    locEntity.Del<HasOverlayTerrain>();
+                    locEntity.Remove<HasOverlayTerrain>();
                 }
 
                 baseTerrainEntity = editorView.TerrainEntity;
@@ -134,13 +125,13 @@ public class EditorEditSystem : IEcsSystem
         }
     }
 
-    private void SendUpdateMapEvent(List<Vector3i> chunks)
+    private void SendUpdateMapEvent(EcsWorld world, List<Vector3i> chunks)
     {
-        _world.Spawn().Add(new UpdateMapEvent(chunks));
+        world.Spawn().Add(new UpdateMapEvent(chunks));
     }
 
-    private void SendFeaturesUpdateEvent(List<Vector3i> chunks)
+    private void SendFeaturesUpdateEvent(EcsWorld world, List<Vector3i> chunks)
     {
-        _world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
+        world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
     }
 }

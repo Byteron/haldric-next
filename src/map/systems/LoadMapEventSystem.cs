@@ -16,15 +16,14 @@ public class LoadMapEventSystem : IEcsSystem
 {
     public static string Path = "res://data/maps/";
     EcsWorld _world;
-    EcsFilter<LoadMapEvent> _events;
-    EcsFilter<Locations, Map> _maps;
 
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        var eventQuery = world.Query<LoadMapEvent>().End();
+
+        foreach (var eventEntityId in eventQuery)
         {
-            var eventEntity = _events.GetEntity(i);
-            var loadMapEvent = eventEntity.Get<LoadMapEvent>();
+            var loadMapEvent = eventQuery.Get<LoadMapEvent>(eventEntityId);
 
             var saveData = LoadFromFile(loadMapEvent.Name);
 
@@ -32,7 +31,7 @@ public class LoadMapEventSystem : IEcsSystem
         }
     }
 
-    public Dictionary LoadFromFile(string name)
+    private Dictionary LoadFromFile(string name)
     {
         var file = new File();
         GD.Print(Path + name + ".json");
@@ -49,12 +48,9 @@ public class LoadMapEventSystem : IEcsSystem
         return json.GetData() as Dictionary;
     }
 
-    public void SendMapChangeEvents(Dictionary mapData)
+    private void SendMapChangeEvents(Dictionary mapData)
     {
-        var destroyEntity = _world.NewEntity();
-        destroyEntity.Get<DestroyMapEvent>();
-
-        var createEntity = _world.NewEntity();
-        createEntity.Replace(new CreateMapEvent(mapData));
+        _world.Spawn().Add<DestroyMapEvent>();
+        _world.Spawn().Add(new CreateMapEvent(mapData));
     }
 }

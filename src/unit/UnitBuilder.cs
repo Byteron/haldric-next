@@ -41,38 +41,38 @@ public class UnitBuilder
 
     public UnitBuilder Create()
     {
-        _entity = Main.Instance.World.NewEntity();
+        _entity = Main.Instance.World.Spawn();
         return this;
     }
 
     public UnitBuilder WithId(string id)
     {
-        _entity.Replace(new Id(id));
+        _entity.Add(new Id(id));
         return this;
     }
 
     public UnitBuilder WithHealth(int hp)
     {
-        _entity.Replace(new Attribute<Health>(hp));
+        _entity.Add(new Attribute<Health>(hp));
         return this;
     }
 
     public UnitBuilder WithExperience(int xp)
     {
-        _entity.Replace(new Attribute<Experience>(xp));
+        _entity.Add(new Attribute<Experience>(xp));
         return this;
     }
 
     public UnitBuilder WithMoves(int mp)
     {
-        _entity.Replace(new Attribute<Moves>(mp));
+        _entity.Add(new Attribute<Moves>(mp));
         return this;
     }
 
     public UnitBuilder WithView(string path)
     {
         var packedScene = GD.Load<PackedScene>(path);
-        _entity.Replace(new AssetHandle<PackedScene>(packedScene));
+        _entity.Add(new AssetHandle<PackedScene>(packedScene));
         return this;
     }
 

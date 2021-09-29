@@ -67,15 +67,15 @@ public class CreateMapEventSystem : IEcsSystem
 
             var createEvent = query.Get<CreateMapEvent>(eventEntity);
 
-            var mapEntityRef = _world.Spawn()
+            var mapEntity = _world.Spawn()
                 .Add<Map>()
                 .Add<Grid>()
                 .Add<Locations>()
                 .Add(new ChunkSize(4, 4));
 
-            ref var locations = ref mapEntityRef.Get<Locations>();
-            ref var grid = ref mapEntityRef.Get<Grid>();
-            ref var chunkSize = ref mapEntityRef.Get<ChunkSize>();
+            ref var locations = ref mapEntity.Get<Locations>();
+            ref var grid = ref mapEntity.Get<Grid>();
+            ref var chunkSize = ref mapEntity.Get<ChunkSize>();
 
             InitializeMapCursor();
 
@@ -84,7 +84,7 @@ public class CreateMapEventSystem : IEcsSystem
                 createEvent.MapData = GetMapDataFromDimensions(createEvent.Width, createEvent.Height);
             }
 
-            InitializeFromMapData(mapEntityRef, createEvent.MapData);
+            InitializeFromMapData(mapEntity, createEvent.MapData);
             InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
 
@@ -94,16 +94,16 @@ public class CreateMapEventSystem : IEcsSystem
 
     private void InitializeMapCursor()
     {
-        var cursorEntityRef = _world.Spawn();
-        cursorEntityRef.Add<MapCursor>();
-        cursorEntityRef.Add<HoveredLocation>();
+        var cursorEntity = _world.Spawn();
+        cursorEntity.Add<MapCursor>();
+        cursorEntity.Add<HoveredLocation>();
 
         var view = Scenes.Instance.LocationHighlight.Instantiate<Node3D>();
 
         _parent.AddChild(view);
 
-        cursorEntityRef.Add(new NodeHandle<Node3D>(view));
-        cursorEntityRef.Add<Highlighter>();
+        cursorEntity.Add(new NodeHandle<Node3D>(view));
+        cursorEntity.Add<Highlighter>();
     }
 
     private Dictionary GetMapDataFromDimensions(int width, int height)
@@ -151,46 +151,46 @@ public class CreateMapEventSystem : IEcsSystem
         return dict;
     }
 
-    private void InitializeFromMapData(EcsEntityRef mapEntityRef, Dictionary mapData)
+    private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)
     {
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        mapEntityRef.Add(new Grid(width, height));
+        mapEntity.Add(new Grid(width, height));
 
-        ref var locations = ref mapEntityRef.Get<Locations>();
+        ref var locations = ref mapEntity.Get<Locations>();
 
         var locationsData = (Dictionary)mapData["Locations"];
 
         foreach (var cellString in locationsData.Keys)
         {
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
-            var locEntityRef = Main.Instance.World.Spawn();
+            var locEntity = Main.Instance.World.Spawn();
 
-            locEntityRef.Add(Coords.FromCube(cell));
-            locEntityRef.Add(new PlateauArea(0.75f));
+            locEntity.Add(Coords.FromCube(cell));
+            locEntity.Add(new PlateauArea(0.75f));
 
             var locationData = (Dictionary)locationsData[cellString];
 
             var terrainCodes = (Godot.Collections.Array)locationData["Terrain"];
             var elevation = System.Convert.ToInt32(locationData["Elevation"]);
 
-            locEntityRef.Add(new Elevation(elevation));
+            locEntity.Add(new Elevation(elevation));
 
-            locEntityRef.Add(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
+            locEntity.Add(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
 
             if (terrainCodes.Count == 2)
             {
-                locEntityRef.Add(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
+                locEntity.Add(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
             }
 
-            locations.Set(cell, _world.PackEntity(locEntityRef.Entity()));
+            locations.Set(cell, locEntity);
         }
     }
 
     private void InitializeChunks(ChunkSize chunkSize, Grid grid, Locations locations)
     {
-        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsPackedEntity>();
+        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsEntity>();
 
         for (int z = 0; z < grid.Height; z++)
         {
@@ -203,26 +203,22 @@ public class CreateMapEventSystem : IEcsSystem
 
                 if (!chunks.ContainsKey(chunkCelli))
                 {
-                    chunks.Add(chunkCelli, _world.PackEntity(_world.SpawnEntity()));
+                    chunks.Add(chunkCelli, _world.Spawn());
                 }
 
-                var chunkPackedEntity = chunks[chunkCelli];
-                chunkPackedEntity.Unpack(_world, out var chunkEntity);
-                var chunkEntityRef = _world.Entity(chunkEntity);
-                ref var chunkLocations = ref chunkEntityRef.Get<Locations>();
+                var chunkEntity = chunks[chunkCelli];
+                ref var chunkLocations = ref chunkEntity.Get<Locations>();
 
-                var locPackedEntity = locations.Get(coords.Cube);
-                chunkLocations.Set(coords.Cube, locPackedEntity);
+                var locEntity = locations.Get(coords.Cube);
+                chunkLocations.Set(coords.Cube, locEntity);
 
-                locPackedEntity.Unpack(_world, out var locEntity);
-                var locEntityRef = _world.Entity(locEntity);
                 
-                chunkEntityRef.Add(chunkCelli);
-                locEntityRef.Add(chunkCelli);
+                chunkEntity.Add(chunkCelli);
+                locEntity.Add(chunkCelli);
             }
         }
 
-        foreach (var chunkPackedEntity in chunks.Values)
+        foreach (var chunkEntity in chunks.Values)
         {
             var terrainMesh = new TerrainMesh();
             var terrainCollider = new TerrainCollider();
@@ -231,26 +227,20 @@ public class CreateMapEventSystem : IEcsSystem
             _parent.AddChild(terrainMesh);
             _parent.AddChild(terrainCollider);
             _parent.AddChild(terrainFeaturePopulator);
-            
-            chunkPackedEntity.Unpack(_world, out var chunkEntity);
-            var chunkEntityRef = _world.Entity(chunkEntity);
 
-            chunkEntityRef.Add<Chunk>();
-            chunkEntityRef.Add(new NodeHandle<TerrainCollider>(terrainCollider));
-            chunkEntityRef.Add(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
-            chunkEntityRef.Add(new NodeHandle<TerrainMesh>(terrainMesh));
+            chunkEntity.Add<Chunk>();
+            chunkEntity.Add(new NodeHandle<TerrainCollider>(terrainCollider));
+            chunkEntity.Add(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
+            chunkEntity.Add(new NodeHandle<TerrainMesh>(terrainMesh));
         }
     }
 
     private void InitializeNeighbors(Locations locations)
     {
-        foreach (var packdEntity in locations.Values)
+        foreach (var entity in locations.Values)
         {
-            packdEntity.Unpack(_world, out var entity);
-            var entityRef = _world.Entity(entity);
-
-            ref var coords = ref entityRef.Get<Coords>();
-            ref var neighbors = ref entityRef.Get<Neighbors>();
+            ref var coords = ref entity.Get<Coords>();
+            ref var neighbors = ref entity.Get<Neighbors>();
 
             for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
             {
@@ -261,15 +251,14 @@ public class CreateMapEventSystem : IEcsSystem
                     continue;
                 }
 
-                var nPackedEntity = locations.Get(nCell);
-                neighbors.Set(direction, nPackedEntity);
+                var nEntity = locations.Get(nCell);
+                neighbors.Set(direction, nEntity);
             }
         }
     }
 
     private void SendUpdateMapEvent()
     {
-        var updateMapEventEntity = _world.NewEntity();
-        updateMapEventEntity.Get<UpdateMapEvent>();
+        _world.Spawn().Add<UpdateMapEvent>();
     }
 }

@@ -1,49 +1,48 @@
 using Godot;
 using Bitron.Ecs;
 
-public class CameraOperatorSystem : IEcsSystem, IEcsInitSystem, IEcsDestroySystem
+public class SpawnCameraOperatorSystem : IEcsSystem
 {
-    EcsWorld _world;
-    EcsFilter<NodeHandle<CameraOperator>> _filter;
-
     Node3D _parent;
 
-    public CameraOperatorSystem(Node3D parent)
+    public SpawnCameraOperatorSystem(Node3D parent)
     {
         _parent = parent;
     }
 
-    public void Init()
+    public void Run(EcsWorld world)
     {
-        var cameraEntity = _world.NewEntity();
+        var cameraEntity = world.Spawn();
 
         var cameraOperator = Scenes.Instance.CameraOperator.Instantiate<CameraOperator>();
         _parent.AddChild(cameraOperator);
 
-        cameraEntity.Replace(new NodeHandle<CameraOperator>(cameraOperator));
+        cameraEntity.Add(new NodeHandle<CameraOperator>(cameraOperator));
     }
+}
 
-    public void Destroy()
-    {
-        foreach (var i in _filter)
-        {
-            var entity = _filter.GetEntity(i);
-            entity.Destroy();
-        }
-    }
-
+public class DestroyCameraOperatorSystem : IEcsSystem
+{
     public void Run(EcsWorld world)
     {
-        if (_filter.IsEmpty())
+        var query = world.Query<NodeHandle<CameraOperator>>().End();
+
+        foreach (var entityId in query)
         {
-            return;
+            world.DespawnEntity(entityId);
         }
+    }
+}
 
-        foreach (var i in _filter)
+public class UpdateCameraOperatorSystem : IEcsSystem
+{
+    public void Run(EcsWorld world)
+    {
+        var query = world.Query<NodeHandle<CameraOperator>>().End();
+
+        foreach (var entityId in query)
         {
-            var entity = _filter.GetEntity(i);
-
-            CameraOperator cameraOperator = entity.Get<NodeHandle<CameraOperator>>().Node;
+            CameraOperator cameraOperator = query.Get<NodeHandle<CameraOperator>>(entityId).Node;
 
             if (Input.IsActionPressed("camera_zoom_out"))
             {

@@ -25,54 +25,47 @@ public class MoveCommand : Command
 
 public class MoveUnitCommandSystem : IEcsSystem
 {
-    EcsFilter<Commander> _filter;
-
     public void Run(EcsWorld world)
     {
-        foreach (var i in _filter)
+        ref var commander = ref world.GetResource<Commander>();
+
+        if (commander.IsEmpty())
         {
-            var entity = _filter.GetEntity(i);
-            ref var commander = ref entity.Get<Commander>();
-
-            if (commander.IsEmpty())
-            {
-                return;
-            }
-
-            // only process move commands
-            if (!(commander.Peek() is MoveCommand))
-            {
-                return;
-            }
-
-            var command = commander.Dequeue() as MoveCommand;
-
-            // source location does not have a unit to move
-            if (!command.FromLocEntity.Has<HasUnit>())
-            {
-                return;
-            }
-
-            // target loc already occupied
-            if (command.ToLocEntity.Has<HasUnit>())
-            {
-                return;
-            }
-
-            var unitEntity = command.FromLocEntity.Get<HasUnit>().Entity;
-            var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
-
-            ref var targetCoords = ref command.ToLocEntity.Get<Coords>();
-            ref var targetElevation = ref command.ToLocEntity.Get<Elevation>();
-
-            var newPos = targetCoords.World;
-            newPos.y = targetElevation.Height;
-
-            unitView.Position = newPos;
-
-            command.FromLocEntity.Del<HasUnit>();
-            command.ToLocEntity.Replace(new HasUnit(unitEntity));
+            return;
         }
 
+        // only process move commands
+        if (!(commander.Peek() is MoveCommand))
+        {
+            return;
+        }
+
+        var command = commander.Dequeue() as MoveCommand;
+
+        // source location does not have a unit to move
+        if (!command.FromLocEntity.Has<HasUnit>())
+        {
+            return;
+        }
+
+        // target loc already occupied
+        if (command.ToLocEntity.Has<HasUnit>())
+        {
+            return;
+        }
+
+        var unitEntity = command.FromLocEntity.Get<HasUnit>().Entity;
+        var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
+
+        ref var targetCoords = ref command.ToLocEntity.Get<Coords>();
+        ref var targetElevation = ref command.ToLocEntity.Get<Elevation>();
+
+        var newPos = targetCoords.World;
+        newPos.y = targetElevation.Height;
+
+        unitView.Position = newPos;
+
+        command.FromLocEntity.Remove<HasUnit>();
+        command.ToLocEntity.Add(new HasUnit(unitEntity));
     }
 }

@@ -17,58 +17,60 @@ public class SaveMapEventSystem : IEcsSystem
 {
     public static string Path = "res://data/maps/";
 
-    EcsFilter<SaveMapEvent> _events;
-    EcsFilter<Locations, Map> _maps;
-
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
+        var eventQuery = world.Query<SaveMapEvent>().End();
+        var mapQuery = world.Query<Locations>().Inc<Map>().Inc<Grid>().End();
+        
+        foreach (var eventEntityId in eventQuery)
         {
-            var eventEntity = _events.GetEntity(i);
-            var saveMapEvent = eventEntity.Get<SaveMapEvent>();
-
-            var saveData = new Dictionary();
-            var locationsData = new Dictionary();
-
-            ref var locations = ref _maps.GetEntity(0).Get<Locations>();
-            ref var grid = ref _maps.GetEntity(0).Get<Grid>();
-
-            foreach (var item in locations.Dict)
+            foreach (var mapEntityId in mapQuery)
             {
-                var cell = item.Key;
-                var location = item.Value;
+                var saveMapEvent = eventQuery.Get<SaveMapEvent>(eventEntityId);
 
-                var terrainCodes = new List<string>();
+                var saveData = new Dictionary();
+                var locationsData = new Dictionary();
 
-                ref var baseTerrainEntity = ref location.Get<HasBaseTerrain>().Entity;
-                ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+                ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
+                ref var grid = ref mapQuery.Get<Grid>(mapEntityId);
 
-                terrainCodes.Add(baseTerrainCode.Value);
-
-                if (location.Has<HasOverlayTerrain>())
+                foreach (var item in locations.Dict)
                 {
-                    ref var overlayTerrainEntity = ref location.Get<HasOverlayTerrain>().Entity;
-                    ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+                    var cell = item.Key;
+                    var location = item.Value;
 
-                    terrainCodes.Add(overlayTerrainCode.Value);
+                    var terrainCodes = new List<string>();
+
+                    ref var baseTerrainEntity = ref location.Get<HasBaseTerrain>().Entity;
+                    ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+
+                    terrainCodes.Add(baseTerrainCode.Value);
+
+                    if (location.Has<HasOverlayTerrain>())
+                    {
+                        ref var overlayTerrainEntity = ref location.Get<HasOverlayTerrain>().Entity;
+                        ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+
+                        terrainCodes.Add(overlayTerrainCode.Value);
+                    }
+
+                    var locationData = new Dictionary();
+                    locationData.Add("Terrain", terrainCodes);
+                    locationData.Add("Elevation", location.Get<Elevation>().Level);
+
+                    locationsData.Add(cell, locationData);
                 }
 
-                var locationData = new Dictionary();
-                locationData.Add("Terrain", terrainCodes);
-                locationData.Add("Elevation", location.Get<Elevation>().Level);
+                saveData.Add("Width", grid.Width);
+                saveData.Add("Height", grid.Height);
+                saveData.Add("Locations", locationsData);
 
-                locationsData.Add(cell, locationData);
+                SaveToFile(saveMapEvent.Name, saveData);
             }
-
-            saveData.Add("Width", grid.Width);
-            saveData.Add("Height", grid.Height);
-            saveData.Add("Locations", locationsData);
-
-            SaveToFile(saveMapEvent.Name, saveData);
         }
     }
 
-    public void SaveToFile(string name, Dictionary saveData)
+    private void SaveToFile(string name, Dictionary saveData)
     {
         var json = new JSON();
         var jsonString = (string)json.Stringify(saveData);

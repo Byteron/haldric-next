@@ -14,30 +14,26 @@ public struct UpdateMapEvent
 
 public class UpdateMapEventSystem : IEcsSystem
 {
-    EcsWorld _world;
-    EcsFilter<UpdateMapEvent> _events;
-
     public void Run(EcsWorld world)
     {
-        foreach (var i in _events)
-        {
-            var eventEntity = _events.GetEntity(i);
-            var updateEvent = eventEntity.Get<UpdateMapEvent>();
+        var eventQuery = world.Query<UpdateMapEvent>().End();
 
-            SendUpdateTerrainMeshEvent(updateEvent);
-            SendUpdateTerrainFeaturePopulatorEvent(updateEvent);
+        foreach (var eventEntityId in eventQuery)
+        {
+            var updateEvent = eventQuery.Get<UpdateMapEvent>(eventEntityId);
+
+            SendUpdateTerrainMeshEvent(world, updateEvent);
+            SendUpdateTerrainFeaturePopulatorEvent(world, updateEvent);
         }
     }
 
-    private void SendUpdateTerrainMeshEvent(UpdateMapEvent e)
+    private void SendUpdateTerrainMeshEvent(EcsWorld world, UpdateMapEvent e)
     {
-        var updateTerrainMeshEvent = _world.NewEntity();
-        updateTerrainMeshEvent.Replace(new UpdateTerrainMeshEvent(e.Chunks));
+        world.Spawn().Add(new UpdateTerrainMeshEvent(e.Chunks));
     }
 
-    private void SendUpdateTerrainFeaturePopulatorEvent(UpdateMapEvent e)
+    private void SendUpdateTerrainFeaturePopulatorEvent(EcsWorld world, UpdateMapEvent e)
     {
-        var updateTerrainFeaturePopulatorEvent = _world.NewEntity();
-        updateTerrainFeaturePopulatorEvent.Replace(new UpdateTerrainFeaturePopulatorEvent(e.Chunks));
+        world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(e.Chunks));
     }
 }

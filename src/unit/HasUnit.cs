@@ -11,6 +11,6 @@ public struct HasUnit : IEcsAutoReset<HasUnit>
 
     public void AutoReset(ref HasUnit c)
     {
-        c.Entity = EcsEntity.Null;
+        c.Entity = default;
     }
 }

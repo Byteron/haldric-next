@@ -6,8 +6,8 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
-    public Dictionary<string, EcsEntity> Units = new Dictionary<string, EcsEntity>();
-    public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
+    public Dictionary<string, Godot.Collections.Dictionary> Units = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, Godot.Collections.Dictionary> Terrains = new Dictionary<string, Godot.Collections.Dictionary>();
 
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
@@ -39,9 +39,10 @@ public partial class Data : Node
             var file = new File();
             file.Open(data.Path, File.ModeFlags.Read);
             var jsonString = file.GetAsText();
-            var unit = UnitFactory.CreateFromJSON(jsonString);
-            var id = unit.Get<Id>().Value;
-            Units.Add(id, unit);
+            var json = new JSON();
+            json.Parse(jsonString);
+            var dict = json.GetData() as Godot.Collections.Dictionary;
+            Units.Add((string)dict["id"], dict);
         }
 
         GD.Print(Units);

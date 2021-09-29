@@ -5,33 +5,25 @@ struct Highlighter {}
 
 public class LocationHighlightSystem : IEcsSystem
 {
-    EcsFilter<HoveredLocation> _hoveredLocations;
-    EcsFilter<Highlighter> _highlighter;
-    EcsFilter<Locations, Map> _maps;
-
     public void Run(EcsWorld world)
     {
-        if (_highlighter.IsEmpty() || _hoveredLocations.IsEmpty() || _maps.IsEmpty())
+        var cursorQuery = world.Query<HoveredLocation>().Inc<Highlighter>().Inc<NodeHandle<Node3D>>().End();
+        
+        foreach(var cursorEntityId in cursorQuery)
         {
-            return;
-        }
+            var locEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
+            var view = cursorQuery.Get<NodeHandle<Node3D>>(cursorEntityId).Node;
 
-        var locEntity = _hoveredLocations.GetEntity(0).Get<HoveredLocation>().Entity;
+            ref var coords = ref locEntity.Get<Coords>();
+            var height = locEntity.Get<Elevation>().Height;
 
-        if (locEntity == EcsEntity.Null)
-        {
-            return;
+            var position = coords.World;
+            position.y = height;
+
+            GD.Print(coords.ToString());
+
+            view.Position = position;
         }
         
-        ref var coords = ref locEntity.Get<Coords>();
-        var height = locEntity.Get<Elevation>().Height;
-        var view = _highlighter.GetEntity(0).Get<NodeHandle<Node3D>>().Node;
-
-        var position = coords.World;
-        position.y = height;
-
-        GD.Print(coords.ToString());
-
-        view.Position = position;
     }
 }

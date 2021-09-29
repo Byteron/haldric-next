@@ -11,7 +11,7 @@ struct HasBaseTerrain : IEcsAutoReset<HasBaseTerrain>
 
     public void AutoReset(ref HasBaseTerrain c)
     {
-        c.Entity = EcsEntity.Null;
+        c.Entity = default;
     }
 }
 
@@ -26,6 +26,6 @@ struct HasOverlayTerrain : IEcsAutoReset<HasOverlayTerrain>
 
     public void AutoReset(ref HasOverlayTerrain c)
     {
-        c.Entity = EcsEntity.Null;
+        c.Entity = default;
     }
 }

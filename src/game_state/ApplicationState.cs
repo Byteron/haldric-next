@@ -2,8 +2,6 @@ using Bitron.Ecs;
 
 public partial class ApplicationState : GameState
 {
-    EcsPackedEntity _menuEntityPacked;
-
     public ApplicationState(EcsWorld world) : base(world)
     { 
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
@@ -13,28 +11,22 @@ public partial class ApplicationState : GameState
     {
         var menuView = Scenes.Instance.MainMenuView.Instantiate<MainMenuView>();
         AddChild(menuView);
-     
-        int menuEntity = _world.Spawn().Add(new NodeHandle<MainMenuView>(menuView)).Entity();
-        _menuEntityPacked = _world.PackEntity(menuEntity);
+
+        _world.AddResource(new NodeHandle<MainMenuView>(menuView));
     }
 
     public override void Continue(GameStateController gameStates)
     {
-        _menuEntityPacked.Unpack(_world, out var menuEntity);
-        var menuView = _world.Entity(menuEntity).Get<NodeHandle<MainMenuView>>().Node;
-        menuView.Show();
+        _world.GetResource<NodeHandle<MainMenuView>>().Node.Show();
     }
 
     public override void Pause(GameStateController gameStates)
     {
-        _menuEntityPacked.Unpack(_world, out var menuEntity);
-        var menuView = _world.Entity(menuEntity).Get<NodeHandle<MainMenuView>>().Node;
-        menuView.Hide();
+        _world.GetResource<NodeHandle<MainMenuView>>().Node.Hide();
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _menuEntityPacked.Unpack(_world, out var menuEntity);
-        _world.DespawnEntity(menuEntity);
+        _world.RemoveResource<NodeHandle<MainMenuView>>();
     }
 }
