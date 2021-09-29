@@ -25,7 +25,7 @@ public class CreateUnitEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        if (Data.Instance.Units.Count == 0)
+        if (Data.Instance.UnitDicts.Count == 0)
         {
             return;
         }
@@ -44,8 +44,8 @@ public class CreateUnitEventSystem : IEcsSystem
                 var locEntity = locations.Get(createEvent.Coords.Cube);
                 ref var elevation = ref locEntity.Get<Elevation>();
 
-                string key = Data.Instance.Units.Keys.ToArray<string>()[GD.Randi() % Data.Instance.Units.Count];
-                var unitEntity = UnitFactory.CreateFromDict(Data.Instance.Units[key]);
+                string key = Data.Instance.UnitDicts.Keys.ToArray<string>()[GD.Randi() % Data.Instance.UnitDicts.Count];
+                var unitEntity = UnitFactory.CreateFromDict(Data.Instance.UnitDicts[key]);
 
                 var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instantiate<UnitView>();
 

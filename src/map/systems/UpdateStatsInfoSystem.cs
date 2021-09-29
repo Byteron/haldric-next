@@ -13,7 +13,7 @@ public class UpdateStatsInfoSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var s = "FPS: " + Engine.GetFramesPerSecond();
-        s += "\nEntities: " + world.GetAllocatedEntitiesCount();
+        s += "\nEntities: " + world.GetEntitiesCount();
         s += "\nComponents: " + world.GetComponentsCount();
         
         _parent.GetTree().CallGroup("StatsLabel", "set", "text", s);

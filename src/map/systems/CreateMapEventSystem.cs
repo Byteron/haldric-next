@@ -156,7 +156,8 @@ public class CreateMapEventSystem : IEcsSystem
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        mapEntity.Add(new Grid(width, height));
+        ref var grid = ref mapEntity.Get<Grid>();
+        grid = new Grid(width, height);
 
         ref var locations = ref mapEntity.Get<Locations>();
 
@@ -203,18 +204,24 @@ public class CreateMapEventSystem : IEcsSystem
 
                 if (!chunks.ContainsKey(chunkCelli))
                 {
-                    chunks.Add(chunkCelli, _world.Spawn());
+                    var newChunk = _world.Spawn().Add<Locations>().Add<Vector3i>();
+                    chunks.Add(chunkCelli, newChunk);
                 }
 
+                var locEntity = locations.Get(coords.Cube);
+                locEntity.Add(chunkCelli);
+                
                 var chunkEntity = chunks[chunkCelli];
+                ref var chunkCellComponent = ref chunkEntity.Get<Vector3i>();
+                
+                chunkCellComponent = chunkCelli;
+                
+
                 ref var chunkLocations = ref chunkEntity.Get<Locations>();
 
-                var locEntity = locations.Get(coords.Cube);
                 chunkLocations.Set(coords.Cube, locEntity);
 
                 
-                chunkEntity.Add(chunkCelli);
-                locEntity.Add(chunkCelli);
             }
         }
 
@@ -239,6 +246,8 @@ public class CreateMapEventSystem : IEcsSystem
     {
         foreach (var entity in locations.Values)
         {
+            entity.Add<Neighbors>();
+
             ref var coords = ref entity.Get<Coords>();
             ref var neighbors = ref entity.Get<Neighbors>();
 

@@ -7,11 +7,20 @@ public class LocationHighlightSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var cursorQuery = world.Query<HoveredLocation>().Inc<Highlighter>().Inc<NodeHandle<Node3D>>().End();
+        var cursorQuery = world.Query<HoveredLocation>()
+            .Inc<Highlighter>()
+            .Inc<NodeHandle<Node3D>>()
+            .End();
         
         foreach(var cursorEntityId in cursorQuery)
         {
             var locEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
+
+            if (!locEntity.IsAlive())
+            {
+                continue;
+            }
+            
             var view = cursorQuery.Get<NodeHandle<Node3D>>(cursorEntityId).Node;
 
             ref var coords = ref locEntity.Get<Coords>();

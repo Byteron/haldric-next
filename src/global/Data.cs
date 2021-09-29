@@ -6,8 +6,9 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
-    public Dictionary<string, Godot.Collections.Dictionary> Units = new Dictionary<string, Godot.Collections.Dictionary>();
-    public Dictionary<string, Godot.Collections.Dictionary> Terrains = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, Godot.Collections.Dictionary> UnitDicts = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
+    public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
 
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
@@ -32,7 +33,7 @@ public partial class Data : Node
 
     private void LoadUnits()
     {
-        Units.Clear();
+        UnitDicts.Clear();
 
         foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"json"}, false))
         {
@@ -42,15 +43,15 @@ public partial class Data : Node
             var json = new JSON();
             json.Parse(jsonString);
             var dict = json.GetData() as Godot.Collections.Dictionary;
-            Units.Add((string)dict["id"], dict);
+            UnitDicts.Add((string)dict["id"], dict);
         }
 
-        GD.Print(Units);
+        GD.Print(UnitDicts);
     }
 
     private void LoadTerrain()
     {
-        Terrains.Clear();
+        TerrainDicts.Clear();
         Decorations.Clear();
         WaterGraphics.Clear();
         WallSegments.Clear();
@@ -62,7 +63,13 @@ public partial class Data : Node
 
         terrainScript.Load();
 
-        Terrains = terrainScript.Terrains;
+        TerrainDicts = terrainScript.TerrainDicts;
+
+        foreach (var pair in TerrainDicts)
+        {
+            Terrains.Add(pair.Key, TerrainFactory.CreateFromDict(pair.Value));
+        }
+
         Decorations = terrainScript.Decorations;
         WaterGraphics = terrainScript.WaterGraphics;
         WallSegments = terrainScript.WallSegments;
@@ -91,4 +98,16 @@ public partial class Data : Node
 
 		return texArray;
 	}
+
+    public EcsEntity CreateUnit(string unitType)
+    {
+        var dict = UnitDicts[unitType];
+        return UnitFactory.CreateFromDict(dict);
+    }
+
+    public EcsEntity CreateTerrain(string terrainType)
+    {
+        var dict = TerrainDicts[terrainType];
+        return TerrainFactory.CreateFromDict(dict);
+    }
 }

@@ -5,7 +5,7 @@ public class CommanderUndoSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var commander = world.GetResource<Commander>();
+        ref var commander = ref world.GetResource<Commander>();
 
         if (Input.IsActionJustPressed("undo"))
         {

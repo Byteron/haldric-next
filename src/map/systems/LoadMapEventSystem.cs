@@ -15,7 +15,6 @@ public struct LoadMapEvent
 public class LoadMapEventSystem : IEcsSystem
 {
     public static string Path = "res://data/maps/";
-    EcsWorld _world;
 
     public void Run(EcsWorld world)
     {
@@ -27,7 +26,7 @@ public class LoadMapEventSystem : IEcsSystem
 
             var saveData = LoadFromFile(loadMapEvent.Name);
 
-            SendMapChangeEvents(saveData);
+            SendMapChangeEvents(world, saveData);
         }
     }
 
@@ -48,9 +47,9 @@ public class LoadMapEventSystem : IEcsSystem
         return json.GetData() as Dictionary;
     }
 
-    private void SendMapChangeEvents(Dictionary mapData)
+    private void SendMapChangeEvents(EcsWorld world, Dictionary mapData)
     {
-        _world.Spawn().Add<DestroyMapEvent>();
-        _world.Spawn().Add(new CreateMapEvent(mapData));
+        world.Spawn().Add<DestroyMapEvent>();
+        world.Spawn().Add(new CreateMapEvent(mapData));
     }
 }

@@ -2,6 +2,8 @@ using Bitron.Ecs;
 
 public partial class ApplicationState : GameState
 {
+    EcsEntity _menuEntity;
+
     public ApplicationState(EcsWorld world) : base(world)
     { 
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
@@ -12,21 +14,23 @@ public partial class ApplicationState : GameState
         var menuView = Scenes.Instance.MainMenuView.Instantiate<MainMenuView>();
         AddChild(menuView);
 
-        _world.AddResource(new NodeHandle<MainMenuView>(menuView));
+        _menuEntity = _world.Spawn().Add(new NodeHandle<MainMenuView>(menuView));
     }
 
     public override void Continue(GameStateController gameStates)
     {
-        _world.GetResource<NodeHandle<MainMenuView>>().Node.Show();
+        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        menuView.Show();
     }
 
     public override void Pause(GameStateController gameStates)
     {
-        _world.GetResource<NodeHandle<MainMenuView>>().Node.Hide();
+        var menuView = _menuEntity.Get<NodeHandle<MainMenuView>>().Node;
+        menuView.Hide();
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _world.RemoveResource<NodeHandle<MainMenuView>>();
+        _menuEntity.Despawn();
     }
 }

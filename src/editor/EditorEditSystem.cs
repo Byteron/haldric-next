@@ -17,8 +17,14 @@ public class EditorEditSystem : IEcsSystem
     {
         var hoveredLocationQuery = world.Query<HoveredLocation>().End();
         var locationsQuery = world.Query<Locations>().Inc<Map>().End();
+        var editorQuery = world.Query<NodeHandle<EditorView>>().End();
 
-        var editorView = world.GetResource<NodeHandle<EditorView>>().Node;
+        EditorView editorView = null;
+
+        foreach (var e in editorQuery)
+        {
+            editorView = editorQuery.Get<NodeHandle<EditorView>>(e).Node;
+        }
 
 
         foreach (var locationsEntity in locationsQuery)

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
 
-public struct Commander
+public class Commander
 {
-    private Stack<Command> History;
-    private Queue<Command> Queue;
+    private Stack<Command> History = new Stack<Command>();
+    private Queue<Command> Queue = new Queue<Command>();
 
     public Command Peek()
     {

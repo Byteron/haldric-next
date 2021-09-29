@@ -4,13 +4,15 @@ public partial class PlayState : GameState
 {
     public PlayState(EcsWorld world) : base(world)
     {
+        AddInitSystem(new SpawnCameraOperatorSystem(this));
+
         AddInputSystem(new UpdateMapCursorSystem(this));
         AddInputSystem(new SelectLocationSystem(this));
         AddInputSystem(new CommanderUndoSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
         AddInputSystem(new LocationHighlightSystem());
 
-        AddUpdateSystem(new CameraOperatorSystem(this));
+        AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new MoveUnitCommandSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem(this));
@@ -22,6 +24,8 @@ public partial class PlayState : GameState
         AddEventSystem<DestroyMapEvent>(new DestroyMapEventSystem());
         AddEventSystem<CreateMapEvent>(new CreateMapEventSystem(this));
         AddEventSystem<CreateUnitEvent>(new CreateUnitEventSystem(this));
+
+        AddDestroySystem(new DestroyCameraOperatorSystem());
     }
 
     public override void Enter(GameStateController gameStates)

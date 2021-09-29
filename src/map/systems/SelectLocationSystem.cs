@@ -30,7 +30,10 @@ public class SelectLocationSystem : IEcsSystem
             {
                 if (locEntity.Has<HasUnit>())
                 {
-                    cursorEntity.Add(new HasLocation(locEntity));
+                    if (!cursorEntity.Has<HasLocation>())
+                    {
+                        cursorEntity.Add(new HasLocation(locEntity));
+                    }
 
                     var unitEntity = locEntity.Get<HasUnit>().Entity;
                     var id = unitEntity.Get<Id>().Value;

@@ -21,8 +21,12 @@ public partial class Main : Node3D
         Data.Instance.Scan();
         
         _world.AddResource(new Commander());
+        ref var commander = ref _world.GetResource<Commander>();
 
-        _gameController = GetNode<GameStateController>("GameStateController");
+        _gameController = new GameStateController();
+        _gameController.Name = "GameStateController";
+        AddChild(_gameController);
+
         _gameController.PushState(new ApplicationState(_world));
     }
 }

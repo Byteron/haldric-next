@@ -1,6 +1,6 @@
 using Bitron.Ecs;
 
-public struct Neighbors
+public struct Neighbors : IEcsAutoReset<Neighbors>
 {
     private EcsEntity[] _array;
 
@@ -22,5 +22,10 @@ public struct Neighbors
     public EcsEntity[] GetArray()
     {
         return _array;
+    }
+
+    public void AutoReset(ref Neighbors c)
+    {
+        c._array = new EcsEntity[6];
     }
 }

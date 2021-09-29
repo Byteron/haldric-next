@@ -15,13 +15,13 @@ public class TerrainBuilder
     public TerrainBuilder CreateBase()
     {
         _terrainEntity = Main.Instance.World.Spawn();
-        _terrainEntity.Get<BaseTerrain>();
+        _terrainEntity.Add<BaseTerrain>();
         return this;
     }
     public TerrainBuilder CreateOverlay()
     {
         _terrainEntity = Main.Instance.World.Spawn();
-        _terrainEntity.Get<OverlayTerrain>();
+        _terrainEntity.Add<OverlayTerrain>();
         return this;
     }
 

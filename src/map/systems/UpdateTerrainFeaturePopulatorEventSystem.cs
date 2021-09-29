@@ -19,7 +19,11 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<UpdateTerrainFeaturePopulatorEvent>().End();
-        var chunksQuery = world.Query<Locations>().Inc<NodeHandle<TerrainFeaturePopulator>>().Inc<NodeHandle<TerrainCollider>>().End();
+        var chunksQuery = world.Query<Locations>()
+            .Inc<NodeHandle<TerrainFeaturePopulator>>()
+            .Inc<NodeHandle<TerrainCollider>>()
+            .Inc<Vector3i>()
+            .End();
 
         foreach (var eventEntityId in eventQuery)
         {

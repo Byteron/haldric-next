@@ -51,6 +51,11 @@ public class UpdateMapCursorSystem : IEcsSystem
         var camera = viewport.GetCamera3d();
         var mousePosition = viewport.GetMousePosition();
 
+        if (camera == null)
+        {
+            return new Dictionary();
+        }
+        
         var from = camera.ProjectRayOrigin(mousePosition);
         var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
 

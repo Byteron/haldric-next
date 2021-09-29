@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public abstract class TerrainLoader
 {
-    public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
+    public Dictionary<string, Dictionary<string, object> > TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
@@ -12,7 +12,7 @@ public abstract class TerrainLoader
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
 
-    private TerrainBuilder _terrainBuilder = new TerrainBuilder();
+    private TerrainDictBuilder _terrainBuilder = new TerrainDictBuilder();
     
     private TerrainGraphicBuilder _terrainGraphicBuilder = new TerrainGraphicBuilder();
 
@@ -21,31 +21,31 @@ public abstract class TerrainLoader
     public void NewBase(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).Build();
-        Terrains.Add(code, terrain);
+        TerrainDicts.Add(code, terrain);
     }
 
     public void NewWater(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasWater().Build();
-        Terrains.Add(code, terrain);
+        TerrainDicts.Add(code, terrain);
     }
 
     public void NewCastle(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
-        Terrains.Add(code, terrain);
+        TerrainDicts.Add(code, terrain);
     }
 
     public void NewKeep(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitFrom().WithRecruitTo().Build();
-        Terrains.Add(code, terrain);
+        TerrainDicts.Add(code, terrain);
     }
 
     public void NewOverlay(string code, List<TerrainType> types)
     {
         var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
-        Terrains.Add(code, terrain);
+        TerrainDicts.Add(code, terrain);
     }
 
     public void AddTerrainTexture(string code, string path)

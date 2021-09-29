@@ -5,31 +5,31 @@ public partial class GameState : Node3D
 {
     protected EcsWorld _world = null;
 
+    private EcsSystemGroup _initSystems = null;
     private EcsSystemGroup _inputSystems = null;
     private EcsSystemGroup _updateSystems = null;
     private EcsSystemGroup _eventSystems = null;
+    private EcsSystemGroup _destroySystems = null;
 
     public GameState(EcsWorld world)
     {
         _world = world;
 
+        _initSystems = new EcsSystemGroup();
         _inputSystems = new EcsSystemGroup();
         _updateSystems = new EcsSystemGroup();
         _eventSystems = new EcsSystemGroup();
+        _destroySystems = new EcsSystemGroup();
     }
 
     public override void _EnterTree()
     {
-        _inputSystems.Init(_world);
-        _updateSystems.Init(_world);
-        _eventSystems.Init(_world);
+        _initSystems.Run(_world);
     }
 
     public override void _ExitTree()
     {
-        _inputSystems.Destroy(_world);
-        _updateSystems.Destroy(_world);
-        _eventSystems.Destroy(_world);
+        _destroySystems.Run(_world);
     }
 
     public virtual void Enter(GameStateController gameStates) { }
@@ -53,6 +53,16 @@ public partial class GameState : Node3D
     public void RunEventSystems()
     {
         _eventSystems.Run(_world);
+    }
+
+    protected void AddInitSystem(IEcsSystem system)
+    {
+        _initSystems.Add(system);
+    }
+
+    protected void AddDestroySystem(IEcsSystem system)
+    {
+        _destroySystems.Add(system);
     }
 
     protected void AddInputSystem(IEcsSystem system)
