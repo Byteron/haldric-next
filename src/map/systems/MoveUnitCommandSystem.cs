@@ -27,7 +27,7 @@ public class MoveUnitCommandSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        ref var commander = ref world.GetResource<Commander>();
+        var commander = world.GetResource<Commander>();
 
         if (commander.IsEmpty())
         {

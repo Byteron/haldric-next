@@ -7,7 +7,7 @@ public class MoveUnitSystem : IEcsSystem
     {
         var cursorQuery = world.Query<HoveredLocation>().Inc<HasLocation>().End();
 
-        ref var commander = ref world.GetResource<Commander>();
+        var commander = world.GetResource<Commander>();
 
         foreach(var cursorEntityId in cursorQuery)
         {
