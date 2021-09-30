@@ -75,11 +75,11 @@ public class SpawnMapEventSystem : IEcsSystem
         var hoverEntity = _world.Spawn();
         hoverEntity.Add<HoveredLocation>();
 
-        var view = Scenes.Instance.LocationHighlight.Instantiate<Node3D>();
+        var cursorView = Scenes.Instance.Cursor3D.Instantiate<Cursor3D>();
 
-        _parent.AddChild(view);
+        _parent.AddChild(cursorView);
 
-        hoverEntity.Add(new NodeHandle<Node3D>(view));
+        hoverEntity.Add(new NodeHandle<Cursor3D>(cursorView));
         hoverEntity.Add<Highlighter>();
     }
 

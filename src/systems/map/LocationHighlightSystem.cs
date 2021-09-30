@@ -7,7 +7,7 @@ public class LocationHighlightSystem : IEcsSystem
     {
         var hoverQuery = world.Query<HoveredLocation>()
             .Inc<Highlighter>()
-            .Inc<NodeHandle<Node3D>>()
+            .Inc<NodeHandle<Cursor3D>>()
             .End();
         
         foreach(var cursorEntityId in hoverQuery)
@@ -19,7 +19,7 @@ public class LocationHighlightSystem : IEcsSystem
                 continue;
             }
             
-            var view = hoverQuery.Get<NodeHandle<Node3D>>(cursorEntityId).Node;
+            var view = hoverQuery.Get<NodeHandle<Cursor3D>>(cursorEntityId).Node;
 
             ref var coords = ref locEntity.Get<Coords>();
             var height = locEntity.Get<Elevation>().Height;

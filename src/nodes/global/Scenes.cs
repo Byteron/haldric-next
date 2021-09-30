@@ -10,7 +10,7 @@ public partial class Scenes : Node
     [Export] public PackedScene DebugView;
     [Export] public PackedScene HUDView;
 
-    [Export] public PackedScene LocationHighlight;
+    [Export] public PackedScene Cursor3D;
     
     [Export] public PackedScene CameraOperator;
     
