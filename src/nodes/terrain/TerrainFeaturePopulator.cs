@@ -117,11 +117,11 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<RecruitFrom>())
+            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.Level == nElevation.Level && !terrainEntity.Has<RecruitFrom>() && terrainEntity.Has<RecruitTo>() && nTerrainEntity.Has<RecruitTo>())
+            if (elevation.Level == nElevation.Level && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }
@@ -164,11 +164,11 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<RecruitFrom>())
+            if (elevation.Level == nElevation.Level && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.Level == nElevation.Level && !terrainEntity.Has<RecruitFrom>() && terrainEntity.Has<RecruitTo>() && nTerrainEntity.Has<RecruitTo>())
+            if (elevation.Level == nElevation.Level && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }

@@ -1,5 +1,7 @@
 using Bitron.Ecs;
 
+public struct Highlighter {}
+
 public struct HoveredLocation : IEcsAutoReset<HoveredLocation>
 {
     public EcsEntity Entity;

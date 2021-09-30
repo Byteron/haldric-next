@@ -2,12 +2,6 @@ using Godot;
 using System.Collections.Generic;
 using Bitron.Ecs;
 
-struct BaseTerrain {}
-struct OverlayTerrain {}
-struct RecruitFrom {}
-struct RecruitTo {}
-struct HasWater {}
-
 public class TerrainBuilder
 {
     private EcsEntity _terrainEntity;
@@ -15,13 +9,13 @@ public class TerrainBuilder
     public TerrainBuilder CreateBase()
     {
         _terrainEntity = Main.Instance.World.Spawn();
-        _terrainEntity.Add<BaseTerrain>();
+        _terrainEntity.Add<IsBaseTerrain>();
         return this;
     }
     public TerrainBuilder CreateOverlay()
     {
         _terrainEntity = Main.Instance.World.Spawn();
-        _terrainEntity.Add<OverlayTerrain>();
+        _terrainEntity.Add<IsOverlayTerrain>();
         return this;
     }
 
@@ -45,13 +39,13 @@ public class TerrainBuilder
 
     public TerrainBuilder WithRecruitFrom()
     {
-        _terrainEntity.Add<RecruitFrom>();
+        _terrainEntity.Add<CanRecruitFrom>();
         return this;
     }
 
     public TerrainBuilder WithRecruitTo()
     {
-        _terrainEntity.Add<RecruitTo>();
+        _terrainEntity.Add<CanRecruitTo>();
         return this;
     }
 

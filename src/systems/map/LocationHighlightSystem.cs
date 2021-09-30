@@ -1,27 +1,25 @@
 using Godot;
 using Bitron.Ecs;
 
-struct Highlighter {}
-
 public class LocationHighlightSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var cursorQuery = world.Query<HoveredLocation>()
+        var hoverQuery = world.Query<HoveredLocation>()
             .Inc<Highlighter>()
             .Inc<NodeHandle<Node3D>>()
             .End();
         
-        foreach(var cursorEntityId in cursorQuery)
+        foreach(var cursorEntityId in hoverQuery)
         {
-            var locEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
+            var locEntity = hoverQuery.Get<HoveredLocation>(cursorEntityId).Entity;
 
             if (!locEntity.IsAlive())
             {
                 continue;
             }
             
-            var view = cursorQuery.Get<NodeHandle<Node3D>>(cursorEntityId).Node;
+            var view = hoverQuery.Get<NodeHandle<Node3D>>(cursorEntityId).Node;
 
             ref var coords = ref locEntity.Get<Coords>();
             var height = locEntity.Get<Elevation>().Height;

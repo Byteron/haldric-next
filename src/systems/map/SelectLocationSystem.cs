@@ -12,14 +12,11 @@ public class SelectLocationSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
+        var query = world.Query<HoveredLocation>().End();
 
-        var cursorQuery = world.Query<MapCursor>().End();
-
-        foreach (var cursorEntityId in cursorQuery)
+        foreach (var hoverEntityId in query)
         {
-            var cursorEntity = world.Entity(cursorEntityId);
-
-            var locEntity = cursorEntity.Get<HoveredLocation>().Entity;
+            var locEntity = query.Get<HoveredLocation>(hoverEntityId).Entity;
             
             if (!locEntity.IsAlive())
             {
@@ -28,11 +25,13 @@ public class SelectLocationSystem : IEcsSystem
 
             if (Input.IsActionJustPressed("select_unit"))
             {
+                var hoverEntity = world.Entity(hoverEntityId);
+
                 if (locEntity.Has<HasUnit>())
                 {
-                    if (!cursorEntity.Has<HasLocation>())
+                    if (!hoverEntity.Has<HasLocation>())
                     {
-                        cursorEntity.Add(new HasLocation(locEntity));
+                        hoverEntity.Add(new HasLocation(locEntity));
                     }
 
                     var unitEntity = locEntity.Get<HasUnit>().Entity;
@@ -48,7 +47,10 @@ public class SelectLocationSystem : IEcsSystem
 
             if (Input.IsActionJustPressed("deselect_unit"))
             {
-                cursorEntity.Remove<HasLocation>();
+                var hoverEntity = world.Entity(hoverEntityId);
+                
+                hoverEntity.Remove<HasLocation>();
+
                 _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
             }
         }

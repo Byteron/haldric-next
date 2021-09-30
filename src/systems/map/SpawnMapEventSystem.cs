@@ -24,28 +24,6 @@ public struct SpawnMapEvent
     }
 }
 
-public struct Chunk { }
-public struct Map { }
-
-public struct MapCursor { }
-
-public struct ChunkSize
-{
-    public int X;
-    public int Z;
-
-    public ChunkSize(int x, int z)
-    {
-        X = x;
-        Z = z;
-    }
-
-    public Vector3 ToVector3()
-    {
-        return new Vector3(X, 0f, Z);
-    }
-}
-
 public class SpawnMapEventSystem : IEcsSystem
 {
     EcsWorld _world;
@@ -94,16 +72,15 @@ public class SpawnMapEventSystem : IEcsSystem
 
     private void InitializeMapCursor()
     {
-        var cursorEntity = _world.Spawn();
-        cursorEntity.Add<MapCursor>();
-        cursorEntity.Add<HoveredLocation>();
+        var hoverEntity = _world.Spawn();
+        hoverEntity.Add<HoveredLocation>();
 
         var view = Scenes.Instance.LocationHighlight.Instantiate<Node3D>();
 
         _parent.AddChild(view);
 
-        cursorEntity.Add(new NodeHandle<Node3D>(view));
-        cursorEntity.Add<Highlighter>();
+        hoverEntity.Add(new NodeHandle<Node3D>(view));
+        hoverEntity.Add<Highlighter>();
     }
 
     private Dictionary GetMapDataFromDimensions(int width, int height)

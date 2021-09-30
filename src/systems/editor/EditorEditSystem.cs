@@ -93,7 +93,7 @@ public class EditorEditSystem : IEcsSystem
 
         if (editorView.UseTerrain)
         {
-            if (editorView.TerrainEntity.Has<OverlayTerrain>())
+            if (editorView.TerrainEntity.Has<IsOverlayTerrain>())
             {
                 if (!locEntity.Has<HasOverlayTerrain>())
                 {

@@ -1,40 +1,6 @@
 using Godot;
 using Bitron.Ecs;
 
-struct Health { } // For Attribute<T>
-
-struct Experience { } // For Attribute<T>
-
-struct Moves { } // For Attribute<T>
-
-struct Attribute<T>
-{
-    public int Value;
-    public int Max;
-
-    public Attribute(int max)
-    {
-        Max = max;
-        Value = Max;
-    }
-
-    public void Increase(int amount)
-    {
-        int sum = Value + amount;
-        Value = sum > Max ? Max : sum;
-    }
-}
-
-struct Id
-{
-    public string Value;
-
-    public Id(string value)
-    {
-        Value = value;
-    }
-}
-
 public class UnitBuilder
 {
     EcsEntity _entity;

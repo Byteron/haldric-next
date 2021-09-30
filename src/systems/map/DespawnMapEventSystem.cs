@@ -10,7 +10,7 @@ public class DespawnMapEventSystem : IEcsSystem
         var eventQuery = world.Query<DespawnMapEvent>().End();
         var mapQuery = world.Query<Map>().Inc<Locations>().End();
         var chunkQuery = world.Query<Chunk>().End();
-        var cursorQuery = world.Query<MapCursor>().End();
+        var hoverQuery = world.Query<HoveredLocation>().End();
         var unitQuery = world.Query<NodeHandle<UnitView>>().End();
 
         foreach (var _ in eventQuery)
@@ -25,7 +25,7 @@ public class DespawnMapEventSystem : IEcsSystem
                 world.DespawnEntity(entityId);
             }
 
-            foreach (var entityId in cursorQuery)
+            foreach (var entityId in hoverQuery)
             {
                 world.DespawnEntity(entityId);
             }
