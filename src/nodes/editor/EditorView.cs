@@ -62,8 +62,8 @@ public partial class EditorView : CanvasLayer
         int width = int.Parse(_widthTextEdit.Text);
         int height = int.Parse(_heightTextEdit.Text);
 
-        Main.Instance.World.Spawn().Add(new DestroyMapEvent());
-        Main.Instance.World.Spawn().Add(new CreateMapEvent(width, height));
+        Main.Instance.World.Spawn().Add(new DespawnMapEvent());
+        Main.Instance.World.Spawn().Add(new SpawnMapEvent(width, height));
     }
 
     public void OnTerrainSelected(string code)

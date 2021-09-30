@@ -6,12 +6,12 @@ public partial class EditorState : GameState
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
-        AddInputSystem(new UpdateMapCursorSystem(this));
         AddInputSystem(new EditorEditSystem(this));
         AddInputSystem(new SelectLocationSystem(this));
         AddInputSystem(new UpdateTerrainInfoSystem());
-        AddInputSystem(new LocationHighlightSystem());
 
+        AddUpdateSystem(new UpdateMapCursorSystem(this));
+        AddUpdateSystem(new LocationHighlightSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
 
@@ -20,10 +20,10 @@ public partial class EditorState : GameState
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
         AddEventSystem<SaveMapEvent>(new SaveMapEventSystem());
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
-        AddEventSystem<DestroyMapEvent>(new DestroyMapEventSystem());
-        AddEventSystem<CreateMapEvent>(new CreateMapEventSystem(this));
+        AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
+        AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
 
-        AddDestroySystem(new DestroyCameraOperatorSystem());
+        AddDestroySystem(new DespawnCameraOperatorSystem());
     }
 
     public override void Enter(GameStateController gameStates)
@@ -38,14 +38,14 @@ public partial class EditorState : GameState
 
         _world.AddResource(editorView);
 
-        _world.Spawn().Add(new CreateMapEvent(40, 40));
+        _world.Spawn().Add(new SpawnMapEvent(40, 40));
     }
 
     public override void Exit(GameStateController gameStates)
     {
         _world.RemoveResource<EditorView>();
         _world.RemoveResource<HUDView>();
-        _world.Spawn().Add(new DestroyMapEvent());
+        _world.Spawn().Add(new DespawnMapEvent());
     }
 
     public override void Input(GameStateController gameStates, Godot.InputEvent e)

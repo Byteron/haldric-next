@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public class CommanderExecuteSystem : IEcsSystem
+public class ExecuteCommandSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {

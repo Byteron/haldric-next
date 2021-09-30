@@ -1,39 +1,6 @@
 using Godot;
 using Bitron.Ecs;
 
-public class SpawnCameraOperatorSystem : IEcsSystem
-{
-    Node3D _parent;
-
-    public SpawnCameraOperatorSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
-    public void Run(EcsWorld world)
-    {
-        var cameraEntity = world.Spawn();
-
-        var cameraOperator = Scenes.Instance.CameraOperator.Instantiate<CameraOperator>();
-        _parent.AddChild(cameraOperator);
-
-        cameraEntity.Add(new NodeHandle<CameraOperator>(cameraOperator));
-    }
-}
-
-public class DestroyCameraOperatorSystem : IEcsSystem
-{
-    public void Run(EcsWorld world)
-    {
-        var query = world.Query<NodeHandle<CameraOperator>>().End();
-
-        foreach (var entityId in query)
-        {
-            world.DespawnEntity(entityId);
-        }
-    }
-}
-
 public class UpdateCameraOperatorSystem : IEcsSystem
 {
     public void Run(EcsWorld world)

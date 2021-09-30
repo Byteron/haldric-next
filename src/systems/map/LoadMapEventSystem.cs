@@ -49,7 +49,7 @@ public class LoadMapEventSystem : IEcsSystem
 
     private void SendMapChangeEvents(EcsWorld world, Dictionary mapData)
     {
-        world.Spawn().Add<DestroyMapEvent>();
-        world.Spawn().Add(new CreateMapEvent(mapData));
+        world.Spawn().Add<DespawnMapEvent>();
+        world.Spawn().Add(new SpawnMapEvent(mapData));
     }
 }

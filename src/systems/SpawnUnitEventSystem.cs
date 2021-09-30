@@ -2,23 +2,23 @@ using Godot;
 using Bitron.Ecs;
 using System.Linq;
 
-public struct CreateUnitEvent
+public struct SpawnUnitEvent
 {
     public Coords Coords;
     public string Id;
 
-    public CreateUnitEvent(string id, Coords coords)
+    public SpawnUnitEvent(string id, Coords coords)
     {
         Id = id;
         Coords = coords;
     }
 }
 
-public class CreateUnitEventSystem : IEcsSystem
+public class SpawnUnitEventSystem : IEcsSystem
 {
     Node3D _parent;
 
-    public CreateUnitEventSystem(Node3D parent)
+    public SpawnUnitEventSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -30,18 +30,18 @@ public class CreateUnitEventSystem : IEcsSystem
             return;
         }
 
-        var eventQuery = world.Query<CreateUnitEvent>().End();
+        var eventQuery = world.Query<SpawnUnitEvent>().End();
         var mapQuery = world.Query<Locations>().Inc<Map>().End();
 
         foreach (var eventEntityId in eventQuery)
         {
             foreach (var mapEntityId in mapQuery)
             {
-                ref var createEvent = ref eventQuery.Get<CreateUnitEvent>(eventEntityId);
+                ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
 
                 ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
 
-                var locEntity = locations.Get(createEvent.Coords.Cube);
+                var locEntity = locations.Get(spawnEvent.Coords.Cube);
                 ref var elevation = ref locEntity.Get<Elevation>();
 
                 string key = Data.Instance.UnitDicts.Keys.ToArray<string>()[GD.Randi() % Data.Instance.UnitDicts.Count];
@@ -53,12 +53,12 @@ public class CreateUnitEventSystem : IEcsSystem
 
                 _parent.AddChild(unitView);
 
-                var position = createEvent.Coords.World;
+                var position = spawnEvent.Coords.World;
                 position.y = elevation.Height;
 
                 unitView.Position = position;
 
-                unitEntity.Add(createEvent.Coords);
+                unitEntity.Add(spawnEvent.Coords);
                 unitEntity.Add(new NodeHandle<UnitView>(unitView));
 
                 locEntity.Add(new HasUnit(unitEntity));

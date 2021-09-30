@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public class CommanderUndoSystem : IEcsSystem
+public class UndoCommandSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {

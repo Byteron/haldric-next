@@ -3,20 +3,20 @@ using Godot;
 using Godot.Collections;
 using Bitron.Ecs;
 
-public struct CreateMapEvent
+public struct SpawnMapEvent
 {
     public int Width;
     public int Height;
     public Dictionary MapData;
 
-    public CreateMapEvent(Dictionary mapData)
+    public SpawnMapEvent(Dictionary mapData)
     {
         MapData = mapData;
         Width = 0;
         Height = 0;
     }
 
-    public CreateMapEvent(int width, int height)
+    public SpawnMapEvent(int width, int height)
     {
         Width = width;
         Height = height;
@@ -46,12 +46,12 @@ public struct ChunkSize
     }
 }
 
-public class CreateMapEventSystem : IEcsSystem
+public class SpawnMapEventSystem : IEcsSystem
 {
     EcsWorld _world;
     Node _parent;
 
-    public CreateMapEventSystem(Node parent)
+    public SpawnMapEventSystem(Node parent)
     {
         _parent = parent;
     }
@@ -60,12 +60,12 @@ public class CreateMapEventSystem : IEcsSystem
     {
         _world = world;
 
-        var query = world.Query<CreateMapEvent>().End();
+        var query = world.Query<SpawnMapEvent>().End();
 
         foreach (var eventEntity in query)
         {
 
-            var createEvent = query.Get<CreateMapEvent>(eventEntity);
+            var spawnEvent = query.Get<SpawnMapEvent>(eventEntity);
 
             var mapEntity = _world.Spawn()
                 .Add<Map>()
@@ -79,12 +79,12 @@ public class CreateMapEventSystem : IEcsSystem
 
             InitializeMapCursor();
 
-            if (createEvent.MapData == null)
+            if (spawnEvent.MapData == null)
             {
-                createEvent.MapData = GetMapDataFromDimensions(createEvent.Width, createEvent.Height);
+                spawnEvent.MapData = GetMapDataFromDimensions(spawnEvent.Width, spawnEvent.Height);
             }
 
-            InitializeFromMapData(mapEntity, createEvent.MapData);
+            InitializeFromMapData(mapEntity, spawnEvent.MapData);
             InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
 

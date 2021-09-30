@@ -6,12 +6,12 @@ public partial class PlayState : GameState
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
-        AddInputSystem(new UpdateMapCursorSystem(this));
         AddInputSystem(new SelectLocationSystem(this));
-        AddInputSystem(new CommanderUndoSystem());
+        AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
-        AddInputSystem(new LocationHighlightSystem());
 
+        AddUpdateSystem(new LocationHighlightSystem());
+        AddUpdateSystem(new UpdateMapCursorSystem(this));
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
@@ -20,11 +20,11 @@ public partial class PlayState : GameState
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
-        AddEventSystem<DestroyMapEvent>(new DestroyMapEventSystem());
-        AddEventSystem<CreateMapEvent>(new CreateMapEventSystem(this));
-        AddEventSystem<CreateUnitEvent>(new CreateUnitEventSystem(this));
+        AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
+        AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
+        AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
 
-        AddDestroySystem(new DestroyCameraOperatorSystem());
+        AddDestroySystem(new DespawnCameraOperatorSystem());
     }
 
     public override void Enter(GameStateController gameStates)
@@ -36,16 +36,16 @@ public partial class PlayState : GameState
 
         _world.Spawn().Add(new LoadMapEvent("map"));
 
-        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(5, 5)));
-        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 5)));
-        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 6)));
-        _world.Spawn().Add(new CreateUnitEvent("Soldier", Coords.FromOffset(6, 7)));
+        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(5, 5)));
+        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 5)));
+        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 6)));
+        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 7)));
     }
 
     public override void Exit(GameStateController gameStates)
     {
         _world.RemoveResource<HUDView>();
-        _world.Spawn().Add(new DestroyMapEvent());
+        _world.Spawn().Add(new DespawnMapEvent());
     }
 
     public override void Input(GameStateController gameStates, Godot.InputEvent e)

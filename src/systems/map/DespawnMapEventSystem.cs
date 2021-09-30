@@ -1,13 +1,13 @@
 using Godot;
 using Bitron.Ecs;
 
-public struct DestroyMapEvent { }
+public struct DespawnMapEvent { }
 
-public class DestroyMapEventSystem : IEcsSystem
+public class DespawnMapEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<DestroyMapEvent>().End();
+        var eventQuery = world.Query<DespawnMapEvent>().End();
         var mapQuery = world.Query<Map>().Inc<Locations>().End();
         var chunkQuery = world.Query<Chunk>().End();
         var cursorQuery = world.Query<MapCursor>().End();
