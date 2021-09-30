@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://yurgn4hd50i4"]
+[gd_scene load_steps=5 format=3 uid="uid://chxc2sy7xliwq"]
 
-[ext_resource type="Script" path="res://src/main/Main.cs" id="1"]
+[ext_resource type="Script" path="res://src/Main.cs" id="1_ciigu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_adh88"]
 sky_top_color = Color(0.568627, 0.698039, 0.807843, 1)
@@ -21,7 +21,7 @@ sdfgi_read_sky_light = true
 volumetric_fog_density = 0.001
 
 [node name="Main" type="Node3D"]
-script = ExtResource( "1" )
+script = ExtResource( "1_ciigu" )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_satgj" )

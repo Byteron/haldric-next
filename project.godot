@@ -11,13 +11,13 @@ config_version=4
 [application]
 
 config/name="Haldric Next"
-run/main_scene="res://src/main/Main.tscn"
+run/main_scene="res://src/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Scenes="*res://src/global/Scenes.tscn"
-Data="*res://src/global/Data.cs"
+Scenes="*res://src/nodes/global/Scenes.tscn"
+Data="*res://src/nodes/global/Data.cs"
 
 [display]
 

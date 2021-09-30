@@ -10,7 +10,6 @@ public partial class Main : Node3D
     EcsWorld _world;
 
     public EcsWorld World { get { return _world; } }
-    public GameStateController GameStateController { get { return _gameController; } }
 
     public override void _Ready()
     {
@@ -20,12 +19,13 @@ public partial class Main : Node3D
 
         Data.Instance.Scan();
         
-        _world.AddResource(new Commander());
-        var commander = _world.GetResource<Commander>();
-
         _gameController = new GameStateController();
         _gameController.Name = "GameStateController";
         AddChild(_gameController);
+
+        _world.AddResource(_gameController);
+        
+        _world.AddResource(new Commander());
 
         _gameController.PushState(new ApplicationState(_world));
     }

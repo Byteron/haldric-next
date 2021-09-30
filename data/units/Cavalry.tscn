@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dyu1trl1i8crb"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://src/unit/UnitView.cs" id="1_uiqnj"]
+[ext_resource type="Script" path="res://src/nodes/unit/UnitView.cs" id="1_uiqnj"]
 [ext_resource type="PackedScene" uid="uid://wayd6pwfbp80" path="res://assets/graphics/models/Unit.gltf" id="2_g85d6"]
 
 [node name="Cavalry" type="Node3D"]

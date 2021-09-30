@@ -1,5 +1,11 @@
 using Godot;
 
+public class TerrainGraphic
+{
+    public string Code;
+    public Mesh Mesh;
+}
+
 public class TerrainGraphicBuilder
 {
     TerrainGraphic _graphic;

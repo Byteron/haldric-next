@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck521xh8okc2b"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://src/camera/CameraOperator.cs" id="1"]
+[ext_resource type="Script" path="res://src/nodes/camera/CameraOperator.cs" id="1"]
 
 [sub_resource type="Curve" id="1"]
 _data = [Vector2(0, 0), 0.0, 1.58455, 0, 0, Vector2(0.742972, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0334996, 0.0, 0, 0]

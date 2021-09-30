@@ -14,7 +14,6 @@ public partial class PlayState : GameState
 
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new MoveUnitSystem());
-        AddUpdateSystem(new MoveUnitCommandSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
