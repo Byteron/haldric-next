@@ -5,7 +5,6 @@ public partial class PlayState : GameState
     public PlayState(EcsWorld world) : base(world)
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
-
         AddInputSystem(new SelectLocationSystem(this));
         AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
@@ -22,6 +21,7 @@ public partial class PlayState : GameState
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
+        AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
 
         AddDestroySystem(new DespawnCameraOperatorSystem());
@@ -37,11 +37,7 @@ public partial class PlayState : GameState
         _world.AddResource(hudView);
 
         _world.Spawn().Add(new LoadMapEvent("map"));
-
-        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(5, 5)));
-        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 5)));
-        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 6)));
-        _world.Spawn().Add(new SpawnUnitEvent("Soldier", Coords.FromOffset(6, 7)));
+        _world.Spawn().Add(new SpawnUnitsEvent());
     }
 
     public override void Exit(GameStateController gameStates)

@@ -55,7 +55,7 @@ public class SpawnMapEventSystem : IEcsSystem
             ref var grid = ref mapEntity.Get<Grid>();
             ref var chunkSize = ref mapEntity.Get<ChunkSize>();
 
-            InitializeMapCursor();
+            InitializeHover();
 
             if (spawnEvent.MapData == null)
             {
@@ -63,14 +63,14 @@ public class SpawnMapEventSystem : IEcsSystem
             }
 
             InitializeFromMapData(mapEntity, spawnEvent.MapData);
-            InitializeNeighbors(locations);
             InitializeChunks(chunkSize, grid, locations);
-
+            InitializeNeighbors(locations);
+            InitializeCastles(locations);
             SendUpdateMapEvent();
         }
     }
 
-    private void InitializeMapCursor()
+    private void InitializeHover()
     {
         var hoverEntity = _world.Spawn();
         hoverEntity.Add<HoveredLocation>();
@@ -221,12 +221,12 @@ public class SpawnMapEventSystem : IEcsSystem
 
     private void InitializeNeighbors(Locations locations)
     {
-        foreach (var entity in locations.Values)
+        foreach (var locEntity in locations.Values)
         {
-            entity.Add<Neighbors>();
+            locEntity.Add<Neighbors>();
 
-            ref var coords = ref entity.Get<Coords>();
-            ref var neighbors = ref entity.Get<Neighbors>();
+            ref var coords = ref locEntity.Get<Coords>();
+            ref var neighbors = ref locEntity.Get<Neighbors>();
 
             for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
             {
@@ -239,6 +239,42 @@ public class SpawnMapEventSystem : IEcsSystem
 
                 var nEntity = locations.Get(nCell);
                 neighbors.Set(direction, nEntity);
+            }
+        }
+    }
+
+    private void InitializeCastles(Locations locations)
+    {
+        foreach (var locEntity in locations.Values)
+        {
+            var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+
+            if (!baseTerrainEntity.Has<CanRecruitFrom>())
+            {
+                continue;
+            }
+
+            locEntity.Add<Keep>();
+
+            ref var keep = ref locEntity.Get<Keep>();
+
+            ref var neighbors = ref locEntity.Get<Neighbors>();
+
+            foreach (var nLocEntity in neighbors.GetArray())
+            {
+                if (!nLocEntity.IsAlive())
+                {
+                    continue;
+                }
+
+                var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+
+                if (!nBaseTerrainEntity.Has<CanRecruitTo>())
+                {
+                    continue;
+                }
+
+                keep.List.Add(nLocEntity);
             }
         }
     }

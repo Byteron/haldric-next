@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://0xtwkii72g5d"]
 
 [ext_resource type="Script" path="res://src/nodes/unit/UnitView.cs" id="1_btudn"]
 [ext_resource type="PackedScene" uid="uid://dktd4g232kerc" path="res://assets/graphics/models/Infantry.glb" id="2_l28n4"]

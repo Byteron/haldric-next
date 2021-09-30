@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://bbrhrnj25la1w"]
 
 [ext_resource type="Script" path="res://src/nodes/unit/UnitView.cs" id="1_uiqnj"]
 [ext_resource type="PackedScene" uid="uid://wayd6pwfbp80" path="res://assets/graphics/models/Unit.gltf" id="2_g85d6"]

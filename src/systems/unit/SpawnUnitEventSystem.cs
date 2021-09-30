@@ -44,8 +44,7 @@ public class SpawnUnitEventSystem : IEcsSystem
                 var locEntity = locations.Get(spawnEvent.Coords.Cube);
                 ref var elevation = ref locEntity.Get<Elevation>();
 
-                string key = Data.Instance.UnitDicts.Keys.ToArray<string>()[GD.Randi() % Data.Instance.UnitDicts.Count];
-                var unitEntity = UnitFactory.CreateFromDict(Data.Instance.UnitDicts[key]);
+                var unitEntity = UnitFactory.CreateFromDict(Data.Instance.UnitDicts[spawnEvent.Id]);
 
                 var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instantiate<UnitView>();
 
