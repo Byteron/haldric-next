@@ -24,8 +24,6 @@ public partial class Main : Node3D
         AddChild(_gameController);
 
         _world.AddResource(_gameController);
-        
-        _world.AddResource(new Commander());
 
         _gameController.PushState(new ApplicationState(_world));
     }

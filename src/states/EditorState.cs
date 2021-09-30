@@ -8,6 +8,7 @@ public partial class EditorState : GameState
 
         AddInputSystem(new EditorEditSystem(this));
         AddInputSystem(new SelectLocationSystem(this));
+        AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
 
         AddUpdateSystem(new UpdateMapCursorSystem(this));
@@ -28,6 +29,8 @@ public partial class EditorState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
+        _world.AddResource(new Commander());
+
         var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
         AddChild(hudView);
 
@@ -43,6 +46,7 @@ public partial class EditorState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
+        _world.RemoveResource<Commander>();
         _world.RemoveResource<EditorView>();
         _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DespawnMapEvent());
