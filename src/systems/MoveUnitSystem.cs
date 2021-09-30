@@ -25,6 +25,7 @@ public class MoveUnitSystem : IEcsSystem
             {
                 commander.Enqueue(new MoveCommand(selectedLocEntity, hoveredLocEntity));
                 hasLocation.Entity = hoveredLocEntity;
+                world.GetResource<GameStateController>().PushState(new CommanderState(world));
             }
         }
     }

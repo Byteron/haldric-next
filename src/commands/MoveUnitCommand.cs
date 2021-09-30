@@ -15,8 +15,8 @@ public class MoveCommand : Command
 
     public override void Execute()
     {
-                // source location does not have a unit to move
-        if (FromLocEntity.Has<HasUnit>())
+        // source location does not have a unit to move
+        if (!FromLocEntity.Has<HasUnit>())
         {
             return;
         }

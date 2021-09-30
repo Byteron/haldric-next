@@ -12,5 +12,7 @@ public class CommanderExecuteSystem : IEcsSystem
             var command = commander.Dequeue();
             command.Execute();
         }
+
+        world.GetResource<GameStateController>().PopState();
     }
 }
