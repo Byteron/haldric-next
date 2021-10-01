@@ -12,12 +12,20 @@ public class LocationHighlightSystem : IEcsSystem
         
         foreach(var cursorEntityId in hoverQuery)
         {
-            var locEntity = hoverQuery.Get<HoveredLocation>(cursorEntityId).Entity;
+            ref var hoveredLocation = ref hoverQuery.Get<HoveredLocation>(cursorEntityId);
+            var locEntity = hoveredLocation.Entity;
 
             if (!locEntity.IsAlive())
             {
                 continue;
             }
+
+            if (!hoveredLocation.HasChanged)
+            {
+                return;
+            }
+
+            hoveredLocation.HasChanged = false;
             
             var view = hoverQuery.Get<NodeHandle<Cursor3D>>(cursorEntityId).Node;
 

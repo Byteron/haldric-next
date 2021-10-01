@@ -34,7 +34,9 @@ public class UpdateMapCursorSystem : IEcsSystem
                     foreach (var cursorEntityId in cursorQuery)
                     {
                         var locEntity = locations.Get(coords.Cube);
-                        cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity = locEntity;
+                        ref var hoveredLocation = ref cursorQuery.Get<HoveredLocation>(cursorEntityId);
+                        hoveredLocation.Entity = locEntity;
+                        hoveredLocation.HasChanged = true;
                     }
 
                     previousCell = coords.Axial;
