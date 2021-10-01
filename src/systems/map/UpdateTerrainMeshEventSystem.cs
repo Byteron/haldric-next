@@ -42,6 +42,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     public static readonly Color ColorBlue = new Color(0f, 0f, 1.0f);
 
     TerrainMesh _terrainMesh;
+    ShaderData _shaderData;
 
     public void Run(EcsWorld world)
     {
@@ -50,6 +51,8 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
         foreach (var eventEntityId in eventQuery)
         {
+            _shaderData = world.GetResource<ShaderData>();
+            
             var updateEvent = eventQuery.Get<UpdateTerrainMeshEvent>(eventEntityId);
 
             foreach (var chunkEntityId in chunkQuery)
@@ -78,13 +81,25 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     private void Triangulate(Locations locations)
     {
         _terrainMesh.Clear();
+        _shaderData.ResetVisibility();
 
-        foreach (var item in locations.Dict)
+        foreach (var locEntity in locations.Dict.Values)
         {
-            Triangulate(item.Value);
+            Triangulate(locEntity);
+
+            ref var coords = ref locEntity.Get<Coords>();
+            var baseTerrain = locEntity.Get<HasBaseTerrain>().Entity;
+
+            _shaderData.UpdateTerrain((int)coords.Offset.x, (int)coords.Offset.z, (int)baseTerrain.Get<TerrainTypeIndex>().Value);
+            
+            if (GD.Randf() < 0.5f)
+            {
+                _shaderData.UpdateVisibility((int)coords.Offset.x, (int)coords.Offset.z, false);
+            }
         }
 
         _terrainMesh.Apply();
+        _shaderData.Apply();
     }
 
     private void Triangulate(EcsEntity locEntity)
@@ -124,7 +139,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
         ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
+        var terrainTypeIndex = terrainEntity.Get<TerrainTypeIndex>().Value;
 
         if (!neighbors.Has(direction))
         {
@@ -137,7 +152,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         ref var nElevation = ref nLocEntity.Get<Elevation>();
         ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
         ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
-        ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+        var nTerrainTypeIndex = nTerrainEntity.Get<TerrainTypeIndex>().Value;
 
         var bridge = Metrics.GetBridge(direction, nPlateauArea);
         bridge.y = (nCoords.World.y + nElevation.Height) - (coords.World.y + elevation.Height);
@@ -147,7 +162,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             e1.v5 + bridge
         );
 
-        TriangulateSlope(e1, e2, Data.Instance.TextureArrayIds[terrainCode], Data.Instance.TextureArrayIds[nTerrainCode]);
+        TriangulateSlope(e1, e2, terrainTypeIndex, nTerrainTypeIndex);
 
         if (direction <= Direction.SW && neighbors.Has(direction.Next()))
         {
@@ -156,7 +171,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             ref var nextElevation = ref nextLocEntity.Get<Elevation>();
             ref var nextPlateauArea = ref nextLocEntity.Get<PlateauArea>();
             ref var nextTerrainEntity = ref nextLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var nextTerrainCode = ref nextTerrainEntity.Get<TerrainCode>().Value;
+            var nextTerrainTypeIndex = nextTerrainEntity.Get<TerrainTypeIndex>().Value;
 
             var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
             v6.y = nextElevation.Height;
@@ -167,31 +182,31 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             {
                 if (elevation.Level <= nElevation.Level)
                 {
-                    types.x = Data.Instance.TextureArrayIds[nTerrainCode];
-                    types.y = Data.Instance.TextureArrayIds[terrainCode];
-                    types.z = Data.Instance.TextureArrayIds[nextTerrainCode];
+                    types.x = nTerrainTypeIndex;
+                    types.y = terrainTypeIndex;
+                    types.z = nextTerrainTypeIndex;
                     TriangulateCorner(e1.v5, e2.v5, v6, types);
                 }
                 else
                 {
-                    types.x = Data.Instance.TextureArrayIds[terrainCode];
-                    types.y = Data.Instance.TextureArrayIds[nextTerrainCode];
-                    types.z = Data.Instance.TextureArrayIds[nTerrainCode];
+                    types.x = terrainTypeIndex;
+                    types.y = nextTerrainTypeIndex;
+                    types.z = nTerrainTypeIndex;
                     TriangulateCorner(v6, e1.v5, e2.v5, types);
                 }
             }
             else if (nElevation.Level <= nextElevation.Level)
             {
-                types.x = Data.Instance.TextureArrayIds[nextTerrainCode];
-                types.y = Data.Instance.TextureArrayIds[nTerrainCode];
-                types.z = Data.Instance.TextureArrayIds[terrainCode];
+                types.x = nextTerrainTypeIndex;
+                types.y = nTerrainTypeIndex;
+                types.z = terrainTypeIndex;
                 TriangulateCorner(e2.v5, v6, e1.v5, types);
             }
             else
             {
-                types.x = Data.Instance.TextureArrayIds[terrainCode];
-                types.y = Data.Instance.TextureArrayIds[nextTerrainCode];
-                types.z = Data.Instance.TextureArrayIds[nTerrainCode];
+                types.x = terrainTypeIndex;
+                types.y = nextTerrainTypeIndex;
+                types.z = nTerrainTypeIndex;
                 TriangulateCorner(v6, e1.v5, e2.v5, types);
             }
         }

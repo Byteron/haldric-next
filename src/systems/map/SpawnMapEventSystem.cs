@@ -12,8 +12,8 @@ public struct SpawnMapEvent
     public SpawnMapEvent(Dictionary mapData)
     {
         MapData = mapData;
-        Width = 0;
-        Height = 0;
+        Width = (int)(float)mapData["Width"];
+        Height = (int)(float)mapData["Height"];
     }
 
     public SpawnMapEvent(int width, int height)
@@ -42,9 +42,13 @@ public class SpawnMapEventSystem : IEcsSystem
 
         foreach (var eventEntity in query)
         {
-
             var spawnEvent = query.Get<SpawnMapEvent>(eventEntity);
 
+            if (!world.HasResource<ShaderData>())
+            {
+                world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
+            }
+            
             var mapEntity = _world.Spawn()
                 .Add<Map>()
                 .Add<Grid>()

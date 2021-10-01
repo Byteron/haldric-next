@@ -89,8 +89,15 @@ public partial class Data : Node
         var index = 0;
         foreach (var item in TerrainTextures)
         {
-            textures.Add(item.Value.GetImage());
-            TextureArrayIds.Add(item.Key, (uint)index);
+            var terrainCode = item.Key;
+            var terrainTexture = item.Value;
+
+            var terrainEntity = Terrains[terrainCode];
+            terrainEntity.Add(new TerrainTypeIndex((uint)index));
+
+            textures.Add(terrainTexture.GetImage());
+            TextureArrayIds.Add(terrainCode, (uint)index);
+            
             index += 1;
         }
 

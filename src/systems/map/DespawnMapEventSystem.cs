@@ -41,6 +41,13 @@ public class DespawnMapEventSystem : IEcsSystem
 
                 world.DespawnEntity(entityId);
             }
+
+            if (world.HasResource<ShaderData>())
+            {
+                world.RemoveResource<ShaderData>();
+            }
         }
+
+
     }
 }

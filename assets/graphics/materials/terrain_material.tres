@@ -1,46 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dt5jbgqsjh3dw"]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type spatial;
-
-uniform sampler2DArray textures : hint_albedo;
-
-varying vec3 terrain;
-
-vec4 get_terrain_color(vec3 t, vec4 color, vec2 position, int i)
-{
-	if (i == 0)
-	{
-		vec3 uvw = vec3(position.xy * 0.02, t[0]);
-		vec4 c = texture(textures, uvw);
-		return c * color.r;
-	}
-	else if (i == 1)
-	{
-		vec3 uvw = vec3(position.xy * 0.02, t[1]);
-		vec4 c = texture(textures, uvw);
-		return c * color.g;
-	}
-	else
-	{
-		vec3 uvw = vec3(position.xy * 0.02, t[2]);
-		vec4 c = texture(textures, uvw);
-		return c * color.b;
-	}
-}
-
-void vertex()
-{
-	terrain = vec3(UV, UV2.y);
-}
-
-void fragment()
-{
-	vec2 pos = ((CAMERA_MATRIX) * vec4(VERTEX, 1f)).xz;
-	
-	vec4 c = get_terrain_color(terrain, COLOR, pos, 0) + get_terrain_color(terrain, COLOR, pos, 1) + get_terrain_color(terrain, COLOR, pos, 2);
-	ALBEDO = c.rgb;
-}"
+[ext_resource type="Shader" uid="uid://bbwkbw30cluvo" path="res://assets/graphics/shaders/terrain_shader_old.tres" id="1_1dnv5"]
 
 [resource]
-shader = SubResource( 1 )
+shader = ExtResource( "1_1dnv5" )
