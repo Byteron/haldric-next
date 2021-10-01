@@ -15,9 +15,6 @@ sky_material = SubResource( "ProceduralSkyMaterial_adh88" )
 background_mode = 2
 sky = SubResource( "Sky_8yla0" )
 tonemap_mode = 3
-sdfgi_enabled = true
-sdfgi_use_occlusion = true
-sdfgi_read_sky_light = true
 volumetric_fog_density = 0.001
 
 [node name="Main" type="Node3D"]
