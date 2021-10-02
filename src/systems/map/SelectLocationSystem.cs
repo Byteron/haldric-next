@@ -42,6 +42,21 @@ public class SelectLocationSystem : IEcsSystem
                     var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp, xp, mp);
 
                     _parent.GetTree().CallGroup("UnitLabel", "set", "text", s);
+
+                    var shaderData = world.GetResource<ShaderData>();
+                    shaderData.ResetVisibility(false);
+
+                    var coords = locEntity.Get<Coords>();
+
+                    var cellsInRange = Hex.GetCellsInRange(coords.Cube, mp);
+
+                    foreach(var cCell in cellsInRange)
+                    {
+                        var nCoords = Coords.FromCube(cCell);
+                        shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
+                    }
+
+                    shaderData.Apply();
                 }
             }
 
@@ -52,6 +67,10 @@ public class SelectLocationSystem : IEcsSystem
                 hoverEntity.Remove<HasLocation>();
 
                 _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
+
+                var shaderData = world.GetResource<ShaderData>();
+                shaderData.ResetVisibility(true);
+                shaderData.Apply();
             }
         }
 

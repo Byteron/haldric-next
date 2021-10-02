@@ -81,7 +81,6 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     private void Triangulate(Locations locations)
     {
         _terrainMesh.Clear();
-        _shaderData.ResetVisibility();
 
         foreach (var locEntity in locations.Dict.Values)
         {
@@ -90,12 +89,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             ref var coords = ref locEntity.Get<Coords>();
             var baseTerrain = locEntity.Get<HasBaseTerrain>().Entity;
 
-            _shaderData.UpdateTerrain((int)coords.Offset.x, (int)coords.Offset.z, (int)baseTerrain.Get<TerrainTypeIndex>().Value);
-            
-            if (GD.Randf() < 0.5f)
-            {
-                _shaderData.UpdateVisibility((int)coords.Offset.x, (int)coords.Offset.z, false);
-            }
+            _shaderData.UpdateTerrain((int)coords.Offset.x, (int)coords.Offset.z, baseTerrain.Get<TerrainTypeIndex>().Value);
         }
 
         _terrainMesh.Apply();
@@ -112,6 +106,8 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void Triangulate(Direction direction, EcsEntity locEntity)
     {
+        var index = locEntity.Get<Index>().Value;
+
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
@@ -125,7 +121,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             center + Metrics.GetSecondSolidCorner(direction, plateauArea)
         );
 
-        TriangulatePlateau(center, e, Data.Instance.TextureArrayIds[terrainCode]);
+        TriangulatePlateau(center, e, index);
 
         if (direction <= Direction.W)
         {
@@ -135,11 +131,12 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void TriangulateConnection(Direction direction, EcsEntity locEntity, EdgeVertices e1)
     {
+        var locIndex = locEntity.Get<Index>().Value;
+
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
         ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        var terrainTypeIndex = terrainEntity.Get<TerrainTypeIndex>().Value;
 
         if (!neighbors.Has(direction))
         {
@@ -147,12 +144,12 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         }
 
         var nLocEntity = neighbors.Get(direction);
+        var nLocIndex = nLocEntity.Get<Index>().Value;
 
         ref var nCoords = ref nLocEntity.Get<Coords>();
         ref var nElevation = ref nLocEntity.Get<Elevation>();
         ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
         ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
-        var nTerrainTypeIndex = nTerrainEntity.Get<TerrainTypeIndex>().Value;
 
         var bridge = Metrics.GetBridge(direction, nPlateauArea);
         bridge.y = (nCoords.World.y + nElevation.Height) - (coords.World.y + elevation.Height);
@@ -162,80 +159,77 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             e1.v5 + bridge
         );
 
-        TriangulateSlope(e1, e2, terrainTypeIndex, nTerrainTypeIndex);
+        TriangulateSlope(e1, e2, locIndex, nLocIndex);
 
         if (direction <= Direction.SW && neighbors.Has(direction.Next()))
         {
             var nextLocEntity = neighbors.Get(direction.Next());
+            var nextLocIndex = nextLocEntity.Get<Index>().Value;
 
             ref var nextElevation = ref nextLocEntity.Get<Elevation>();
             ref var nextPlateauArea = ref nextLocEntity.Get<PlateauArea>();
             ref var nextTerrainEntity = ref nextLocEntity.Get<HasBaseTerrain>().Entity;
-            var nextTerrainTypeIndex = nextTerrainEntity.Get<TerrainTypeIndex>().Value;
 
             var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
             v6.y = nextElevation.Height;
 
-            var types = new Vector3();
+            var indices = new Vector3();
 
             if (elevation.Level <= nElevation.Level)
             {
                 if (elevation.Level <= nElevation.Level)
                 {
-                    types.x = nTerrainTypeIndex;
-                    types.y = terrainTypeIndex;
-                    types.z = nextTerrainTypeIndex;
-                    TriangulateCorner(e1.v5, e2.v5, v6, types);
+                    indices.x = nLocIndex;
+                    indices.y = locIndex;
+                    indices.z = nextLocIndex;
+                    TriangulateCorner(e1.v5, e2.v5, v6, indices);
                 }
                 else
                 {
-                    types.x = terrainTypeIndex;
-                    types.y = nextTerrainTypeIndex;
-                    types.z = nTerrainTypeIndex;
-                    TriangulateCorner(v6, e1.v5, e2.v5, types);
+                    indices.x = locIndex;
+                    indices.y = nextLocIndex;
+                    indices.z = nLocIndex;
+                    TriangulateCorner(v6, e1.v5, e2.v5, indices);
                 }
             }
             else if (nElevation.Level <= nextElevation.Level)
             {
-                types.x = nextTerrainTypeIndex;
-                types.y = nTerrainTypeIndex;
-                types.z = terrainTypeIndex;
-                TriangulateCorner(e2.v5, v6, e1.v5, types);
+                indices.x = nextLocIndex;
+                indices.y = nLocIndex;
+                indices.z = locIndex;
+                TriangulateCorner(e2.v5, v6, e1.v5, indices);
             }
             else
             {
-                types.x = terrainTypeIndex;
-                types.y = nextTerrainTypeIndex;
-                types.z = nTerrainTypeIndex;
-                TriangulateCorner(v6, e1.v5, e2.v5, types);
+                indices.x = locIndex;
+                indices.y = nextLocIndex;
+                indices.z = nLocIndex;
+                TriangulateCorner(v6, e1.v5, e2.v5, indices);
             }
         }
     }
 
-    private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 types)
+    private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
     {
         // _terrain.AddTrianglePerturbed(bottom, left, right);
         _terrainMesh.AddTriangle(left, bottom, right);
-        _terrainMesh.AddTriangleColor(ColorRed, ColorGreen, ColorBlue);
-        _terrainMesh.AddTriangleTerrainTypes(types);
+        _terrainMesh.AddTriangleCellData(indices, ColorRed, ColorGreen, ColorBlue);
     }
 
-    private void TriangulatePlateau(Vector3 center, EdgeVertices edge, float type)
+    private void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
     {
         _terrainMesh.AddTriangle(edge.v1, center, edge.v5);
-        _terrainMesh.AddTriangleColor(ColorRed);
-        _terrainMesh.AddTriangleTerrainTypes(new Vector3(type, type, type));
+        _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
         // _terrainMesh.AddTriangle(edge.v1, center, edge.v2);
         // _terrainMesh.AddTriangle(edge.v2, center, edge.v3);
         // _terrainMesh.AddTriangle(edge.v3, center, edge.v4);
         // _terrainMesh.AddTriangle(edge.v4, center, edge.v5);
     }
 
-    void TriangulateSlope(EdgeVertices e1, EdgeVertices e2, float type1, float type2)
+    void TriangulateSlope(EdgeVertices e1, EdgeVertices e2, float index1, float index2)
     {
         _terrainMesh.AddQuad(e1.v1, e1.v5, e2.v1, e2.v5);
-        _terrainMesh.AddQuadColor(ColorRed, ColorGreen);
-        _terrainMesh.AddQuadTerrainTypes(new Vector3(type1, type2, type1));
+        _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
         // _terrainMesh.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
         // _terrainMesh.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
         // _terrainMesh.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);

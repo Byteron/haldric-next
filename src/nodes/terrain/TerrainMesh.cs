@@ -5,11 +5,9 @@ public partial class TerrainMesh : MeshInstance3D
 {
 	private List<int> _indices = new List<int>();
 	private List<Vector3> _vertices = new List<Vector3>();
-	private List<uint> _smoothGroups = new List<uint>();
-	private List<Color> _colors = new List<Color>();
-	private List<Vector2> _uvs = new List<Vector2>();
-	private List<Vector2> _uv2s = new List<Vector2>();
-	private List<Vector3> _terrainTypes = new List<Vector3>();
+	private List<int> _smoothGroups = new List<int>();
+	private List<Vector3> _cellIndicies = new List<Vector3>();
+	private List<Color> _cellWeights = new List<Color>();
 
 	private SurfaceTool _surfaceTool;
 
@@ -35,10 +33,8 @@ public partial class TerrainMesh : MeshInstance3D
 		
 		_indices.Clear();
 		_vertices.Clear();
-		_colors.Clear();
-		_uvs.Clear();
-		_uv2s.Clear();
-		_terrainTypes.Clear();
+		_cellWeights.Clear();
+		_cellIndicies.Clear();
 
 		_surfaceTool.Clear();
 		
@@ -49,13 +45,13 @@ public partial class TerrainMesh : MeshInstance3D
 	{
 		for (int i = 0; i < _vertices.Count; i++)
 		{
-			var type = _terrainTypes[i];
+			var type = _cellIndicies[i];
 
 			var xy = new Vector2(type.x, type.y);
 			var xz = new Vector2(type.x, type.z);
 
-			_surfaceTool.SetColor(_colors[i]);
-			_surfaceTool.SetSmoothGroup(_smoothGroups[i]);
+			_surfaceTool.SetColor(_cellWeights[i]);
+			_surfaceTool.SetSmoothGroup((uint)_smoothGroups[i]);
 			_surfaceTool.SetUv(xy);
 			_surfaceTool.SetUv2(xz);
 			_surfaceTool.AddVertex(_vertices[i]);
@@ -88,9 +84,9 @@ public partial class TerrainMesh : MeshInstance3D
 		_vertices.Add(v2);
 		_vertices.Add(v3);
 		
-		_smoothGroups.Add((uint)_vertexIndex);
-		_smoothGroups.Add((uint)_vertexIndex);
-		_smoothGroups.Add((uint)_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
 
 		_indices.Add(_vertexIndex);
 		_indices.Add(_vertexIndex + 1);
@@ -99,23 +95,20 @@ public partial class TerrainMesh : MeshInstance3D
 		_vertexIndex += 3;
 	}
 
-	public void AddTriangleColor(Color c)
+	public void AddTriangleCellData(Vector3 indices, Color w)
 	{
-		AddTriangleColor(c, c, c);
+		AddTriangleCellData(indices, w, w, w);
 	}
 
-	public void AddTriangleColor(Color c1, Color c2, Color c3)
+	public void AddTriangleCellData(Vector3 indices, Color w1, Color w2, Color w3)
 	{
-		_colors.Add(c1);
-		_colors.Add(c2);
-		_colors.Add(c3);
-	}
+		_cellIndicies.Add(indices);
+		_cellIndicies.Add(indices);
+		_cellIndicies.Add(indices);
 
-	public void AddTriangleTerrainTypes(Vector3 types)
-	{
-		_terrainTypes.Add(types);
-		_terrainTypes.Add(types);
-		_terrainTypes.Add(types);
+		_cellWeights.Add(w1);
+		_cellWeights.Add(w2);
+		_cellWeights.Add(w3);
 	}
 
 	public void AddQuadPerturbed(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
@@ -135,10 +128,10 @@ public partial class TerrainMesh : MeshInstance3D
 		_vertices.Add(v3);
 		_vertices.Add(v4);
 
-		_smoothGroups.Add((uint)_vertexIndex);
-		_smoothGroups.Add((uint)_vertexIndex);
-		_smoothGroups.Add((uint)_vertexIndex);
-		_smoothGroups.Add((uint)_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
+		_smoothGroups.Add(_vertexIndex);
 
 		_indices.Add(_vertexIndex);
 		_indices.Add(_vertexIndex + 1);
@@ -150,24 +143,26 @@ public partial class TerrainMesh : MeshInstance3D
 		_vertexIndex += 4;
 	}
 
-	public void AddQuadColor(Color c1, Color c2)
+	public void AddQuadCellData(Vector3 indices, Color w)
 	{
-		AddQuadColor(c1, c1, c2, c2);
+		AddQuadCellData(indices, w, w, w, w);
 	}
 
-	public void AddQuadColor(Color c1, Color c2, Color c3, Color c4)
+	public void AddQuadCellData(Vector3 indices, Color w1, Color w2)
 	{
-		_colors.Add(c1);
-		_colors.Add(c2);
-		_colors.Add(c3);
-		_colors.Add(c4);
+		AddQuadCellData(indices, w1, w1, w2, w2);
 	}
 
-	public void AddQuadTerrainTypes(Vector3 types)
+	public void AddQuadCellData(Vector3 indices, Color w1, Color w2, Color w3, Color w4)
 	{
-		_terrainTypes.Add(types);
-		_terrainTypes.Add(types);
-		_terrainTypes.Add(types);
-		_terrainTypes.Add(types);
+		_cellIndicies.Add(indices);
+		_cellIndicies.Add(indices);
+		_cellIndicies.Add(indices);
+		_cellIndicies.Add(indices);
+
+		_cellWeights.Add(w1);
+		_cellWeights.Add(w2);
+		_cellWeights.Add(w3);
+		_cellWeights.Add(w4);
 	}
 }

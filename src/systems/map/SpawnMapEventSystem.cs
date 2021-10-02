@@ -149,7 +149,11 @@ public class SpawnMapEventSystem : IEcsSystem
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
             var locEntity = Main.Instance.World.Spawn();
 
-            locEntity.Add(Coords.FromCube(cell));
+            var coords = Coords.FromCube(cell);
+            
+            locEntity.Add(new Index((int)coords.Offset.z * width + (int)coords.Offset.x));
+            locEntity.Add(coords);
+
             locEntity.Add(new PlateauArea(0.75f));
 
             var locationData = (Dictionary)locationsData[cellString];

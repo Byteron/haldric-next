@@ -1,6 +1,6 @@
-[gd_resource type="PlaneMesh" load_steps=5 format=2]
+[gd_resource type="PlaneMesh" load_steps=5 format=3 uid="uid://0k3axwlwo5oj"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "shader_type spatial;
 
 uniform sampler2D image : hint_albedo;
@@ -18,19 +18,20 @@ void fragment()
 	ALPHA = color.a;
 }"
 
-[sub_resource type="OpenSimplexNoise" id=2]
+[sub_resource type="OpenSimplexNoise" id="2"]
 
-[sub_resource type="NoiseTexture" id=3]
+[sub_resource type="NoiseTexture" id="3"]
 seamless = true
-noise = SubResource( 2 )
+noise = SubResource( "2" )
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 1 )
-shader_param/color = Color( 0.0156863, 0.0941176, 0.211765, 1 )
-shader_param/image = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id="4"]
+render_priority = -1
+shader = SubResource( "1" )
+shader_param/color = Color(0.0156863, 0.0941176, 0.211765, 1)
+shader_param/image = SubResource( "3" )
 
 [resource]
-material = SubResource( 4 )
-size = Vector2( 12, 12 )
+material = SubResource( "4" )
+size = Vector2(12, 12)
 subdivide_width = 10
 subdivide_depth = 10

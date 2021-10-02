@@ -17,7 +17,7 @@ public partial class Data : Node
     public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
 
-    public Dictionary<string, uint> TextureArrayIds = new Dictionary<string, uint>();
+    public Dictionary<string, int> TextureArrayIds = new Dictionary<string, int>();
     public Texture2DArray TextureArray { get; private set; }
 
     public override void _Ready()
@@ -78,6 +78,8 @@ public partial class Data : Node
         TerrainTextures = terrainScript.TerrainTextures;
 
         TextureArray = CreateTextureArray();
+
+        GD.Print(TextureArray);
     }
 
     public Texture2DArray CreateTextureArray()
@@ -93,10 +95,10 @@ public partial class Data : Node
             var terrainTexture = item.Value;
 
             var terrainEntity = Terrains[terrainCode];
-            terrainEntity.Add(new TerrainTypeIndex((uint)index));
+            terrainEntity.Add(new TerrainTypeIndex(index));
 
             textures.Add(terrainTexture.GetImage());
-            TextureArrayIds.Add(terrainCode, (uint)index);
+            TextureArrayIds.Add(terrainCode, index);
             
             index += 1;
         }

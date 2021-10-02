@@ -2,9 +2,9 @@ using Bitron.Ecs;
 
 public struct TerrainTypeIndex : IEcsAutoReset<TerrainTypeIndex>
 {
-    public uint Value;
+    public int Value;
 
-    public TerrainTypeIndex(uint value)
+    public TerrainTypeIndex(int value)
     {
         Value = value;
     }
