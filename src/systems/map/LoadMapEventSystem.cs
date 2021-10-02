@@ -26,7 +26,7 @@ public class LoadMapEventSystem : IEcsSystem
 
             var saveData = LoadFromFile(loadMapEvent.Name);
 
-            SendMapChangeEvents(world, saveData);
+            world.Spawn().Add(new SpawnMapEvent(saveData));
         }
     }
 
@@ -45,11 +45,5 @@ public class LoadMapEventSystem : IEcsSystem
         var json = new JSON();
         json.Parse(jsonString);
         return json.GetData() as Dictionary;
-    }
-
-    private void SendMapChangeEvents(EcsWorld world, Dictionary mapData)
-    {
-        world.Spawn().Add<DespawnMapEvent>();
-        world.Spawn().Add(new SpawnMapEvent(mapData));
     }
 }

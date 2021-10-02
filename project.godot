@@ -17,7 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Scenes="*res://src/nodes/global/Scenes.tscn"
-Data="*res://src/nodes/global/Data.cs"
+Data="*res://src/nodes/global/Data.tscn"
 
 [display]
 

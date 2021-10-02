@@ -44,13 +44,15 @@ public struct Locations : IEcsAutoReset<Locations>
         }
     }
 
-    public void Clear()
-    {
-        _dict.Clear();
-    }
-
     public void AutoReset(ref Locations c)
     {
-        c._dict = new Dictionary<Vector3, EcsEntity>();
+        if (c._dict != null)
+        {
+            c._dict.Clear();
+        }
+        else
+        {
+            c._dict = new Dictionary<Vector3, EcsEntity>();
+        }
     }
 }

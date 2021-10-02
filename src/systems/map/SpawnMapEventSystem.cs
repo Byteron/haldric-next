@@ -44,16 +44,14 @@ public class SpawnMapEventSystem : IEcsSystem
         {
             var spawnEvent = query.Get<SpawnMapEvent>(eventEntity);
 
-            if (!world.HasResource<ShaderData>())
+            if (spawnEvent.MapData == null)
             {
-                world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
+                spawnEvent.MapData = GetMapDataFromDimensions(spawnEvent.Width, spawnEvent.Height);
             }
             
-            var mapEntity = _world.Spawn()
-                .Add<Map>()
-                .Add<Grid>()
-                .Add<Locations>()
-                .Add(new ChunkSize(4, 4));
+            world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
+
+            EcsEntity mapEntity = CreateMapFromMapData(spawnEvent.MapData);
 
             ref var locations = ref mapEntity.Get<Locations>();
             ref var grid = ref mapEntity.Get<Grid>();
@@ -61,12 +59,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
             InitializeHover();
 
-            if (spawnEvent.MapData == null)
-            {
-                spawnEvent.MapData = GetMapDataFromDimensions(spawnEvent.Width, spawnEvent.Height);
-            }
 
-            InitializeFromMapData(mapEntity, spawnEvent.MapData);
             InitializeChunks(chunkSize, grid, locations);
             InitializeNeighbors(locations);
             InitializeCastles(locations);
@@ -119,7 +112,7 @@ public class SpawnMapEventSystem : IEcsSystem
         }
 
         dict.Add("Locations", locsDict);
-        
+
         var json = new JSON();
         var jsonString = json.Stringify(dict);
         if (json.Parse(jsonString) != Error.Ok)
@@ -132,13 +125,16 @@ public class SpawnMapEventSystem : IEcsSystem
         return dict;
     }
 
-    private void InitializeFromMapData(EcsEntity mapEntity, Dictionary mapData)
+    private EcsEntity CreateMapFromMapData(Dictionary mapData)
     {
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        ref var grid = ref mapEntity.Get<Grid>();
-        grid = new Grid(width, height);
+        EcsEntity mapEntity = _world.Spawn()
+            .Add<Map>()
+            .Add<Locations>()
+            .Add(new Grid(width, height))
+            .Add(new ChunkSize(4, 4)); ;
 
         ref var locations = ref mapEntity.Get<Locations>();
 
@@ -150,7 +146,7 @@ public class SpawnMapEventSystem : IEcsSystem
             var locEntity = Main.Instance.World.Spawn();
 
             var coords = Coords.FromCube(cell);
-            
+
             locEntity.Add(new Index((int)coords.Offset.z * width + (int)coords.Offset.x));
             locEntity.Add(coords);
 
@@ -172,6 +168,8 @@ public class SpawnMapEventSystem : IEcsSystem
 
             locations.Set(cell, locEntity);
         }
+
+        return mapEntity;
     }
 
     private void InitializeChunks(ChunkSize chunkSize, Grid grid, Locations locations)
@@ -195,18 +193,18 @@ public class SpawnMapEventSystem : IEcsSystem
 
                 var locEntity = locations.Get(coords.Cube);
                 locEntity.Add(chunkCelli);
-                
+
                 var chunkEntity = chunks[chunkCelli];
                 ref var chunkCellComponent = ref chunkEntity.Get<Vector3i>();
-                
+
                 chunkCellComponent = chunkCelli;
-                
+
 
                 ref var chunkLocations = ref chunkEntity.Get<Locations>();
 
                 chunkLocations.Set(coords.Cube, locEntity);
 
-                
+
             }
         }
 

@@ -75,6 +75,8 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
                 terrainCollider.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
             }
+
+            _shaderData.Apply();
         }
     }
 
@@ -93,7 +95,6 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         }
 
         _terrainMesh.Apply();
-        _shaderData.Apply();
     }
 
     private void Triangulate(EcsEntity locEntity)

@@ -78,6 +78,7 @@ public partial class EditorView : CanvasLayer
 
     public void OnLoadButtonPressed()
     {
+        Main.Instance.World.Spawn().Add(new DespawnMapEvent());
         Main.Instance.World.Spawn().Add(new LoadMapEvent("map"));
     }
 }

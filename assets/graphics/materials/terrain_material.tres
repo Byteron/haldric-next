@@ -1,7 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dt5jbgqsjh3dw"]
-
-[ext_resource type="Shader" uid="uid://cmio24vwc8bxt" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_iy4gy"]
-
-[resource]
-shader = ExtResource( "1_iy4gy" )
-shader_param/texel_size = null

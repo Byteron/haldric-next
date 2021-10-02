@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dw1cmrwvmpcfa"]
+
+[ext_resource type="Shader" uid="uid://h62xj5qfxsvw" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_sbrex"]
+
+[resource]
+shader = ExtResource( "1_sbrex" )
+shader_param/texel_size = null

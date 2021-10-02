@@ -9,10 +9,16 @@ public class ShaderData
     ImageTexture _texture;
     Color[] _data;
 
-    private Material terrainMaterial = GD.Load<Material>("res://assets/graphics/materials/terrain_material.tres");
+    private Material _terrainMaterial;
 
     public ShaderData(int width, int height)
     {
+        GD.Print("Initialize ShaderData");
+        GD.Print("Width: " + width);
+        GD.Print("Height: " + height);
+        
+        _terrainMaterial = GD.Load<Material>("res://assets/graphics/materials/terrain.tres");
+
         _width = width;
         _height = height;
 
@@ -23,10 +29,8 @@ public class ShaderData
 
         _data = new Color[width * height];
         
-        terrainMaterial.Set("shader_param/cell_texture", _texture);
-
-        Vector2 uv = new Vector2(1f / width, 1f / height);
-        terrainMaterial.Set("shader_param/texel_size", uv);
+        _terrainMaterial.Set("shader_param/cell_texture", _texture);
+        _terrainMaterial.Set("shader_param/texel_size", new Vector2(1f / width, 1f / height));
 
         ResetVisibility(true);
     }
@@ -76,6 +80,6 @@ public class ShaderData
 
     public void Apply()
     {
-        terrainMaterial.Set("shader_param/cell_texture", GetTexture());
+        _terrainMaterial.Set("shader_param/cell_texture", GetTexture());
     }
 }

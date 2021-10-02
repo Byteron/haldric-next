@@ -22,7 +22,7 @@ public partial class TerrainMesh : MeshInstance3D
 	{
 		_surfaceTool = new SurfaceTool();
 
-		var material = GD.Load<Material>("res://assets/graphics/materials/terrain_material.tres");
+		var material = GD.Load<Material>("res://assets/graphics/materials/terrain.tres");
 		material.Set("shader_param/textures", Data.Instance.TextureArray);
 		MaterialOverride = material;
 	}

@@ -35,7 +35,7 @@ public class LocationHighlightSystem : IEcsSystem
             var position = coords.World;
             position.y = height;
 
-            GD.Print(coords.ToString());
+            GD.Print(coords.Offset);
 
             view.Position = position;
         }
