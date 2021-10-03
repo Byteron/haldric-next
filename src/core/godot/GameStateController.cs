@@ -62,7 +62,6 @@ public partial class GameStateController : Node3D
             currentState = _states.Peek();
             currentState.Continue(this);
         }
-
     }
 
     public void ChangeState(GameState newState)
