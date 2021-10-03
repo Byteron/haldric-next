@@ -35,6 +35,18 @@ public class UnitBuilder
         return this;
     }
 
+    public UnitBuilder WithAttack(EcsEntity attackEntity)
+    {
+        if (!_entity.Has<Attacks>())
+        {
+            _entity.Add<Attacks>();
+        }
+
+        ref var attacks = ref _entity.Get<Attacks>();
+        attacks.Add(attackEntity);
+        return this;
+    }
+
     public UnitBuilder WithView(UnitView unitView)
     {
         _entity.Add(new NodeHandle<UnitView>(unitView));

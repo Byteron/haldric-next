@@ -50,10 +50,10 @@ public class SpawnUnitEventSystem : IEcsSystem
                 unitType.RemoveChild(unitView);
                 _parent.AddChild(unitView);
 
-                var unitEntity = UnitFactory.CreateFromUnitType(unitType, unitView);
+                var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
 
                 unitType.QueueFree();
-                
+
                 var position = spawnEvent.Coords.World;
                 position.y = elevation.Height;
 

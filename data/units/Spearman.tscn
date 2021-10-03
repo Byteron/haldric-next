@@ -13,8 +13,14 @@ Experience = 40
 Moves = 5
 
 [node name="Spear" parent="Attacks" index="0" instance=ExtResource( "2_fqlix" )]
-Damage = 3
-Strikes = 7
+Damage = 7
+Strikes = 3
 DamageType = 1
+
+[node name="Javelin" parent="Attacks" index="1" instance=ExtResource( "2_fqlix" )]
+Damage = 6
+Strikes = 1
+DamageType = 1
+Range = 1
 
 [node name="Infantry" parent="UnitView" index="0" instance=ExtResource( "2_wq0xh" )]

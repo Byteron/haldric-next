@@ -13,7 +13,7 @@ Experience = 86
 Moves = 8
 
 [node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_3ggjw" )]
-Damage = 3
-Strikes = 6
+Damage = 6
+Strikes = 3
 
 [node name="Unit" parent="UnitView" index="0" instance=ExtResource( "2_hwijx" )]
