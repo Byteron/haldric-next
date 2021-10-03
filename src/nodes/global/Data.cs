@@ -6,7 +6,7 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
-    public Dictionary<string, Godot.Collections.Dictionary> UnitDicts = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, PackedScene> Units = new Dictionary<string, PackedScene>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
 
@@ -33,20 +33,14 @@ public partial class Data : Node
 
     private void LoadUnits()
     {
-        UnitDicts.Clear();
+        Units.Clear();
 
-        foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"json"}, false))
+        foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"tscn"}))
         {
-            var file = new File();
-            file.Open(data.Path, File.ModeFlags.Read);
-            var jsonString = file.GetAsText();
-            var json = new JSON();
-            json.Parse(jsonString);
-            var dict = json.GetData() as Godot.Collections.Dictionary;
-            UnitDicts.Add((string)dict["id"], dict);
+            Units.Add(data.Id, (PackedScene)data.Data);
         }
 
-        GD.Print(UnitDicts);
+        GD.Print(Units);
     }
 
     private void LoadTerrain()
@@ -107,12 +101,6 @@ public partial class Data : Node
 
 		return texArray;
 	}
-
-    public EcsEntity CreateUnit(string unitType)
-    {
-        var dict = UnitDicts[unitType];
-        return UnitFactory.CreateFromDict(dict);
-    }
 
     public EcsEntity CreateTerrain(string terrainType)
     {

@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbrhrnj25la1w"]
+[gd_scene load_steps=3 format=3 uid="uid://lbyyajqks7qn"]
 
-[ext_resource type="Script" path="res://src/nodes/unit/UnitView.cs" id="1_uiqnj"]
-[ext_resource type="PackedScene" uid="uid://wayd6pwfbp80" path="res://assets/graphics/models/Unit.gltf" id="2_g85d6"]
+[ext_resource type="PackedScene" uid="uid://dqw5v5gf0onxy" path="res://addons/wdk/UnitType.tscn" id="1_xrcl7"]
+[ext_resource type="PackedScene" uid="uid://wayd6pwfbp80" path="res://assets/graphics/models/Unit.gltf" id="2_hwijx"]
 
-[node name="Cavalry" type="Node3D"]
-script = ExtResource( "1_uiqnj" )
+[node name="Cavalry" instance=ExtResource( "1_xrcl7" )]
 
-[node name="Unit" parent="." instance=ExtResource( "2_g85d6" )]
+[node name="Attributes" parent="." index="0"]
+Id = "Spearman"
+Health = 36
+Experience = 86
+Moves = 8
+
+[node name="Unit" parent="UnitView" index="0" instance=ExtResource( "2_hwijx" )]

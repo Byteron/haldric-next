@@ -25,7 +25,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        if (Data.Instance.UnitDicts.Count == 0)
+        if (Data.Instance.Units.Count == 0)
         {
             return;
         }
@@ -44,21 +44,22 @@ public class SpawnUnitEventSystem : IEcsSystem
                 var locEntity = locations.Get(spawnEvent.Coords.Cube);
                 ref var elevation = ref locEntity.Get<Elevation>();
 
-                var unitEntity = UnitFactory.CreateFromDict(Data.Instance.UnitDicts[spawnEvent.Id]);
-
-                var unitView = unitEntity.Get<AssetHandle<PackedScene>>().Asset.Instantiate<UnitView>();
-
-                unitEntity.Remove<AssetHandle<PackedScene>>();
-
+                UnitType unitType = Data.Instance.Units[spawnEvent.Id].Instantiate<UnitType>();
+                _parent.AddChild(unitType);
+                UnitView unitView = unitType.UnitView;
+                unitType.RemoveChild(unitView);
                 _parent.AddChild(unitView);
 
+                var unitEntity = UnitFactory.CreateFromUnitType(unitType, unitView);
+
+                unitType.QueueFree();
+                
                 var position = spawnEvent.Coords.World;
                 position.y = elevation.Height;
 
                 unitView.Position = position;
 
                 unitEntity.Add(spawnEvent.Coords);
-                unitEntity.Add(new NodeHandle<UnitView>(unitView));
 
                 locEntity.Add(new HasUnit(unitEntity));
             }

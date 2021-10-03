@@ -6,15 +6,15 @@ public class UnitFactory
 {
     static UnitBuilder _builder = new UnitBuilder();
 
-    public static EcsEntity CreateFromDict(Dictionary dict)
+    public static EcsEntity CreateFromUnitType(UnitType unitType, UnitView unitView)
     {
         var unit = _builder
             .Create()
-            .WithId((string)dict["id"])
-            .WithHealth((int)(float)dict["hp"])
-            .WithExperience((int)(float)dict["xp"])
-            .WithMoves((int)(float)dict["mp"])
-            .WithView((string)dict["view"])
+            .WithId(unitType.Attributes.Id)
+            .WithHealth(unitType.Attributes.Health)
+            .WithExperience(unitType.Attributes.Experience)
+            .WithMoves(unitType.Attributes.Moves)
+            .WithView(unitView)
             .Build();
 
         return unit;

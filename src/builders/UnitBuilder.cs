@@ -35,10 +35,9 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithView(string path)
+    public UnitBuilder WithView(UnitView unitView)
     {
-        var packedScene = GD.Load<PackedScene>(path);
-        _entity.Add(new AssetHandle<PackedScene>(packedScene));
+        _entity.Add(new NodeHandle<UnitView>(unitView));
         return this;
     }
 

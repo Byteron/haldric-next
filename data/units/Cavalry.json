@@ -1,7 +1,0 @@
-{
-    "id": "Cavalry",
-    "hp": 36,
-    "xp": 32,
-    "mp": 8,
-    "view": "res://data/units/Cavalry.tscn"
-}

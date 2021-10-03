@@ -24,7 +24,7 @@ public class SpawnUnitsEventSystem : IEcsSystem
 
                 foreach (var castleLoc in keep.List)
                 {
-                    world.Spawn().Add(new SpawnUnitEvent("Soldier", castleLoc.Get<Coords>()));
+                    world.Spawn().Add(new SpawnUnitEvent("Spearman", castleLoc.Get<Coords>()));
                 }
             }
         }

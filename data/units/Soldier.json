@@ -1,7 +1,0 @@
-{
-    "id": "Soldier",
-    "hp": 35,
-    "xp": 44,
-    "mp": 5,
-    "view": "res://data/units/Soldier.tscn"
-}
