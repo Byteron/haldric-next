@@ -16,5 +16,6 @@ public struct HoveredLocation : IEcsAutoReset<HoveredLocation>
     public void AutoReset(ref HoveredLocation c)
     {
         c.Entity = default;
+        c.HasChanged = false;
     }
 }
