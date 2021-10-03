@@ -10,5 +10,8 @@ script = ExtResource( "1_ab082" )
 [node name="Attributes" type="Node" parent="."]
 script = ExtResource( "2_8cn1m" )
 
+[node name="Attacks" type="Node" parent="."]
+script = null
+
 [node name="UnitView" type="Node3D" parent="."]
 script = ExtResource( "3_jrinh" )
