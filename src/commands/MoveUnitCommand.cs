@@ -1,11 +1,11 @@
 using Bitron.Ecs;
 
-public class MoveCommand : Command
+public class MoveUnitCommand : Command
 {
     public EcsEntity FromLocEntity;
     public EcsEntity ToLocEntity;
 
-    public MoveCommand(EcsEntity from, EcsEntity to)
+    public MoveUnitCommand(EcsEntity from, EcsEntity to)
     {
         IsRevertable = true;
 
