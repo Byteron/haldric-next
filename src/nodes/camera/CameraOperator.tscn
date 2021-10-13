@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://dmyvms7guc7jr"]
 
 [ext_resource type="Script" path="res://src/nodes/camera/CameraOperator.cs" id="1"]
 
@@ -7,8 +7,8 @@ _data = [Vector2(0, 0), 0.0, 1.58455, 0, 0, Vector2(0.742972, 1), 0.0, 0.0, 0, 0
 
 [node name="CameraOperator" type="Node3D"]
 script = ExtResource( "1" )
-_walkSpeed = 100.0
-_maxDistance = 250.0
+_walkSpeed = 75.0
+_maxDistance = 150.0
 _zoomCurve = SubResource( "1" )
 
 [node name="HorizontalGimbal" type="Node3D" parent="."]
