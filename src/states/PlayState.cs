@@ -10,8 +10,8 @@ public partial class PlayState : GameState
         AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
 
-        AddUpdateSystem(new LocationHighlightSystem());
-        AddUpdateSystem(new UpdateMapCursorSystem(this));
+        AddUpdateSystem(new UpdateHoveredLocationSystem(this));
+        AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());

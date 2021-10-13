@@ -1,66 +1,44 @@
 using Godot;
-using Godot.Collections;
 using Bitron.Ecs;
 
 public class UpdateMapCursorSystem : IEcsSystem
 {
-    private Node3D _parent;
-
-    private Vector3 previousCell = Vector3.Zero;
-
-    public UpdateMapCursorSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
     public void Run(EcsWorld world)
     {
-        var cursorQuery = world.Query<HoveredLocation>().End();
-        var mapQuery = world.Query<Locations>().Inc<Map>().End();
-
-        foreach (var mapEntityId in mapQuery)
+        var hoverQuery = world.Query<HoveredLocation>()
+            .Inc<Highlighter>()
+            .Inc<NodeHandle<Cursor3D>>()
+            .End();
+        
+        foreach(var cursorEntityId in hoverQuery)
         {
-            ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
+            ref var hoveredLocation = ref hoverQuery.Get<HoveredLocation>(cursorEntityId);
+            var locEntity = hoveredLocation.Entity;
 
-            var result = ShootRay();
-
-            if (result.Contains("position"))
+            if (!locEntity.IsAlive())
             {
-                var position = (Vector3)result["position"];
-                var coords = Coords.FromWorld(position);
-
-                if (previousCell != coords.Axial)
-                {
-                    foreach (var cursorEntityId in cursorQuery)
-                    {
-                        var locEntity = locations.Get(coords.Cube);
-                        ref var hoveredLocation = ref cursorQuery.Get<HoveredLocation>(cursorEntityId);
-                        hoveredLocation.Entity = locEntity;
-                        hoveredLocation.HasChanged = true;
-                    }
-
-                    previousCell = coords.Axial;
-                }
+                continue;
             }
-        }
-    }
 
-    private Dictionary ShootRay()
-    {
-        var spaceState = _parent.GetWorld3d().DirectSpaceState;
-        var viewport = _parent.GetViewport();
+            if (!hoveredLocation.HasChanged)
+            {
+                return;
+            }
 
-        var camera = viewport.GetCamera3d();
-        var mousePosition = viewport.GetMousePosition();
+            hoveredLocation.HasChanged = false;
+            
+            var view = hoverQuery.Get<NodeHandle<Cursor3D>>(cursorEntityId).Node;
 
-        if (camera == null)
-        {
-            return new Dictionary();
+            ref var coords = ref locEntity.Get<Coords>();
+            var height = locEntity.Get<Elevation>().Height;
+
+            var position = coords.World;
+            position.y = height;
+
+            GD.Print(coords.Offset);
+
+            view.Position = position;
         }
         
-        var from = camera.ProjectRayOrigin(mousePosition);
-        var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
-
-        return spaceState.IntersectRay(from, to);
     }
 }
