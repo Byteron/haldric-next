@@ -23,7 +23,7 @@ public class MoveUnitSystem : IEcsSystem
 
             if (Input.IsActionJustPressed("select_unit"))
             {
-                commander.Enqueue(new MoveCommand(selectedLocEntity, hoveredLocEntity));
+                commander.Enqueue(new MoveUnitCommand(selectedLocEntity, hoveredLocEntity));
                 hasLocation.Entity = hoveredLocEntity;
                 world.GetResource<GameStateController>().PushState(new CommanderState(world));
             }
