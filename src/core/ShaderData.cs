@@ -46,7 +46,7 @@ public class ShaderData
     {
         int index = z * _width + x;
 
-        if (index > _data.Length || index < 0)
+        if (index >= _data.Length || index < 0)
         {
             return;
         }

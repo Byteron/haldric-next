@@ -29,6 +29,8 @@ public class MoveCommand : Command
 
         var unitEntity = FromLocEntity.Get<HasUnit>().Entity;
         var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
+        
+        ref var unitCoords = ref unitEntity.Get<Coords>();
 
         ref var targetCoords = ref ToLocEntity.Get<Coords>();
         ref var targetElevation = ref ToLocEntity.Get<Elevation>();
@@ -40,6 +42,10 @@ public class MoveCommand : Command
 
         FromLocEntity.Remove<HasUnit>();
         ToLocEntity.Add(new HasUnit(unitEntity));
+        
+        unitCoords = targetCoords;
+        
+        Main.Instance.World.Spawn().Add(new HighlightLocationEvent(unitEntity.Get<Coords>(), unitEntity.Get<Attribute<Moves>>().Value));
     }
 
     public override void Revert()
