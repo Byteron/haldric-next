@@ -20,4 +20,26 @@ public struct Attribute<T>
         int sum = Value + amount;
         Value = sum > Max ? Max : sum;
     }
+
+    public void Decrease(int amount)
+    {
+        int diff = Value - amount;
+        Value = diff < 0 ? 0 : diff;
+    }
+
+    public void Empty()
+    {
+        Value = 0;
+    }
+
+    public void Restore()
+    {
+        Value = Max;
+        Godot.GD.Print("Attribute Restored " + typeof(T).ToString());
+    }
+
+    public override string ToString()
+    {
+        return $"({Value} / {Max})";
+    }
 }

@@ -35,7 +35,12 @@ public class SelectUnitSystem : IEcsSystem
                     }
                     
                     var unitEntity = locEntity.Get<HasUnit>().Entity;
-                    world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                    var scenario = world.GetResource<Scenario>();
+
+                    if (unitEntity.Get<Team>().Value == scenario.CurrentPlayer)
+                    {
+                        world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                    }
                 }
             }
         }

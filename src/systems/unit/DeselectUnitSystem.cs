@@ -3,13 +3,6 @@ using Bitron.Ecs;
 
 public class DeselectUnitSystem : IEcsSystem
 {
-    Node3D _parent;
-
-    public DeselectUnitSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
     public void Run(EcsWorld world)
     {
         var query = world.Query<HoveredLocation>().End();
@@ -29,7 +22,8 @@ public class DeselectUnitSystem : IEcsSystem
                 
                 hoverEntity.Remove<HasLocation>();
 
-                _parent.GetTree().CallGroup("UnitLabel", "set", "text", "");
+                var hudView = world.GetResource<HudView>();
+                hudView.UnitLabel.Text = "";
 
                 var shaderData = world.GetResource<ShaderData>();
                 shaderData.ResetVisibility(true);

@@ -6,7 +6,7 @@ public partial class PlayState : GameState
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
         AddInputSystem(new SelectUnitSystem(this));
-        AddInputSystem(new DeselectUnitSystem(this));
+        AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
 
@@ -24,17 +24,22 @@ public partial class PlayState : GameState
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
-        AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem(this));
+        AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
+        AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());
     }
 
     public override void Enter(GameStateController gameStates)
-    {   
+    {
+        var scenario = new Scenario();
+        scenario.PlayerCount = 2;
+
+        _world.AddResource(scenario);
         _world.AddResource(new Commander());
 
-        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        var hudView = Scenes.Instance.HUDView.Instantiate<HudView>();
         AddChild(hudView);
 
         _world.AddResource(hudView);
@@ -46,8 +51,8 @@ public partial class PlayState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _world.RemoveResource<Commander>();
-        
-        _world.RemoveResource<HUDView>();
+
+        _world.RemoveResource<HudView>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 

@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://7w2tgrdt77um"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/nodes/global/Scenes.cs" id="1"]
 [ext_resource type="PackedScene" path="res://src/nodes/editor/EditorView.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://oeoq0rlbiox4" path="res://src/nodes/hud/Cursor3D.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://src/nodes/menu/MainMenuView.tscn" id="3_wqxn1"]
-[ext_resource type="PackedScene" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
-[ext_resource type="PackedScene" path="res://src/nodes/hud/HUDView.tscn" id="5_ophts"]
-[ext_resource type="PackedScene" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
+[ext_resource type="PackedScene" uid="uid://dn8gmhek53gox" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
+[ext_resource type="PackedScene" path="res://src/nodes/hud/HudView.tscn" id="5_ophts"]
+[ext_resource type="PackedScene" uid="uid://dmyvms7guc7jr" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
 
 [node name="Scenes" type="Node"]
 script = ExtResource( "1" )

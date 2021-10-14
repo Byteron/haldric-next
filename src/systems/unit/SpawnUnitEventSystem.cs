@@ -4,11 +4,13 @@ using System.Linq;
 
 public struct SpawnUnitEvent
 {
-    public Coords Coords;
+    public int Team;
     public string Id;
+    public Coords Coords;
 
-    public SpawnUnitEvent(string id, Coords coords)
+    public SpawnUnitEvent(int team, string id, Coords coords)
     {
+        Team = team;
         Id = id;
         Coords = coords;
     }
@@ -59,6 +61,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
                 unitView.Position = position;
 
+                unitEntity.Add(new Team(spawnEvent.Team));
                 unitEntity.Add(spawnEvent.Coords);
 
                 locEntity.Add(new HasUnit(unitEntity));

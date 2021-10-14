@@ -31,6 +31,7 @@ public class MoveUnitCommand : Command
         var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
         
         ref var unitCoords = ref unitEntity.Get<Coords>();
+        ref var unitMoves = ref unitEntity.Get<Attribute<Moves>>();
 
         ref var targetCoords = ref ToLocEntity.Get<Coords>();
         ref var targetElevation = ref ToLocEntity.Get<Elevation>();
@@ -44,8 +45,9 @@ public class MoveUnitCommand : Command
         ToLocEntity.Add(new HasUnit(unitEntity));
         
         unitCoords = targetCoords;
-        
-        Main.Instance.World.Spawn().Add(new HighlightLocationEvent(unitEntity.Get<Coords>(), unitEntity.Get<Attribute<Moves>>().Value));
+        unitMoves.Empty();
+
+        Main.Instance.World.Spawn().Add(new UnitSelectedEvent(unitEntity));
     }
 
     public override void Revert()

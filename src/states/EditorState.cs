@@ -30,7 +30,7 @@ public partial class EditorState : GameState
     {
         _world.AddResource(new Commander());
 
-        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        var hudView = Scenes.Instance.HUDView.Instantiate<HudView>();
         AddChild(hudView);
 
         _world.AddResource(hudView);
@@ -47,7 +47,7 @@ public partial class EditorState : GameState
     {
         _world.RemoveResource<Commander>();
         _world.RemoveResource<EditorView>();
-        _world.RemoveResource<HUDView>();
+        _world.RemoveResource<HudView>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 

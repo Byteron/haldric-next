@@ -13,13 +13,6 @@ public struct UnitSelectedEvent
 
 public class UnitSelectedEventSystem : IEcsSystem
 {
-    Node3D _parent;
-
-    public UnitSelectedEventSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
     public void Run(EcsWorld world)
     {
         var query = world.Query<UnitSelectedEvent>().End();
@@ -29,11 +22,11 @@ public class UnitSelectedEventSystem : IEcsSystem
             var unitEntity = world.Entity(eventEntityId).Get<UnitSelectedEvent>().Unit;
 
             var id = unitEntity.Get<Id>().Value;
-            var hp = unitEntity.Get<Attribute<Health>>().Value;
-            var xp = unitEntity.Get<Attribute<Experience>>().Value;
-            var mp = unitEntity.Get<Attribute<Moves>>().Value;
+            var hp = unitEntity.Get<Attribute<Health>>();
+            var xp = unitEntity.Get<Attribute<Experience>>();
+            var mp = unitEntity.Get<Attribute<Moves>>();
 
-            var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp, xp, mp);
+            var s = string.Format("Id: {0}\nHP: {1}\nXP: {2}\nMP: {3}", id, hp.ToString(), xp.ToString(), mp.ToString());
 
             if (unitEntity.Has<Attacks>())
             {
@@ -48,11 +41,12 @@ public class UnitSelectedEventSystem : IEcsSystem
                 }
             }
 
-            _parent.GetTree().CallGroup("UnitLabel", "set", "text", s);
+            var hudView = world.GetResource<HudView>();
+            hudView.UnitLabel.Text = s;
 
             var coords = unitEntity.Get<Coords>();
             
-            world.Spawn().Add(new HighlightLocationEvent(coords, mp));
+            world.Spawn().Add(new HighlightLocationEvent(coords, mp.Value));
         }
     }
 }

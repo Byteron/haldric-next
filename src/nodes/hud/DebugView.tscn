@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://dn8gmhek53gox"]
 
 [ext_resource type="Script" path="res://src/nodes/hud/DebugView.cs" id="1_1e3l6"]
 
