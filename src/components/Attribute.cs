@@ -35,7 +35,6 @@ public struct Attribute<T>
     public void Restore()
     {
         Value = Max;
-        Godot.GD.Print("Attribute Restored " + typeof(T).ToString());
     }
 
     public override string ToString()

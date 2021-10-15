@@ -35,13 +35,12 @@ public class SelectUnitSystem : IEcsSystem
                     }
                     else
                     {
-                        hoverEntity.Add(new HasLocation(hoveredLocEntity));
-
                         var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
                         var scenario = world.GetResource<Scenario>();
 
                         if (unitEntity.Get<Team>().Value == scenario.CurrentPlayer)
                         {
+                            hoverEntity.Add(new HasLocation(hoveredLocEntity));
                             world.Spawn().Add(new UnitSelectedEvent(unitEntity));
                         }
                     }
