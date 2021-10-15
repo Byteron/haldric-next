@@ -24,7 +24,7 @@ public class CombatEventSystem : IEcsSystem
         {
             ref var combatEvent = ref query.Get<CombatEvent>(eventEntityId);
 
-            GD.Print($"Combat Event: {combatEvent.AttackerEntity} vs {combatEvent.DefenderEntity}");
+            GD.Print($"Combat Event: {combatEvent.AttackerEntity.Get<Id>().Value} vs {combatEvent.DefenderEntity.Get<Id>().Value}");
 
             var attackerEntity = combatEvent.AttackerEntity;
             var defenderEntity = combatEvent.DefenderEntity;

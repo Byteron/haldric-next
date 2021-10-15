@@ -31,7 +31,7 @@ public class DamageEventSystem : IEcsSystem
 
             targetHealth.Decrease(damage);
 
-            GD.Print($"Damage Event: {damage} dealt to {targetEntity}");
+            GD.Print($"Damage Event: {damagerEntity.Get<Id>().Value} dealt {damage} damage to {targetEntity.Get<Id>().Value}");
         }
     }
 }
