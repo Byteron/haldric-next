@@ -33,39 +33,37 @@ public class SpawnUnitEventSystem : IEcsSystem
         }
 
         var eventQuery = world.Query<SpawnUnitEvent>().End();
-        var mapQuery = world.Query<Locations>().Inc<Map>().End();
-
+        
         foreach (var eventEntityId in eventQuery)
         {
-            foreach (var mapEntityId in mapQuery)
-            {
-                ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
+            var map = world.GetResource<Map>();
+            
+            ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
 
-                ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
+            ref var locations = ref map.Locations;
 
-                var locEntity = locations.Get(spawnEvent.Coords.Cube);
-                ref var elevation = ref locEntity.Get<Elevation>();
+            var locEntity = locations.Get(spawnEvent.Coords.Cube);
+            ref var elevation = ref locEntity.Get<Elevation>();
 
-                UnitType unitType = Data.Instance.Units[spawnEvent.Id].Instantiate<UnitType>();
-                _parent.AddChild(unitType);
-                UnitView unitView = unitType.UnitView;
-                unitType.RemoveChild(unitView);
-                _parent.AddChild(unitView);
+            UnitType unitType = Data.Instance.Units[spawnEvent.Id].Instantiate<UnitType>();
+            _parent.AddChild(unitType);
+            UnitView unitView = unitType.UnitView;
+            unitType.RemoveChild(unitView);
+            _parent.AddChild(unitView);
 
-                var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
+            var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
 
-                unitType.QueueFree();
+            unitType.QueueFree();
 
-                var position = spawnEvent.Coords.World;
-                position.y = elevation.Height;
+            var position = spawnEvent.Coords.World;
+            position.y = elevation.Height;
 
-                unitView.Position = position;
+            unitView.Position = position;
 
-                unitEntity.Add(new Team(spawnEvent.Team));
-                unitEntity.Add(spawnEvent.Coords);
+            unitEntity.Add(new Team(spawnEvent.Team));
+            unitEntity.Add(spawnEvent.Coords);
 
-                locEntity.Add(new HasUnit(unitEntity));
-            }
+            locEntity.Add(new HasUnit(unitEntity));
         }
     }
 }

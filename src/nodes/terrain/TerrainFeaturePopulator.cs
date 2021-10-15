@@ -50,7 +50,7 @@ public partial class TerrainFeaturePopulator : Node3D
             foreach (var renderData in renderDatas)
             {
                 var xform = new Transform3D(Basis.Identity, renderData.Position);
-                xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.z);
+                xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.y);
                 RenderingServer.MultimeshInstanceSetTransform(_multiMeshRids[meshId], index, xform);
                 index += 1;
             }
@@ -127,7 +127,7 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var wallPosition = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
-            AddRenderData(Data.Instance.WallSegments[terrainCode].Mesh, wallPosition, new Vector3(0f, 0f, Mathf.Deg2Rad(rotation)));
+            AddRenderData(Data.Instance.WallSegments[terrainCode].Mesh, wallPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
         }
     }
 
@@ -174,7 +174,7 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var towerPosition = center + Metrics.GetFirstCorner(direction);
-
+    
             AddRenderData(Data.Instance.WallTowers[terrainCode].Mesh, towerPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
         }
     }

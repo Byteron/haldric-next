@@ -17,35 +17,32 @@ public class HighlightLocationsEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var query = world.Query<HighlightLocationEvent>().End();
-        var mapQuery = world.Query<Locations>().Inc<Map>().Inc<Grid>().End();
 
-        foreach (var mapEntityId in mapQuery)
+        foreach (var eventEntityId in query)
         {
-            ref var grid = ref mapQuery.Get<Grid>(mapEntityId);
+            var map = world.GetResource<Map>();
+            ref var grid = ref map.Grid;
 
-            foreach (var eventEntityId in query)
+            var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
+
+            var shaderData = world.GetResource<ShaderData>();
+            shaderData.ResetVisibility(false);
+
+            var cellsInRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
+
+            foreach (var cCell in cellsInRange)
             {
-                var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
-
-                var shaderData = world.GetResource<ShaderData>();
-                shaderData.ResetVisibility(false);
-
-                var cellsInRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
-
-                foreach (var cCell in cellsInRange)
+                var nCoords = Coords.FromCube(cCell);
+                if (!grid.IsCoordsInGrid(nCoords))
                 {
-                    var nCoords = Coords.FromCube(cCell);
-                    if (!grid.IsCoordsInGrid(nCoords))
-                    {
-                        continue;
-                    }
-                    
-                    shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
+                    continue;
                 }
-
-
-                shaderData.Apply();
+                
+                shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
             }
+
+
+            shaderData.Apply();
         }
     }
 }

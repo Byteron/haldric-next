@@ -16,31 +16,34 @@ public class UpdateHoveredLocationSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var cursorQuery = world.Query<HoveredLocation>().End();
-        var mapQuery = world.Query<Locations>().Inc<Map>().End();
 
-        foreach (var mapEntityId in mapQuery)
+        if (!world.HasResource<Map>())
         {
-            ref var locations = ref mapQuery.Get<Locations>(mapEntityId);
+            return;
+        }
 
-            var result = ShootRay();
+        var map = world.GetResource<Map>();
 
-            if (result.Contains("position"))
+        ref var locations = ref map.Locations;
+
+        var result = ShootRay();
+
+        if (result.Contains("position"))
+        {
+            var position = (Vector3)result["position"];
+            var coords = Coords.FromWorld(position);
+
+            if (previousCell != coords.Axial)
             {
-                var position = (Vector3)result["position"];
-                var coords = Coords.FromWorld(position);
-
-                if (previousCell != coords.Axial)
+                foreach (var cursorEntityId in cursorQuery)
                 {
-                    foreach (var cursorEntityId in cursorQuery)
-                    {
-                        var locEntity = locations.Get(coords.Cube);
-                        ref var hoveredLocation = ref cursorQuery.Get<HoveredLocation>(cursorEntityId);
-                        hoveredLocation.Entity = locEntity;
-                        hoveredLocation.HasChanged = true;
-                    }
-
-                    previousCell = coords.Axial;
+                    var locEntity = locations.Get(coords.Cube);
+                    ref var hoveredLocation = ref cursorQuery.Get<HoveredLocation>(cursorEntityId);
+                    hoveredLocation.Entity = locEntity;
+                    hoveredLocation.HasChanged = true;
                 }
+
+                previousCell = coords.Axial;
             }
         }
     }

@@ -1,25 +1,5 @@
 using Bitron.Ecs;
 
-public struct Team
-{
-    public int Value;
-
-    public Team(int value)
-    {
-        Value = value;
-    }
-}
-
-public class Scenario
-{
-    public int PlayerCount;
-    public int CurrentPlayer;
-
-    public void EndTurn()
-    {
-        CurrentPlayer = (CurrentPlayer + 1) % PlayerCount;
-    }
-}
 public struct TurnEndEvent { }
 
 public class TurnEndEventSystem : IEcsSystem

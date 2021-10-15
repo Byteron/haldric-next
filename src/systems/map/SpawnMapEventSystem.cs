@@ -51,14 +51,15 @@ public class SpawnMapEventSystem : IEcsSystem
             
             world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
 
-            EcsEntity mapEntity = CreateMapFromMapData(spawnEvent.MapData);
+            Map map = CreateMapFromMapData(spawnEvent.MapData);
 
-            ref var locations = ref mapEntity.Get<Locations>();
-            ref var grid = ref mapEntity.Get<Grid>();
-            ref var chunkSize = ref mapEntity.Get<ChunkSize>();
+            world.AddResource(map);
+
+            ref var locations = ref map.Locations;
+            ref var grid = ref map.Grid;
+            ref var chunkSize = ref map.ChunkSize;
 
             InitializeHover();
-
 
             InitializeChunks(chunkSize, grid, locations);
             InitializeNeighbors(locations);
@@ -125,18 +126,17 @@ public class SpawnMapEventSystem : IEcsSystem
         return dict;
     }
 
-    private EcsEntity CreateMapFromMapData(Dictionary mapData)
+    private Map CreateMapFromMapData(Dictionary mapData)
     {
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        EcsEntity mapEntity = _world.Spawn()
-            .Add<Map>()
-            .Add<Locations>()
-            .Add(new Grid(width, height))
-            .Add(new ChunkSize(4, 4)); ;
+        var map = new Map();
+        map.Locations = new Locations();
+        map.Grid = new Grid(width, height);
+        map.ChunkSize = new Vector2i(4, 4);
 
-        ref var locations = ref mapEntity.Get<Locations>();
+        ref var locations = ref map.Locations;
 
         var locationsData = (Dictionary)mapData["Locations"];
 
@@ -169,10 +169,10 @@ public class SpawnMapEventSystem : IEcsSystem
             locations.Set(cell, locEntity);
         }
 
-        return mapEntity;
+        return map;
     }
 
-    private void InitializeChunks(ChunkSize chunkSize, Grid grid, Locations locations)
+    private void InitializeChunks(Vector2i chunkSize, Grid grid, Locations locations)
     {
         var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsEntity>();
 
@@ -182,7 +182,7 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var coords = Coords.FromOffset(x, z);
 
-                var chunkCell = (coords.Offset / chunkSize.ToVector3());
+                var chunkCell = (coords.Offset / new Vector3(chunkSize.x, 0f, chunkSize.y));
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
 
                 if (!chunks.ContainsKey(chunkCelli))
@@ -218,7 +218,6 @@ public class SpawnMapEventSystem : IEcsSystem
             _parent.AddChild(terrainCollider);
             _parent.AddChild(terrainFeaturePopulator);
 
-            chunkEntity.Add<Chunk>();
             chunkEntity.Add(new NodeHandle<TerrainCollider>(terrainCollider));
             chunkEntity.Add(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
             chunkEntity.Add(new NodeHandle<TerrainMesh>(terrainMesh));
