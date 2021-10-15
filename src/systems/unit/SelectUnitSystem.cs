@@ -3,44 +3,50 @@ using Bitron.Ecs;
 
 public class SelectUnitSystem : IEcsSystem
 {
-    Node3D _parent;
-
-    public SelectUnitSystem(Node3D parent)
-    {
-        _parent = parent;
-    }
-
     public void Run(EcsWorld world)
     {
         var query = world.Query<HoveredLocation>().End();
 
         foreach (var hoverEntityId in query)
         {
-            var locEntity = query.Get<HoveredLocation>(hoverEntityId).Entity;
+            var hoverEntity = world.Entity(hoverEntityId);
+            var hoveredLocEntity = hoverEntity.Get<HoveredLocation>().Entity;
             
-            if (!locEntity.IsAlive())
+            if (!hoveredLocEntity.IsAlive())
             {
                 return;
             }
 
             if (Input.IsActionJustPressed("select_unit"))
             {
-                var hoverEntity = world.Entity(hoverEntityId);
-
-                if (locEntity.Has<HasUnit>())
+                if (hoveredLocEntity.Has<HasUnit>())
                 {
-                    if (!hoverEntity.Has<HasLocation>())
+                    if (hoverEntity.Has<HasLocation>())
                     {
-                        hoverEntity.Add(new HasLocation(locEntity));
-                    }
-                    
-                    var unitEntity = locEntity.Get<HasUnit>().Entity;
-                    var scenario = world.GetResource<Scenario>();
+                        var selectedLocEntity = hoverEntity.Get<HasLocation>().Entity;
+                        var selectedUnitEntity = selectedLocEntity.Get<HasUnit>().Entity;
 
-                    if (unitEntity.Get<Team>().Value == scenario.CurrentPlayer)
-                    {
-                        world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                        var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
+
+                        if (selectedUnitEntity.Get<Team>().Value != unitEntity.Get<Team>().Value)
+                        {
+                            world.Spawn().Add(new CombatEvent(selectedUnitEntity, unitEntity));
+                        }
                     }
+                    else
+                    {
+                        hoverEntity.Add(new HasLocation(hoveredLocEntity));
+
+                        var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
+                        var scenario = world.GetResource<Scenario>();
+
+                        if (unitEntity.Get<Team>().Value == scenario.CurrentPlayer)
+                        {
+                            world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                        }
+                    }
+
+                    
                 }
             }
         }

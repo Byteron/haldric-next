@@ -20,6 +20,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return _list;
     }
 
+    public EcsEntity GetFirst()
+    {
+        return _list[0];
+    }
+
     public void AutoReset(ref Attacks c)
     {
         if (c._list == null)

@@ -5,7 +5,7 @@ public partial class PlayState : GameState
     public PlayState(EcsWorld world) : base(world)
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
-        AddInputSystem(new SelectUnitSystem(this));
+        AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new UpdateTerrainInfoSystem());
@@ -26,6 +26,8 @@ public partial class PlayState : GameState
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
+        AddEventSystem<CombatEvent>(new CombatEventSystem());
+        AddEventSystem<DamageEvent>(new DamageEventSystem());
         AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());
