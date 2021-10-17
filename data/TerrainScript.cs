@@ -17,10 +17,11 @@ public class TerrainScript : TerrainLoader
         AddTerrainTexture("Kh", "assets/graphics/images/stone.png");
         AddTerrainTexture("Ww", "assets/graphics/images/mud.png");
 
-        AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres");
+        AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
         AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
         AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
 
+        AddKeepPlateauGraphic("Ch", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 0.1f, 0f));
         AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
         AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 

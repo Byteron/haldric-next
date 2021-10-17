@@ -4,6 +4,7 @@ public class TerrainGraphic
 {
     public string Code;
     public Mesh Mesh;
+    public Vector3 Offset;
 }
 
 public class TerrainGraphicBuilder
@@ -25,6 +26,12 @@ public class TerrainGraphicBuilder
     public TerrainGraphicBuilder WithMesh(Mesh mesh)
     {
         _graphic.Mesh = mesh;
+        return this;
+    }
+
+    public TerrainGraphicBuilder WithOffset(Vector3 offset)
+    {
+        _graphic.Offset = offset;
         return this;
     }
 

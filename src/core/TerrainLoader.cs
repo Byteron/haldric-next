@@ -84,9 +84,9 @@ public abstract class TerrainLoader
         WallTowers.Add(code, graphic);
     }
 
-    public void AddKeepPlateauGraphic(string code, string path)
+    public void AddKeepPlateauGraphic(string code, string path, Vector3 offset = default)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset).Build();
         KeepPlateaus.Add(code, graphic);
     }
 
