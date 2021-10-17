@@ -58,6 +58,11 @@ public struct Coords
         return coords;
     }
 
+    public int GetIndex(int width)
+    {
+        return (int)this.Offset.z * width + (int)this.Offset.x;
+    }
+
     public override string ToString()
     {
         return string.Format("({0}, {1})", X, Z);

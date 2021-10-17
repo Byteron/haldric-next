@@ -38,7 +38,10 @@ public class UpdateHoveredLocationSystem : IEcsSystem
                 foreach (var cursorEntityId in cursorQuery)
                 {
                     var locEntity = locations.Get(coords.Cube);
-                    ref var hoveredLocation = ref cursorQuery.Get<HoveredLocation>(cursorEntityId);
+                    var hoverEntity = world.Entity(cursorEntityId);
+
+                    ref var hoveredLocation = ref hoverEntity.Get<HoveredLocation>();
+                    
                     hoveredLocation.Entity = locEntity;
                     hoveredLocation.HasChanged = true;
                 }

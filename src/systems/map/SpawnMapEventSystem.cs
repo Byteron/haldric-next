@@ -64,6 +64,7 @@ public class SpawnMapEventSystem : IEcsSystem
             InitializeChunks(chunkSize, grid, locations);
             InitializeNeighbors(locations);
             InitializeCastles(locations);
+            InitializePathFinding(map);
             SendUpdateMapEvent();
         }
     }
@@ -131,10 +132,7 @@ public class SpawnMapEventSystem : IEcsSystem
         var width = System.Convert.ToInt32(mapData["Width"]);
         var height = System.Convert.ToInt32(mapData["Height"]);
 
-        var map = new Map();
-        map.Locations = new Locations();
-        map.Grid = new Grid(width, height);
-        map.ChunkSize = new Vector2i(4, 4);
+        var map = new Map(width, height, 4);
 
         ref var locations = ref map.Locations;
 
@@ -280,6 +278,34 @@ public class SpawnMapEventSystem : IEcsSystem
                 }
 
                 keep.List.Add(nLocEntity);
+            }
+        }
+    }
+
+    private void InitializePathFinding(Map map)
+    {
+        foreach (var locEntity in map.Locations.Dict.Values)
+        {
+            ref var coords = ref locEntity.Get<Coords>();
+            
+            map.PathFinder.AddPoint(coords.GetIndex(map.Grid.Width), coords.Cube, 1);
+        }
+
+        foreach (var locEntity in map.Locations.Dict.Values)
+        {
+            ref var coords = ref locEntity.Get<Coords>();
+            ref var neighbors = ref locEntity.Get<Neighbors>();
+            
+            foreach (var nLocEntity in neighbors.GetArray())
+            {
+                if (!nLocEntity.IsAlive())
+                {
+                    continue;
+                }
+
+                ref var nCoords = ref nLocEntity.Get<Coords>();
+
+                map.PathFinder.ConnectPoints(coords.GetIndex(map.Grid.Width), nCoords.GetIndex(map.Grid.Width), false);
             }
         }
     }

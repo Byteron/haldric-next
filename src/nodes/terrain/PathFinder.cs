@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public partial class PathFinder : AStar2D
+public partial class PathFinder : AStar
 {
     public override float _ComputeCost(int fromId, int toId)
     {
