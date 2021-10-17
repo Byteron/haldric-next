@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public partial class HudView : CanvasLayer
+public partial class HUDView : CanvasLayer
 {
     public Label TerrainLabel;
     public Label UnitLabel;

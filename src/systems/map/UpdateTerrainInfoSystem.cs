@@ -5,12 +5,12 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HudView>())
+        if (!world.HasResource<HUDView>())
         {
             return;
         }
         
-        var hudView = world.GetResource<HudView>();
+        var hudView = world.GetResource<HUDView>();
 
         var query = world.Query<HoveredLocation>().End();
         foreach (var entityId in query)

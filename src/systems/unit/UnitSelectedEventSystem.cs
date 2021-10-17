@@ -41,7 +41,7 @@ public class UnitSelectedEventSystem : IEcsSystem
                 }
             }
 
-            var hudView = world.GetResource<HudView>();
+            var hudView = world.GetResource<HUDView>();
             hudView.UnitLabel.Text = s;
 
             var coords = unitEntity.Get<Coords>();

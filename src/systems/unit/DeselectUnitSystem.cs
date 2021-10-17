@@ -22,7 +22,7 @@ public class DeselectUnitSystem : IEcsSystem
                 
                 hoverEntity.Remove<HasLocation>();
 
-                var hudView = world.GetResource<HudView>();
+                var hudView = world.GetResource<HUDView>();
                 hudView.UnitLabel.Text = "";
 
                 var shaderData = world.GetResource<ShaderData>();

@@ -41,7 +41,7 @@ public partial class PlayState : GameState
         _world.AddResource(scenario);
         _world.AddResource(new Commander());
 
-        var hudView = Scenes.Instance.HUDView.Instantiate<HudView>();
+        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
         AddChild(hudView);
 
         _world.AddResource(hudView);
@@ -54,7 +54,7 @@ public partial class PlayState : GameState
     {
         _world.RemoveResource<Commander>();
 
-        _world.RemoveResource<HudView>();
+        _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 
