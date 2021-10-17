@@ -3,5 +3,6 @@
 [ext_resource type="Shader" uid="uid://h62xj5qfxsvw" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_sbrex"]
 
 [resource]
+render_priority = 0
 shader = ExtResource( "1_sbrex" )
 shader_param/texel_size = null

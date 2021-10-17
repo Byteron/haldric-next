@@ -1,0 +1,31 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://jjnbwddt1rdq"]
+
+[sub_resource type="Shader" id="1"]
+code = "shader_type spatial;
+
+uniform sampler2D image : hint_albedo;
+uniform vec4 color : hint_color;
+
+void vertex()
+{
+	vec4 noise = texture(image, (VERTEX.xz * 0.1) + TIME * 0.1);
+	VERTEX.y += noise.r * 0.5;
+}
+
+void fragment()
+{
+	ALBEDO = color.rgb;
+	ALPHA = color.a;
+}"
+
+[sub_resource type="OpenSimplexNoise" id="2"]
+
+[sub_resource type="NoiseTexture" id="3"]
+seamless = true
+noise = SubResource( "2" )
+
+[resource]
+render_priority = -1
+shader = SubResource( "1" )
+shader_param/color = Color(0.0156863, 0.0941176, 0.211765, 1)
+shader_param/image = SubResource( "3" )

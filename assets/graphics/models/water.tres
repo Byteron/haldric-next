@@ -1,37 +1,9 @@
-[gd_resource type="PlaneMesh" load_steps=5 format=3 uid="uid://0k3axwlwo5oj"]
+[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://0k3axwlwo5oj"]
 
-[sub_resource type="Shader" id="1"]
-code = "shader_type spatial;
-
-uniform sampler2D image : hint_albedo;
-uniform vec4 color : hint_color;
-
-void vertex()
-{
-	vec4 noise = texture(image, (VERTEX.xz * 0.1) + TIME * 0.1);
-	VERTEX.y += noise.r * 0.5;
-}
-
-void fragment()
-{
-	ALBEDO = color.rgb;
-	ALPHA = color.a;
-}"
-
-[sub_resource type="OpenSimplexNoise" id="2"]
-
-[sub_resource type="NoiseTexture" id="3"]
-seamless = true
-noise = SubResource( "2" )
-
-[sub_resource type="ShaderMaterial" id="4"]
-render_priority = -1
-shader = SubResource( "1" )
-shader_param/color = Color(0.0156863, 0.0941176, 0.211765, 1)
-shader_param/image = SubResource( "3" )
+[ext_resource type="Material" uid="uid://jjnbwddt1rdq" path="res://assets/graphics/materials/water.tres" id="1_sp8lq"]
 
 [resource]
-material = SubResource( "4" )
+material = ExtResource( "1_sp8lq" )
 size = Vector2(12, 12)
 subdivide_width = 10
 subdivide_depth = 10
