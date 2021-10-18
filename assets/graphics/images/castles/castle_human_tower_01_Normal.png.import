@@ -3,8 +3,8 @@
 importer="texture"
 type="StreamTexture2D"
 uid="uid://pekwrdg4yu5b"
-path.s3tc="res://.godot/imported/castle_human_tower_01_DefaultMaterial_Normal.png-88e6c792b3563d85ef4f87011ee6b114.s3tc.stex"
-path.etc2="res://.godot/imported/castle_human_tower_01_DefaultMaterial_Normal.png-88e6c792b3563d85ef4f87011ee6b114.etc2.stex"
+path.s3tc="res://.godot/imported/castle_human_tower_01_Normal.png-0bfe3be9c49c21f1e95232707f71d2fc.s3tc.stex"
+path.etc2="res://.godot/imported/castle_human_tower_01_Normal.png-0bfe3be9c49c21f1e95232707f71d2fc.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/castles/castle_human_tower_01_DefaultMaterial_Normal.png"
-dest_files=["res://.godot/imported/castle_human_tower_01_DefaultMaterial_Normal.png-88e6c792b3563d85ef4f87011ee6b114.s3tc.stex", "res://.godot/imported/castle_human_tower_01_DefaultMaterial_Normal.png-88e6c792b3563d85ef4f87011ee6b114.etc2.stex"]
+source_file="res://assets/graphics/images/castles/castle_human_tower_01_Normal.png"
+dest_files=["res://.godot/imported/castle_human_tower_01_Normal.png-0bfe3be9c49c21f1e95232707f71d2fc.s3tc.stex", "res://.godot/imported/castle_human_tower_01_Normal.png-0bfe3be9c49c21f1e95232707f71d2fc.etc2.stex"]
 
 [params]
 
