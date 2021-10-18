@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ciliba2jpj2xn"
+uid="uid://cc7jr8y4fgfkh"
 path="res://.godot/imported/Castle_human.gltf-b7b2cc3134a69f7ced51ab93f09f6dc3.scn"
 
 [deps]
@@ -26,17 +26,6 @@ animation/import=true
 animation/fps=15
 import_script/path=""
 _subresources={
-"materials": {
-"@MATERIAL:1": {
-"use_external/path": "res://assets/graphics/materials/keep_plateau.tres"
-},
-"@MATERIAL:4": {
-"use_external/path": "res://assets/graphics/materials/keep_wall.tres"
-},
-"@MATERIAL:6": {
-"use_external/path": "res://assets/graphics/materials/keep_tower.tres"
-}
-},
 "meshes": {
 "Castle_human_Castle_human_tower_01": {
 "save_to_file/enabled": true,
