@@ -3,8 +3,8 @@
 importer="texture"
 type="StreamTexture2D"
 uid="uid://dlg1ro7n031yc"
-path.s3tc="res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-f91308465ebbd114361400089fc35954.s3tc.stex"
-path.etc2="res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-f91308465ebbd114361400089fc35954.etc2.stex"
+path.s3tc="res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-1c91146d06be14144f1c27516ffad2ee.s3tc.stex"
+path.etc2="res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-1c91146d06be14144f1c27516ffad2ee.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/Keep_human_wall_01_castle_human_keep_wall_Normal.png"
-dest_files=["res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-f91308465ebbd114361400089fc35954.s3tc.stex", "res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-f91308465ebbd114361400089fc35954.etc2.stex"]
+source_file="res://assets/graphics/images/castles/Keep_human_wall_01_castle_human_keep_wall_Normal.png"
+dest_files=["res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-1c91146d06be14144f1c27516ffad2ee.s3tc.stex", "res://.godot/imported/Keep_human_wall_01_castle_human_keep_wall_Normal.png-1c91146d06be14144f1c27516ffad2ee.etc2.stex"]
 
 [params]
 

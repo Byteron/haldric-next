@@ -3,8 +3,8 @@
 importer="texture"
 type="StreamTexture2D"
 uid="uid://dt6ea8bnv40em"
-path.s3tc="res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-5265887bee87be2121ecf4dfd1062743.s3tc.stex"
-path.etc2="res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-5265887bee87be2121ecf4dfd1062743.etc2.stex"
+path.s3tc="res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-c841c346e16e40026b2ef9ad71ced006.s3tc.stex"
+path.etc2="res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-c841c346e16e40026b2ef9ad71ced006.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/Keep_human_floor_01_DefaultMaterial_Normal.png"
-dest_files=["res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-5265887bee87be2121ecf4dfd1062743.s3tc.stex", "res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-5265887bee87be2121ecf4dfd1062743.etc2.stex"]
+source_file="res://assets/graphics/images/castles/Keep_human_floor_01_DefaultMaterial_Normal.png"
+dest_files=["res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-c841c346e16e40026b2ef9ad71ced006.s3tc.stex", "res://.godot/imported/Keep_human_floor_01_DefaultMaterial_Normal.png-c841c346e16e40026b2ef9ad71ced006.etc2.stex"]
 
 [params]
 

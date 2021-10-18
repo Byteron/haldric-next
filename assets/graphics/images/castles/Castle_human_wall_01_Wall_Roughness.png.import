@@ -3,8 +3,8 @@
 importer="texture"
 type="StreamTexture2D"
 uid="uid://beugxryg58jqc"
-path.s3tc="res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-5f2aa2f772b15818c5ac5b884d807dfa.s3tc.stex"
-path.etc2="res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-5f2aa2f772b15818c5ac5b884d807dfa.etc2.stex"
+path.s3tc="res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-61ff2b0fbaf9931be04493618a8e5d31.s3tc.stex"
+path.etc2="res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-61ff2b0fbaf9931be04493618a8e5d31.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/Castle_human_wall_01_Wall_Roughness.png"
-dest_files=["res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-5f2aa2f772b15818c5ac5b884d807dfa.s3tc.stex", "res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-5f2aa2f772b15818c5ac5b884d807dfa.etc2.stex"]
+source_file="res://assets/graphics/images/castles/Castle_human_wall_01_Wall_Roughness.png"
+dest_files=["res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-61ff2b0fbaf9931be04493618a8e5d31.s3tc.stex", "res://.godot/imported/Castle_human_wall_01_Wall_Roughness.png-61ff2b0fbaf9931be04493618a8e5d31.etc2.stex"]
 
 [params]
 

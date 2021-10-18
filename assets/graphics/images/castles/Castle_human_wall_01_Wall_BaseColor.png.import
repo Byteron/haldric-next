@@ -3,8 +3,8 @@
 importer="texture"
 type="StreamTexture2D"
 uid="uid://c65l86phebrdo"
-path.s3tc="res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-bc02b5fa64ede121ba28055dd286ee8f.s3tc.stex"
-path.etc2="res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-bc02b5fa64ede121ba28055dd286ee8f.etc2.stex"
+path.s3tc="res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-20fce0576fd3df966977b4368404af65.s3tc.stex"
+path.etc2="res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-20fce0576fd3df966977b4368404af65.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/Castle_human_wall_01_Wall_BaseColor.png"
-dest_files=["res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-bc02b5fa64ede121ba28055dd286ee8f.s3tc.stex", "res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-bc02b5fa64ede121ba28055dd286ee8f.etc2.stex"]
+source_file="res://assets/graphics/images/castles/Castle_human_wall_01_Wall_BaseColor.png"
+dest_files=["res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-20fce0576fd3df966977b4368404af65.s3tc.stex", "res://.godot/imported/Castle_human_wall_01_Wall_BaseColor.png-20fce0576fd3df966977b4368404af65.etc2.stex"]
 
 [params]
 
