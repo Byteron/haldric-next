@@ -92,6 +92,7 @@ public abstract class TerrainLoader
 
     private T LoadAsset<T>(string path) where T: RefCounted
     {
+        GD.Print("... Loading: " + "res://" + path);
         return GD.Load<T>("res://" + path);
     }
 }

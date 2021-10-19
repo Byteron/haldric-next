@@ -18,16 +18,20 @@ public class Map
         PathFinder = new PathFinder();
     }
 
-    public Queue<EcsEntity> FindPath(Coords startCoords, Coords endCoords)
+    public Path FindPath(Coords startCoords, Coords endCoords)
     {
-        var pathQueue = new Queue<EcsEntity>();
-        Vector3[] path = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
+        var path = new Path();
+        
+        path.Start = Locations.Get(endCoords.Cube);
+        path.Destination = Locations.Get(startCoords.Cube);
 
-        foreach (var cell in path)
+        Vector3[] pointPath = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
+
+        foreach (var cell in pointPath)
         {
-            pathQueue.Enqueue(Locations.Get(cell));
+            path.Checkpoints.Enqueue(Locations.Get(cell));
         }
 
-        return pathQueue;
+        return path;
     }
 }
