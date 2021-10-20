@@ -44,6 +44,13 @@ public class UpdateHoveredLocationSystem : IEcsSystem
                     
                     hoveredLocation.Entity = locEntity;
                     hoveredLocation.HasChanged = true;
+
+                    if (hoverEntity.Has<HasLocation>())
+                    {
+                        var selectedLocEntity = hoverEntity.Get<HasLocation>().Entity;
+                        var path = map.FindPath(selectedLocEntity.Get<Coords>(), coords);
+                        GD.Print(path);
+                    }
                 }
 
                 previousCell = coords.Axial;
