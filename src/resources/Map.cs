@@ -22,8 +22,8 @@ public class Map
     {
         var path = new Path();
         
-        path.Start = Locations.Get(endCoords.Cube);
-        path.Destination = Locations.Get(startCoords.Cube);
+        path.Start = Locations.Get(startCoords.Cube);
+        path.Destination = Locations.Get(endCoords.Cube);
 
         Vector3[] pointPath = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
 

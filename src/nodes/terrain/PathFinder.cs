@@ -6,8 +6,10 @@ public class Path
 {
     public EcsEntity Start;
     public EcsEntity Destination;
+
     public Queue<EcsEntity> Checkpoints = new Queue<EcsEntity>();
 
+    
     public override string ToString()
     {
         return $"From: {Start.Get<Coords>().Cube}, To: {Start.Get<Coords>().Cube}, Checkpoints: {Checkpoints.Count}";

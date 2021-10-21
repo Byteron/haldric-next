@@ -1,6 +1,7 @@
+using Godot;
 using Bitron.Ecs;
 
-public abstract class Command
+public abstract partial class Command : RefCounted
 {
     public bool IsRevertable { get; protected set; } = false;
     public bool IsReverted { get; protected set; } = false;

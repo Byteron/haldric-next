@@ -5,26 +5,27 @@ public partial class Main : Node3D
 {
     public static Main Instance { get; private set; }
 
-    public GameStateController _gameController;
+    private GameStateController _gameController = new GameStateController();
 
-    EcsWorld _world;
-
-    public EcsWorld World { get { return _world; } }
+    public EcsWorld World { get; private set; } = new EcsWorld();
 
     public override void _Ready()
     {
         Instance = this;
 
-        _world = new EcsWorld();
-
         Data.Instance.Scan();
         
-        _gameController = new GameStateController();
         _gameController.Name = "GameStateController";
         AddChild(_gameController);
 
-        _world.AddResource(_gameController);
+        World.AddResource(_gameController);
+        World.AddResource(GetTree());
 
-        _gameController.PushState(new ApplicationState(_world));
+        _gameController.PushState(new ApplicationState(World));
+    }
+
+    public override void _ExitTree()
+    {
+        World.Destroy();
     }
 }

@@ -8,9 +8,11 @@ public class MoveUnitSystem : IEcsSystem
         var cursorQuery = world.Query<HoveredLocation>().Inc<HasLocation>().End();
 
         var commander = world.GetResource<Commander>();
-
+        
         foreach(var cursorEntityId in cursorQuery)
         {
+            var map = world.GetResource<Map>();
+            
             var hoveredLocEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
             
             if (!hoveredLocEntity.IsAlive())
@@ -23,8 +25,16 @@ public class MoveUnitSystem : IEcsSystem
 
             if (Input.IsActionJustPressed("select_unit"))
             {
-                commander.Enqueue(new MoveUnitCommand(selectedLocEntity, hoveredLocEntity));
-                hasLocation.Entity = hoveredLocEntity;
+                ref var startCoords = ref selectedLocEntity.Get<Coords>();
+                ref var targetCoords = ref hoveredLocEntity.Get<Coords>();
+
+                if (startCoords.Cube == targetCoords.Cube)
+                {
+                    return;
+                }
+                
+                var path = map.FindPath(startCoords, targetCoords);
+                commander.Enqueue(new MoveUnitCommand(path));
                 world.GetResource<GameStateController>().PushState(new CommanderState(world));
             }
         }
