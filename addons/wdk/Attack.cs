@@ -19,6 +19,7 @@ public enum RangeType
 
 public partial class Attack : Node
 {
+    [Export] public int Costs;
     [Export] public int Damage;
     [Export] public int Strikes;
     [Export] public DamageType DamageType;

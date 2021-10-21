@@ -10,8 +10,8 @@ public class UnitFactory
             .Create()
             .WithId(unitType.Attributes.Id)
             .WithHealth(unitType.Attributes.Health)
+            .WithActions(unitType.Attributes.Actions)
             .WithExperience(unitType.Attributes.Experience)
-            .WithMoves(unitType.Attributes.Moves)
             .WithView(unitView);
 
         foreach (Attack attack in unitType.Attacks.GetChildren())
@@ -20,7 +20,8 @@ public class UnitFactory
                 .Add(new Id(attack.Name))
                 .Add(new Damage(attack.Damage, attack.DamageType))
                 .Add(new Strikes(attack.Strikes))
-                .Add(new Range(attack.Range));
+                .Add(new Range(attack.Range))
+                .Add(new Costs(attack.Costs));
 
             _builder.WithAttack(attackEntity);
         }

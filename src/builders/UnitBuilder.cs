@@ -29,9 +29,9 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithMoves(int mp)
+    public UnitBuilder WithActions(int ap)
     {
-        _entity.Add(new Attribute<Moves>(mp));
+        _entity.Add(new Attribute<Actions>(ap));
         return this;
     }
 

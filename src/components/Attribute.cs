@@ -2,7 +2,7 @@ public struct Health { } // For Attribute<T>
 
 public struct Experience { } // For Attribute<T>
 
-public struct Moves { } // For Attribute<T>
+public struct Actions { } // For Attribute<T>
 
 public struct Attribute<T>
 {
@@ -35,6 +35,11 @@ public struct Attribute<T>
     public void Restore()
     {
         Value = Max;
+    }
+
+    public bool IsEmpty()
+    {
+        return Value == 0;
     }
 
     public override string ToString()

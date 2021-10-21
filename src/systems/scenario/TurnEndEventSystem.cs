@@ -7,7 +7,7 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().End();
+        var unitQuery = world.Query<Team>().Inc<Attribute<Actions>>().End();
 
         foreach (var eventEntityId in eventQuery)
         {
@@ -22,8 +22,8 @@ public class TurnEndEventSystem : IEcsSystem
                 var team = unitQuery.Get<Team>(unitEntityId);
                 if (team.Value == scenario.CurrentPlayer)
                 {
-                    ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
-                    moves.Restore();
+                    ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
+                    actions.Restore();
                 }
             }
         }

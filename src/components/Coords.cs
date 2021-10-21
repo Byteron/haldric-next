@@ -25,6 +25,20 @@ public struct Coords
         get { return Hex.Offset2World(Offset); }
     }
 
+    public bool IsNeighborOf(Coords otherCoords)
+    {
+        var neighbors = Hex.GetNeighbors(Cube);
+
+        foreach (var nCube in neighbors)
+        {
+            if (nCube == otherCoords.Cube)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public static Coords FromCube(Vector3 cube)
     {
         var coords = new Coords();

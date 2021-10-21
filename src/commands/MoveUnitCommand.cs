@@ -35,7 +35,7 @@ public partial class MoveUnitCommand : Command
         _unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
 
         ref var unitCoords = ref _unitEntity.Get<Coords>();
-        ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
+        ref var unitActions = ref _unitEntity.Get<Attribute<Actions>>();
 
         var tween = Main.Instance.GetTree().CreateTween();
 
@@ -60,11 +60,11 @@ public partial class MoveUnitCommand : Command
 
         if (IsReverted)
         {
-            unitMoves.Increase(_path.Checkpoints.Count);
+            unitActions.Increase(_path.Checkpoints.Count);
         }
         else
         {
-            unitMoves.Decrease(_path.Checkpoints.Count);
+            unitActions.Decrease(_path.Checkpoints.Count);
         }
     }
 
@@ -85,7 +85,7 @@ public partial class MoveUnitCommand : Command
 
     private void OnUnitMoveFinished()
     {
-        if (_unitEntity.Get<Attribute<Moves>>().Value > 0)
+        if (_unitEntity.Get<Attribute<Actions>>().Value > 0)
         {
             Main.Instance.World.Spawn().Add(new UnitSelectedEvent(_unitEntity));
         }

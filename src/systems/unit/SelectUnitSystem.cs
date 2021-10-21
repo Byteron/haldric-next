@@ -26,12 +26,31 @@ public class SelectUnitSystem : IEcsSystem
                         var selectedLocEntity = hoverEntity.Get<HasLocation>().Entity;
                         var selectedUnitEntity = selectedLocEntity.Get<HasUnit>().Entity;
 
+                        ref var actions = ref selectedUnitEntity.Get<Attribute<Actions>>();
+                        var attackerAttackEntity = selectedUnitEntity.Get<Attacks>().GetFirst();
+                        
+                        if (actions.Value < attackerAttackEntity.Get<Costs>().Value)
+                        {
+                            return;
+                        }
+
                         var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
 
-                        if (selectedUnitEntity.Get<Team>().Value != unitEntity.Get<Team>().Value)
+                        if (!selectedLocEntity.Get<Coords>().IsNeighborOf(unitEntity.Get<Coords>()))
                         {
-                            world.Spawn().Add(new CombatEvent(selectedUnitEntity, unitEntity));
+                            return;
                         }
+
+                        if (selectedUnitEntity.Get<Team>().Value == unitEntity.Get<Team>().Value)
+                        {
+                            return;
+                        }
+
+                        var commander = world.GetResource<Commander>();
+                        var gameStateController = world.GetResource<GameStateController>();
+
+                        commander.Enqueue(new CombatCommand(selectedUnitEntity, unitEntity));
+                        gameStateController.PushState(new CommanderState(world));
                     }
                     else
                     {
@@ -44,8 +63,6 @@ public class SelectUnitSystem : IEcsSystem
                             world.Spawn().Add(new UnitSelectedEvent(unitEntity));
                         }
                     }
-
-                    
                 }
             }
         }
