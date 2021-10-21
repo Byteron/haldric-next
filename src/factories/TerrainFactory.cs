@@ -42,6 +42,16 @@ public class TerrainFactory
             _builder.WithRecruitTo();
         }
 
+        if (dict.ContainsKey("GivesIncome"))
+        {
+            _builder.WithGivesIncome();
+        }
+
+        if (dict.ContainsKey("IsCapturable"))
+        {
+            _builder.WithIsCapturable();
+        }
+
         return _builder.Build();
     }
 }

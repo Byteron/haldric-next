@@ -6,12 +6,16 @@ public class TerrainScript : TerrainLoader
     public override void Load()
     {
         NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
-        NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
-        NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });
+        
         NewWater("Ww", new List<TerrainType>() { TerrainType.Aqueous });
         
-        NewOverlay("Vh", new List<TerrainType>() { TerrainType.Settled });
         NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });
+
+        NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });
+        NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
+
+        NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });
+        NewVillage("VMh", new List<TerrainType>() { TerrainType.Settled });
 
         AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
         AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
@@ -28,7 +32,7 @@ public class TerrainScript : TerrainLoader
 
         AddDecorationGraphic("Ff", "assets/graphics/models/forest_low_poly.tres");
         AddDecorationGraphic("Vh", "assets/graphics/models/village.tres");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_main.tres");
+        AddDecorationGraphic("VMh", "assets/graphics/models/village_main.tres");
         AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
     }
 }

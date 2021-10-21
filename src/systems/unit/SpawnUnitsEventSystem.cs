@@ -6,7 +6,7 @@ public class SpawnUnitsEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var keepQuery = world.Query<Keep>().End();
+        var keepQuery = world.Query<Castle>().End();
         var eventQuery = world.Query<SpawnUnitsEvent>().End();
 
         foreach (var e in eventQuery)
@@ -19,7 +19,7 @@ public class SpawnUnitsEventSystem : IEcsSystem
                 Godot.GD.Print("Keep Found");
 
                 var locEntity = world.Entity(locEntityId);
-                ref var keep = ref locEntity.Get<Keep>();
+                ref var keep = ref locEntity.Get<Castle>();
 
                 world.Spawn().Add(new SpawnUnitEvent(playerId, "Cavalry", locEntity.Get<Coords>()));
 

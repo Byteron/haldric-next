@@ -64,6 +64,7 @@ public class SpawnMapEventSystem : IEcsSystem
             InitializeChunks(chunkSize, grid, locations);
             InitializeNeighbors(locations);
             InitializeCastles(locations);
+            InitializeVillages(locations);
             InitializePathFinding(map);
             SendUpdateMapEvent();
         }
@@ -257,29 +258,66 @@ public class SpawnMapEventSystem : IEcsSystem
                 continue;
             }
 
-            locEntity.Add<Keep>();
-
-            ref var keep = ref locEntity.Get<Keep>();
-
-            ref var neighbors = ref locEntity.Get<Neighbors>();
-
-            foreach (var nLocEntity in neighbors.GetArray())
-            {
-                if (!nLocEntity.IsAlive())
-                {
-                    continue;
-                }
-
-                var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
-
-                if (!nBaseTerrainEntity.Has<CanRecruitTo>())
-                {
-                    continue;
-                }
-
-                keep.List.Add(nLocEntity);
-            }
+            var castle = new Castle();
+            castle.List = FindConnectedLocationsWith<CanRecruitTo>(locEntity);
+            locEntity.Add(castle);
         }
+    }
+
+    private void InitializeVillages(Locations locations)
+    {
+        foreach (var locEntity in locations.Values)
+        {
+            if (!locEntity.Has<HasOverlayTerrain>())
+            {
+                continue;
+            }
+
+            var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
+
+            if (!overlayTerrainEntity.Has<IsCapturable>())
+            {
+                continue;
+            }
+
+            var village = new Village();
+            village.List = FindConnectedLocationsWith<GivesIncome>(locEntity);
+            locEntity.Add(village);
+        }
+    }
+
+    private List<EcsEntity> FindConnectedLocationsWith<T>(EcsEntity locEntity) where T : struct
+    {
+        List<EcsEntity> list = new List<EcsEntity>();
+
+        ref var neighbors = ref locEntity.Get<Neighbors>();
+
+        foreach (var nLocEntity in neighbors.GetArray())
+        {
+            if (!nLocEntity.IsAlive())
+            {
+                continue;
+            }
+
+            var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+
+            var hasT = nBaseTerrainEntity.Has<T>();
+
+            if (nLocEntity.Has<HasOverlayTerrain>())
+            {
+                var nOverlayTerrainEntity = nLocEntity.Get<HasOverlayTerrain>().Entity;
+                hasT = hasT || nOverlayTerrainEntity.Has<T>();
+            }
+
+            if (!hasT)
+            {
+                continue;
+            }
+
+            list.Add(nLocEntity);
+        }
+
+        return list;
     }
 
     private void InitializePathFinding(Map map)

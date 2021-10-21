@@ -49,6 +49,18 @@ public class TerrainDictBuilder
         return this;
     }
 
+    public TerrainDictBuilder WithGivesIncome()
+    {
+        _terrainDict["GivesIncome"] = true;
+        return this;
+    }
+
+    public TerrainDictBuilder WithIsCapturable()
+    {
+        _terrainDict["IsCapturable"] = true;
+        return this;
+    }
+
     public Dictionary<string, object>  Build()
     {
         return _terrainDict;

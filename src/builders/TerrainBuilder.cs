@@ -49,6 +49,18 @@ public class TerrainBuilder
         return this;
     }
 
+    public TerrainBuilder WithGivesIncome()
+    {
+        _terrainEntity.Add<GivesIncome>();
+        return this;
+    }
+
+    public TerrainBuilder WithIsCapturable()
+    {
+        _terrainEntity.Add<IsCapturable>();
+        return this;
+    }
+
     public EcsEntity Build()
     {
         return _terrainEntity;
