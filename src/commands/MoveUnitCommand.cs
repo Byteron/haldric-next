@@ -57,7 +57,15 @@ public partial class MoveUnitCommand : Command
         _path.Destination.Add(new HasUnit(_unitEntity));
 
         unitCoords = _path.Destination.Get<Coords>();
-        unitMoves.Decrease(_path.Checkpoints.Count);
+
+        if (IsReverted)
+        {
+            unitMoves.Increase(_path.Checkpoints.Count);
+        }
+        else
+        {
+            unitMoves.Decrease(_path.Checkpoints.Count);
+        }
     }
 
     public override void Revert()
