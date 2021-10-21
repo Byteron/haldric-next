@@ -6,6 +6,8 @@ public class TerrainScript : TerrainLoader
     public override void Load()
     {
         NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
+        NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
+        NewBase("Dd", new List<TerrainType>() { TerrainType.Sandy });
         
         NewWater("Ww", new List<TerrainType>() { TerrainType.Aqueous });
         
@@ -18,6 +20,8 @@ public class TerrainScript : TerrainLoader
         NewVillage("VMh", new List<TerrainType>() { TerrainType.Settled });
 
         AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
+        AddTerrainTexture("Dd", "assets/graphics/images/mud.png");
+        AddTerrainTexture("Rd", "assets/graphics/images/stone.png");
         AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
         AddTerrainTexture("Kh", "assets/graphics/images/stone.png");
         AddTerrainTexture("Ww", "assets/graphics/images/mud.png");

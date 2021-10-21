@@ -5,11 +5,12 @@ public partial class PlayState : GameState
     public PlayState(EcsWorld world) : base(world)
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
+        
         AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
-        AddInputSystem(new UpdateTerrainInfoSystem());
 
+        AddUpdateSystem(new UpdateTerrainInfoSystem());
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));
         AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());

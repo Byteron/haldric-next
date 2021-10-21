@@ -6,6 +6,7 @@ public enum TerrainType
 	Forested,
 	Rough,
 	Rocky,
+	Sandy,
 	Aqueous,
 	Cavernous,
 	Settled,

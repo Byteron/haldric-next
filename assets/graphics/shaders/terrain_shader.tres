@@ -1,6 +1,7 @@
 [gd_resource type="Shader" format=3 uid="uid://h62xj5qfxsvw"]
 
 [resource]
+resource_local_to_scene = true
 code = "shader_type spatial;
 
 uniform sampler2DArray textures : hint_albedo;
