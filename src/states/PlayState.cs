@@ -25,6 +25,7 @@ public partial class PlayState : GameState
         AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
+        AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
         AddEventSystem<CombatEvent>(new CombatEventSystem());
         AddEventSystem<DamageEvent>(new DamageEventSystem());

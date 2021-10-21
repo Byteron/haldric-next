@@ -18,16 +18,7 @@ public class DeselectUnitSystem : IEcsSystem
 
             if (Input.IsActionJustPressed("deselect_unit"))
             {
-                var hoverEntity = world.Entity(hoverEntityId);
-                
-                hoverEntity.Remove<HasLocation>();
-
-                var hudView = world.GetResource<HUDView>();
-                hudView.UnitLabel.Text = "";
-
-                var shaderData = world.GetResource<ShaderData>();
-                shaderData.ResetVisibility(true);
-                shaderData.Apply();
+                world.Spawn().Add(new UnitDeselectedEvent());
             }
         }
     }

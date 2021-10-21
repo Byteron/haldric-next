@@ -7,6 +7,7 @@ public partial class MoveUnitCommand : Command
 {
     private Path _path;
     private EcsEntity _unitEntity;
+    private UnitView _unitView;
 
     public MoveUnitCommand(Path path)
     {
@@ -31,21 +32,22 @@ public partial class MoveUnitCommand : Command
         }
 
         _unitEntity = _path.Start.Get<HasUnit>().Entity;
-        var unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
-        
+        _unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
+
         ref var unitCoords = ref _unitEntity.Get<Coords>();
         ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
 
         var tween = Main.Instance.GetTree().CreateTween();
 
-        foreach(var checkpointLocEntity in _path.Checkpoints)
+        foreach (var checkpointLocEntity in _path.Checkpoints)
         {
             ref var targetCoords = ref checkpointLocEntity.Get<Coords>();
             ref var targetElevation = ref checkpointLocEntity.Get<Elevation>();
 
             var newPos = targetCoords.World;
             newPos.y = targetElevation.Height;
-            tween.TweenProperty(unitView, "position", newPos, 0.25f);
+            tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
+            tween.TweenProperty(_unitView, "position", newPos, 0.25f);
         }
 
         tween.TweenCallback(new Callable(this, "OnUnitMoveFinished"));
@@ -53,15 +55,15 @@ public partial class MoveUnitCommand : Command
 
         _path.Start.Remove<HasUnit>();
         _path.Destination.Add(new HasUnit(_unitEntity));
-        
+
         unitCoords = _path.Destination.Get<Coords>();
-        unitMoves.Empty();
+        unitMoves.Decrease(_path.Checkpoints.Count);
     }
 
     public override void Revert()
     {
         _unitEntity = default;
-        
+
         var temp = _path.Start;
         _path.Start = _path.Destination;
         _path.Destination = temp;
@@ -75,6 +77,32 @@ public partial class MoveUnitCommand : Command
 
     private void OnUnitMoveFinished()
     {
-        Main.Instance.World.Spawn().Add(new UnitSelectedEvent(_unitEntity));
+        if (_unitEntity.Get<Attribute<Moves>>().Value > 0)
+        {
+            Main.Instance.World.Spawn().Add(new UnitSelectedEvent(_unitEntity));
+        }
+        else
+        {
+            Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
+        }
+    }
+
+    private int index;
+
+    private void OnUnitStepFinished()
+    {
+        if (index == _path.Checkpoints.Count)
+        {
+            index = 0;
+        }
+        else
+        {
+            var coords = _path.Checkpoints.ToArray()[index].Get<Coords>();
+            var pos = coords.World;
+            _unitView.LookAt(coords.World, Vector3.Up);
+            _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
+            index += 1;
+        }
+
     }
 }

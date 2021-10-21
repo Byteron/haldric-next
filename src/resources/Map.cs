@@ -50,6 +50,11 @@ public class Map
             path.Checkpoints.Enqueue(Locations.Get(cell));
         }
 
+        if (path.Checkpoints.Count > 1)
+        {
+            path.Checkpoints.Dequeue();
+        }
+
         return path;
     }
 }

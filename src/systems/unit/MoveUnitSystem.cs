@@ -34,7 +34,17 @@ public class MoveUnitSystem : IEcsSystem
                 }
                 
                 var path = map.FindPath(startCoords, targetCoords);
+
+                var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
+                ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+
+                if (path.Checkpoints.Count > moves.Value)
+                {
+                    return;
+                }
+
                 commander.Enqueue(new MoveUnitCommand(path));
+                hasLocation.Entity = hoveredLocEntity;
                 world.GetResource<GameStateController>().PushState(new CommanderState(world));
             }
         }
