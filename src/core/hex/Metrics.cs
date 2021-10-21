@@ -7,12 +7,12 @@ public class Metrics
     public const float OuterRadius = 5f;
     public const float InnerRadius = OuterRadius * OuterToInner;
 
-    public const float ElevationStep = 2.0f;
+    public const float ElevationStep = 1.5f;
     
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
 
-    public const float CellPerturbStrength = 5f;
+    public const float CellPerturbStrength = 2f;
 
     public static readonly Vector3[] corners = {
         new Vector3(0f, 0f, OuterRadius),

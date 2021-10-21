@@ -212,28 +212,33 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
     {
-        // _terrain.AddTrianglePerturbed(bottom, left, right);
-        _terrainMesh.AddTriangle(left, bottom, right);
+        _terrainMesh.AddTrianglePerturbed(left, bottom, right);
         _terrainMesh.AddTriangleCellData(indices, ColorRed, ColorGreen, ColorBlue);
     }
 
     private void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
     {
-        _terrainMesh.AddTriangle(edge.v1, center, edge.v5);
+        // _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v5);
+        _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v2);
+        _terrainMesh.AddTrianglePerturbed(edge.v2, center, edge.v3);
+        _terrainMesh.AddTrianglePerturbed(edge.v3, center, edge.v4);
+        _terrainMesh.AddTrianglePerturbed(edge.v4, center, edge.v5);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
-        // _terrainMesh.AddTriangle(edge.v1, center, edge.v2);
-        // _terrainMesh.AddTriangle(edge.v2, center, edge.v3);
-        // _terrainMesh.AddTriangle(edge.v3, center, edge.v4);
-        // _terrainMesh.AddTriangle(edge.v4, center, edge.v5);
+        _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
+        _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
+        _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
     }
 
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2, float index1, float index2)
     {
-        _terrainMesh.AddQuad(e1.v1, e1.v5, e2.v1, e2.v5);
+        // _terrainMesh.AddQuadPerturbed(e1.v1, e1.v5, e2.v1, e2.v5);
+        _terrainMesh.AddQuadPerturbed(e1.v1, e1.v2, e2.v1, e2.v2);
+        _terrainMesh.AddQuadPerturbed(e1.v2, e1.v3, e2.v2, e2.v3);
+        _terrainMesh.AddQuadPerturbed(e1.v3, e1.v4, e2.v3, e2.v4);
+        _terrainMesh.AddQuadPerturbed(e1.v4, e1.v5, e2.v4, e2.v5);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
-        // _terrainMesh.AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);
-        // _terrainMesh.AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);
-        // _terrainMesh.AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
-        // _terrainMesh.AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
+        _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
+        _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
+        _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
     }
 }

@@ -47,7 +47,7 @@ public partial class MoveUnitCommand : Command
             var newPos = targetCoords.World;
             newPos.y = targetElevation.Height;
             tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
-            tween.TweenProperty(_unitView, "position", newPos, 0.25f);
+            tween.TweenProperty(_unitView, "position", newPos, 0.2f);
         }
 
         tween.TweenCallback(new Callable(this, "OnUnitMoveFinished"));

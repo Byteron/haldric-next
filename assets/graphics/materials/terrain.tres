@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dw1cmrwvmpcfa"]
 
-[ext_resource type="Shader" uid="uid://h62xj5qfxsvw" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_sbrex"]
+[ext_resource type="Shader" uid="uid://d02syo0ogdou4" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_sbrex"]
 
 [resource]
 render_priority = 0

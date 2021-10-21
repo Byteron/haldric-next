@@ -81,7 +81,7 @@ public partial class TerrainFeaturePopulator : Node3D
     public void AddWater(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
-        position.y = locEntity.Get<Elevation>().Height + Metrics.ElevationStep * 0.75f;
+        position.y = locEntity.Get<Elevation>().Height + Metrics.ElevationStep * 0.5f;
 
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
     }

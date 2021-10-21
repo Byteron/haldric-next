@@ -74,9 +74,9 @@ public partial class CombatCommand : Command
         var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
         var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
 
-        _tween.TweenProperty(attackerView, "position", (attackerView.Position + defenderView.Position) / 2, 0.25f);
+        _tween.TweenProperty(attackerView, "position", (attackerView.Position + defenderView.Position) / 2, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrike"));
-        _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.25f);
+        _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrikeFinished"));
 
         _tween.Play();
