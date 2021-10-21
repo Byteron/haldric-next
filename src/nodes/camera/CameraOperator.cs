@@ -18,6 +18,9 @@ public partial class CameraOperator : Node3D
     private Node3D _gimbalV;
     private Camera3D _camera;
 
+    public Vector3 MinimumPosition;
+    public Vector3 MaximumPosition;
+
 
     public override void _Ready()
     {
@@ -69,6 +72,10 @@ public partial class CameraOperator : Node3D
         
         var transform = Transform;
         transform.origin = Transform.origin + direction * _walkSpeed * (float) GetProcessDeltaTime();
+        transform.origin.x = Mathf.Max(transform.origin.x, MinimumPosition.x);
+        transform.origin.z = Mathf.Max(transform.origin.z, MinimumPosition.z);
+        transform.origin.x = Mathf.Min(transform.origin.x, MaximumPosition.x);
+        transform.origin.z = Mathf.Min(transform.origin.z, MaximumPosition.z);
         Transform = transform;
     }
 

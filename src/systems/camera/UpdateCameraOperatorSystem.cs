@@ -7,6 +7,13 @@ public class UpdateCameraOperatorSystem : IEcsSystem
     {
         var query = world.Query<NodeHandle<CameraOperator>>().End();
 
+        if (!world.HasResource<Map>())
+        {
+            return;
+        }
+
+        var map = world.GetResource<Map>();
+
         foreach (var entityId in query)
         {
             CameraOperator cameraOperator = query.Get<NodeHandle<CameraOperator>>(entityId).Node;
@@ -33,6 +40,9 @@ public class UpdateCameraOperatorSystem : IEcsSystem
 
             var rawDirection = GetWalkInput();
             var direction = cameraOperator.GetRelativeWalkInput(rawDirection);
+            
+            cameraOperator.MinimumPosition = map.GetBeginPosition();
+            cameraOperator.MaximumPosition = map.GetEndPosition();
             
             cameraOperator.UpdatePosition(direction);
             cameraOperator.UpdateRotation();

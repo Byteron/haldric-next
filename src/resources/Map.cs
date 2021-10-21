@@ -18,6 +18,24 @@ public class Map
         PathFinder = new PathFinder();
     }
 
+    public Vector3 GetBeginPosition()
+    {
+        var coords = Coords.FromOffset(0, 0);
+        return coords.World;
+    }
+
+    public Vector3 GetEndPosition()
+    {
+        var coords = Coords.FromOffset(Grid.Width - 1, Grid.Height - 1);
+        return coords.World;
+    }
+
+    public Vector3 GetCenterPosition()
+    {
+        var coords = Coords.FromOffset(Grid.Width / 2, Grid.Height / 2);
+        return coords.World; 
+    }
+
     public Path FindPath(Coords startCoords, Coords endCoords)
     {
         var path = new Path();
