@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bitron.Ecs;
 using Godot;
+using Haldric.Wdk;
 
 public partial class MoveUnitCommand : Command
 {

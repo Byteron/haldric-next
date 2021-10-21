@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
+using Haldric.Wdk;
 
 public partial class CombatCommand : Command
 {

@@ -1,27 +1,30 @@
 using Godot;
 using System;
 
-public enum DamageType
+namespace Haldric.Wdk
 {
-    Slash,
-    Pierce,
-    Impact,
-    Arcane,
-    Heat,
-    Cold,
-}
+    public enum DamageType
+    {
+        Slash,
+        Pierce,
+        Impact,
+        Arcane,
+        Heat,
+        Cold,
+    }
 
-public enum RangeType
-{
-    Melee,
-    Ranged,
-}
+    public enum RangeType
+    {
+        Melee,
+        Ranged,
+    }
 
-public partial class Attack : Node
-{
-    [Export] public int Costs;
-    [Export] public int Damage;
-    [Export] public int Strikes;
-    [Export] public DamageType DamageType;
-    [Export] public RangeType Range;
+    public partial class Attack : Node
+    {
+        [Export] public int Costs;
+        [Export] public int Damage;
+        [Export] public int Strikes;
+        [Export] public DamageType DamageType;
+        [Export] public RangeType Range;
+    }
 }

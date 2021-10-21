@@ -1,16 +1,21 @@
 using Godot;
 using System;
 
-public partial class UnitType : Node3D
+namespace Haldric.Wdk
 {
-    public Attributes Attributes;
-    public UnitView UnitView;
-    public Node Attacks;
-
-    public override void _Ready()
+    public partial class UnitType : Node3D
     {
-        Attributes = GetNode<Attributes>("Attributes");
-        UnitView = GetNode<UnitView>("UnitView");
-        Attacks = GetNode<Node>("Attacks");
+        public Attributes Attributes;
+        public Defenses Defenses;
+        public UnitView UnitView;
+        public Node Attacks;
+
+        public override void _Ready()
+        {
+            Attributes = GetNode<Attributes>("Attributes");
+            Defenses = GetNode<Defenses>("Defenses");
+            UnitView = GetNode<UnitView>("UnitView");
+            Attacks = GetNode<Node>("Attacks");
+        }
     }
 }

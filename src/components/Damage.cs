@@ -1,3 +1,5 @@
+using Haldric.Wdk;
+
 public struct Damage
 {
     public int Value;

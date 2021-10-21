@@ -1,5 +1,6 @@
 using Godot;
 using Bitron.Ecs;
+using Haldric.Wdk;
 
 public struct DespawnMapEvent { }
 

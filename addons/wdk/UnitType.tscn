@@ -1,14 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqw5v5gf0onxy"]
+[gd_scene load_steps=6 format=3 uid="uid://dqw5v5gf0onxy"]
 
 [ext_resource type="Script" path="res://addons/wdk/UnitType.cs" id="1_ab082"]
 [ext_resource type="Script" path="res://addons/wdk/Attributes.cs" id="2_8cn1m"]
+[ext_resource type="Script" path="res://addons/wdk/Defenses.cs" id="3_com25"]
 [ext_resource type="Script" path="res://addons/wdk/UnitView.cs" id="3_jrinh"]
+[ext_resource type="Script" path="res://addons/wdk/MovementCosts.cs" id="4_y5mdo"]
 
 [node name="UnitType" type="Node3D"]
 script = ExtResource( "1_ab082" )
 
 [node name="Attributes" type="Node" parent="."]
 script = ExtResource( "2_8cn1m" )
+
+[node name="Defenses" type="Node" parent="."]
+script = ExtResource( "3_com25" )
+
+[node name="MovementCosts" type="Node" parent="."]
+script = ExtResource( "4_y5mdo" )
 
 [node name="Attacks" type="Node" parent="."]
 script = null
