@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqw5v5gf0onxy" path="res://addons/wdk/UnitType.tscn" id="1_xrcl7"]
 [ext_resource type="PackedScene" uid="uid://c04frxgexwoli" path="res://addons/wdk/Attack.tscn" id="2_3ggjw"]
-[ext_resource type="PackedScene" uid="uid://wayd6pwfbp80" path="res://assets/graphics/models/Unit.gltf" id="2_hwijx"]
+[ext_resource type="PackedScene" uid="uid://bbll0id2147m2" path="res://assets/graphics/models/Unit.gltf" id="2_hwijx"]
 
 [node name="Cavalry" instance=ExtResource( "1_xrcl7" )]
 
@@ -17,3 +17,4 @@ Damage = 6
 Strikes = 3
 
 [node name="Unit" parent="UnitView" index="0" instance=ExtResource( "2_hwijx" )]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)

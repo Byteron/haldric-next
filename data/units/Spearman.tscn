@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqw5v5gf0onxy" path="res://addons/wdk/UnitType.tscn" id="1_wbto5"]
 [ext_resource type="PackedScene" uid="uid://c04frxgexwoli" path="res://addons/wdk/Attack.tscn" id="2_fqlix"]
-[ext_resource type="PackedScene" uid="uid://dktd4g232kerc" path="res://assets/graphics/models/Infantry.glb" id="2_wq0xh"]
+[ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/models/Infantry.glb" id="2_wq0xh"]
 
 [node name="Spearman" instance=ExtResource( "1_wbto5" )]
 
@@ -24,3 +24,4 @@ DamageType = 1
 Range = 1
 
 [node name="Infantry" parent="UnitView" index="0" instance=ExtResource( "2_wq0xh" )]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
