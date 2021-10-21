@@ -21,13 +21,13 @@ public static class Loader
 
         if (!(directory.Open(path) == Error.Ok))
         {
-            GD.Print("Loader: failed to load ", path, ", return [] (open)");
+            GD.PushWarning("Loader: failed to load " + path + ", return [] (open)");
             return directoryData;
         }
 
         if (!(directory.ListDirBegin(true, true) == Error.Ok))
         {
-            GD.Print("Loader: failed to load ", path, ", return [] (list_dir_begin)");
+            GD.PushWarning("Loader: failed to load " + path + ", return [] (list_dir_begin)");
             return directoryData;
         }
 
@@ -74,11 +74,9 @@ public static class Loader
             Data = loadResource ? GD.Load(path) : null
         };
 
-        GD.Print(fileData.Id);
-
         if (loadResource && fileData.Data == null)
         {
-            GD.Print("Loader: could not load file: ", path);
+            GD.PushWarning("Loader: could not load file: " + path);
         }
 
         return fileData;

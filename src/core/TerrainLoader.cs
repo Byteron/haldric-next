@@ -102,9 +102,8 @@ public abstract class TerrainLoader
         KeepPlateaus.Add(code, graphic);
     }
 
-    private T LoadAsset<T>(string path) where T: RefCounted
+    private T LoadAsset<T>(string path) where T: Resource
     {
-        GD.Print("... Loading: " + "res://" + path);
         return GD.Load<T>("res://" + path);
     }
 }

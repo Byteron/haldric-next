@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cc7jr8y4fgfkh"
+uid="uid://tknapgq6pihp"
 path="res://.godot/imported/Castle_human.gltf-b7b2cc3134a69f7ced51ab93f09f6dc3.scn"
 
 [deps]
@@ -17,34 +17,39 @@ nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
-meshes/generate_lods=true
-meshes/create_shadow_meshes=true
-meshes/light_baking=2
+meshes/generate_lods=false
+meshes/create_shadow_meshes=false
+meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
-skins/use_named_skins=true
-animation/import=true
+skins/use_named_skins=false
+animation/import=false
 animation/fps=15
 import_script/path=""
 _subresources={
 "meshes": {
 "Castle_human_Castle_human_tower_01": {
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/graphics/models/castle_tower.tres"
 },
 "Castle_human_Castle_human_wall_01": {
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/graphics/models/castle_wall.tres"
 },
 "Castle_human_Keep_human_floor_01": {
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/graphics/models/keep_plateau.tres"
 },
 "Castle_human_Keep_human_tower_01": {
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/graphics/models/keep_tower.tres"
 },
 "Castle_human_Keep_human_wall_01": {
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/graphics/models/keep_wall.tres"
 }
 }

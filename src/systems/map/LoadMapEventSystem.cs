@@ -34,9 +34,10 @@ public class LoadMapEventSystem : IEcsSystem
     {
         var file = new File();
         GD.Print(Path + name + ".json");
+        
         if (!(file.Open(Path + name + ".json", File.ModeFlags.Read) == Error.Ok))
         {
-            GD.Print("error reading file");
+            GD.PushError("error reading file");
             return new Dictionary();
         }
 

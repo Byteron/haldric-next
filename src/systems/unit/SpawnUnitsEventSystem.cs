@@ -11,12 +11,9 @@ public class SpawnUnitsEventSystem : IEcsSystem
 
         foreach (var e in eventQuery)
         {
-            Godot.GD.Print("Spawn Units Event Received");
-            
             int playerId = 0;
             foreach (var locEntityId in keepQuery)
             {
-                Godot.GD.Print("Keep Found");
 
                 var locEntity = world.Entity(locEntityId);
                 ref var keep = ref locEntity.Get<Castle>();

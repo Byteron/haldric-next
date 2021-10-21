@@ -33,8 +33,6 @@ public partial class Data : Node
         {
             Units.Add(data.Id, (PackedScene)data.Data);
         }
-
-        GD.Print(Units);
     }
 
     public void LoadTerrain()
@@ -66,8 +64,6 @@ public partial class Data : Node
         TerrainTextures = terrainScript.TerrainTextures;
 
         TextureArray = CreateTextureArray();
-
-        GD.Print(TextureArray);
     }
 
     public Texture2DArray CreateTextureArray()

@@ -20,14 +20,14 @@ public partial class MoveUnitCommand : Command
         // source location does not have a unit to move
         if (!_path.Start.Has<HasUnit>())
         {
-            GD.Print("No Unit To Move");
+            GD.PushWarning("No Unit To Move");
             return;
         }
 
         // target loc already occupied
         if (_path.Destination.Has<HasUnit>())
         {
-            GD.Print("Destination Already Occupied");
+            GD.PushWarning("Destination Already Occupied");
             return;
         }
 

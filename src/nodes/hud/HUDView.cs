@@ -15,6 +15,5 @@ public partial class HUDView : CanvasLayer
     public void OnEndTurnButtonPressed()
     {
         Main.Instance.World.Spawn().Add(new TurnEndEvent());
-        GD.Print("End Turn");
     }
 }

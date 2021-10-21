@@ -40,7 +40,6 @@ public class ShaderData
     {
         int index = z * _width + x;
         _data[index].a8 = terrainTypeIndex;
-        // GD.Print(string.Format("Terrain: Updated {0}, {1} to {2}", x, z, _data[index].a8));
     }
 
     public void UpdateVisibility(int x, int z, bool isVisible)
@@ -53,7 +52,6 @@ public class ShaderData
         }
 
         _data[index].r8 = isVisible ? 255 : 0;
-        // GD.Print(string.Format("Visibility: Updated {0}, {1} to {2}", x, z, _data[index].r8));
     }
 
     public void ResetVisibility(bool isVisible)
