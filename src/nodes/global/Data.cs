@@ -25,13 +25,7 @@ public partial class Data : Node
         Instance = this;
     }
 
-    public void Scan()
-    {
-        LoadUnits();
-        LoadTerrain();
-    }
-
-    private void LoadUnits()
+    public void LoadUnits()
     {
         Units.Clear();
 
@@ -43,7 +37,7 @@ public partial class Data : Node
         GD.Print(Units);
     }
 
-    private void LoadTerrain()
+    public void LoadTerrain()
     {
         TerrainDicts.Clear();
         Decorations.Clear();

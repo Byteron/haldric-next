@@ -5,7 +5,7 @@ public partial class PlayState : GameState
     public PlayState(EcsWorld world) : base(world)
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
-        
+
         AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
@@ -54,6 +54,7 @@ public partial class PlayState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
+        _world.RemoveResource<Scenario>();
         _world.RemoveResource<Commander>();
 
         _world.RemoveResource<HUDView>();

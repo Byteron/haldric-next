@@ -12,8 +12,6 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         Instance = this;
-
-        Data.Instance.Scan();
         
         _gameController.Name = "GameStateController";
         AddChild(_gameController);
