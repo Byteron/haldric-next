@@ -35,8 +35,6 @@ public class UpdateMapCursorSystem : IEcsSystem
             var position = coords.World;
             position.y = height;
 
-            GD.Print(coords.Offset);
-
             view.Position = position;
         }
         

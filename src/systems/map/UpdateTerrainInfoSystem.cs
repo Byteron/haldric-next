@@ -25,6 +25,8 @@ public class UpdateTerrainInfoSystem : IEcsSystem
                 continue;
             }
 
+            var coords = locEntity.Get<Coords>();
+
             var elevation = locEntity.Get<Elevation>().Level;
             var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>().Value;
@@ -36,7 +38,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
                 overlayTerrainCode = "^" + overlayTerrainEntity.Get<TerrainCode>().Value;
             }
 
-            text = string.Format("Terrain: {0}{1}\nElevation: {2}", baseTerrainCode, overlayTerrainCode, elevation);
+            text = string.Format("Coords: {3}, {4}\nTerrain: {0}{1}\nElevation: {2}", baseTerrainCode, overlayTerrainCode, elevation, coords.Offset.x, coords.Offset.z);
             
             if (locEntity.Has<Castle>())
             {
