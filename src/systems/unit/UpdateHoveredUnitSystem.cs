@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public class SelectUnitSystem : IEcsSystem
+public class UpdateHoveredUnitSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
@@ -16,6 +16,16 @@ public class SelectUnitSystem : IEcsSystem
             {
                 return;
             }
+
+            if (!hoveredLocEntity.Has<HasUnit>())
+            {
+                return;
+            }
+
+            var hoveredUnitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
+
+            world.Spawn().Add(new UnitHoveredEvent(hoveredUnitEntity));
+
 
             if (Input.IsActionJustPressed("select_unit"))
             {

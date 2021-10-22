@@ -15,6 +15,7 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));
         AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
+        AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
 
@@ -26,6 +27,7 @@ public partial class PlayState : GameState
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
+        AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
         AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
