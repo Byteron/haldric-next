@@ -124,4 +124,9 @@ public class Hex
 
         return cells.ToArray();
     }
+
+    public static int DistanceTo(Vector3 cube1, Vector3 cube2)
+    {
+        return (int)Mathf.Max(Mathf.Abs(cube1.x - cube2.x), Mathf.Max(Mathf.Abs(cube1.y - cube2.y), Mathf.Abs(cube1.z - cube2.z)));
+    }
 }

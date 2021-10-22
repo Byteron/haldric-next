@@ -7,6 +7,7 @@ public partial class PlayState : GameState
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
         AddInputSystem(new SelectUnitSystem());
+        AddInputSystem(new SelectTargetSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
 

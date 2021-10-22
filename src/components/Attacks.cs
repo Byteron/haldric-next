@@ -25,6 +25,42 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return _list[0];
     }
 
+    public bool HasAttackWithRange(int range)
+    {
+        foreach(var attack in _list)
+        {
+            if (attack.Get<Range>().Value >= range)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool HasUsableAttack(int actions, int range)
+    {
+        foreach(var attack in _list)
+        {
+            if (attack.Get<Range>().Value >= range && attack.Get<Costs>().Value <= actions)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public EcsEntity GetUsableAttack(int actions, int range)
+    {
+        foreach(var attack in _list)
+        {
+            if (attack.Get<Range>().Value >= range && attack.Get<Costs>().Value <= actions)
+            {
+                return attack;
+            }
+        }
+        return default;
+    }
+
     public void AutoReset(ref Attacks c)
     {
         if (c._list == null)

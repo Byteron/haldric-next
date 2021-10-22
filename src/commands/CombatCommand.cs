@@ -10,56 +10,63 @@ public partial class CombatCommand : Command
         public EcsEntity AttackerEntity;
         public EcsEntity DefenderEntity;
         public DamageEvent DamageEvent;
+        public bool IsRanged;
 
-        public AttackData(EcsEntity attackerEntity, EcsEntity defenderEntity, DamageEvent damageEvent)
+        public AttackData(EcsEntity attackerEntity, EcsEntity defenderEntity, DamageEvent damageEvent, bool isRanged)
         {
             AttackerEntity = attackerEntity;
             DefenderEntity = defenderEntity;
             DamageEvent = damageEvent;
+            IsRanged = isRanged;
         }
     }
 
     public EcsEntity AttackerEntity;
     public EcsEntity DefenderEntity;
+    public EcsEntity AttackerAttackEntity;
+    public EcsEntity DefenderAttackEntity;
 
     private Queue<AttackData> _attackDataQueue = new Queue<AttackData>();
     private AttackData _attackData;
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerEntity, EcsEntity defenderEntity)
+    public CombatCommand(EcsEntity attackerEntity, EcsEntity attackerAttackEntity, EcsEntity defenderEntity, EcsEntity defenderAttackEntity)
     {
         AttackerEntity = attackerEntity;
+        AttackerAttackEntity = attackerAttackEntity;
         DefenderEntity = defenderEntity;
+        DefenderAttackEntity = defenderAttackEntity;
     }
 
     public override void Execute()
     {
-        _tween = Main.Instance.CreateTween();
+        var attackerStrikes = AttackerAttackEntity.Get<Strikes>().Value;
+        var attackerRange = AttackerAttackEntity.Get<Range>().Value;
 
-        var attackerAttackEntity = AttackerEntity.Get<Attacks>().GetFirst();
-        var defenderAttackEntity = DefenderEntity.Get<Attacks>().GetFirst();
-
-        var attackerStrikes = attackerAttackEntity.Get<Strikes>().Value;
-        var defenderStrikes = defenderAttackEntity.Get<Strikes>().Value;
+        var defenderStrikes = 0;
+        if (DefenderAttackEntity.IsAlive())
+        {
+            defenderStrikes = DefenderAttackEntity.Get<Strikes>().Value;
+        }
 
         for (int i = 0; i < Godot.Mathf.Max(attackerStrikes, defenderStrikes); i++)
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(attackerAttackEntity, DefenderEntity);
-                _attackDataQueue.Enqueue(new AttackData(AttackerEntity, DefenderEntity, damageEvent));
+                var damageEvent = new DamageEvent(AttackerAttackEntity, DefenderEntity);
+                _attackDataQueue.Enqueue(new AttackData(AttackerEntity, DefenderEntity, damageEvent, attackerRange > 1));
             }
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(defenderAttackEntity, AttackerEntity);
-                _attackDataQueue.Enqueue(new AttackData(DefenderEntity, AttackerEntity, damageEvent));
+                var damageEvent = new DamageEvent(DefenderAttackEntity, AttackerEntity);
+                _attackDataQueue.Enqueue(new AttackData(DefenderEntity, AttackerEntity, damageEvent, attackerRange > 1));
             }
         }
         
         ref var unitActions = ref AttackerEntity.Get<Attribute<Actions>>();
-        unitActions.Decrease(attackerAttackEntity.Get<Costs>().Value);
+        unitActions.Decrease(AttackerAttackEntity.Get<Costs>().Value);
 
         if (_attackDataQueue.Count > 0)
         {
@@ -75,7 +82,14 @@ public partial class CombatCommand : Command
         var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
         var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
 
-        _tween.TweenProperty(attackerView, "position", (attackerView.Position + defenderView.Position) / 2, 0.2f);
+        Vector3 attackPos = attackerView.Position;
+
+        if (!_attackData.IsRanged)
+        {
+            attackPos = (attackerView.Position + defenderView.Position) / 2;
+        }
+
+        _tween.TweenProperty(attackerView, "position", attackPos, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrike"));
         _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrikeFinished"));

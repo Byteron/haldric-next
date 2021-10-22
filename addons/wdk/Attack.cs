@@ -13,18 +13,12 @@ namespace Haldric.Wdk
         Cold,
     }
 
-    public enum RangeType
-    {
-        Melee,
-        Ranged,
-    }
-
     public partial class Attack : Node
     {
-        [Export] public int Costs;
-        [Export] public int Damage;
-        [Export] public int Strikes;
-        [Export] public DamageType DamageType;
-        [Export] public RangeType Range;
+        [Export] public int Costs = 0;
+        [Export] public int Damage = 0;
+        [Export] public int Strikes = 0;
+        [Export] public DamageType DamageType = DamageType.Slash;
+        [Export] public int Range = 1;
     }
 }

@@ -15,13 +15,18 @@ public class MoveUnitSystem : IEcsSystem
             
             var hoveredLocEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
             
-            if (!hoveredLocEntity.IsAlive())
+            if (!hoveredLocEntity.IsAlive() || hoveredLocEntity.Has<HasUnit>())
             {
                 return;
             }
 
             ref var hasLocation = ref cursorQuery.Get<HasLocation>(cursorEntityId);
             var selectedLocEntity = hasLocation.Entity;
+
+            if (selectedLocEntity.Get<Coords>().Cube == hoveredLocEntity.Get<Coords>().Cube)
+            {
+                return;
+            }
 
             if (Input.IsActionJustPressed("select_unit"))
             {

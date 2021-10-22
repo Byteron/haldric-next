@@ -1,10 +1,8 @@
-using Haldric.Wdk;
-
 public struct Range
 {
-    public RangeType Value;
+    public int Value;
 
-    public Range(RangeType value)
+    public Range(int value)
     {
         Value = value;
     }

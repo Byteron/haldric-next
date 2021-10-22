@@ -22,7 +22,7 @@ Costs = 4
 Damage = 6
 Strikes = 1
 DamageType = 1
-Range = 1
+Range = 2
 
 [node name="Infantry" parent="UnitView" index="0" instance=ExtResource( "2_wq0xh" )]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)

@@ -39,6 +39,12 @@ public struct Coords
 
         return false;
     }
+
+    public int DistanceTo(Coords otherCoords)
+    {
+        return Hex.DistanceTo(Cube, otherCoords.Cube);
+    }
+
     public static Coords FromCube(Vector3 cube)
     {
         var coords = new Coords();
