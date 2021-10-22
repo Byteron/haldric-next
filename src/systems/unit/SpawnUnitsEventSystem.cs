@@ -22,7 +22,14 @@ public class SpawnUnitsEventSystem : IEcsSystem
 
                 foreach (var castleLoc in keep.List)
                 {
-                    world.Spawn().Add(new SpawnUnitEvent(playerId, "Spearman", castleLoc.Get<Coords>()));
+                    if (Godot.GD.Randf() < 0.5f)
+                    {
+                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Spearman", castleLoc.Get<Coords>()));
+                    }
+                    else
+                    {
+                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Bowman", castleLoc.Get<Coords>()));
+                    }
                 }
 
                 playerId += 1;
