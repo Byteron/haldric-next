@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://do6wgeogmoljp"
+uid="uid://cmgtc54j3k2v4"
 path="res://.godot/imported/Village_human.gltf-9ef9a1fc003c938bebb9cd89161ca1a6.scn"
 
 [deps]
@@ -26,6 +26,16 @@ animation/import=false
 animation/fps=15
 import_script/path=""
 _subresources={
+"materials": {
+"Village_human_hall_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/Village_human_hall_01.tres"
+},
+"Village_human_houses_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/Village_human_houses_01.tres"
+}
+},
 "meshes": {
 "Village_human_Village_human_hall_01": {
 "save_to_file/enabled": true,

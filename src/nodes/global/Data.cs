@@ -63,21 +63,6 @@ public partial class Data : Node
         KeepPlateaus = terrainScript.KeepPlateaus;
         TerrainTextures = terrainScript.TerrainTextures;
 
-        foreach(var pair in Decorations)
-        {
-            var code = pair.Key;
-            var dict = pair.Value;
-
-            GD.Print($"Code: {code}, Graphics: {dict.Count}");
-
-            foreach(var pair2 in dict)
-            {
-                var name = pair2.Key;
-                var graphic = pair2.Value;
-
-                GD.Print($"Graphic: {name}, Variations: {graphic.Variations.Count}");
-            }
-        }
         TextureArray = CreateTextureArray();
     }
 

@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://tknapgq6pihp"
+uid="uid://23p4ut8jp7u7"
 path="res://.godot/imported/Castle_human.gltf-b7b2cc3134a69f7ced51ab93f09f6dc3.scn"
 
 [deps]
@@ -26,6 +26,28 @@ animation/import=false
 animation/fps=15
 import_script/path=""
 _subresources={
+"materials": {
+"castle_human_tower_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/castle_human_tower_01.tres"
+},
+"castle_human_wall_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/castle_human_wall_01.tres"
+},
+"keep_human_floor_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/keep_human_floor_01.tres"
+},
+"keep_human_tower_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/keep_human_tower_01.tres"
+},
+"keep_human_wall_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/keep_human_wall_01.tres"
+}
+},
 "meshes": {
 "Castle_human_Castle_human_tower_01": {
 "save_to_file/enabled": true,

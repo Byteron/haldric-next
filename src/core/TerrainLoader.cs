@@ -77,7 +77,6 @@ public abstract class TerrainLoader
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
             dict.Add(path, graphic);
-            GD.Print(code, " New Graphic!");
         }
         else
         {
@@ -85,13 +84,11 @@ public abstract class TerrainLoader
             {
                 var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
                 dict.Add(name, graphic);
-                GD.Print(code, " New Graphic For ", name);
             }
             else
             {
                 var graphic = dict[name];
                 graphic.Variations.Add(LoadAsset<Mesh>(path));
-                GD.Print(code, " Added Variation To ", name);
             }
         }
     }
