@@ -9,16 +9,16 @@
 [node name="Attributes" parent="." index="0"]
 Id = "Spearman"
 Health = 36
-Actions = 8
+Actions = 6
 
 [node name="Spear" parent="Attacks" index="0" instance=ExtResource( "2_fqlix" )]
-Costs = 5
+Costs = 3
 Damage = 7
 Strikes = 3
 DamageType = 1
 
 [node name="Javelin" parent="Attacks" index="1" instance=ExtResource( "2_fqlix" )]
-Costs = 4
+Costs = 3
 Damage = 6
 Strikes = 1
 DamageType = 1

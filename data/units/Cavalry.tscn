@@ -9,11 +9,11 @@
 [node name="Attributes" parent="." index="0"]
 Id = "Cavalry"
 Health = 36
-Actions = 12
+Actions = 8
 Experience = 86
 
 [node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_3ggjw" )]
-Costs = 6
+Costs = 4
 Damage = 6
 Strikes = 3
 
