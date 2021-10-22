@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public abstract class TerrainLoader
 {
     public Dictionary<string, Dictionary<string, object> > TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
-    public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
@@ -64,17 +64,36 @@ public abstract class TerrainLoader
         TerrainTextures.Add(code, LoadAsset<Texture2D>(path));
     }
 
-    public void AddDecorationGraphic(string code, string path)
+    public void AddDecorationGraphic(string code, string path, string name = null)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
         if (!Decorations.ContainsKey(code))
         {
-            Decorations.Add(code, new List<TerrainGraphic>());
+            Decorations.Add(code, new Dictionary<string, TerrainGraphic>());
         }
 
-        var list = Decorations[code];
-        list.Add(graphic);
+        var dict = Decorations[code];
+
+        if (string.IsNullOrEmpty(name))
+        {
+            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            dict.Add(path, graphic);
+            GD.Print(code, " New Graphic!");
+        }
+        else
+        {
+            if (!dict.ContainsKey(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                dict.Add(name, graphic);
+                GD.Print(code, " New Graphic For ", name);
+            }
+            else
+            {
+                var graphic = dict[name];
+                graphic.Variations.Add(LoadAsset<Mesh>(path));
+                GD.Print(code, " Added Variation To ", name);
+            }
+        }
     }
 
     public void AddWaterGraphic(string code, string path)

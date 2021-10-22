@@ -57,14 +57,30 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
+    Dictionary<Vector3, int> randomIndicies = new Dictionary<Vector3, int>();
+
     public void AddDecoration(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
         position.y = locEntity.Get<Elevation>().Height;
 
-        foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode])
+        foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode].Values)
         {
-            AddRenderData(terrainGraphic.Mesh, position, Vector3.Zero);
+            if (terrainGraphic.Variations.Count == 0)
+            {
+                AddRenderData(terrainGraphic.Mesh, position, Vector3.Zero);
+            }
+            else
+            {
+                if (!randomIndicies.TryGetValue(position, out var index))
+                {
+                    index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                    randomIndicies.Add(position, index);
+                }
+                
+                var mesh = terrainGraphic.Variations[index];
+                AddRenderData(mesh, position, Vector3.Zero);
+            }
         }
     }
 

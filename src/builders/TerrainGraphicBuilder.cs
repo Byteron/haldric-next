@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using Godot;
 
 public class TerrainGraphic
 {
-    public string Code;
-    public Mesh Mesh;
-    public Vector3 Offset;
+    public string Code = "";
+    public Mesh Mesh = null;
+    public List<Mesh> Variations = new List<Mesh>();
+    public Vector3 Offset = Vector3.Zero;
 }
 
 public class TerrainGraphicBuilder

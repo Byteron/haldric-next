@@ -17,7 +17,7 @@ public class TerrainScript : TerrainLoader
         NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
 
         NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });
-        NewVillage("VMh", new List<TerrainType>() { TerrainType.Settled });
+        NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled });
 
         AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
         AddTerrainTexture("Dd", "assets/graphics/images/mud.png");
@@ -35,8 +35,25 @@ public class TerrainScript : TerrainLoader
         AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 
         AddDecorationGraphic("Ff", "assets/graphics/models/forest_low_poly.tres");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village.tres");
-        AddDecorationGraphic("VMh", "assets/graphics/models/village_main.tres");
+
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_01.tres", "outer");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_02.tres", "outer");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_03.tres", "outer");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_04.tres", "outer");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_05.tres", "outer");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_01.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_02.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_03.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_04.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_05.tres", "center");
+        
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_01.tres");
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_01.tres", "outer");
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_02.tres", "outer");
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_03.tres", "outer");
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_04.tres", "outer");
+        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_05.tres", "outer");
+        
         AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
     }
 }

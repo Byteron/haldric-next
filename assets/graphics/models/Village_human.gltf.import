@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://68oj8xj1hd35"
+uid="uid://do6wgeogmoljp"
 path="res://.godot/imported/Village_human.gltf-9ef9a1fc003c938bebb9cd89161ca1a6.scn"
 
 [deps]
@@ -17,13 +17,59 @@ nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
-meshes/generate_lods=true
-meshes/create_shadow_meshes=true
-meshes/light_baking=2
+meshes/generate_lods=false
+meshes/create_shadow_meshes=false
+meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
-skins/use_named_skins=true
-animation/import=true
+skins/use_named_skins=false
+animation/import=false
 animation/fps=15
 import_script/path=""
 _subresources={
+"meshes": {
+"Village_human_Village_human_hall_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_01.tres"
+},
+"Village_human_Village_human_small_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_01.tres"
+},
+"Village_human_Village_human_small_02": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_02.tres"
+},
+"Village_human_Village_human_small_03": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_03.tres"
+},
+"Village_human_Village_human_small_04": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_04.tres"
+},
+"Village_human_Village_human_small_05": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_05.tres"
+},
+"Village_human_Village_human_small_center_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_center_01.tres"
+},
+"Village_human_Village_human_small_center_02": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_center_02.tres"
+},
+"Village_human_Village_human_small_center_03": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_center_03.tres"
+},
+"Village_human_Village_human_small_center_04": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_center_04.tres"
+},
+"Village_human_Village_human_small_center_05": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_small_center_05.tres"
+}
+}
 }

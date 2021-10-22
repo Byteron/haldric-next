@@ -10,7 +10,7 @@ public partial class Data : Node
     public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
 
-    public Dictionary<string, List<TerrainGraphic>> Decorations = new Dictionary<string, List<TerrainGraphic>>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
@@ -63,6 +63,21 @@ public partial class Data : Node
         KeepPlateaus = terrainScript.KeepPlateaus;
         TerrainTextures = terrainScript.TerrainTextures;
 
+        foreach(var pair in Decorations)
+        {
+            var code = pair.Key;
+            var dict = pair.Value;
+
+            GD.Print($"Code: {code}, Graphics: {dict.Count}");
+
+            foreach(var pair2 in dict)
+            {
+                var name = pair2.Key;
+                var graphic = pair2.Value;
+
+                GD.Print($"Graphic: {name}, Variations: {graphic.Variations.Count}");
+            }
+        }
         TextureArray = CreateTextureArray();
     }
 
