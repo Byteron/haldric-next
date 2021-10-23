@@ -6,6 +6,13 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
+    public Color[] TeamColors = new Color[]
+    {
+        new Color("FF0000"),
+        new Color("00FF00"),
+        new Color("0000FF"),
+    };
+
     public Dictionary<string, PackedScene> Units = new Dictionary<string, PackedScene>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();

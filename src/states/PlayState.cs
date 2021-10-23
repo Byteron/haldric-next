@@ -43,7 +43,6 @@ public partial class PlayState : GameState
     public override void Enter(GameStateController gameStates)
     {
         var scenario = new Scenario();
-        scenario.PlayerCount = 2;
 
         _world.AddResource(scenario);
         _world.AddResource(new Commander());

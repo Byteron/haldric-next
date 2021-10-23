@@ -87,6 +87,8 @@ public partial class CombatCommand : Command
             _attackData = _attackDataQueue.Dequeue();
             Attack();
         }
+
+        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     public void Attack()
@@ -135,6 +137,10 @@ public partial class CombatCommand : Command
         {
             _attackData = _attackDataQueue.Dequeue();
             Attack();
+        }
+        else
+        {
+            IsDone = true;
         }
     }
 

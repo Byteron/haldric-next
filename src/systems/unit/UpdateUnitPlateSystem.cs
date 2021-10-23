@@ -35,15 +35,7 @@ public class UpdateUnitPlateSystem : IEcsSystem
 
             unitPlate.Position = view.Position + Vector3.Up * 7.5f;
 
-            if (team.Value == 0)
-            {
-                unitPlate.TeamColor = new Color(1f, 0f, 0f);
-            }
-            
-            if (team.Value == 1)
-            {
-                unitPlate.TeamColor = new Color(0f, 0f, 1f);
-            }
+            unitPlate.TeamColor = Data.Instance.TeamColors[team.Value];
         }
     }
 }

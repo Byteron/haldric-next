@@ -8,6 +8,8 @@ public partial class CommanderState : GameState
         AddUpdateSystem(new ExecuteCommandSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateUnitPlateSystem());
+
+        AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
     }
 
     public override void Enter(GameStateController gameStates)
