@@ -11,7 +11,7 @@ public class TurnEndEventSystem : IEcsSystem
 
         var unitQuery = world.Query<Team>().Inc<Attribute<Actions>>().End();
 
-        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCaptured>().End();
+        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
@@ -21,8 +21,7 @@ public class TurnEndEventSystem : IEcsSystem
 
             scenario.EndTurn();
             
-            Godot.GD.Print("Player: " + scenario.CurrentPlayer);
-            Godot.GD.Print("Units: ", unitQuery.GetEntitiesCount());
+            var player = scenario.GetCurrentPlayerEntity();
 
             foreach (var unitEntityId in unitQuery)
             {
@@ -36,11 +35,13 @@ public class TurnEndEventSystem : IEcsSystem
 
             foreach (var locEntityId in locsWithCapturedVillagesQuery)
             {
-                var team = locsWithCapturedVillagesQuery.Get<IsCaptured>(locEntityId).Team;
+                ref var village = ref locsWithCapturedVillagesQuery.Get<Village>(locEntityId);
+                ref var team = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
 
-                if (scenario.CurrentPlayer == team)
+                if (scenario.CurrentPlayer == team.Value)
                 {
-                    GD.Print($"Money for Team {team}");
+                    player.Get<Gold>().Value += village.List.Count;
+                    GD.Print($"Player: {team}, Income + {village.List.Count}");
                 }
             }
 
@@ -71,6 +72,9 @@ public class TurnEndEventSystem : IEcsSystem
                     hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
                 }
             }
+
+            GD.Print("Player: " + player.Get<Team>().Value);
+            GD.Print("Gold: " + player.Get<Gold>().Value);
         }
     }
 }

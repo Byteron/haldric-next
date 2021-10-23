@@ -1,9 +1,9 @@
-public struct IsCaptured
+public struct IsCapturedByTeam
 {
-    public int Team;
+    public int Value;
 
-    public IsCaptured(int team)
+    public IsCapturedByTeam(int value)
     {
-        Team = team;
+        Value = value;
     }
 }

@@ -16,6 +16,11 @@ public class SpawnUnitsEventSystem : IEcsSystem
             int playerId = 0;
             foreach (var locEntityId in keepQuery)
             {
+                var playerEntity = world.Spawn()
+                    .Add(new Team(playerId))
+                    .Add(new Gold(100));
+                
+                scenario.Players.Add(playerEntity);
 
                 var locEntity = world.Entity(locEntityId);
                 ref var keep = ref locEntity.Get<Castle>();
@@ -36,9 +41,6 @@ public class SpawnUnitsEventSystem : IEcsSystem
 
                 playerId += 1;
             }
-            
-            scenario.PlayerCount = playerId;
         }
-
     }
 }

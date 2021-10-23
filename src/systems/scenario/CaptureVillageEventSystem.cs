@@ -22,12 +22,12 @@ public class CaptureVillageEventSystem : IEcsSystem
         {
             ref var captureEvent = ref query.Get<CaptureVillageEvent>(id);
             
-            if (captureEvent.LocEntity.Has<IsCaptured>())
+            if (captureEvent.LocEntity.Has<IsCapturedByTeam>())
             {
-                captureEvent.LocEntity.Remove<IsCaptured>();
+                captureEvent.LocEntity.Remove<IsCapturedByTeam>();
             }
 
-            captureEvent.LocEntity.Add(new IsCaptured(captureEvent.Team));
+            captureEvent.LocEntity.Add(new IsCapturedByTeam(captureEvent.Team));
         }
     }
 }

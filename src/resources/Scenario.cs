@@ -1,10 +1,18 @@
+using System.Collections.Generic;
+using Bitron.Ecs;
+
 public class Scenario
 {
-    public int PlayerCount;
-    public int CurrentPlayer;
+    public int CurrentPlayer = 0;
+    public List<EcsEntity> Players = new List<EcsEntity>();
 
     public void EndTurn()
     {
-        CurrentPlayer = (CurrentPlayer + 1) % PlayerCount;
+        CurrentPlayer = (CurrentPlayer + 1) % Players.Count;
+    }
+
+    public EcsEntity GetCurrentPlayerEntity()
+    {
+        return Players[CurrentPlayer];
     }
 }
