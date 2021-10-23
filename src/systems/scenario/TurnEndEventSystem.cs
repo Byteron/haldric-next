@@ -73,8 +73,7 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
 
-            GD.Print("Player: " + player.Get<Team>().Value);
-            GD.Print("Gold: " + player.Get<Gold>().Value);
+            hudView.PlayerLabel.Text = $"Player: {player.Get<Team>().Value}, Gold: {player.Get<Gold>().Value}";
         }
     }
 }

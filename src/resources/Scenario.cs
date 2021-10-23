@@ -3,7 +3,7 @@ using Bitron.Ecs;
 
 public class Scenario
 {
-    public int CurrentPlayer = 0;
+    public int CurrentPlayer = -1;
     public List<EcsEntity> Players = new List<EcsEntity>();
 
     public void EndTurn()

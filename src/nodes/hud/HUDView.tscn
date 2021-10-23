@@ -56,4 +56,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PlayerLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -125.5
+offset_right = 125.5
+offset_bottom = 23.0
+text = "sdfsdf"
+align = 1
+structured_text_bidi_override_options = []
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="EndTurnButton" to="." method="OnEndTurnButtonPressed"]

@@ -5,11 +5,13 @@ public partial class HUDView : CanvasLayer
 {
     public Label TerrainLabel;
     public Label UnitLabel;
+    public Label PlayerLabel;
 
     public override void _Ready()
     {
         TerrainLabel = GetNode<Label>("VBoxContainer/TerrainLabel");
         UnitLabel = GetNode<Label>("VBoxContainer2/UnitLabel");
+        PlayerLabel = GetNode<Label>("PlayerLabel");
     }
 
     public void SpawnFloatingLabel(Vector3 position, string text, Color color)

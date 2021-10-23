@@ -55,6 +55,7 @@ public partial class PlayState : GameState
 
         _world.Spawn().Add(new LoadMapEvent("map"));
         _world.Spawn().Add(new SpawnUnitsEvent());
+        _world.Spawn().Add(new TurnEndEvent());
     }
 
     public override void Exit(GameStateController gameStates)
