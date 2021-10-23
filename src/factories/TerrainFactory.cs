@@ -52,6 +52,11 @@ public class TerrainFactory
             _builder.WithIsCapturable();
         }
 
+        if (dict.ContainsKey("Heals"))
+        {
+            _builder.WithHeals();
+        }
+
         return _builder.Build();
     }
 }

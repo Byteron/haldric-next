@@ -15,6 +15,11 @@ public struct Attribute<T>
         Value = Max;
     }
 
+    public int GetDifference()
+    {
+        return Max - Value;
+    }
+
     public void Increase(int amount)
     {
         int sum = Value + amount;

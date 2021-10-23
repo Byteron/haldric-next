@@ -51,7 +51,7 @@ namespace Haldric.Wdk
 
         public void NewVillage(string code, List<TerrainType> types)
         {
-            var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable().WithGivesIncome().Build();
+            var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable().WithGivesIncome().WithHeals().Build();
             TerrainDicts.Add(code, terrain);
         }
 

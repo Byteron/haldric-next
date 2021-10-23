@@ -7,4 +7,6 @@ public struct CanRecruitTo {}
 public struct IsCapturable {}
 public struct GivesIncome {}
 
+public struct Heals {}
+
 public struct HasWater {}

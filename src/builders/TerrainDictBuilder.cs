@@ -61,6 +61,12 @@ public class TerrainDictBuilder
         return this;
     }
 
+    public TerrainDictBuilder WithHeals()
+    {
+        _terrainDict["Heals"] = true;
+        return this;
+    }
+
     public Dictionary<string, object>  Build()
     {
         return _terrainDict;

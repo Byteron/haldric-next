@@ -61,6 +61,12 @@ public class TerrainBuilder
         return this;
     }
 
+    public TerrainBuilder WithHeals()
+    {
+        _terrainEntity.Add<Heals>();
+        return this;
+    }
+
     public EcsEntity Build()
     {
         return _terrainEntity;
