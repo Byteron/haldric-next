@@ -12,7 +12,23 @@ public partial class HUDView : CanvasLayer
         UnitLabel = GetNode<Label>("VBoxContainer/UnitLabel");
     }
 
-    public void OnEndTurnButtonPressed()
+    public void SpawnFloatingLabel(Vector3 position, string text, Color color)
+    {
+        var label = Scenes.Instance.FloatingLabel.Instantiate<FloatingLabel>();
+        label.Position = position;
+        label.Text = text;
+        label.Color = color;
+        AddChild(label);
+    }
+
+    public UnitPlate CreateUnitPlate()
+    {
+        var plate = Scenes.Instance.UnitPlate.Instantiate<UnitPlate>();
+        AddChild(plate);
+        return plate;
+    }
+
+    private void OnEndTurnButtonPressed()
     {
         Main.Instance.World.Spawn().Add(new TurnEndEvent());
     }

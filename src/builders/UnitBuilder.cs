@@ -26,7 +26,9 @@ public class UnitBuilder
 
     public UnitBuilder WithExperience(int xp)
     {
-        _entity.Add(new Attribute<Experience>(xp));
+        var experience = new Attribute<Experience>(xp);
+        experience.Empty();
+        _entity.Add(experience);
         return this;
     }
 

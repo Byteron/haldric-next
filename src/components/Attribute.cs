@@ -42,6 +42,11 @@ public struct Attribute<T>
         return Value == 0;
     }
 
+    public bool IsFull()
+    {
+        return Value == Max;
+    }
+
     public override string ToString()
     {
         return $"({Value} / {Max})";

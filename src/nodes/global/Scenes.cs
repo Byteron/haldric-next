@@ -14,6 +14,9 @@ public partial class Scenes : Node
     [Export] public PackedScene Cursor3D;
     
     [Export] public PackedScene CameraOperator;
+
+    [Export] public PackedScene FloatingLabel;
+    [Export] public PackedScene UnitPlate;
     
     public override void _Ready()
     {

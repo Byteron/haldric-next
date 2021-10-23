@@ -18,6 +18,7 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
+        AddUpdateSystem(new UpdateUnitPlateSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -33,6 +34,7 @@ public partial class PlayState : GameState
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
         AddEventSystem<DamageEvent>(new DamageEventSystem());
         AddEventSystem<DeathEvent>(new DeathEventSystem());
+        AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
         AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());

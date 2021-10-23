@@ -32,6 +32,8 @@ public class SpawnUnitEventSystem : IEcsSystem
             return;
         }
 
+        var hudView = world.GetResource<HUDView>();
+
         var eventQuery = world.Query<SpawnUnitEvent>().End();
         
         foreach (var eventEntityId in eventQuery)
@@ -51,6 +53,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
+
             var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
 
             unitType.QueueFree();
@@ -60,8 +63,11 @@ public class SpawnUnitEventSystem : IEcsSystem
 
             unitView.Position = position;
 
+            
             unitEntity.Add(new Team(spawnEvent.Team));
             unitEntity.Add(spawnEvent.Coords);
+
+            unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
 
             locEntity.Add(new HasUnit(unitEntity));
         }
