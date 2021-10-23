@@ -11,6 +11,11 @@ public partial class Data : Node
         new Color("FF0000"),
         new Color("00FF00"),
         new Color("0000FF"),
+        new Color("FFFF00"),
+        new Color("00FFFF"),
+        new Color("FF00FF"),
+        new Color("000000"),
+        new Color("FFFFFF"),
     };
 
     public Dictionary<string, PackedScene> Units = new Dictionary<string, PackedScene>();

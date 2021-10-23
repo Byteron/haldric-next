@@ -9,10 +9,10 @@ public class SpawnUnitsEventSystem : IEcsSystem
         var keepQuery = world.Query<Castle>().End();
         var eventQuery = world.Query<SpawnUnitsEvent>().End();
 
-        var scenario = world.GetResource<Scenario>();
-
         foreach (var e in eventQuery)
         {
+            var scenario = world.GetResource<Scenario>();
+            
             int playerId = 0;
             foreach (var locEntityId in keepQuery)
             {
