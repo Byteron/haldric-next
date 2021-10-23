@@ -38,7 +38,7 @@ public class UnitHoveredEventSystem : IEcsSystem
                     ref var strikes = ref attackEntity.Get<Strikes>();
                     ref var range = ref attackEntity.Get<Range>();
                     ref var costs = ref attackEntity.Get<Costs>();
-                    s += string.Format("\n({5}) {0} {1}x{2} ({3}) ({4})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString(), costs.Value);
+                    s += string.Format("\n(AP: {5}, R: {4}) {0} {1}x{2} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString(), costs.Value);
                 }
             }
 

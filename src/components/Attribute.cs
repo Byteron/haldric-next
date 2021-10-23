@@ -49,6 +49,6 @@ public struct Attribute<T>
 
     public override string ToString()
     {
-        return $"({Value} / {Max})";
+        return $"{Value} / {Max}";
     }
 }
