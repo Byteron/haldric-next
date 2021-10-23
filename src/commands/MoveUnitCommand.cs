@@ -59,14 +59,7 @@ public partial class MoveUnitCommand : Command
 
         unitCoords = _path.Destination.Get<Coords>();
 
-        if (IsReverted)
-        {
-            unitActions.Increase(_path.Checkpoints.Count);
-        }
-        else
-        {
-            unitActions.Decrease(_path.Checkpoints.Count);
-        }
+        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     public override void Revert()
@@ -82,18 +75,12 @@ public partial class MoveUnitCommand : Command
         _path.Checkpoints.Enqueue(_path.Destination);
 
         IsReverted = true;
+        IsDone = false;
     }
 
     private void OnUnitMoveFinished()
     {
-        if (_unitEntity.Get<Attribute<Actions>>().Value > 0)
-        {
-            Main.Instance.World.Spawn().Add(new UnitSelectedEvent(_unitEntity));
-        }
-        else
-        {
-            Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
-        }
+        IsDone = true;
     }
 
     private int index;
@@ -110,6 +97,16 @@ public partial class MoveUnitCommand : Command
             var pos = coords.World;
             _unitView.LookAt(coords.World, Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
+
+            if (IsReverted)
+            {
+                _unitEntity.Get<Attribute<Actions>>().Increase(1);
+            }
+            else
+            {
+                _unitEntity.Get<Attribute<Actions>>().Decrease(1);
+            }
+            
             index += 1;
         }
 

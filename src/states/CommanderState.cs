@@ -7,6 +7,7 @@ public partial class CommanderState : GameState
         AddUpdateSystem(new UpdateStatsInfoSystem());
         AddUpdateSystem(new ExecuteCommandSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
+        AddUpdateSystem(new UpdateUnitPlateSystem());
     }
 
     public override void Enter(GameStateController gameStates)

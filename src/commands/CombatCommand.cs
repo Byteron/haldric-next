@@ -128,6 +128,7 @@ public partial class CombatCommand : Command
         if (_attackData.DefenderEntity.Get<Attribute<Health>>().IsEmpty())
         {
             Main.Instance.World.Spawn().Add(new DeathEvent(DefenderEntity));
+            IsDone = true;
             return;
         }
         else if (_attackDataQueue.Count > 0)
