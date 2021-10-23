@@ -9,6 +9,8 @@ public partial class CommanderState : GameState
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateUnitPlateSystem());
 
+        AddEventSystem<DamageEvent>(new DamageEventSystem());
+        AddEventSystem<DeathEvent>(new DeathEventSystem());
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
     }
 
