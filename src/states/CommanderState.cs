@@ -11,6 +11,7 @@ public partial class CommanderState : GameState
 
         AddEventSystem<DamageEvent>(new DamageEventSystem());
         AddEventSystem<DeathEvent>(new DeathEventSystem());
+        AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem());
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
     }
 

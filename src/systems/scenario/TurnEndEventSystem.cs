@@ -8,7 +8,11 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
+
         var unitQuery = world.Query<Team>().Inc<Attribute<Actions>>().End();
+
+        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCaptured>().End();
+        
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
         foreach (var eventEntityId in eventQuery)
@@ -27,6 +31,16 @@ public class TurnEndEventSystem : IEcsSystem
                 {
                     ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
                     actions.Restore();
+                }
+            }
+
+            foreach (var locEntityId in locsWithCapturedVillagesQuery)
+            {
+                var team = locsWithCapturedVillagesQuery.Get<IsCaptured>(locEntityId).Team;
+
+                if (scenario.CurrentPlayer == team)
+                {
+                    GD.Print($"Money for Team {team}");
                 }
             }
 

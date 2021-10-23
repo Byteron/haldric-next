@@ -9,6 +9,7 @@ public partial class MoveUnitCommand : Command
     private Path _path;
     private EcsEntity _unitEntity;
     private UnitView _unitView;
+    private Tween _tween;
 
     public MoveUnitCommand(Path path)
     {
@@ -38,7 +39,7 @@ public partial class MoveUnitCommand : Command
         ref var unitCoords = ref _unitEntity.Get<Coords>();
         ref var unitActions = ref _unitEntity.Get<Attribute<Actions>>();
 
-        var tween = Main.Instance.GetTree().CreateTween();
+        _tween = Main.Instance.GetTree().CreateTween();
 
         foreach (var checkpointLocEntity in _path.Checkpoints)
         {
@@ -47,16 +48,16 @@ public partial class MoveUnitCommand : Command
 
             var newPos = targetCoords.World;
             newPos.y = targetElevation.Height;
-            tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
-            tween.TweenProperty(_unitView, "position", newPos, 0.2f);
+            _tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
+            _tween.TweenProperty(_unitView, "position", newPos, 0.2f);
         }
 
-        tween.TweenCallback(new Callable(this, "OnUnitMoveFinished"));
-        tween.Play();
+        _tween.TweenCallback(new Callable(this, "OnUnitMoveFinished"));
+        _tween.Play();
 
         _path.Start.Remove<HasUnit>();
-        _path.Destination.Add(new HasUnit(_unitEntity));
 
+        _path.Destination.Add(new HasUnit(_unitEntity));
         unitCoords = _path.Destination.Get<Coords>();
 
         Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
@@ -93,8 +94,15 @@ public partial class MoveUnitCommand : Command
         }
         else
         {
-            var coords = _path.Checkpoints.ToArray()[index].Get<Coords>();
-            var pos = coords.World;
+            var locEntity = _path.Checkpoints.ToArray()[index];
+
+            if (locEntity.Has<Village>())
+            {
+                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(locEntity, _unitEntity.Get<Team>().Value));
+            }
+
+            var coords = locEntity.Get<Coords>();
+
             _unitView.LookAt(coords.World, Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
 
