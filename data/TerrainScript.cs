@@ -7,7 +7,7 @@ public class TerrainScript : TerrainLoader
     {
         NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
         NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
-        NewBase("Dd", new List<TerrainType>() { TerrainType.Sandy });
+        NewBase("Dd", new List<TerrainType>() { TerrainType.Rough });
         
         NewWater("Ww", new List<TerrainType>() { TerrainType.Aqueous });
         

@@ -1,6 +1,6 @@
 namespace Haldric.Wdk
 {
-    public class Modifiers
+    public static class Modifiers
     {
         public const float Weakness = 1.25f;
         public const float Resistance = 0.75f;
@@ -14,11 +14,13 @@ namespace Haldric.Wdk
         Forested,
         Rough,
         Rocky,
-        Sandy,
         Aqueous,
-        Cavernous,
+        Oceanic,
+        Infested,
         Settled,
         Fortified,
+        Unwalkable,
+        Impassable,
     }
 
     public enum DamageType
