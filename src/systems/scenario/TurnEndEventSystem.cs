@@ -9,7 +9,7 @@ public class TurnEndEventSystem : IEcsSystem
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
 
-        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().End();
+        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
 
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         
