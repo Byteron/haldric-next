@@ -21,7 +21,7 @@ public class UnitSelectedEventSystem : IEcsSystem
         {
             var unitEntity = world.Entity(eventEntityId).Get<UnitSelectedEvent>().Unit;
 
-            var ap = unitEntity.Get<Attribute<Actions>>();
+            var ap = unitEntity.Get<Attribute<Moves>>();
 
             var coords = unitEntity.Get<Coords>();
             

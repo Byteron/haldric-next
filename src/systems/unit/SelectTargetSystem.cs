@@ -29,6 +29,14 @@ public class SelectTargetSystem : IEcsSystem
                     }
 
                     var attackerUnitEntity = selectedLocEntity.Get<HasUnit>().Entity;
+
+                    ref var actions = ref attackerUnitEntity.Get<Attribute<Actions>>();
+
+                    if (actions.IsEmpty())
+                    {
+                        return;
+                    }
+
                     var defenderUnitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
 
                     ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
@@ -39,10 +47,10 @@ public class SelectTargetSystem : IEcsSystem
                         return;
                     }
 
-                    ref var actions = ref attackerUnitEntity.Get<Attribute<Actions>>();
+                    ref var moves = ref attackerUnitEntity.Get<Attribute<Moves>>();
 
                     var distance = selectedLocEntity.Get<Coords>().DistanceTo(defenderUnitEntity.Get<Coords>());
-                    bool canAttack = attackerAttacks.HasUsableAttack(actions.Value, distance);
+                    bool canAttack = attackerAttacks.HasUsableAttack(distance);
 
                     if (!canAttack)
                     {
@@ -52,8 +60,8 @@ public class SelectTargetSystem : IEcsSystem
                     var commander = world.GetResource<Commander>();
                     var gameStateController = world.GetResource<GameStateController>();
 
-                    var attackerAttackEntity = attackerAttacks.GetUsableAttack(actions.Value, distance);
-                    var defenderAttackEntity = defenderAttacks.GetUsableAttack(99, distance);
+                    var attackerAttackEntity = attackerAttacks.GetUsableAttack(distance);
+                    var defenderAttackEntity = defenderAttacks.GetUsableAttack(distance);
 
                     commander.Enqueue(new CombatCommand(attackerUnitEntity, attackerAttackEntity, defenderUnitEntity, defenderAttackEntity));
                     gameStateController.PushState(new CommanderState(world));

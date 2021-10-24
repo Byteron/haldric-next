@@ -8,8 +8,8 @@ public partial class UnitPlate : Control
     public int MaxHealth;
     public int  Health;
 
-    public int MaxActions;
-    public int  Actions;
+    public int MaxMoves;
+    public int  Moves;
 
     public int MaxExperience;
     public int  Experience;
@@ -57,12 +57,12 @@ public partial class UnitPlate : Control
             child.QueueFree();
         }
 
-        for (int i = 0; i < MaxActions; i++)
+        for (int i = 0; i < MaxMoves; i++)
         {
             var colorRect = new ColorRect();
             colorRect.SizeFlagsHorizontal = (int) Control.SizeFlags.ExpandFill;
 
-            if (i < Actions)
+            if (i < Moves)
             {
                 colorRect.Color = new Color(0.8f, 1f, 0.8f);
             }

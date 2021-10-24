@@ -37,7 +37,7 @@ public partial class MoveUnitCommand : Command
         _unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
 
         ref var unitCoords = ref _unitEntity.Get<Coords>();
-        ref var unitActions = ref _unitEntity.Get<Attribute<Actions>>();
+        ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
 
         _tween = Main.Instance.GetTree().CreateTween();
 
@@ -108,11 +108,11 @@ public partial class MoveUnitCommand : Command
 
             if (IsReverted)
             {
-                _unitEntity.Get<Attribute<Actions>>().Increase(1);
+                _unitEntity.Get<Attribute<Moves>>().Increase(1);
             }
             else
             {
-                _unitEntity.Get<Attribute<Actions>>().Decrease(1);
+                _unitEntity.Get<Attribute<Moves>>().Decrease(1);
             }
             
             index += 1;

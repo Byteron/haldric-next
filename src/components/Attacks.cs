@@ -37,11 +37,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return false;
     }
 
-    public bool HasUsableAttack(int actions, int range)
+    public bool HasUsableAttack(int range)
     {
         foreach(var attack in _list)
         {
-            if (attack.Get<Range>().Value >= range && attack.Get<Costs>().Value <= actions)
+            if (attack.Get<Range>().Value >= range)
             {
                 return true;
             }
@@ -49,11 +49,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return false;
     }
 
-    public EcsEntity GetUsableAttack(int actions, int range)
+    public EcsEntity GetUsableAttack(int range)
     {
         foreach(var attack in _list)
         {
-            if (attack.Get<Range>().Value >= range && attack.Get<Costs>().Value <= actions)
+            if (attack.Get<Range>().Value >= range)
             {
                 return attack;
             }

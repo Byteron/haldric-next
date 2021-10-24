@@ -23,7 +23,7 @@ public class UnitHoveredEventSystem : IEcsSystem
 
             var id = unitEntity.Get<Id>().Value;
             var hp = unitEntity.Get<Attribute<Health>>();
-            var ap = unitEntity.Get<Attribute<Actions>>();
+            var ap = unitEntity.Get<Attribute<Moves>>();
             var xp = unitEntity.Get<Attribute<Experience>>();
 
             var s = string.Format("ID: {0}\nHP: {1}\nAP: {2}\nXP: {3}", id, hp.ToString(), ap.ToString(), xp.ToString());
@@ -37,8 +37,7 @@ public class UnitHoveredEventSystem : IEcsSystem
                     ref var damage = ref attackEntity.Get<Damage>();
                     ref var strikes = ref attackEntity.Get<Strikes>();
                     ref var range = ref attackEntity.Get<Range>();
-                    ref var costs = ref attackEntity.Get<Costs>();
-                    s += string.Format("\n(AP: {5}, R: {4}) {0} {1}x{2} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString(), costs.Value);
+                    s += string.Format("\n{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
                 }
             }
 

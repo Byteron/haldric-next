@@ -79,8 +79,11 @@ public partial class CombatCommand : Command
             }
         }
         
-        ref var unitActions = ref AttackerEntity.Get<Attribute<Actions>>();
-        unitActions.Decrease(AttackerAttackEntity.Get<Costs>().Value);
+        ref var moves = ref AttackerEntity.Get<Attribute<Moves>>();
+        ref var actions = ref AttackerEntity.Get<Attribute<Actions>>();
+        
+        moves.Empty();
+        actions.Decrease(1);
 
         if (_attackDataQueue.Count > 0)
         {
@@ -116,20 +119,12 @@ public partial class CombatCommand : Command
     private void OnStrike()
     {
         Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
-
-        var position = _attackData.DefenderEntity.Get<Coords>().World + Vector3.Up * 5f;
-        var text = _attackData.DamageEvent.DamagerEntity.Get<Damage>().Value.ToString();
-        var color = new Color(1f, 0f, 0f);
-        var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
-
-        Main.Instance.World.Spawn().Add(spawnLabelEvent);
     }
 
     private void OnStrikeFinished()
     {
-        if (_attackData.DefenderEntity.Get<Attribute<Health>>().IsEmpty())
+        if (!_attackData.DefenderEntity.IsAlive())
         {
-            Main.Instance.World.Spawn().Add(new DeathEvent(DefenderEntity));
             IsDone = true;
             return;
         }

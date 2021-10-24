@@ -5,19 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/models/Infantry.glb" id="3_xkntm"]
 
 [node name="Bowman" instance=ExtResource( "1_4ncdw" )]
-
-[node name="Attributes" parent="." index="0"]
 Id = "Bowman"
 Health = 32
-Actions = 6
 
 [node name="Dagger" parent="Attacks" index="0" instance=ExtResource( "2_ls8kt" )]
-Costs = 3
 Damage = 4
 Strikes = 4
 
 [node name="Bow" parent="Attacks" index="1" instance=ExtResource( "2_ls8kt" )]
-Costs = 3
 Damage = 6
 Strikes = 3
 DamageType = 1

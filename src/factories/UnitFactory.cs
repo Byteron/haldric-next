@@ -9,11 +9,44 @@ public class UnitFactory
     {
         _builder
             .Create()
-            .WithId(unitType.Attributes.Id)
-            .WithHealth(unitType.Attributes.Health)
-            .WithActions(unitType.Attributes.Actions)
-            .WithExperience(unitType.Attributes.Experience)
+            .WithId(unitType.Id)
+            .WithHealth(unitType.Health)
+            .WithActions(1)
+            .WithMoves(unitType.Moves)
+            .WithExperience(unitType.Experience)
             .WithView(unitView);
+
+        if (unitType.Weaknesses != null)
+        {
+            foreach(var weakness in unitType.Weaknesses)
+            {
+                _builder.WithWeakness(weakness);
+            }
+        }
+
+        if (unitType.Resistances != null)
+        {
+            foreach(var resistance in unitType.Resistances)
+            {
+                _builder.WithResistance(resistance);
+            }
+        }
+
+        if (unitType.Calamities != null)
+        {
+            foreach(var calamity in unitType.Calamities)
+            {
+                _builder.WithCalamity(calamity);
+            }
+        }
+
+        if (unitType.Immunities != null)
+        {
+            foreach(var immunity in unitType.Immunities)
+            {
+                _builder.WithImmunity(immunity);
+            }
+        }
 
         foreach (Attack attack in unitType.Attacks.GetChildren())
         {
@@ -21,8 +54,7 @@ public class UnitFactory
                 .Add(new Id(attack.Name))
                 .Add(new Damage(attack.Damage, attack.DamageType))
                 .Add(new Strikes(attack.Strikes))
-                .Add(new Range(attack.Range))
-                .Add(new Costs(attack.Costs));
+                .Add(new Range(attack.Range));
 
             _builder.WithAttack(attackEntity);
         }

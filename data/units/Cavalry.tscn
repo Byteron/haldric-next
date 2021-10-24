@@ -5,15 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://bbll0id2147m2" path="res://assets/graphics/models/Unit.gltf" id="2_hwijx"]
 
 [node name="Cavalry" instance=ExtResource( "1_xrcl7" )]
-
-[node name="Attributes" parent="." index="0"]
 Id = "Cavalry"
 Health = 36
-Actions = 8
-Experience = 86
+Moves = 8
+Weaknesses = [1]
 
 [node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_3ggjw" )]
-Costs = 4
 Damage = 6
 Strikes = 3
 

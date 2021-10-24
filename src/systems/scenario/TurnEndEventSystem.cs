@@ -9,7 +9,7 @@ public class TurnEndEventSystem : IEcsSystem
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
 
-        var unitQuery = world.Query<Team>().Inc<Attribute<Actions>>().End();
+        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().End();
 
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         
@@ -28,8 +28,8 @@ public class TurnEndEventSystem : IEcsSystem
                 var team = unitQuery.Get<Team>(unitEntityId);
                 if (team.Value == scenario.CurrentPlayer)
                 {
-                    ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
-                    actions.Restore();
+                    ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
+                    moves.Restore();
                 }
             }
 

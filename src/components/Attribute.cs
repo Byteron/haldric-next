@@ -2,6 +2,8 @@ public struct Health { } // For Attribute<T>
 
 public struct Experience { } // For Attribute<T>
 
+public struct Moves { } // For Attribute<T>
+
 public struct Actions { } // For Attribute<T>
 
 public struct Attribute<T>
