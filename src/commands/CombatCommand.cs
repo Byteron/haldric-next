@@ -70,13 +70,13 @@ public partial class CombatCommand : Command
             if (i < attackerStrikes)
             {
                 var damageEvent = new DamageEvent(AttackerAttackEntity, _defenderEntity);
-                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(AttackerLocEntity), damageEvent, attackerRange > 1));
+                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(DefenderLocEntity), damageEvent, attackerRange > 1));
             }
 
             if (i < defenderStrikes)
             {
                 var damageEvent = new DamageEvent(DefenderAttackEntity, _attackerEntity);
-                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(DefenderLocEntity), damageEvent, attackerRange > 1));
+                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(AttackerLocEntity), damageEvent, attackerRange > 1));
             }
         }
 
@@ -127,7 +127,11 @@ public partial class CombatCommand : Command
 
     private void OnStrike()
     {
-        if (_attackData.TerrainTypes.GetDefense() < GD.Randf())
+        var defense = _attackData.TerrainTypes.GetDefense();
+
+        GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
+        
+        if (defense < GD.Randf())
         {
             Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
         }
