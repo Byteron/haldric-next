@@ -99,6 +99,12 @@ public class Map
                 }
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+
+                if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
+                {
+                    nMovementCost = 99;
+                }
+
                 var distance = cDistance + nMovementCost;
                 
                 ref var nDistance = ref nLocEntity.Get<Distance>();
@@ -185,6 +191,12 @@ public class Map
                 }
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+
+                if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
+                {
+                    nMovementCost = 99;
+                }
+
                 var distance = cDistance + nMovementCost;
                 
                 ref var nDistance = ref nLocEntity.Get<Distance>();
