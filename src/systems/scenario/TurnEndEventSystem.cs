@@ -28,7 +28,9 @@ public class TurnEndEventSystem : IEcsSystem
                 var team = unitQuery.Get<Team>(unitEntityId);
                 if (team.Value == scenario.CurrentPlayer)
                 {
+                    ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
                     ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
+                    actions.Restore();
                     moves.Restore();
                 }
             }

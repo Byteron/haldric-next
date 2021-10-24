@@ -41,7 +41,6 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
             }
 
-
             shaderData.Apply();
         }
     }

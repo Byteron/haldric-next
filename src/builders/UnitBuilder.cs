@@ -38,9 +38,9 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithMoves(int ap)
+    public UnitBuilder WithMoves(int mp)
     {
-        _entity.Add(new Attribute<Moves>(ap));
+        _entity.Add(new Attribute<Moves>(mp));
         return this;
     }
 

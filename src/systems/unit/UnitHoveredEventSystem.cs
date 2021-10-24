@@ -23,10 +23,11 @@ public class UnitHoveredEventSystem : IEcsSystem
 
             var id = unitEntity.Get<Id>().Value;
             var hp = unitEntity.Get<Attribute<Health>>();
-            var ap = unitEntity.Get<Attribute<Moves>>();
+            var ap = unitEntity.Get<Attribute<Actions>>();
+            var mp = unitEntity.Get<Attribute<Moves>>();
             var xp = unitEntity.Get<Attribute<Experience>>();
 
-            var s = string.Format("ID: {0}\nHP: {1}\nAP: {2}\nXP: {3}", id, hp.ToString(), ap.ToString(), xp.ToString());
+            var s = $"ID: {id}\nHP: {hp.ToString()}\nAP: {ap.ToString()}\nMP: {mp.ToString()}\nXP: {xp.ToString()}";
 
             if (unitEntity.Has<Attacks>())
             {
