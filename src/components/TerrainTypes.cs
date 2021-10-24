@@ -1,17 +1,5 @@
 using System.Collections.Generic;
-
-public enum TerrainType
-{
-    Flat,
-	Forested,
-	Rough,
-	Rocky,
-	Sandy,
-	Aqueous,
-	Cavernous,
-	Settled,
-	Fortified,
-}
+using Haldric.Wdk;
 
 public struct TerrainTypes
 {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Godot;
-using Bitron.Ecs;
+using Haldric.Wdk;
 
 public class TerrainDictBuilder
 {

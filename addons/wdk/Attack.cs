@@ -3,16 +3,6 @@ using System;
 
 namespace Haldric.Wdk
 {
-    public enum DamageType
-    {
-        Slash,
-        Pierce,
-        Impact,
-        Arcane,
-        Heat,
-        Cold,
-    }
-
     public partial class Attack : Node
     {
         [Export] public int Costs = 0;
