@@ -1,4 +1,3 @@
-using Godot;
 using Bitron.Ecs;
 
 public class UpdateTerrainInfoSystem : IEcsSystem
