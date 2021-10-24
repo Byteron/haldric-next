@@ -46,7 +46,6 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             text += $"\nTypes: {terrainTypes.ToString()}";
             text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
             text += $"\nCost: {terrainTypes.GetMovementCost()}";
-            text += $"\nDistance: {locEntity.Get<Distance>().Value}";
 
             if (locEntity.Has<Castle>())
             {
