@@ -50,7 +50,7 @@ public struct TerrainTypes
 
         foreach (var type in List)
         {
-            if (Modifiers.Defenses[type] > cost)
+            if (Modifiers.MovementCosts[type] > cost)
             {
                 cost = Modifiers.MovementCosts[type];
             }

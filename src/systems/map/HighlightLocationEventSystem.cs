@@ -37,7 +37,14 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 {
                     continue;
                 }
+
+                var locEntity = map.Locations.Dict[nCoords.Cube];
                 
+                if (locEntity.Get<Distance>().Value > eventData.Range)
+                {
+                    continue;
+                }
+
                 shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
             }
 

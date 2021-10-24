@@ -27,7 +27,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 
             var coords = locEntity.Get<Coords>();
 
-            var elevation = locEntity.Get<Elevation>().Level;
+            var elevation = locEntity.Get<Elevation>().Value;
             var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>().Value;
             var overlayTerrainCode = "";
@@ -46,6 +46,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             text += $"\nTypes: {terrainTypes.ToString()}";
             text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
             text += $"\nCost: {terrainTypes.GetMovementCost()}";
+            text += $"\nDistance: {locEntity.Get<Distance>().Value}";
 
             if (locEntity.Has<Castle>())
             {

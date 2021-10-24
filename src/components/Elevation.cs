@@ -2,17 +2,17 @@ using Bitron.Ecs;
 
 public struct Elevation : IEcsAutoReset<Elevation>
 {
-    public int Level;
+    public int Value;
 
-    public float Height { get { return Level * Metrics.ElevationStep; }}
+    public float Height { get { return Value * Metrics.ElevationStep; }}
     
-    public Elevation(int level)
+    public Elevation(int value)
     {
-        Level = level;
+        Value = value;
     }
 
     public void AutoReset(ref Elevation c)
     {
-        c.Level = 0;
+        c.Value = 0;
     }
 }

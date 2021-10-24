@@ -24,6 +24,9 @@ public class UnitSelectedEventSystem : IEcsSystem
             var moves = unitEntity.Get<Attribute<Moves>>();
 
             var coords = unitEntity.Get<Coords>();
+
+            var map = world.GetResource<Map>();
+            map.UpdateDistances(coords);
             
             world.Spawn().Add(new HighlightLocationEvent(coords, moves.Value));
         }

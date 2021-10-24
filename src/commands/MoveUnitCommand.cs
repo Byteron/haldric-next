@@ -105,14 +105,16 @@ public partial class MoveUnitCommand : Command
 
             _unitView.LookAt(coords.World, Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
+            
+            var movementCosts = TerrainTypes.FromLocEntity(locEntity).GetMovementCost();
 
             if (IsReverted)
             {
-                _unitEntity.Get<Attribute<Moves>>().Increase(1);
+                _unitEntity.Get<Attribute<Moves>>().Increase(movementCosts);
             }
             else
             {
-                _unitEntity.Get<Attribute<Moves>>().Decrease(1);
+                _unitEntity.Get<Attribute<Moves>>().Decrease(movementCosts);
             }
             
             index += 1;

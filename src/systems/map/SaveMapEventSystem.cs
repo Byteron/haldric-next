@@ -55,7 +55,7 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var locationData = new Dictionary();
                 locationData.Add("Terrain", terrainCodes);
-                locationData.Add("Elevation", location.Get<Elevation>().Level);
+                locationData.Add("Elevation", location.Get<Elevation>().Value);
 
                 locationsData.Add(cell, locationData);
             }

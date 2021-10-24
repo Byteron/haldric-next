@@ -1,6 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Bitron.Ecs;
+
+public struct Distance
+{
+    public int Value;
+
+    public Distance(int value)
+    {
+        Value = value;
+    }
+}
+
+public struct PathFrom
+{
+    public EcsEntity LocEntity;
+
+    public PathFrom(EcsEntity locEntity)
+    {
+        LocEntity = locEntity;
+    }
+}
 
 public class Map
 {
@@ -36,25 +57,179 @@ public class Map
         return coords.World; 
     }
 
-    public Path FindPath(Coords startCoords, Coords endCoords)
+    public void UpdateDistances(Coords fromCoords)
     {
-        var path = new Path();
-        
-        path.Start = Locations.Get(startCoords.Cube);
-        path.Destination = Locations.Get(endCoords.Cube);
-
-        Vector3[] pointPath = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
-
-        foreach (var cell in pointPath)
+        foreach (var loc in Locations.Dict.Values)
         {
-            path.Checkpoints.Enqueue(Locations.Get(cell));
+            loc.Get<Distance>().Value = int.MaxValue;
         }
 
-        if (path.Checkpoints.Count > 1)
+        var fromLocEntity = Locations.Dict[fromCoords.Cube];
+        
+        fromLocEntity.Get<Distance>().Value = 0;
+
+        List<EcsEntity> frontier = new List<EcsEntity>();
+        frontier.Add(fromLocEntity);
+
+        while (frontier.Count > 0)
         {
-            path.Checkpoints.Dequeue();
+            // await Main.Instance.ToSignal(Main.Instance.GetTree(), "process_frame");
+
+            var cLocEntity = frontier[0];
+            frontier.RemoveAt(0);
+
+            var cCoords = cLocEntity.Get<Coords>();
+
+            var cDistance = cLocEntity.Get<Distance>().Value;
+            var cElevation = cLocEntity.Get<Elevation>().Value;
+
+            foreach(var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            {
+                if (!nLocEntity.IsAlive())
+                {
+                    continue;
+                }
+
+                var nElevation = nLocEntity.Get<Elevation>().Value;
+                var elevationDifference = Mathf.Abs(cElevation - nElevation);
+
+                if (elevationDifference > 1)
+                {
+                    continue;
+                }
+
+                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+                var distance = cDistance + nMovementCost;
+                
+                ref var nDistance = ref nLocEntity.Get<Distance>();
+
+                if (nDistance.Value == int.MaxValue)
+                {
+                    nDistance.Value = distance;
+                    frontier.Add(nLocEntity);
+                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
+                } 
+                else if (distance < nDistance.Value)
+                {
+                    nDistance.Value = distance;
+                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
+                }
+                
+                frontier.Sort((locA, locB) => locA.Get<Distance>().Value.CompareTo(locB.Get<Distance>().Value));
+            }
+        }
+    }
+
+    public Path FindPath(Coords fromCoords, Coords toCoords)
+    {
+        foreach (var loc in Locations.Dict.Values)
+        {
+            loc.Get<Distance>().Value = int.MaxValue;
+        }
+
+        var fromLocEntity = Locations.Dict[fromCoords.Cube];
+        var toLocEntity = Locations.Dict[toCoords.Cube];
+
+        var path = new Path();
+        path.Start = fromLocEntity;
+        path.Destination = toLocEntity;
+        
+        fromLocEntity.Get<Distance>().Value = 0;
+
+        List<EcsEntity> frontier = new List<EcsEntity>();
+        frontier.Add(fromLocEntity);
+
+        while (frontier.Count > 0)
+        {
+            // await Main.Instance.ToSignal(Main.Instance.GetTree(), "process_frame");
+
+            var cLocEntity = frontier[0];
+            frontier.RemoveAt(0);
+
+            var cCoords = cLocEntity.Get<Coords>();
+
+            if (cCoords.Cube == toCoords.Cube)
+            {
+                path.Checkpoints.Enqueue(cLocEntity);
+             
+                var current = cLocEntity.Get<PathFrom>().LocEntity;
+                var cPathFrom = current.Get<PathFrom>();
+
+				while (current.Get<Coords>().Cube != fromCoords.Cube)
+                {
+                    path.Checkpoints.Enqueue(current);
+					current = cPathFrom.LocEntity;
+                    cPathFrom = current.Get<PathFrom>();
+				}
+                
+                path.Checkpoints = new Queue<EcsEntity>(path.Checkpoints.Reverse());
+                break;
+            }
+
+            var cDistance = cLocEntity.Get<Distance>().Value;
+            var cElevation = cLocEntity.Get<Elevation>().Value;
+
+            foreach(var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            {
+                if (!nLocEntity.IsAlive())
+                {
+                    continue;
+                }
+
+                var nElevation = nLocEntity.Get<Elevation>().Value;
+                var elevationDifference = Mathf.Abs(cElevation - nElevation);
+
+                if (elevationDifference > 1)
+                {
+                    continue;
+                }
+
+                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+                var distance = cDistance + nMovementCost;
+                
+                ref var nDistance = ref nLocEntity.Get<Distance>();
+                ref var nPathFrom = ref nLocEntity.Get<PathFrom>();
+
+                if (nDistance.Value == int.MaxValue)
+                {
+                    nDistance.Value = distance;
+                    nPathFrom.LocEntity = cLocEntity;
+                    frontier.Add(nLocEntity);
+                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
+                } 
+                else if (distance < nDistance.Value)
+                {
+                    nDistance.Value = distance;
+                    nPathFrom.LocEntity = cLocEntity;
+                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
+                }
+                
+                frontier.Sort((locA, locB) => locA.Get<Distance>().Value.CompareTo(locB.Get<Distance>().Value));
+            }
         }
 
         return path;
     }
+
+    // public Path FindPath(Coords startCoords, Coords endCoords)
+    // {
+    //     var path = new Path();
+        
+    //     path.Start = Locations.Get(startCoords.Cube);
+    //     path.Destination = Locations.Get(endCoords.Cube);
+
+    //     Vector3[] pointPath = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
+
+    //     foreach (var cell in pointPath)
+    //     {
+    //         path.Checkpoints.Enqueue(Locations.Get(cell));
+    //     }
+
+    //     if (path.Checkpoints.Count > 1)
+    //     {
+    //         path.Checkpoints.Dequeue();
+    //     }
+
+    //     return path;
+    // }
 }

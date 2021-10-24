@@ -176,9 +176,9 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
             var indices = new Vector3();
 
-            if (elevation.Level <= nElevation.Level)
+            if (elevation.Value <= nElevation.Value)
             {
-                if (elevation.Level <= nElevation.Level)
+                if (elevation.Value <= nElevation.Value)
                 {
                     indices.x = nLocIndex;
                     indices.y = locIndex;
@@ -193,7 +193,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
                     TriangulateCorner(v6, e1.v5, e2.v5, indices);
                 }
             }
-            else if (nElevation.Level <= nextElevation.Level)
+            else if (nElevation.Value <= nextElevation.Value)
             {
                 indices.x = nextLocIndex;
                 indices.y = nLocIndex;

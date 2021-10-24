@@ -117,17 +117,17 @@ public class EditorEditSystem : IEcsSystem
 
             if (!wasWater && baseTerrainEntity.Has<HasWater>())
             {
-                elevation.Level -= 1;
+                elevation.Value -= 1;
             }
         }
 
         if (editorView.UseElevation)
         {
-            elevation.Level = editorView.Elevation;
+            elevation.Value = editorView.Elevation;
 
             if (baseTerrainEntity.Has<HasWater>())
             {
-                elevation.Level -= 1;
+                elevation.Value -= 1;
             }
         }
     }

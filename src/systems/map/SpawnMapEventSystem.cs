@@ -165,6 +165,9 @@ public class SpawnMapEventSystem : IEcsSystem
                 locEntity.Add(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
             }
 
+            locEntity.Add<Distance>();
+            locEntity.Add<PathFrom>();
+            
             locations.Set(cell, locEntity);
         }
 
