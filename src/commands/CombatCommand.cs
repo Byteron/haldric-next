@@ -9,44 +9,51 @@ public partial class CombatCommand : Command
     {
         public EcsEntity AttackerEntity;
         public EcsEntity DefenderEntity;
+        public TerrainTypes TerrainTypes;
         public DamageEvent DamageEvent;
         public bool IsRanged;
 
-        public AttackData(EcsEntity attackerEntity, EcsEntity defenderEntity, DamageEvent damageEvent, bool isRanged)
+        public AttackData(
+            EcsEntity attackerEntity, 
+            EcsEntity defenderEntity, 
+            TerrainTypes terrainTypes,
+            DamageEvent damageEvent, 
+            bool isRanged)
         {
             AttackerEntity = attackerEntity;
             DefenderEntity = defenderEntity;
+            TerrainTypes = terrainTypes;
             DamageEvent = damageEvent;
             IsRanged = isRanged;
         }
     }
 
-    public EcsEntity AttackerEntity;
-    public EcsEntity DefenderEntity;
+    public EcsEntity AttackerLocEntity;
+    public EcsEntity DefenderLocEntity;
     public EcsEntity AttackerAttackEntity;
     public EcsEntity DefenderAttackEntity;
+
+    private EcsEntity _attackerEntity;
+    private EcsEntity _defenderEntity;
 
     private Queue<AttackData> _attackDataQueue = new Queue<AttackData>();
     private AttackData _attackData;
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerEntity, EcsEntity attackerAttackEntity, EcsEntity defenderEntity, EcsEntity defenderAttackEntity)
+    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity)
     {
-        AttackerEntity = attackerEntity;
+        AttackerLocEntity = attackerLocEntity;
         AttackerAttackEntity = attackerAttackEntity;
-        DefenderEntity = defenderEntity;
+        DefenderLocEntity = defenderLocEntity;
         DefenderAttackEntity = defenderAttackEntity;
+        _attackerEntity = AttackerLocEntity.Get<HasUnit>().Entity;
+        _defenderEntity = DefenderLocEntity.Get<HasUnit>().Entity;
     }
 
     public override void Execute()
     {
-        var position = AttackerEntity.Get<Coords>().World + Vector3.Up * 5f;
-        var text = AttackerAttackEntity.Get<Id>().Value;
-        var color = new Color(1f, 1f, 1f);
-        var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
-
-        Main.Instance.World.Spawn().Add(spawnLabelEvent);
+        SpawnFloatingLabelEvent(_attackerEntity.Get<Coords>(), AttackerAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
 
         var attackerStrikes = AttackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = AttackerAttackEntity.Get<Range>().Value;
@@ -55,33 +62,27 @@ public partial class CombatCommand : Command
         if (DefenderAttackEntity.IsAlive())
         {
             defenderStrikes = DefenderAttackEntity.Get<Strikes>().Value;
-
-            position = DefenderEntity.Get<Coords>().World + Vector3.Up * 5f;
-            text = DefenderAttackEntity.Get<Id>().Value;
-            color = new Color(1f, 1f, 1f);
-            spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
-
-            Main.Instance.World.Spawn().Add(spawnLabelEvent);
+            SpawnFloatingLabelEvent(_defenderEntity.Get<Coords>(), DefenderAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
         }
 
         for (int i = 0; i < Godot.Mathf.Max(attackerStrikes, defenderStrikes); i++)
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(AttackerAttackEntity, DefenderEntity);
-                _attackDataQueue.Enqueue(new AttackData(AttackerEntity, DefenderEntity, damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(AttackerAttackEntity, _defenderEntity);
+                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(AttackerLocEntity), damageEvent, attackerRange > 1));
             }
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(DefenderAttackEntity, AttackerEntity);
-                _attackDataQueue.Enqueue(new AttackData(DefenderEntity, AttackerEntity, damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(DefenderAttackEntity, _attackerEntity);
+                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(DefenderLocEntity), damageEvent, attackerRange > 1));
             }
         }
-        
-        ref var moves = ref AttackerEntity.Get<Attribute<Moves>>();
-        ref var actions = ref AttackerEntity.Get<Attribute<Actions>>();
-        
+
+        ref var moves = ref _attackerEntity.Get<Attribute<Moves>>();
+        ref var actions = ref _attackerEntity.Get<Attribute<Actions>>();
+
         moves.Empty();
         actions.Decrease(1);
 
@@ -94,7 +95,15 @@ public partial class CombatCommand : Command
         Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
-    public void Attack()
+    private void SpawnFloatingLabelEvent(Coords coords, string text, Color color)
+    {
+        var position = coords.World + Vector3.Up * 5f;
+        var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
+
+        Main.Instance.World.Spawn().Add(spawnLabelEvent);
+    }
+
+    private void Attack()
     {
         _tween = Main.Instance.CreateTween();
 
@@ -118,7 +127,14 @@ public partial class CombatCommand : Command
 
     private void OnStrike()
     {
-        Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
+        if (_attackData.TerrainTypes.GetDefense() < GD.Randf())
+        {
+            Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
+        }
+        else
+        {
+            Main.Instance.World.Spawn().Add(new MissEvent(_attackData.DefenderEntity));
+        }
     }
 
     private void OnStrikeFinished()

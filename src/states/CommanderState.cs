@@ -10,6 +10,7 @@ public partial class CommanderState : GameState
         AddUpdateSystem(new UpdateUnitPlateSystem());
 
         AddEventSystem<DamageEvent>(new DamageEventSystem());
+        AddEventSystem<MissEvent>(new MissEventSystem());
         AddEventSystem<DeathEvent>(new DeathEventSystem());
         AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem());
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());

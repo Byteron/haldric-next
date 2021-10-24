@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Bitron.Ecs;
 
 public partial class FloatingLabel : Control
 {

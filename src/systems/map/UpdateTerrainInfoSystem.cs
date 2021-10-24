@@ -32,14 +32,21 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>().Value;
             var overlayTerrainCode = "";
 
+            var terrainTypes = TerrainTypes.FromLocEntity(locEntity);
+
             if (locEntity.Has<HasOverlayTerrain>())
             {
                 var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
                 overlayTerrainCode = "^" + overlayTerrainEntity.Get<TerrainCode>().Value;
             }
 
-            text = string.Format("Coords: {3}, {4}\nTerrain: {0}{1}\nElevation: {2}", baseTerrainCode, overlayTerrainCode, elevation, coords.Offset.x, coords.Offset.z);
-            
+            text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
+            text += $"\nElevation: {elevation}";
+            text += $"\nTerrain: {baseTerrainCode}{overlayTerrainCode}";
+            text += $"\nTypes: {terrainTypes.ToString()}";
+            text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
+            text += $"\nCost: {terrainTypes.GetMovementCost()}";
+
             if (locEntity.Has<Castle>())
             {
                 ref var castle = ref locEntity.Get<Castle>();

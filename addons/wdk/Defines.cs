@@ -1,28 +1,7 @@
+using System.Collections.Generic;
+
 namespace Haldric.Wdk
 {
-    public static class Modifiers
-    {
-        public const float Weakness = 1.25f;
-        public const float Resistance = 0.75f;
-        public const float Calamity = 2f;
-        public const float Immunity = 0f;
-    }
-
-    public enum TerrainType
-    {
-        Flat,
-        Forested,
-        Rough,
-        Rocky,
-        Aqueous,
-        Oceanic,
-        Infested,
-        Settled,
-        Fortified,
-        Unwalkable,
-        Impassable,
-    }
-
     public enum DamageType
     {
         Slash,
@@ -32,5 +11,58 @@ namespace Haldric.Wdk
         Heat,
         Cold,
         Arcane,
+    }
+
+    public enum TerrainType
+    {
+        Flat,
+        Settled,
+        Fortified,
+        Forested,
+        Infested,
+        Rough,
+        Rocky,
+        Aqueous,
+        Oceanic,
+        Unwalkable,
+        Impassable,
+    }
+
+    public static class Modifiers
+    {
+        public const float Weakness = 1.25f;
+        public const float Resistance = 0.75f;
+        public const float Calamity = 2f;
+        public const float Immunity = 0f;
+
+        public static readonly Dictionary<TerrainType, int> MovementCosts = new Dictionary<TerrainType, int>()
+        {
+            { TerrainType.Flat, 1 },
+            { TerrainType.Settled, 1 },
+            { TerrainType.Fortified, 1 },
+            { TerrainType.Forested, 2 },
+            { TerrainType.Infested, 2 },
+            { TerrainType.Rough, 3 },
+            { TerrainType.Rocky, 3 },
+            { TerrainType.Aqueous, 3 },
+            { TerrainType.Oceanic, 99 },
+            { TerrainType.Unwalkable, 99 },
+            { TerrainType.Impassable, 99 },
+        };
+
+        public static readonly Dictionary<TerrainType, float> Defenses = new Dictionary<TerrainType, float>()
+        {
+            { TerrainType.Flat, 0f },
+            { TerrainType.Settled, 0.2f },
+            { TerrainType.Fortified, 0.4f },
+            { TerrainType.Forested, 0.3f },
+            { TerrainType.Infested, 0.2f },
+            { TerrainType.Rough, 0.0f },
+            { TerrainType.Rocky, 0.4f },
+            { TerrainType.Aqueous, 0f },
+            { TerrainType.Oceanic, 0f },
+            { TerrainType.Unwalkable, 0f },
+            { TerrainType.Impassable, 0f },
+        };
     }
 }

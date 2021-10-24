@@ -10,25 +10,25 @@ public class SelectTargetSystem : IEcsSystem
         foreach (var hoverEntityId in query)
         {
             var hoverEntity = world.Entity(hoverEntityId);
-            var hoveredLocEntity = hoverEntity.Get<HoveredLocation>().Entity;
+            var defenderLocEntity = hoverEntity.Get<HoveredLocation>().Entity;
 
-            if (!hoveredLocEntity.IsAlive())
+            if (!defenderLocEntity.IsAlive())
             {
                 return;
             }
 
             if (Input.IsActionJustPressed("select_unit"))
             {
-                if (hoveredLocEntity.Has<HasUnit>() && hoverEntity.Has<HasLocation>())
+                if (defenderLocEntity.Has<HasUnit>() && hoverEntity.Has<HasLocation>())
                 {
-                    var selectedLocEntity = hoverEntity.Get<HasLocation>().Entity;
+                    var attackerLocEntity = hoverEntity.Get<HasLocation>().Entity;
 
-                    if (!selectedLocEntity.Has<HasUnit>())
+                    if (!attackerLocEntity.Has<HasUnit>())
                     {
                         return;
                     }
 
-                    var attackerUnitEntity = selectedLocEntity.Get<HasUnit>().Entity;
+                    var attackerUnitEntity = attackerLocEntity.Get<HasUnit>().Entity;
 
                     ref var actions = ref attackerUnitEntity.Get<Attribute<Actions>>();
 
@@ -37,7 +37,7 @@ public class SelectTargetSystem : IEcsSystem
                         return;
                     }
 
-                    var defenderUnitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
+                    var defenderUnitEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
                     ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
                     ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
@@ -49,7 +49,7 @@ public class SelectTargetSystem : IEcsSystem
 
                     ref var moves = ref attackerUnitEntity.Get<Attribute<Moves>>();
 
-                    var distance = selectedLocEntity.Get<Coords>().DistanceTo(defenderUnitEntity.Get<Coords>());
+                    var distance = attackerLocEntity.Get<Coords>().DistanceTo(defenderUnitEntity.Get<Coords>());
                     bool canAttack = attackerAttacks.HasUsableAttack(distance);
 
                     if (!canAttack)
@@ -63,7 +63,7 @@ public class SelectTargetSystem : IEcsSystem
                     var attackerAttackEntity = attackerAttacks.GetUsableAttack(distance);
                     var defenderAttackEntity = defenderAttacks.GetUsableAttack(distance);
 
-                    commander.Enqueue(new CombatCommand(attackerUnitEntity, attackerAttackEntity, defenderUnitEntity, defenderAttackEntity));
+                    commander.Enqueue(new CombatCommand(attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity));
                     gameStateController.PushState(new CommanderState(world));
                 }
             }
