@@ -143,9 +143,9 @@ public class Map
         var distance = Hex.GetDistance(fromCoords.Cube, toCoords.Cube);
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
-        if (distance == 1 && diff <= 1)
+        if (diff == 0)
         {
-            return 1;
+            return distance;
         }
 
         return distance + diff / 2;
