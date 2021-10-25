@@ -18,6 +18,12 @@ public class UnitBuilder
         return this;
     }
 
+    public UnitBuilder WithLevel(int level)
+    {
+        _entity.Add(new Level(level));
+        return this;
+    }
+
     public UnitBuilder WithActions(int ap)
     {
         _entity.Add(new Attribute<Actions>(ap));

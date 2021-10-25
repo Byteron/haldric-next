@@ -11,6 +11,7 @@ public partial class CombatCommand : Command
         public EcsEntity DefenderEntity;
         public TerrainTypes TerrainTypes;
         public DamageEvent DamageEvent;
+        public int DefenderLevel;
         public bool IsRanged;
 
         public AttackData(
@@ -24,6 +25,7 @@ public partial class CombatCommand : Command
             DefenderEntity = defenderEntity;
             TerrainTypes = terrainTypes;
             DamageEvent = damageEvent;
+            DefenderLevel = DefenderEntity.Get<Level>().Value;
             IsRanged = isRanged;
         }
     }
@@ -145,6 +147,7 @@ public partial class CombatCommand : Command
     {
         if (!_attackData.DefenderEntity.IsAlive())
         {
+            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderLevel * 8));
             IsDone = true;
             return;
         }
@@ -155,6 +158,8 @@ public partial class CombatCommand : Command
         }
         else
         {
+            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderEntity.Get<Level>().Value));
+            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.DefenderEntity, _attackData.AttackerEntity.Get<Level>().Value));
             IsDone = true;
         }
     }

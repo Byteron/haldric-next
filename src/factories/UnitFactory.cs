@@ -10,6 +10,7 @@ public class UnitFactory
         _builder
             .Create()
             .WithId(unitType.Id)
+            .WithLevel(unitType.Level)
             .WithHealth(unitType.Health)
             .WithActions(1)
             .WithMoves(unitType.Moves)

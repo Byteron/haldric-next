@@ -34,6 +34,8 @@ public partial class PlayState : GameState
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
         AddEventSystem<DamageEvent>(new DamageEventSystem());
         AddEventSystem<MissEvent>(new MissEventSystem());
+        AddEventSystem<GainExperienceEvent>(new GainExperienceEventSystem());
+        AddEventSystem<AdvanceEvent>(new AdvanceEventSystem());
         AddEventSystem<DeathEvent>(new DeathEventSystem());
         AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem());
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
