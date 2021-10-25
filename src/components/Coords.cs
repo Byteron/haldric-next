@@ -42,7 +42,7 @@ public struct Coords
 
     public int DistanceTo(Coords otherCoords)
     {
-        return Hex.DistanceTo(Cube, otherCoords.Cube);
+        return Hex.GetDistance(Cube, otherCoords.Cube);
     }
 
     public static Coords FromCube(Vector3 cube)

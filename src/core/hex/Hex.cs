@@ -125,8 +125,22 @@ public class Hex
         return cells.ToArray();
     }
 
-    public static int DistanceTo(Vector3 cube1, Vector3 cube2)
+    public static int GetDistance(Vector3 cube1, Vector3 cube2)
     {
         return (int)Mathf.Max(Mathf.Abs(cube1.x - cube2.x), Mathf.Max(Mathf.Abs(cube1.y - cube2.y), Mathf.Abs(cube1.z - cube2.z)));
+    }
+
+    public static Vector3[] GetLine(Vector3 cube1, Vector3 cube2)
+    {
+        List<Vector3> list = new List<Vector3>();
+
+        int distance = GetDistance(cube1, cube2);
+
+        for (int i = 0; i < distance; i++)
+        {
+            list.Add(cube1.Lerp(cube2, 1.0f / distance * i).Round());
+        }
+
+        return list.ToArray();
     }
 }

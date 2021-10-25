@@ -28,10 +28,10 @@ public partial class CombatCommand : Command
         }
     }
 
-    public EcsEntity AttackerLocEntity;
-    public EcsEntity DefenderLocEntity;
-    public EcsEntity AttackerAttackEntity;
-    public EcsEntity DefenderAttackEntity;
+    private EcsEntity _attackerLocEntity;
+    private EcsEntity _defenderLocEntity;
+    private EcsEntity _attackerAttackEntity;
+    private EcsEntity _defenderAttackEntity;
 
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
@@ -43,40 +43,40 @@ public partial class CombatCommand : Command
 
     public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity)
     {
-        AttackerLocEntity = attackerLocEntity;
-        AttackerAttackEntity = attackerAttackEntity;
-        DefenderLocEntity = defenderLocEntity;
-        DefenderAttackEntity = defenderAttackEntity;
-        _attackerEntity = AttackerLocEntity.Get<HasUnit>().Entity;
-        _defenderEntity = DefenderLocEntity.Get<HasUnit>().Entity;
+        _attackerLocEntity = attackerLocEntity;
+        _attackerAttackEntity = attackerAttackEntity;
+        _defenderLocEntity = defenderLocEntity;
+        _defenderAttackEntity = defenderAttackEntity;
+        _attackerEntity = _attackerLocEntity.Get<HasUnit>().Entity;
+        _defenderEntity = _defenderLocEntity.Get<HasUnit>().Entity;
     }
 
     public override void Execute()
     {
-        SpawnFloatingLabelEvent(_attackerEntity.Get<Coords>(), AttackerAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
+        SpawnFloatingLabelEvent(_attackerEntity.Get<Coords>(), _attackerAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
 
-        var attackerStrikes = AttackerAttackEntity.Get<Strikes>().Value;
-        var attackerRange = AttackerAttackEntity.Get<Range>().Value;
+        var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
+        var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 
         var defenderStrikes = 0;
-        if (DefenderAttackEntity.IsAlive())
+        if (_defenderAttackEntity.IsAlive())
         {
-            defenderStrikes = DefenderAttackEntity.Get<Strikes>().Value;
-            SpawnFloatingLabelEvent(_defenderEntity.Get<Coords>(), DefenderAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
+            defenderStrikes = _defenderAttackEntity.Get<Strikes>().Value;
+            SpawnFloatingLabelEvent(_defenderEntity.Get<Coords>(), _defenderAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
         }
 
         for (int i = 0; i < Godot.Mathf.Max(attackerStrikes, defenderStrikes); i++)
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(AttackerAttackEntity, _defenderEntity);
-                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(DefenderLocEntity), damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity);
+                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(_defenderLocEntity), damageEvent, attackerRange > 1));
             }
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(DefenderAttackEntity, _attackerEntity);
-                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(AttackerLocEntity), damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity);
+                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(_attackerLocEntity), damageEvent, attackerRange > 1));
             }
         }
 

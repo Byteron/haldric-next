@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Bitron.Ecs;
+using Haldric.Wdk;
 
 public struct Distance
 {
@@ -131,6 +132,25 @@ public class Map
         }
     }
 
+    public int GetEffectiveAttackDistance(Coords fromCoords, Coords toCoords)
+    {
+        var fromLocEntity = Locations.Get(fromCoords.Cube);
+        var toLocEntity = Locations.Get(toCoords.Cube);
+
+        ref var fromElevation = ref fromLocEntity.Get<Elevation>();
+        ref var toElevation = ref toLocEntity.Get<Elevation>();
+        
+        var distance = Hex.GetDistance(fromCoords.Cube, toCoords.Cube);
+        var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
+
+        if (distance == 1 && diff <= 1)
+        {
+            return 1;
+        }
+
+        return distance + diff / 2;
+    }
+
     public Path FindPath(Coords fromCoords, Coords toCoords, int team)
     {
         foreach (var loc in Locations.Dict.Values)
@@ -231,6 +251,21 @@ public class Map
         }
 
         return path;
+    }
+
+    private List<EcsEntity> GetLocEntitiesFromCubes(Vector3[] cubes)
+    {
+        List<EcsEntity> list = new List<EcsEntity>();
+
+        foreach (var cube in cubes)
+        {
+            if (Locations.Dict.ContainsKey(cube))
+            {
+                list.Add(Locations.Dict[cube]);
+            }
+        }
+
+        return list;
     }
 
     // public Path FindPath(Coords startCoords, Coords endCoords)

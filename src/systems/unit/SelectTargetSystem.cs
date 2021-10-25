@@ -11,7 +11,7 @@ public class SelectTargetSystem : IEcsSystem
         {
             var hoverEntity = world.Entity(hoverEntityId);
             var defenderLocEntity = hoverEntity.Get<HoveredLocation>().Entity;
-
+            
             if (!defenderLocEntity.IsAlive())
             {
                 return;
@@ -39,20 +39,23 @@ public class SelectTargetSystem : IEcsSystem
 
                     var defenderUnitEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-                    ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
-                    ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
-
                     if (attackerUnitEntity.Get<Team>().Value == defenderUnitEntity.Get<Team>().Value)
                     {
                         return;
                     }
 
-                    ref var moves = ref attackerUnitEntity.Get<Attribute<Moves>>();
+                    ref var attackerCoords = ref attackerLocEntity.Get<Coords>();
+                    ref var defenderCoords = ref defenderLocEntity.Get<Coords>();
 
-                    var distance = attackerLocEntity.Get<Coords>().DistanceTo(defenderUnitEntity.Get<Coords>());
-                    bool canAttack = attackerAttacks.HasUsableAttack(distance);
+                    ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
+                    ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
 
-                    if (!canAttack)
+                    var map = world.GetResource<Map>();
+                    
+                    var attackDistance = map.GetEffectiveAttackDistance(attackerCoords, defenderCoords);
+                    var attackerAttackEntity = attackerAttacks.GetUsableAttack(attackDistance);
+
+                    if (!attackerAttackEntity.IsAlive())
                     {
                         return;
                     }
@@ -60,8 +63,7 @@ public class SelectTargetSystem : IEcsSystem
                     var commander = world.GetResource<Commander>();
                     var gameStateController = world.GetResource<GameStateController>();
 
-                    var attackerAttackEntity = attackerAttacks.GetUsableAttack(distance);
-                    var defenderAttackEntity = defenderAttacks.GetUsableAttack(distance);
+                    var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance);
 
                     commander.Enqueue(new CombatCommand(attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity));
                     gameStateController.PushState(new CommanderState(world));

@@ -37,25 +37,25 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return false;
     }
 
-    public bool HasUsableAttack(int range)
+    public EcsEntity GetUsableAttack(int attackRange)
     {
-        foreach(var attack in _list)
-        {
-            if (attack.Get<Range>().Value >= range)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+        bool isInMeleeRange = attackRange == 1;
 
-    public EcsEntity GetUsableAttack(int range)
-    {
         foreach(var attack in _list)
         {
-            if (attack.Get<Range>().Value >= range)
+            if (isInMeleeRange)
             {
-                return attack;
+                if (attack.Get<Range>().Value == 1)
+                {
+                    return attack;
+                }
+            }
+            else
+            {
+                if (attack.Get<Range>().Value >= attackRange)
+                {
+                    return attack;
+                }
             }
         }
         return default;
