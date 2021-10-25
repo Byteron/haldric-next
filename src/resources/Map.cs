@@ -57,7 +57,7 @@ public class Map
         return coords.World; 
     }
 
-    public void UpdateDistances(Coords fromCoords)
+    public void UpdateDistances(Coords fromCoords, int team)
     {
         foreach (var loc in Locations.Dict.Values)
         {
@@ -102,7 +102,12 @@ public class Map
 
                 if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
                 {
-                    nMovementCost = 99;
+                    var unitEntity = cLocEntity.Get<HasUnit>().Entity;
+
+                    if (unitEntity.Get<Team>().Value != team)
+                    {
+                        nMovementCost = 99;
+                    }
                 }
 
                 var distance = cDistance + nMovementCost;
@@ -126,7 +131,7 @@ public class Map
         }
     }
 
-    public Path FindPath(Coords fromCoords, Coords toCoords)
+    public Path FindPath(Coords fromCoords, Coords toCoords, int team)
     {
         foreach (var loc in Locations.Dict.Values)
         {
@@ -194,7 +199,12 @@ public class Map
 
                 if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
                 {
-                    nMovementCost = 99;
+                    var unitEntity = cLocEntity.Get<HasUnit>().Entity;
+
+                    if (unitEntity.Get<Team>().Value != team)
+                    {
+                        nMovementCost = 99;
+                    }
                 }
 
                 var distance = cDistance + nMovementCost;

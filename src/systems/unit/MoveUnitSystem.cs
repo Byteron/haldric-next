@@ -38,14 +38,15 @@ public class MoveUnitSystem : IEcsSystem
                     return;
                 }
                 
-                var path = map.FindPath(startCoords, targetCoords);
+                var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
+
+                var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Team>().Value);
 
                 if (path.Checkpoints.Count == 0)
                 {
                     return;
                 }
                 
-                var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
                 ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
                 if (path.Checkpoints.Count > moves.Value)
