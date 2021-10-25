@@ -38,6 +38,7 @@ public class GainExperienceEventSystem : IEcsSystem
             if (experience.IsFull())
             {
                 world.Spawn().Add(new AdvanceEvent(entity));
+                experience.Empty();
             }
         }
     }
