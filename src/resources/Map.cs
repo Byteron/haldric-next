@@ -143,12 +143,7 @@ public class Map
         var distance = Hex.GetDistance(fromCoords.Cube, toCoords.Cube);
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
-        if (diff == 0)
-        {
-            return distance;
-        }
-
-        return distance + diff / 2;
+        return (int)(distance + diff * 0.5f);
     }
 
     public Path FindPath(Coords fromCoords, Coords toCoords, int team)
