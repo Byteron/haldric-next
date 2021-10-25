@@ -22,12 +22,13 @@ public class UnitHoveredEventSystem : IEcsSystem
             var unitEntity = world.Entity(eventEntityId).Get<UnitHoveredEvent>().UnitEntity;
 
             var id = unitEntity.Get<Id>().Value;
+            var l = unitEntity.Get<Level>().Value;
             var hp = unitEntity.Get<Attribute<Health>>();
             var ap = unitEntity.Get<Attribute<Actions>>();
             var mp = unitEntity.Get<Attribute<Moves>>();
             var xp = unitEntity.Get<Attribute<Experience>>();
 
-            var s = $"ID: {id}\nHP: {hp.ToString()}\nAP: {ap.ToString()}\nMP: {mp.ToString()}\nXP: {xp.ToString()}";
+            var s = $"ID: {id}\nL: {l}\nHP: {hp.ToString()}\nAP: {ap.ToString()}\nMP: {mp.ToString()}\nXP: {xp.ToString()}";
 
             if (unitEntity.Has<Attacks>())
             {
