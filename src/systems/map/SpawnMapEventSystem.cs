@@ -293,31 +293,45 @@ public class SpawnMapEventSystem : IEcsSystem
     {
         List<EcsEntity> list = new List<EcsEntity>();
 
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        Queue<EcsEntity> frontier = new Queue<EcsEntity>();
+        frontier.Enqueue(locEntity);
 
-        foreach (var nLocEntity in neighbors.GetArray())
+        while (frontier.Count > 0)
         {
-            if (!nLocEntity.IsAlive())
+            var cLocEntity = frontier.Dequeue();
+            ref var cNeighbors = ref cLocEntity.Get<Neighbors>();
+
+            foreach (var nLocEntity in cNeighbors.GetArray())
             {
-                continue;
+                if (!nLocEntity.IsAlive())
+                {
+                    continue;
+                }
+
+                if (list.Contains(nLocEntity))
+                {
+                    continue;
+                }
+
+                var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+
+                var hasT = nBaseTerrainEntity.Has<T>();
+
+                if (nLocEntity.Has<HasOverlayTerrain>())
+                {
+                    var nOverlayTerrainEntity = nLocEntity.Get<HasOverlayTerrain>().Entity;
+                    hasT = hasT || nOverlayTerrainEntity.Has<T>();
+                }
+
+                if (!hasT)
+                {
+                    continue;
+                }
+
+
+                frontier.Enqueue(nLocEntity);
+                list.Add(nLocEntity);
             }
-
-            var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
-
-            var hasT = nBaseTerrainEntity.Has<T>();
-
-            if (nLocEntity.Has<HasOverlayTerrain>())
-            {
-                var nOverlayTerrainEntity = nLocEntity.Get<HasOverlayTerrain>().Entity;
-                hasT = hasT || nOverlayTerrainEntity.Has<T>();
-            }
-
-            if (!hasT)
-            {
-                continue;
-            }
-
-            list.Add(nLocEntity);
         }
 
         return list;

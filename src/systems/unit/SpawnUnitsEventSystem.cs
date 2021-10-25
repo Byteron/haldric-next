@@ -29,6 +29,11 @@ public class SpawnUnitsEventSystem : IEcsSystem
 
                 foreach (var castleLoc in keep.List)
                 {
+                    if (castleLoc.Has<Castle>())
+                    {
+                        continue;
+                    }
+
                     if (Godot.GD.Randf() < 0.5f)
                     {
                         world.Spawn().Add(new SpawnUnitEvent(playerId, "Spearman", castleLoc.Get<Coords>()));
