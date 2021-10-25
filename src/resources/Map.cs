@@ -55,7 +55,7 @@ public class Map
     public Vector3 GetCenterPosition()
     {
         var coords = Coords.FromOffset(Grid.Width / 2, Grid.Height / 2);
-        return coords.World; 
+        return coords.World;
     }
 
     public void UpdateDistances(Coords fromCoords, int team)
@@ -66,7 +66,7 @@ public class Map
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube];
-        
+
         fromLocEntity.Get<Distance>().Value = 0;
 
         List<EcsEntity> frontier = new List<EcsEntity>();
@@ -84,7 +84,7 @@ public class Map
             var cDistance = cLocEntity.Get<Distance>().Value;
             var cElevation = cLocEntity.Get<Elevation>().Value;
 
-            foreach(var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
             {
                 if (!nLocEntity.IsAlive())
                 {
@@ -112,7 +112,7 @@ public class Map
                 }
 
                 var distance = cDistance + nMovementCost;
-                
+
                 ref var nDistance = ref nLocEntity.Get<Distance>();
 
                 if (nDistance.Value == int.MaxValue)
@@ -120,13 +120,13 @@ public class Map
                     nDistance.Value = distance;
                     frontier.Add(nLocEntity);
                     // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
-                } 
+                }
                 else if (distance < nDistance.Value)
                 {
                     nDistance.Value = distance;
                     // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
                 }
-                
+
                 frontier.Sort((locA, locB) => locA.Get<Distance>().Value.CompareTo(locB.Get<Distance>().Value));
             }
         }
@@ -139,7 +139,7 @@ public class Map
 
         ref var fromElevation = ref fromLocEntity.Get<Elevation>();
         ref var toElevation = ref toLocEntity.Get<Elevation>();
-        
+
         var distance = Hex.GetDistance(fromCoords.Cube, toCoords.Cube);
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
@@ -159,7 +159,7 @@ public class Map
         var path = new Path();
         path.Start = fromLocEntity;
         path.Destination = toLocEntity;
-        
+
         fromLocEntity.Get<Distance>().Value = 0;
 
         List<EcsEntity> frontier = new List<EcsEntity>();
@@ -167,8 +167,6 @@ public class Map
 
         while (frontier.Count > 0)
         {
-            // await Main.Instance.ToSignal(Main.Instance.GetTree(), "process_frame");
-
             var cLocEntity = frontier[0];
             frontier.RemoveAt(0);
 
@@ -177,17 +175,17 @@ public class Map
             if (cCoords.Cube == toCoords.Cube)
             {
                 path.Checkpoints.Enqueue(cLocEntity);
-             
+
                 var current = cLocEntity.Get<PathFrom>().LocEntity;
                 var cPathFrom = current.Get<PathFrom>();
 
-				while (current.Get<Coords>().Cube != fromCoords.Cube)
+                while (current.Get<Coords>().Cube != fromCoords.Cube)
                 {
                     path.Checkpoints.Enqueue(current);
-					current = cPathFrom.LocEntity;
+                    current = cPathFrom.LocEntity;
                     cPathFrom = current.Get<PathFrom>();
-				}
-                
+                }
+
                 path.Checkpoints = new Queue<EcsEntity>(path.Checkpoints.Reverse());
                 break;
             }
@@ -195,7 +193,7 @@ public class Map
             var cDistance = cLocEntity.Get<Distance>().Value;
             var cElevation = cLocEntity.Get<Elevation>().Value;
 
-            foreach(var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
             {
                 if (!nLocEntity.IsAlive())
                 {
@@ -223,7 +221,7 @@ public class Map
                 }
 
                 var distance = cDistance + nMovementCost;
-                
+
                 ref var nDistance = ref nLocEntity.Get<Distance>();
                 ref var nPathFrom = ref nLocEntity.Get<PathFrom>();
 
@@ -232,15 +230,13 @@ public class Map
                     nDistance.Value = distance;
                     nPathFrom.LocEntity = cLocEntity;
                     frontier.Add(nLocEntity);
-                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
-                } 
+                }
                 else if (distance < nDistance.Value)
                 {
                     nDistance.Value = distance;
                     nPathFrom.LocEntity = cLocEntity;
-                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
                 }
-                
+
                 frontier.Sort((locA, locB) => locA.Get<Distance>().Value.CompareTo(locB.Get<Distance>().Value));
             }
         }
@@ -262,26 +258,4 @@ public class Map
 
         return list;
     }
-
-    // public Path FindPath(Coords startCoords, Coords endCoords)
-    // {
-    //     var path = new Path();
-        
-    //     path.Start = Locations.Get(startCoords.Cube);
-    //     path.Destination = Locations.Get(endCoords.Cube);
-
-    //     Vector3[] pointPath = PathFinder.GetPointPath(startCoords.GetIndex(Grid.Width), endCoords.GetIndex(Grid.Width));
-
-    //     foreach (var cell in pointPath)
-    //     {
-    //         path.Checkpoints.Enqueue(Locations.Get(cell));
-    //     }
-
-    //     if (path.Checkpoints.Count > 1)
-    //     {
-    //         path.Checkpoints.Dequeue();
-    //     }
-
-    //     return path;
-    // }
 }
