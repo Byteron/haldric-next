@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bbll0id2147m2"
-path="res://.godot/imported/Unit.gltf-22397a5800c5f1d6a9a83c646874e5e2.scn"
+uid="uid://d2vlqoyjgr1gc"
+path="res://.godot/imported/Infantry.glb-5be6339ce6a7c22d020190b7f4d3cec1.scn"
 
 [deps]
 
-source_file="res://assets/graphics/models/Unit.gltf"
-dest_files=["res://.godot/imported/Unit.gltf-22397a5800c5f1d6a9a83c646874e5e2.scn"]
+source_file="res://assets/graphics/gltf/Infantry.glb"
+dest_files=["res://.godot/imported/Infantry.glb-5be6339ce6a7c22d020190b7f4d3cec1.scn"]
 
 [params]
 

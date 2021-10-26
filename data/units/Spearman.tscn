@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://pc8jb6ugpxlx"]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="PackedScene" uid="uid://dqw5v5gf0onxy" path="res://addons/wdk/UnitType.tscn" id="1_wbto5"]
 [ext_resource type="PackedScene" uid="uid://c04frxgexwoli" path="res://addons/wdk/Attack.tscn" id="2_fqlix"]
-[ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/models/Infantry.glb" id="2_wq0xh"]
+[ext_resource type="PackedScene" path="res://assets/graphics/gltf/Infantry.glb" id="2_wq0xh"]
 
 [node name="Spearman" instance=ExtResource( "1_wbto5" )]
 Id = "Spearman"

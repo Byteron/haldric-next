@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://23p4ut8jp7u7"
-path="res://.godot/imported/Castle_human.gltf-b7b2cc3134a69f7ced51ab93f09f6dc3.scn"
+path="res://.godot/imported/Castle_human.gltf-f76928f04cd9e2965e8e475ac3597167.scn"
 
 [deps]
 
-source_file="res://assets/graphics/models/Castle_human.gltf"
-dest_files=["res://.godot/imported/Castle_human.gltf-b7b2cc3134a69f7ced51ab93f09f6dc3.scn"]
+source_file="res://assets/graphics/gltf/Castle_human.gltf"
+dest_files=["res://.godot/imported/Castle_human.gltf-f76928f04cd9e2965e8e475ac3597167.scn"]
 
 [params]
 
