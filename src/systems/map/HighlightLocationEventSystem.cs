@@ -70,7 +70,14 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 if (attack.IsAlive())
                 {
-                    terrainHighlighter.PlaceHighlight(position, new Color("881111"), 0.4f);
+                    if (attackRange > 1)
+                    {
+                        terrainHighlighter.PlaceHighlight(position, new Color("881111"), 0.4f);
+                    }
+                    else
+                    {
+                        terrainHighlighter.PlaceHighlight(position, new Color("774411"), 0.4f);
+                    }
                 }
 
                 if (hasUnit)
