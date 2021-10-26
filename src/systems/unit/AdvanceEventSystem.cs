@@ -15,11 +15,12 @@ public class AdvanceEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var hudView = world.GetResource<HUDView>();
         var query = world.Query<AdvanceEvent>().End();
 
         foreach (var id in query)
         {
+            var hudView = world.GetResource<HUDView>();
+            
             ref var gainEvent = ref query.Get<AdvanceEvent>(id);
 
             var entity = gainEvent.Entity;
