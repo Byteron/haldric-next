@@ -7,4 +7,4 @@
 script = ExtResource( "2_pk5i5" )
 
 [node name="Flag" parent="." instance=ExtResource( "1_3km2w" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.93526)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396762, 0, -3.33384)
