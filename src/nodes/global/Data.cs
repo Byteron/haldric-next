@@ -23,6 +23,7 @@ public partial class Data : Node
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
 
     public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
     public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
@@ -69,6 +70,7 @@ public partial class Data : Node
         }
 
         Decorations = terrainScript.Decorations;
+        DirectionalDecorations = terrainScript.DirectionalDecorations;
         WaterGraphics = terrainScript.WaterGraphics;
         WallSegments = terrainScript.WallSegments;
         WallTowers = terrainScript.WallTowers;

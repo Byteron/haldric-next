@@ -7,6 +7,7 @@ namespace Haldric.Wdk
     {
         public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
         public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
+        public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
         public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
@@ -74,6 +75,35 @@ namespace Haldric.Wdk
             }
 
             var dict = Decorations[code];
+
+            if (string.IsNullOrEmpty(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                dict.Add(path, graphic);
+            }
+            else
+            {
+                if (!dict.ContainsKey(name))
+                {
+                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                    dict.Add(name, graphic);
+                }
+                else
+                {
+                    var graphic = dict[name];
+                    graphic.Variations.Add(LoadAsset<Mesh>(path));
+                }
+            }
+        }
+
+        public void AddDirectionalDecorationGraphic(string code, string path, string name = null)
+        {
+            if (!DirectionalDecorations.ContainsKey(code))
+            {
+                DirectionalDecorations.Add(code, new Dictionary<string, TerrainGraphic>());
+            }
+
+            var dict = DirectionalDecorations[code];
 
             if (string.IsNullOrEmpty(name))
             {

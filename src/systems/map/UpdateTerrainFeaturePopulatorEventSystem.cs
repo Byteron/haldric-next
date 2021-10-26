@@ -93,6 +93,11 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
             _terrainFeaturePopulator.AddDecoration(locEntity, terrainCode.Value);
         }
 
+        if (Data.Instance.DirectionalDecorations.ContainsKey(terrainCode.Value))
+        {
+            _terrainFeaturePopulator.AddDirectionalDecoration(locEntity, terrainCode.Value);
+        }
+
         if (Data.Instance.WallTowers.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddTowers(locEntity);

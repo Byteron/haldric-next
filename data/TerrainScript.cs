@@ -36,23 +36,24 @@ public class TerrainScript : TerrainLoader
 
         AddDecorationGraphic("Ff", "assets/graphics/models/forest_low_poly.tres");
 
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_01.tres", "outer");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_02.tres", "outer");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_03.tres", "outer");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_04.tres", "outer");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_05.tres", "outer");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_01.tres", "center");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_02.tres", "center");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_03.tres", "center");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_04.tres", "center");
-        AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_05.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_Village_human_center_01-Village_human_houses_01.tres", "center");
+        AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_Village_human_center_02-Village_human_houses_01.tres", "center");
+        AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_Village_human_outer_01-Village_human_houses_01.tres", "outer");
+        AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_Village_human_outer_02-Village_human_houses_01.tres", "outer");
+        AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_Village_human_outer_03-Village_human_houses_01.tres", "outer");
+
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_02.tres", "center");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_03.tres", "center");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_04.tres", "center");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_center_05.tres", "center");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_02.tres", "outer");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_03.tres", "outer");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_04.tres", "outer");
+        // AddDecorationGraphic("Vh", "assets/graphics/models/village_human_small_05.tres", "outer");
         
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_01.tres");
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_01.tres", "outer");
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_02.tres", "outer");
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_03.tres", "outer");
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_04.tres", "outer");
-        AddDecorationGraphic("VHh", "assets/graphics/models/village_human_small_05.tres", "outer");
+        AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_Hall base_v02.tres");
+        AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_House 10.tres");
+        AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_Village_human_hall_outer_01.tres");
         
         AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
     }

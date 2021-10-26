@@ -84,6 +84,61 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
+    public void AddDirectionalDecoration(EcsEntity locEntity, string terrainCode)
+    {
+        ref var coords = ref locEntity.Get<Coords>();
+        ref var elevation = ref locEntity.Get<Elevation>();
+        ref var plateauArea = ref locEntity.Get<PlateauArea>();
+        ref var neighbors = ref locEntity.Get<Neighbors>();
+
+        var center = locEntity.Get<Coords>().World;
+        center.y = locEntity.Get<Elevation>().Height;
+
+        var rotation = 240;
+        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        {
+            rotation += 60;
+
+            if (!neighbors.Has(direction))
+            {
+                continue;
+            }
+
+            var nLocEntity = neighbors.Get(direction);
+
+            ref var nElevation = ref nLocEntity.Get<Elevation>();
+            ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
+            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+
+            if (elevation.Value != nElevation.Value)
+            {
+                continue;
+            }
+
+            var position = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
+
+            foreach (var terrainGraphic in Data.Instance.DirectionalDecorations[terrainCode].Values)
+            {
+                if (terrainGraphic.Variations.Count == 0)
+                {
+                    AddRenderData(terrainGraphic.Mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+                }
+                else
+                {
+                    if (!randomIndicies.TryGetValue(position, out var index))
+                    {
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        randomIndicies.Add(position, index);
+                    }
+                    
+                    var mesh = terrainGraphic.Variations[index];
+                    AddRenderData(mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+                }
+            }
+            // AddRenderData(Data.Instance.DirectionalDecorations[terrainCode].Mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+        }
+    }
+
     public void AddKeepPlateau(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
@@ -108,7 +163,6 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
         ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
@@ -144,7 +198,7 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            var wallPosition = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
+            var wallPosition = center + Metrics.GetEdgeMiddle(direction);
             AddRenderData(Data.Instance.WallSegments[terrainCode].Mesh, wallPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
         }
     }

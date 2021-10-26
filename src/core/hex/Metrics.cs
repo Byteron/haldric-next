@@ -65,8 +65,13 @@ public class Metrics
         return corners[(int)direction.Next()] * plateauArea.SolidFactor;
     }
 
+    public static Vector3 GetEdgeMiddle(Direction direction)
+    {
+        return (GetFirstCorner(direction) + GetSecondCorner(direction)) * 0.5f;
+    }
+
     public static Vector3 GetSolidEdgeMiddle(Direction direction, PlateauArea plateauArea)
     {
-        return (corners[(int)direction] + corners[(int)direction.Next()]) * 0.5f;
+        return (GetFirstSolidCorner(direction, plateauArea) + GetSecondSolidCorner(direction, plateauArea)) * 0.5f;
     }
 }
