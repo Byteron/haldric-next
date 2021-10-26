@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ckcwjhpuwrmni"
+uid="uid://bsdqb4bwnr7lm"
 path="res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"
 
 [deps]
@@ -29,23 +29,23 @@ _subresources={
 "materials": {
 "Village_base": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_base.tres"
+"use_external/path": "res://assets/graphics/materials/Village_base.res"
 },
 "Village_human_basefloor_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_basefloor_01.tres"
+"use_external/path": "res://assets/graphics/materials/Village_human_basefloor_01.res"
 },
 "Village_human_hall_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_hall_01.tres"
+"use_external/path": "res://assets/graphics/materials/Village_human_hall_01.res"
 },
 "Village_human_houses_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_houses_01.tres"
+"use_external/path": "res://assets/graphics/materials/Village_human_houses_01.res"
 },
 "Village_human_props_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_props_01.tres"
+"use_external/path": "res://assets/graphics/materials/Village_human_props_01.res"
 }
 },
 "meshes": {

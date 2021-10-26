@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://23p4ut8jp7u7"
+uid="uid://1cgwgg56my4d"
 path="res://.godot/imported/Castle_human.gltf-f76928f04cd9e2965e8e475ac3597167.scn"
 
 [deps]
@@ -29,23 +29,23 @@ _subresources={
 "materials": {
 "castle_human_tower_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/castle_human_tower_01.tres"
+"use_external/path": "res://assets/graphics/materials/castle_human_tower_01.res"
 },
 "castle_human_wall_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/castle_human_wall_01.tres"
+"use_external/path": "res://assets/graphics/materials/castle_human_wall_01.res"
 },
 "keep_human_floor_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/keep_human_floor_01.tres"
+"use_external/path": "res://assets/graphics/materials/keep_human_floor_01.res"
 },
 "keep_human_tower_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/keep_human_tower_01.tres"
+"use_external/path": "res://assets/graphics/materials/keep_human_tower_01.res"
 },
 "keep_human_wall_01": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/keep_human_wall_01.tres"
+"use_external/path": "res://assets/graphics/materials/keep_human_wall_01.res"
 }
 },
 "meshes": {
