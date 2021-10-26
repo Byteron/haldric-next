@@ -51,6 +51,10 @@ public class SpawnMapEventSystem : IEcsSystem
             
             world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
 
+            var terrainHighlighter = Scenes.Instance.TerrainHighlighter.Instantiate<TerrainHighlighter>();
+            _parent.AddChild(terrainHighlighter);
+            world.AddResource(terrainHighlighter);
+
             Map map = CreateMapFromMapData(spawnEvent.MapData);
 
             world.AddResource(map);

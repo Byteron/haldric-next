@@ -1,4 +1,5 @@
 using Bitron.Ecs;
+using Godot;
 
 public struct HighlightLocationEvent
 {
@@ -24,9 +25,15 @@ public class HighlightLocationsEventSystem : IEcsSystem
             ref var grid = ref map.Grid;
 
             var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
+            
+            var locEntity = map.Locations.Get(eventData.Coords.Cube);
+            var unitEntity = locEntity.Get<HasUnit>().Entity;
 
-            var shaderData = world.GetResource<ShaderData>();
-            shaderData.ResetVisibility(false);
+            ref var team = ref unitEntity.Get<Team>();
+            ref var attacks = ref unitEntity.Get<Attacks>();
+
+            var terrainHighlighter = world.GetResource<TerrainHighlighter>();
+            terrainHighlighter.Clear();
 
             var cellsInRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
 
@@ -38,17 +45,41 @@ public class HighlightLocationsEventSystem : IEcsSystem
                     continue;
                 }
 
-                var locEntity = map.Locations.Dict[nCoords.Cube];
-                
-                if (locEntity.Get<Distance>().Value > eventData.Range)
+                var nLocEntity = map.Locations.Dict[nCoords.Cube];
+
+                if (nLocEntity.Get<Distance>().Value > eventData.Range)
                 {
                     continue;
                 }
 
-                shaderData.UpdateVisibility((int)nCoords.Offset.x, (int)nCoords.Offset.z, true);
-            }
+                var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
+                var attack = attacks.GetUsableAttack(attackRange);
 
-            shaderData.Apply();
+                ref var nElevation = ref nLocEntity.Get<Elevation>();
+                
+                var position = nCoords.World;
+                position.y = nElevation.Height + 0.1f;
+                
+                var hasUnit = nLocEntity.Has<HasUnit>();
+
+                if (hasUnit)
+                {
+                    if (nLocEntity.Get<HasUnit>().Entity.Get<Team>().Value == team.Value)
+                    continue;
+                }
+
+                if (attack.IsAlive())
+                {
+                    terrainHighlighter.PlaceHighlight(position, new Color("881111"), 0.4f);
+                }
+
+                if (hasUnit)
+                {
+                    continue;
+                }
+                
+                terrainHighlighter.PlaceHighlight(position, new Color("111188"), 0.6f);
+            }
         }
     }
 }

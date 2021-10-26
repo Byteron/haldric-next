@@ -39,6 +39,7 @@ public class DespawnMapEventSystem : IEcsSystem
             
             world.RemoveResource<Map>();
             world.RemoveResource<ShaderData>();
+            world.RemoveResource<TerrainHighlighter>();
         }
     }
 }

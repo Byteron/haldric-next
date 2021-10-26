@@ -11,6 +11,8 @@ public partial class Scenes : Node
     [Export] public PackedScene DebugView;
     [Export] public PackedScene HUDView;
 
+    [Export] public PackedScene TerrainHighlighter;
+    
     [Export] public PackedScene CameraOperator;
 
     [Export] public PackedScene FloatingLabel;

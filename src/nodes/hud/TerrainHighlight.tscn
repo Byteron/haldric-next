@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://7w6o06vw64x8"]
+
+[ext_resource type="Texture2D" uid="uid://djq7wbd2ib1s2" path="res://assets/graphics/images/cell-outline.png" id="1_n2brn"]
+[ext_resource type="Script" path="res://src/nodes/hud/TerrainHighlight.cs" id="1_sy0ll"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1axxs"]
+resource_local_to_scene = true
+transparency = 1
+no_depth_test = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource( "1_n2brn" )
+emission_energy = 2.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7rjwy"]
+size = Vector2(10, 10)
+
+[node name="TerrainHighlight" type="MeshInstance3D"]
+material_override = SubResource( "StandardMaterial3D_1axxs" )
+mesh = SubResource( "PlaneMesh_7rjwy" )
+surface_material_override/0 = null
+script = ExtResource( "1_sy0ll" )

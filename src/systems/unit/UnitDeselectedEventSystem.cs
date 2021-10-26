@@ -21,9 +21,8 @@ public class UnitDeselectedEventSystem : IEcsSystem
                 var hudView = world.GetResource<HUDView>();
                 hudView.UnitLabel.Text = "";
 
-                var shaderData = world.GetResource<ShaderData>();
-                shaderData.ResetVisibility(true);
-                shaderData.Apply();
+                var terrainHighlighter = world.GetResource<TerrainHighlighter>();
+                terrainHighlighter.Clear();
             }
 
         }
