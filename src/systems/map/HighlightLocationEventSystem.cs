@@ -72,11 +72,11 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 {
                     if (attackRange > 1)
                     {
-                        terrainHighlighter.PlaceHighlight(position, new Color("881111"), 0.4f);
+                        terrainHighlighter.PlaceHighlight(position, new Color("881111"), 0.6f);
                     }
                     else
                     {
-                        terrainHighlighter.PlaceHighlight(position, new Color("774411"), 0.4f);
+                        terrainHighlighter.PlaceHighlight(position, new Color("774411"), 0.6f);
                     }
                 }
 
@@ -85,7 +85,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                     continue;
                 }
                 
-                terrainHighlighter.PlaceHighlight(position, new Color("111188"), 0.6f);
+                terrainHighlighter.PlaceHighlight(position, new Color("111188"), 0.8f);
             }
         }
     }
