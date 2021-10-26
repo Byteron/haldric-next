@@ -1,4 +1,5 @@
 using Bitron.Ecs;
+using Godot;
 
 public struct CaptureVillageEvent
 {
@@ -14,6 +15,13 @@ public struct CaptureVillageEvent
 
 public class CaptureVillageEventSystem : IEcsSystem
 {
+    Node3D _parent;
+
+    public CaptureVillageEventSystem(Node3D parent)
+    {
+        _parent = parent;
+    }
+
     public void Run(EcsWorld world)
     {
         var query = world.Query<CaptureVillageEvent>().End();
@@ -22,12 +30,28 @@ public class CaptureVillageEventSystem : IEcsSystem
         {
             ref var captureEvent = ref query.Get<CaptureVillageEvent>(id);
             
-            if (captureEvent.LocEntity.Has<IsCapturedByTeam>())
+            var locEntity = captureEvent.LocEntity;
+
+            ref var coords = ref locEntity.Get<Coords>();
+
+            if (locEntity.Has<IsCapturedByTeam>())
             {
-                captureEvent.LocEntity.Remove<IsCapturedByTeam>();
+                var handle = locEntity.Get<NodeHandle<FlagView>>();
+                
+                _parent.RemoveChild(handle.Node);
+                handle.Node.QueueFree();
+                handle.Node = null;
+
+                locEntity.Remove<NodeHandle<FlagView>>();
+                locEntity.Remove<IsCapturedByTeam>();
             }
 
-            captureEvent.LocEntity.Add(new IsCapturedByTeam(captureEvent.Team));
+            var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
+            _parent.AddChild(flagView);
+            flagView.Position = coords.World;
+
+            locEntity.Add(new NodeHandle<FlagView>(flagView));
+            locEntity.Add(new IsCapturedByTeam(captureEvent.Team));
         }
     }
 }

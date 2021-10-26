@@ -11,12 +11,13 @@ public partial class Scenes : Node
     [Export] public PackedScene DebugView;
     [Export] public PackedScene HUDView;
 
-    [Export] public PackedScene Cursor3D;
-    
     [Export] public PackedScene CameraOperator;
 
     [Export] public PackedScene FloatingLabel;
     [Export] public PackedScene UnitPlate;
+
+    [Export] public PackedScene Cursor3D;
+    [Export] public PackedScene FlagView;
     
     public override void _Ready()
     {
