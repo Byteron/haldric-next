@@ -18,9 +18,6 @@ public partial class AttackSelectionState : GameState
         
         _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
         
-        _view.AttackerLocEntity = AttackerLocEntity;
-        _view.DefenderLocEntity = DefenderLocEntity;
-        
         hudView.AddChild(_view);
 
         _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);

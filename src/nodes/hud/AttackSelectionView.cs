@@ -7,8 +7,8 @@ public partial class AttackSelectionView : Control
 {
     [Export] PackedScene AttackSelectionOption;
 
-    public EcsEntity AttackerLocEntity { get; set; }
-    public EcsEntity DefenderLocEntity { get; set; }
+    private EcsEntity _attackerLocEntity { get; set; }
+    private EcsEntity _defenderLocEntity { get; set; }
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
     
@@ -28,11 +28,11 @@ public partial class AttackSelectionView : Control
 
     public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs)
     {
-        AttackerLocEntity = attackerLocEntity;
-        DefenderLocEntity = defenderLocEntity;
+        _attackerLocEntity = attackerLocEntity;
+        _defenderLocEntity = defenderLocEntity;
 
-        _attackerLabel.Text = $"{AttackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
-        _defenderLabel.Text = $"{DefenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+        _attackerLabel.Text = $"{_attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+        _defenderLabel.Text = $"{_defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
         
         foreach(var attackPair in attackPairs)
         {
@@ -69,7 +69,7 @@ public partial class AttackSelectionView : Control
         var commander = Main.Instance.World.GetResource<Commander>();
         var gameStateController = Main.Instance.World.GetResource<GameStateController>();
 
-        commander.Enqueue(new CombatCommand(AttackerLocEntity, _selectedOption.AttackerAttackEntity, DefenderLocEntity, _selectedOption.DefenderAttackEntity));
+        commander.Enqueue(new CombatCommand(_attackerLocEntity, _selectedOption.AttackerAttackEntity, _defenderLocEntity, _selectedOption.DefenderAttackEntity));
             
         gameStateController.PopState();
         gameStateController.PushState(new CommanderState(Main.Instance.World));
