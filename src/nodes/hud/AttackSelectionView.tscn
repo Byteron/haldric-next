@@ -18,9 +18,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -44.0
+offset_top = -57.0
 offset_right = 200.0
-offset_bottom = 44.0
+offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
 script = null
@@ -32,7 +32,7 @@ __meta__ = {
 offset_left = 7.0
 offset_top = 7.0
 offset_right = 393.0
-offset_bottom = 81.0
+offset_bottom = 135.0
 grow_horizontal = 2
 grow_vertical = 2
 script = null
@@ -46,21 +46,54 @@ valign = 1
 structured_text_bidi_override_options = []
 script = null
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="UnitInfo" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 offset_top = 30.0
 offset_right = 386.0
-offset_bottom = 30.0
+offset_bottom = 80.0
+script = null
+
+[node name="AttackerLabel" type="Label" parent="PanelContainer/VBoxContainer/UnitInfo"]
+offset_right = 187.0
+offset_bottom = 50.0
+rect_min_size = Vector2(0, 50)
+size_flags_horizontal = 3
+align = 1
+valign = 1
+structured_text_bidi_override_options = []
+script = null
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/UnitInfo"]
+offset_left = 191.0
+offset_right = 195.0
+offset_bottom = 50.0
+script = null
+
+[node name="DefenderLabel" type="Label" parent="PanelContainer/VBoxContainer/UnitInfo"]
+offset_left = 199.0
+offset_right = 386.0
+offset_bottom = 50.0
+rect_min_size = Vector2(0, 50)
+size_flags_horizontal = 3
+align = 1
+valign = 1
+structured_text_bidi_override_options = []
+script = null
+
+[node name="OptionButtons" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+offset_top = 84.0
+offset_right = 386.0
+offset_bottom = 84.0
 size_flags_vertical = 3
 script = null
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-offset_top = 34.0
+[node name="Buttons" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+offset_top = 88.0
 offset_right = 386.0
-offset_bottom = 74.0
+offset_bottom = 128.0
 alignment = 1
 script = null
 
-[node name="AcceptButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="AcceptButton" type="Button" parent="PanelContainer/VBoxContainer/Buttons"]
 offset_left = 111.0
 offset_right = 191.0
 offset_bottom = 40.0
@@ -68,7 +101,7 @@ rect_min_size = Vector2(80, 40)
 text = "Accept"
 script = null
 
-[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/Buttons"]
 offset_left = 195.0
 offset_right = 275.0
 offset_bottom = 40.0
@@ -76,5 +109,5 @@ rect_min_size = Vector2(80, 40)
 text = "Cancel"
 script = null
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/AcceptButton" to="." method="OnAcceptButtonPressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/AcceptButton" to="." method="OnAcceptButtonPressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/CancelButton" to="." method="OnCancelButtonPressed"]

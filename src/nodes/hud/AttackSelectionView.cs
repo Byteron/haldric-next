@@ -14,15 +14,26 @@ public partial class AttackSelectionView : Control
     
     private AttackSelectionOption _selectedOption;
 
+    private Label _attackerLabel;
+    private Label _defenderLabel;
+
     private VBoxContainer _container;
 
     public override void _Ready()
     {
-        _container = GetNode<VBoxContainer>("PanelContainer/VBoxContainer/VBoxContainer");
+        _container = GetNode<VBoxContainer>("PanelContainer/VBoxContainer/OptionButtons");
+        _attackerLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/AttackerLabel");
+        _defenderLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/DefenderLabel");
     }
 
-    public void UpdateInfo(Dictionary<EcsEntity, EcsEntity> attackPairs)
+    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs)
     {
+        AttackerLocEntity = attackerLocEntity;
+        DefenderLocEntity = defenderLocEntity;
+
+        _attackerLabel.Text = $"{AttackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+        _defenderLabel.Text = $"{DefenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+        
         foreach(var attackPair in attackPairs)
         {
             var optionButton = AttackSelectionOption.Instantiate<AttackSelectionOption>();

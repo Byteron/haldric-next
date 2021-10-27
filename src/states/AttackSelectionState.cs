@@ -23,7 +23,7 @@ public partial class AttackSelectionState : GameState
         
         hudView.AddChild(_view);
 
-        _view.UpdateInfo(AttackPairs);
+        _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);
     }
 
     public override void Exit(GameStateController gameStates)
