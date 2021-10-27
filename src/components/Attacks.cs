@@ -87,6 +87,23 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return list.ToArray();
     }
 
+    public int GetMaxAttackRange()
+    {
+        var range = 0;
+
+        foreach(var attack in _list)
+        {
+            var attackRange = attack.Get<Range>().Value;
+
+            if (attackRange > range)
+            {
+                range = attackRange;
+            }
+        }
+
+        return range;
+    }
+
     public void AutoReset(ref Attacks c)
     {
         if (c._list == null)

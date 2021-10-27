@@ -1,15 +1,29 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
 
 public partial class AttackSelectionState : GameState
 {
+    public EcsEntity AttackerLocEntity { get; set; }
+    public EcsEntity DefenderLocEntity { get; set; }
+    public Dictionary<EcsEntity, EcsEntity> AttackPairs { get; set; }
+
     private AttackSelectionView _view;
+
 
     public AttackSelectionState(EcsWorld world) : base(world) { }
 
     public override void Enter(GameStateController gameStates)
     {
+        var hudView = _world.GetResource<HUDView>();
+        
         _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
-        AddChild(_view);
+        
+        _view.AttackerLocEntity = AttackerLocEntity;
+        _view.DefenderLocEntity = DefenderLocEntity;
+        
+        hudView.AddChild(_view);
+
+        _view.UpdateInfo(AttackPairs);
     }
 
     public override void Exit(GameStateController gameStates)

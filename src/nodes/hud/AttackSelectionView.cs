@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
@@ -6,40 +7,78 @@ public partial class AttackSelectionView : Control
 {
     [Export] PackedScene AttackSelectionOption;
 
-    Control _container;
-    ButtonGroup _buttonGroup = new ButtonGroup();
+    public EcsEntity AttackerLocEntity { get; set; }
+    public EcsEntity DefenderLocEntity { get; set; }
+
+    private ButtonGroup _buttonGroup = new ButtonGroup();
+    
+    private AttackSelectionOption _selectedOption;
+
+    private VBoxContainer _container;
 
     public override void _Ready()
     {
-        _container = GetNode<Control>("PanelContainer/VBoxContainer/VBoxContainer");
+        _container = GetNode<VBoxContainer>("PanelContainer/VBoxContainer/VBoxContainer");
     }
 
-    public void UpdateInfo(List<EcsEntity> attacks)
+    public void UpdateInfo(Dictionary<EcsEntity, EcsEntity> attackPairs)
     {
-        foreach(var attackEntity in attacks)
+        foreach(var attackPair in attackPairs)
         {
-            string s = "";
-            ref var attackId = ref attackEntity.Get<Id>();
-
-            ref var damage = ref attackEntity.Get<Damage>();
-            ref var strikes = ref attackEntity.Get<Strikes>();
-            ref var range = ref attackEntity.Get<Range>();
-            s += string.Format("\n{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
-            
             var optionButton = AttackSelectionOption.Instantiate<AttackSelectionOption>();
+            optionButton.Connect("pressed", new Callable(this, "OnAttackOptionSelected"), new Godot.Collections.Array() { optionButton });
+            optionButton.AttackerAttackEntity = attackPair.Key;
+            optionButton.DefenderAttackEntity = attackPair.Value;
             optionButton.ButtonGroup = _buttonGroup;
-            optionButton.AttackerText = s;
+            optionButton.AttackerText = AttackToString(attackPair.Key);
+
+            if (attackPair.Value.IsAlive())
+            {
+                optionButton.DefenderText = AttackToString(attackPair.Value);
+            }
+            else
+            {
+                optionButton.DefenderText = " - ";
+            }
+
             _container.AddChild(optionButton);
         }
+
+        _selectedOption = _container.GetChild<AttackSelectionOption>(0);
+        _selectedOption.Pressed = true;
+    }
+
+    private void OnAttackOptionSelected(AttackSelectionOption optionButton)
+    {
+        _selectedOption = optionButton;
     }
 
     private void OnAcceptButtonPressed()
     {
+        var commander = Main.Instance.World.GetResource<Commander>();
+        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
 
+        commander.Enqueue(new CombatCommand(AttackerLocEntity, _selectedOption.AttackerAttackEntity, DefenderLocEntity, _selectedOption.DefenderAttackEntity));
+            
+        gameStateController.PopState();
+        gameStateController.PushState(new CommanderState(Main.Instance.World));
     }
 
     private void OnCancelButtonPressed()
     {
-        
+        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
+        gameStateController.PopState();
+    }
+
+    private string AttackToString(EcsEntity attackEntity)
+    {
+        string s = "";
+        ref var attackId = ref attackEntity.Get<Id>();
+
+        ref var damage = ref attackEntity.Get<Damage>();
+        ref var strikes = ref attackEntity.Get<Strikes>();
+        ref var range = ref attackEntity.Get<Range>();
+        s += string.Format("{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
+        return s;
     }
 }

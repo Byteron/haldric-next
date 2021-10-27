@@ -55,8 +55,6 @@ public partial class CombatCommand : Command
 
     public override void Execute()
     {
-        SpawnFloatingLabelEvent(_attackerEntity.Get<Coords>(), _attackerAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
-
         var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 
@@ -64,7 +62,6 @@ public partial class CombatCommand : Command
         if (_defenderAttackEntity.IsAlive())
         {
             defenderStrikes = _defenderAttackEntity.Get<Strikes>().Value;
-            SpawnFloatingLabelEvent(_defenderEntity.Get<Coords>(), _defenderAttackEntity.Get<Id>().Value, new Color(1f, 1f, 1f));
         }
 
         for (int i = 0; i < Godot.Mathf.Max(attackerStrikes, defenderStrikes); i++)

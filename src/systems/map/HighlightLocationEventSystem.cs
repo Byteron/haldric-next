@@ -31,13 +31,16 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
             ref var team = ref unitEntity.Get<Team>();
             ref var attacks = ref unitEntity.Get<Attacks>();
-
+            
             var terrainHighlighter = world.GetResource<TerrainHighlighter>();
             terrainHighlighter.Clear();
+            
+            var maxAttackRange = attacks.GetMaxAttackRange();
 
-            var cellsInRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
+            var cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
+            var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube, maxAttackRange);
 
-            foreach (var cCell in cellsInRange)
+            foreach (var cCell in cellsInAttackRange)
             {
                 var nCoords = Coords.FromCube(cCell);
                 if (!grid.IsCoordsInGrid(nCoords))
@@ -46,11 +49,6 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 }
 
                 var nLocEntity = map.Locations.Dict[nCoords.Cube];
-
-                if (nLocEntity.Get<Distance>().Value > eventData.Range)
-                {
-                    continue;
-                }
 
                 var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
                 var attack = attacks.GetUsableAttack(attackRange);
@@ -78,6 +76,35 @@ public class HighlightLocationsEventSystem : IEcsSystem
                     {
                         terrainHighlighter.PlaceHighlight(position, new Color("774411"), 0.6f);
                     }
+                }
+            }
+
+            foreach (var cCell in cellsInMoveRange)
+            {
+                var nCoords = Coords.FromCube(cCell);
+                if (!grid.IsCoordsInGrid(nCoords))
+                {
+                    continue;
+                }
+
+                var nLocEntity = map.Locations.Dict[nCoords.Cube];
+
+                if (nLocEntity.Get<Distance>().Value > eventData.Range)
+                {
+                    continue;
+                }
+
+                ref var nElevation = ref nLocEntity.Get<Elevation>();
+                
+                var position = nCoords.World;
+                position.y = nElevation.Height + 0.1f;
+                
+                var hasUnit = nLocEntity.Has<HasUnit>();
+
+                if (hasUnit)
+                {
+                    if (nLocEntity.Get<HasUnit>().Entity.Get<Team>().Value == team.Value)
+                    continue;
                 }
 
                 if (hasUnit)

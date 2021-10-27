@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b22rnbucih4bt"]
+[gd_scene load_steps=3 format=3 uid="uid://r8qeejyby0ec"]
 
 [ext_resource type="Script" path="res://src/nodes/hud/AttackSelectionView.cs" id="1_e4q7n"]
-[ext_resource type="PackedScene" uid="uid://cx7ixjf3dyxvr" path="res://src/nodes/hud/AttackSelectionOption.tscn" id="2_l7sad"]
+[ext_resource type="PackedScene" uid="uid://e6mqw42cj1d3" path="res://src/nodes/hud/AttackSelectionOption.tscn" id="2_l7sad"]
 
 [node name="AttackSelectionView" type="Control"]
 anchor_right = 1.0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Bitron.Ecs;
 
@@ -56,20 +57,30 @@ public class SelectTargetSystem : IEcsSystem
             var map = world.GetResource<Map>();
             
             var attackDistance = map.GetEffectiveAttackDistance(attackerCoords, defenderCoords);
-            var attackerAttackEntity = attackerAttacks.GetUsableAttack(attackDistance);
+            var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(attackDistance);
+            
+            var attackPairs = new Dictionary<EcsEntity, EcsEntity>();
 
-            if (!attackerAttackEntity.IsAlive())
+            foreach(var attackerAttackEntity in attackerUsableAttacks)
+            {
+                var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance);
+                attackPairs.Add(attackerAttackEntity, defenderAttackEntity);
+            }
+
+            if (attackPairs.Count == 0)
             {
                 return;
             }
-
-            var commander = world.GetResource<Commander>();
+            
             var gameStateController = world.GetResource<GameStateController>();
 
-            var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance);
+            var attackSelectionState = new AttackSelectionState(world);
+            
+            attackSelectionState.AttackerLocEntity = attackerLocEntity;
+            attackSelectionState.DefenderLocEntity = defenderLocEntity;
+            attackSelectionState.AttackPairs = attackPairs;
 
-            commander.Enqueue(new CombatCommand(attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity));
-            gameStateController.PushState(new CommanderState(world));
+            gameStateController.PushState(attackSelectionState);
         }
     }
 }

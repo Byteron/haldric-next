@@ -1,9 +1,13 @@
+using Bitron.Ecs;
 using Godot;
 
 public partial class AttackSelectionOption : Button
 {
     public string AttackerText { get; set; }
     public string DefenderText { get; set; }
+
+    public EcsEntity AttackerAttackEntity { get; set; }
+    public EcsEntity DefenderAttackEntity { get; set; }
 
     private Label _attackerLabel;
     private Label _defenderLabel;
