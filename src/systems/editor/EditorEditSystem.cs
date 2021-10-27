@@ -20,9 +20,13 @@ public class EditorEditSystem : IEcsSystem
             return;
         }
 
-        var editorView = world.GetResource<EditorView>();
-        var hoveredLocation = world.GetResource<HoveredLocation>();
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        {
+            return;
+        }
 
+        var editorView = world.GetResource<EditorView>();
+        
         var locEntity = hoveredLocation.Entity;
 
         if (!locEntity.IsAlive())
