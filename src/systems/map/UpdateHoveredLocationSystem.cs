@@ -15,17 +15,16 @@ public class UpdateHoveredLocationSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var cursorQuery = world.Query<HoveredLocation>().End();
-
         if (!world.HasResource<Map>())
         {
             return;
         }
 
-        var map = world.GetResource<Map>();
-
-        ref var locations = ref map.Locations;
-
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        {
+            world.AddResource(new HoveredLocation());
+        }
+        
         var result = ShootRay();
 
         if (result.Contains("position"))
@@ -35,16 +34,12 @@ public class UpdateHoveredLocationSystem : IEcsSystem
 
             if (previousCell != coords.Axial)
             {
-                foreach (var cursorEntityId in cursorQuery)
-                {
-                    var locEntity = locations.Get(coords.Cube);
-                    var hoverEntity = world.Entity(cursorEntityId);
+                var map = world.GetResource<Map>();
 
-                    ref var hoveredLocation = ref hoverEntity.Get<HoveredLocation>();
-                    
-                    hoveredLocation.Entity = locEntity;
-                    hoveredLocation.HasChanged = true;
-                }
+                var locEntity = map.Locations.Get(coords.Cube);
+                
+                hoveredLocation.Entity = locEntity;
+                hoveredLocation.HasChanged = true;
 
                 previousCell = coords.Axial;
             }

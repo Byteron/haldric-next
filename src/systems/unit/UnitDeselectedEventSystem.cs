@@ -7,24 +7,20 @@ public class UnitDeselectedEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<HoveredLocation>().End();
-        var eventQuery = world.Query<UnitDeselectedEvent>().End();
+        var query = world.Query<UnitDeselectedEvent>().End();
 
-        foreach (var eventEntityId in eventQuery)
+        foreach (var _ in query)
         {
-            foreach (var hoverEntityId in query)
+            if (world.HasResource<SelectedLocation>())
             {
-                var hoverEntity = world.Entity(hoverEntityId);
+                world.RemoveResource<SelectedLocation>();
                 
-                hoverEntity.Remove<HasLocation>();
-
-                var hudView = world.GetResource<HUDView>();
-                hudView.UnitLabel.Text = "";
-
                 var terrainHighlighter = world.GetResource<TerrainHighlighter>();
                 terrainHighlighter.Clear();
+                
+                var hudView = world.GetResource<HUDView>();
+                hudView.UnitLabel.Text = "";
             }
-
         }
     }
 }

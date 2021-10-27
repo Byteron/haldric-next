@@ -4,60 +4,64 @@ using Bitron.Ecs;
 public class MoveUnitSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
-    {
-        var cursorQuery = world.Query<HoveredLocation>().Inc<HasLocation>().End();
+    {   
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        {
+            return;
+        }
+
+        if (!world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        {
+            return;
+        }
 
         var commander = world.GetResource<Commander>();
         
-        foreach(var cursorEntityId in cursorQuery)
+        var map = world.GetResource<Map>();
+        
+        var hoveredLocEntity = hoveredLocation.Entity;
+        
+        if (!hoveredLocEntity.IsAlive() || hoveredLocEntity.Has<HasUnit>())
         {
-            var map = world.GetResource<Map>();
+            return;
+        }
+
+        var selectedLocEntity = selectedLocation.Entity;
+
+        if (selectedLocEntity.Get<Coords>().Cube == hoveredLocEntity.Get<Coords>().Cube)
+        {
+            return;
+        }
+
+        if (Input.IsActionJustPressed("select_unit"))
+        {
+            ref var startCoords = ref selectedLocEntity.Get<Coords>();
+            ref var targetCoords = ref hoveredLocEntity.Get<Coords>();
+
+            if (startCoords.Cube == targetCoords.Cube)
+            {
+                return;
+            }
             
-            var hoveredLocEntity = cursorQuery.Get<HoveredLocation>(cursorEntityId).Entity;
+            var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
+
+            var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Team>().Value);
+
+            if (path.Checkpoints.Count == 0)
+            {
+                return;
+            }
             
-            if (!hoveredLocEntity.IsAlive() || hoveredLocEntity.Has<HasUnit>())
+            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+
+            if (path.Checkpoints.Count > moves.Value)
             {
                 return;
             }
 
-            ref var hasLocation = ref cursorQuery.Get<HasLocation>(cursorEntityId);
-            var selectedLocEntity = hasLocation.Entity;
-
-            if (selectedLocEntity.Get<Coords>().Cube == hoveredLocEntity.Get<Coords>().Cube)
-            {
-                return;
-            }
-
-            if (Input.IsActionJustPressed("select_unit"))
-            {
-                ref var startCoords = ref selectedLocEntity.Get<Coords>();
-                ref var targetCoords = ref hoveredLocEntity.Get<Coords>();
-
-                if (startCoords.Cube == targetCoords.Cube)
-                {
-                    return;
-                }
-                
-                var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
-
-                var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Team>().Value);
-
-                if (path.Checkpoints.Count == 0)
-                {
-                    return;
-                }
-                
-                ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-
-                if (path.Checkpoints.Count > moves.Value)
-                {
-                    return;
-                }
-
-                commander.Enqueue(new MoveUnitCommand(path));
-                hasLocation.Entity = hoveredLocEntity;
-                world.GetResource<GameStateController>().PushState(new CommanderState(world));
-            }
+            commander.Enqueue(new MoveUnitCommand(path));
+            selectedLocation.Entity = hoveredLocEntity;
+            world.GetResource<GameStateController>().PushState(new CommanderState(world));
         }
     }
 }

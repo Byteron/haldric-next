@@ -5,21 +5,21 @@ public class DeselectUnitSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<HoveredLocation>().End();
-
-        foreach (var hoverEntityId in query)
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
         {
-            var locEntity = query.Get<HoveredLocation>(hoverEntityId).Entity;
-            
-            if (!locEntity.IsAlive())
-            {
-                return;
-            }
+            return;
+        }
 
-            if (Input.IsActionJustPressed("deselect_unit"))
-            {
-                world.Spawn().Add(new UnitDeselectedEvent());
-            }
+        var locEntity = hoveredLocation.Entity;
+        
+        if (!locEntity.IsAlive())
+        {
+            return;
+        }
+
+        if (Input.IsActionJustPressed("deselect_unit"))
+        {
+            world.Spawn().Add(new UnitDeselectedEvent());
         }
     }
 }

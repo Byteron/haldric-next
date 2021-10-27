@@ -10,7 +10,6 @@ public class DespawnMapEventSystem : IEcsSystem
     {
         var eventQuery = world.Query<DespawnMapEvent>().End();
         var chunkQuery = world.Query<Locations>().End();
-        var hoverQuery = world.Query<HoveredLocation>().End();
         var unitQuery = world.Query<NodeHandle<UnitView>>().End();
 
         foreach (var _ in eventQuery)
@@ -27,11 +26,6 @@ public class DespawnMapEventSystem : IEcsSystem
                 world.DespawnEntity(entityId);
             }
 
-            foreach (var entityId in hoverQuery)
-            {
-                world.DespawnEntity(entityId);
-            }
-
             foreach (var locEntity in map.Locations.Values)
             {
                 locEntity.Despawn();
@@ -39,7 +33,14 @@ public class DespawnMapEventSystem : IEcsSystem
             
             world.RemoveResource<Map>();
             world.RemoveResource<ShaderData>();
+            world.RemoveResource<HoveredLocation>();
+            world.RemoveResource<Cursor3D>();
             world.RemoveResource<TerrainHighlighter>();
+
+            if (world.HasResource<SelectedLocation>())
+            {
+                world.RemoveResource<SelectedLocation>();
+            }
         }
     }
 }

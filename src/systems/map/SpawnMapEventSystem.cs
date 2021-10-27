@@ -76,15 +76,10 @@ public class SpawnMapEventSystem : IEcsSystem
 
     private void InitializeHover()
     {
-        var hoverEntity = _world.Spawn();
-        hoverEntity.Add<HoveredLocation>();
-
         var cursorView = Scenes.Instance.Cursor3D.Instantiate<Cursor3D>();
-
         _parent.AddChild(cursorView);
 
-        hoverEntity.Add(new NodeHandle<Cursor3D>(cursorView));
-        hoverEntity.Add<Highlighter>();
+        _world.AddResource(cursorView);
     }
 
     private Dictionary GetMapDataFromDimensions(int width, int height)

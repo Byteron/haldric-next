@@ -5,31 +5,38 @@ public class SelectUnitSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<HoveredLocation>().End();
-
-        foreach (var hoverEntityId in query)
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
         {
-            var hoverEntity = world.Entity(hoverEntityId);
-            var hoveredLocEntity = hoverEntity.Get<HoveredLocation>().Entity;
+            return;
+        }
+        
+        var hoveredLocEntity = hoveredLocation.Entity;
 
-            if (!hoveredLocEntity.IsAlive())
+        if (!hoveredLocEntity.IsAlive())
+        {
+            return;
+        }
+
+        if (Input.IsActionJustPressed("select_unit") && hoveredLocEntity.Has<HasUnit>())
+        {
+            var scenario = world.GetResource<Scenario>();
+            var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
+            
+            if (unitEntity.Get<Team>().Value != scenario.CurrentPlayer)
             {
                 return;
             }
 
-            if (Input.IsActionJustPressed("select_unit"))
+            if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
             {
-                if (hoveredLocEntity.Has<HasUnit>() && !hoverEntity.Has<HasLocation>())
-                {
-                    var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
-                    var scenario = world.GetResource<Scenario>();
-
-                    if (unitEntity.Get<Team>().Value == scenario.CurrentPlayer)
-                    {
-                        hoverEntity.Add(new HasLocation(hoveredLocEntity));
-                        world.Spawn().Add(new UnitSelectedEvent(unitEntity));
-                    }
-                }
+                selectedLocation.Entity = hoveredLocEntity;
+                world.Spawn().Add(new UnitDeselectedEvent());
+                world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+            }
+            else
+            {
+                world.AddResource(new SelectedLocation(hoveredLocEntity));
+                world.Spawn().Add(new UnitSelectedEvent(unitEntity));
             }
         }
     }
