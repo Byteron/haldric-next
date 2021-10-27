@@ -1,4 +1,5 @@
 using Bitron.Ecs;
+using Haldric.Wdk;
 using Godot;
 
 public struct AdvanceEvent
@@ -21,20 +22,36 @@ public class AdvanceEventSystem : IEcsSystem
         {
             var hudView = world.GetResource<HUDView>();
             
-            ref var gainEvent = ref query.Get<AdvanceEvent>(id);
+            ref var advanceEvent = ref query.Get<AdvanceEvent>(id);
 
-            var entity = gainEvent.Entity;
+            var entity = advanceEvent.Entity;
 
-            if (!entity.Has<Level>())
+            ref var advancements = ref entity.Get<Advancements>();
+
+            if (advancements.List.Count == 0)
             {
                 continue;
             }
 
-            ref var level = ref entity.Get<Level>();
-            
-            level.Value += 1;
+            var unitTypeId = advancements.List[0];
+            var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
+            var unitView = entity.Get<NodeHandle<UnitView>>().Node;
+            var position = unitView.Position;
+            var parent = unitView.GetParent();
+
+            parent.AddChild(unitType);
+            unitView = unitType.UnitView;
+            unitType.RemoveChild(unitView);
+            parent.AddChild(unitView);
+            UnitFactory.CreateFromUnitType(world, unitType, unitView, entity);
+            
+            unitType.QueueFree();
+            
             ref var coords = ref entity.Get<Coords>();
+            ref var level = ref entity.Get<Level>();
+
+            unitView.Position = position;
 
             hudView.SpawnFloatingLabel(coords.World + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
         }

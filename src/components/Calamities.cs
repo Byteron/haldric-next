@@ -6,10 +6,13 @@ public struct Calamities: IEcsAutoReset<Calamities>
 {
     public List<DamageType> List;
 
-    public Calamities(List<DamageType> list)
+    public Calamities(List<DamageType> types)
     {
         List = new List<DamageType>();
-        List.AddRange(list);
+        if (types != null)
+        {
+            List.AddRange(types);
+        }
     }
 
     public void AutoReset(ref Calamities c)

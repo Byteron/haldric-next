@@ -5,49 +5,44 @@ public class UnitFactory
 {
     static UnitBuilder _builder = new UnitBuilder();
 
-    public static EcsEntity CreateFromUnitType(EcsWorld world, UnitType unitType, UnitView unitView)
+    public static EcsEntity CreateFromUnitType(EcsWorld world, UnitType unitType, UnitView unitView, EcsEntity entity = default)
     {
+        if (entity.IsAlive())
+        {
+            entity.Remove<Id>()
+                .Remove<Level>()
+                .Remove<Attribute<Health>>()
+                .Remove<Attribute<Actions>>()
+                .Remove<Attribute<Moves>>()
+                .Remove<Attribute<Experience>>()
+                .Remove<Weaknesses>()
+                .Remove<Resistances>()
+                .Remove<Calamities>()
+                .Remove<Immunities>()
+                .Remove<Advancements>()
+                .Remove<Attacks>()
+                .Remove<NodeHandle<UnitView>>();
+            
+            _builder.Use(entity);
+        }
+        else
+        {
+            _builder.Create();
+        }
+
         _builder
-            .Create()
             .WithId(unitType.Id)
             .WithLevel(unitType.Level)
             .WithHealth(unitType.Health)
-            .WithActions(1)
+            .WithActions(unitType.Actions)
             .WithMoves(unitType.Moves)
             .WithExperience(unitType.Experience)
+            .WithWeaknesses(unitType.Weaknesses)
+            .WithResistances(unitType.Resistances)
+            .WithCalamities(unitType.Calamities)
+            .WithImmunities(unitType.Immunities)
+            .WithAdvancements(unitType.Advancements)
             .WithView(unitView);
-
-        if (unitType.Weaknesses != null)
-        {
-            foreach(var weakness in unitType.Weaknesses)
-            {
-                _builder.WithWeakness(weakness);
-            }
-        }
-
-        if (unitType.Resistances != null)
-        {
-            foreach(var resistance in unitType.Resistances)
-            {
-                _builder.WithResistance(resistance);
-            }
-        }
-
-        if (unitType.Calamities != null)
-        {
-            foreach(var calamity in unitType.Calamities)
-            {
-                _builder.WithCalamity(calamity);
-            }
-        }
-
-        if (unitType.Immunities != null)
-        {
-            foreach(var immunity in unitType.Immunities)
-            {
-                _builder.WithImmunity(immunity);
-            }
-        }
 
         foreach (Attack attack in unitType.Attacks.GetChildren())
         {

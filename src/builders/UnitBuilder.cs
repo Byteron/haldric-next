@@ -1,4 +1,4 @@
-using Godot;
+using System.Collections.Generic;
 using Bitron.Ecs;
 using Haldric.Wdk;
 
@@ -9,6 +9,12 @@ public class UnitBuilder
     public UnitBuilder Create()
     {
         _entity = Main.Instance.World.Spawn();
+        return this;
+    }
+
+    public UnitBuilder Use(EcsEntity entity)
+    {
+        _entity = entity;
         return this;
     }
 
@@ -50,55 +56,33 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithWeakness(DamageType damageType)
+    public UnitBuilder WithWeaknesses(List<DamageType> types)
     {
-        if (!_entity.Has<Weaknesses>())
-        {
-            _entity.Add<Weaknesses>();
-        }
-
-        ref var weaknesses = ref _entity.Get<Weaknesses>();
-        weaknesses.List.Add(damageType);
-
+        _entity.Add(new Weaknesses(types));
         return this;
     }
 
-    public UnitBuilder WithResistance(DamageType damageType)
+    public UnitBuilder WithResistances(List<DamageType> types)
     {
-        if (!_entity.Has<Resistances>())
-        {
-            _entity.Add<Resistances>();
-        }
-
-        ref var resistances = ref _entity.Get<Resistances>();
-        resistances.List.Add(damageType);
-        
+        _entity.Add(new Resistances(types));
         return this;
     }
 
-    public UnitBuilder WithCalamity(DamageType damageType)
+    public UnitBuilder WithCalamities(List<DamageType> types)
     {
-        if (!_entity.Has<Calamities>())
-        {
-            _entity.Add<Calamities>();
-        }
-
-        ref var calamities = ref _entity.Get<Calamities>();
-        calamities.List.Add(damageType);
-        
+        _entity.Add(new Calamities(types));
         return this;
     }
 
-    public UnitBuilder WithImmunity(DamageType damageType)
+    public UnitBuilder WithImmunities(List<DamageType> types)
     {
-        if (!_entity.Has<Immunities>())
-        {
-            _entity.Add<Immunities>();
-        }
+        _entity.Add(new Immunities(types));
+        return this;
+    }
 
-        ref var immunities = ref _entity.Get<Immunities>();
-        immunities.List.Add(damageType);
-        
+    public UnitBuilder WithAdvancements(List<string> types)
+    {
+        _entity.Add(new Advancements(types));
         return this;
     }
 

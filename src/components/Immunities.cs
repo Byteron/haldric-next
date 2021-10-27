@@ -6,10 +6,13 @@ public struct Immunities: IEcsAutoReset<Immunities>
 {
     public List<DamageType> List;
 
-    public Immunities(List<DamageType> list)
+    public Immunities(List<DamageType> types)
     {
         List = new List<DamageType>();
-        List.AddRange(list);
+        if (types != null)
+        {
+            List.AddRange(types);
+        }
     }
 
     public void AutoReset(ref Immunities c)

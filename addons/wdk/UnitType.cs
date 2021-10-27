@@ -8,6 +8,7 @@ namespace Haldric.Wdk
         [Export] public string Id = "";
         [Export] public int Level = 1;
         [Export] public int Health = 30;
+        [Export] public int Actions = 1;
         [Export] public int Moves = 5;
         [Export] public int Experience = 40;
 
@@ -15,6 +16,7 @@ namespace Haldric.Wdk
         [Export] public List<DamageType> Calamities;
         [Export] public List<DamageType> Resistances;
         [Export] public List<DamageType> Immunities;
+        [Export] public List<string> Advancements;
 
         public UnitView UnitView;
         public Node Attacks;

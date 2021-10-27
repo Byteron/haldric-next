@@ -6,10 +6,13 @@ public struct Resistances: IEcsAutoReset<Resistances>
 {
     public List<DamageType> List;
 
-    public Resistances(List<DamageType> list)
+    public Resistances(List<DamageType> types)
     {
         List = new List<DamageType>();
-        List.AddRange(list);
+        if (types != null)
+        {
+            List.AddRange(types);
+        }
     }
 
     public void AutoReset(ref Resistances c)

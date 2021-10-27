@@ -6,6 +6,15 @@ public struct Weaknesses: IEcsAutoReset<Weaknesses>
 {
     public List<DamageType> List;
 
+    public Weaknesses(List<DamageType> types)
+    {
+        List = new List<DamageType>();
+        if (types != null)
+        {
+            List.AddRange(types);
+        }
+    }
+
     public void AutoReset(ref Weaknesses c)
     {
         if (c.List != null)

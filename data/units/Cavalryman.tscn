@@ -4,11 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://c04frxgexwoli" path="res://addons/wdk/Attack.tscn" id="2_3ggjw"]
 [ext_resource type="PackedScene" uid="uid://bbll0id2147m2" path="res://assets/graphics/gltf/Unit.gltf" id="2_hwijx"]
 
-[node name="Cavalry" instance=ExtResource( "1_xrcl7" )]
-Id = "Cavalry"
-Health = 36
+[node name="Cavalryman" instance=ExtResource( "1_xrcl7" )]
+Id = "Cavalryman"
+Health = 50
 Moves = 8
+Experience = 8
 Weaknesses = [1]
+Advancements = ["Dragoon"]
 
 [node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_3ggjw" )]
 Damage = 6

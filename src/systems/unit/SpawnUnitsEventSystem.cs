@@ -25,7 +25,7 @@ public class SpawnUnitsEventSystem : IEcsSystem
                 var locEntity = world.Entity(locEntityId);
                 ref var keep = ref locEntity.Get<Castle>();
 
-                world.Spawn().Add(new SpawnUnitEvent(playerId, "Cavalry", locEntity.Get<Coords>()));
+                world.Spawn().Add(new SpawnUnitEvent(playerId, "Dragoon", locEntity.Get<Coords>()));
 
                 foreach (var castleLoc in keep.List)
                 {
@@ -34,13 +34,17 @@ public class SpawnUnitsEventSystem : IEcsSystem
                         continue;
                     }
 
-                    if (Godot.GD.Randf() < 0.5f)
+                    if (Godot.GD.Randf() < 0.33f)
                     {
                         world.Spawn().Add(new SpawnUnitEvent(playerId, "Spearman", castleLoc.Get<Coords>()));
                     }
-                    else
+                    else if (Godot.GD.Randf() < 0.66f)
                     {
                         world.Spawn().Add(new SpawnUnitEvent(playerId, "Bowman", castleLoc.Get<Coords>()));
+                    }
+                    else
+                    {
+                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Cavalryman", castleLoc.Get<Coords>()));
                     }
                 }
 
