@@ -61,6 +61,32 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return default;
     }
 
+    public EcsEntity[] GetUsableAttacks(int attackRange)
+    {
+        List<EcsEntity> list = new List<EcsEntity>();
+
+        bool isInMeleeRange = attackRange == 1;
+        
+        foreach(var attack in _list)
+        {
+            if (isInMeleeRange)
+            {
+                if (attack.Get<Range>().Value == 1)
+                {
+                    list.Add(attack);
+                }
+            }
+            else
+            {
+                if (attack.Get<Range>().Value >= attackRange)
+                {
+                    list.Add(attack);
+                }
+            }
+        }
+        return list.ToArray();
+    }
+
     public void AutoReset(ref Attacks c)
     {
         if (c._list == null)
