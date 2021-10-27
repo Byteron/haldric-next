@@ -5,6 +5,7 @@ public struct Elevation : IEcsAutoReset<Elevation>
     public int Value;
     public int Offset;
 
+    public float ValueWithOffset { get { return Value + Offset; }}
     public float Height { get { return Value * Metrics.ElevationStep; }}
     public float HeightWithOffset { get { return (Value + Offset) * Metrics.ElevationStep; }}
     

@@ -110,7 +110,7 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
 
-            if (elevation.Value != nElevation.Value)
+            if (elevation.ValueWithOffset != nElevation.ValueWithOffset)
             {
                 continue;
             }
@@ -189,11 +189,11 @@ public partial class TerrainFeaturePopulator : Node3D
             //     continue;
             // }
 
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }
@@ -231,16 +231,11 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
 
-            // if (elevation.Level < nElevation.Level)
-            // {
-            //     continue;
-            // }
-
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }

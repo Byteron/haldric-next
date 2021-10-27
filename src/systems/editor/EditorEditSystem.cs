@@ -113,11 +113,11 @@ public class EditorEditSystem : IEcsSystem
 
                 if (baseTerrainEntity.Has<HasShallowWater>())
                 {
-                    elevation.Offset = -1;
+                    elevation.Offset = Metrics.ShallowWaterOffset;
                 }
                 else if (baseTerrainEntity.Has<HasDeepWater>())
                 {
-                    elevation.Offset = -2;
+                    elevation.Offset = Metrics.DeepWaterOffset;
                 }
             }
         }

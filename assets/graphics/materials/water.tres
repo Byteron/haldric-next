@@ -1,31 +1,27 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://jjnbwddt1rdq"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://jjnbwddt1rdq"]
 
-[sub_resource type="Shader" id="1"]
+[sub_resource type="Shader" id="Shader_iqweo"]
 code = "shader_type spatial;
 
-uniform sampler2D image : hint_albedo;
 uniform vec4 color : hint_color;
-
-void vertex()
-{
-	vec4 noise = texture(image, (VERTEX.xz * 0.1) + TIME * 0.1);
-	VERTEX.y += noise.r * 0.5;
-}
 
 void fragment()
 {
-	ALBEDO = color.rgb;
-	ALPHA = color.a;
+	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+	
+	depth = depth * 2.0 - 1.0;
+	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
+	depth += VERTEX.z;
+	// depth *= 0.1;
+	depth = exp(-depth * 0.2);
+	depth = clamp(depth, 0.0, 1.0);
+	
+	vec4 back = texture(SCREEN_TEXTURE, SCREEN_UV);
+	
+	ALBEDO = mix(back.rgb, color.rgb, 1.0 - depth);
 }"
-
-[sub_resource type="OpenSimplexNoise" id="2"]
-
-[sub_resource type="NoiseTexture" id="3"]
-seamless = true
-noise = SubResource( "2" )
 
 [resource]
 render_priority = -1
-shader = SubResource( "1" )
-shader_param/color = Color(0.0156863, 0.0941176, 0.211765, 1)
-shader_param/image = SubResource( "3" )
+shader = SubResource( "Shader_iqweo" )
+shader_param/color = Color(0.0117647, 0.0784314, 0.180392, 1)
