@@ -26,9 +26,15 @@ namespace Haldric.Wdk
             TerrainDicts.Add(code, terrain);
         }
 
-        public void NewWater(string code, List<TerrainType> types)
+        public void NewShallowWater(string code, List<TerrainType> types)
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasWater().Build();
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasShallowWater().Build();
+            TerrainDicts.Add(code, terrain);
+        }
+
+        public void NewDeepWater(string code, List<TerrainType> types)
+        {
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasDeepWater().Build();
             TerrainDicts.Add(code, terrain);
         }
 
@@ -128,7 +134,6 @@ namespace Haldric.Wdk
         public void AddWaterGraphic(string code, string path)
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
             WaterGraphics.Add(code, graphic);
         }
 

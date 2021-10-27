@@ -62,7 +62,7 @@ public partial class TerrainFeaturePopulator : Node3D
     public void AddDecoration(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
-        position.y = locEntity.Get<Elevation>().Height;
+        position.y = locEntity.Get<Elevation>().HeightWithOffset;
 
         foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode].Values)
         {
@@ -92,7 +92,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
-        center.y = locEntity.Get<Elevation>().Height;
+        center.y = locEntity.Get<Elevation>().HeightWithOffset;
 
         var rotation = 240;
         for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
@@ -143,7 +143,7 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         var position = locEntity.Get<Coords>().World;
 
-        position.y = locEntity.Get<Elevation>().Height;
+        position.y = locEntity.Get<Elevation>().HeightWithOffset;
         position += Data.Instance.KeepPlateaus[terrainCode].Offset;
 
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
@@ -152,7 +152,7 @@ public partial class TerrainFeaturePopulator : Node3D
     public void AddWater(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
-        position.y = locEntity.Get<Elevation>().Height + Metrics.ElevationStep * 0.5f;
+        position.y = locEntity.Get<Elevation>().Height - Metrics.ElevationStep * 0.5f;
 
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
     }
@@ -166,7 +166,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
-        center.y = locEntity.Get<Elevation>().Height;
+        center.y = locEntity.Get<Elevation>().HeightWithOffset;
 
         var rotation = 240;
         for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
@@ -213,7 +213,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
-        center.y = locEntity.Get<Elevation>().Height;
+        center.y = locEntity.Get<Elevation>().HeightWithOffset;
 
         var rotation = 240;
         for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)

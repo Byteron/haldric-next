@@ -58,7 +58,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitType.QueueFree();
 
             var position = spawnEvent.Coords.World;
-            position.y = elevation.Height;
+            position.y = elevation.HeightWithOffset;
 
             unitView.Position = position;
 

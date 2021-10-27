@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://dejear2wpo7dx"]
 
 [ext_resource type="Script" path="res://src/nodes/editor/EditorView.cs" id="1"]
 

@@ -32,9 +32,15 @@ public class TerrainBuilder
         return this;
     }
 
-    public TerrainBuilder WithHasWater()
+    public TerrainBuilder WithHasShallowWater()
     {
-        _terrainEntity.Add<HasWater>();
+        _terrainEntity.Add<HasShallowWater>();
+        return this;
+    }
+
+    public TerrainBuilder WithHasDeepWater()
+    {
+        _terrainEntity.Add<HasDeepWater>();
         return this;
     }
 

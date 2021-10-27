@@ -30,9 +30,15 @@ public class TerrainDictBuilder
         return this;
     }
 
-    public TerrainDictBuilder WithHasWater()
+    public TerrainDictBuilder WithHasShallowWater()
     {
-        _terrainDict["HasWater"] = true;
+        _terrainDict["HasShallowWater"] = true;
+        return this;
+    }
+
+    public TerrainDictBuilder WithHasDeepWater()
+    {
+        _terrainDict["HasDeepWater"] = true;
         return this;
     }
 

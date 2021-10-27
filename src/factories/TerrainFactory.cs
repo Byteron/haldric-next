@@ -28,9 +28,14 @@ public class TerrainFactory
             _builder.WithTypes((List<TerrainType>)dict["TerrainTypes"]);
         }
 
-        if (dict.ContainsKey("HasWater"))
+        if (dict.ContainsKey("HasShallowWater"))
         {
-            _builder.WithHasWater();
+            _builder.WithHasShallowWater();
+        }
+
+        if (dict.ContainsKey("HasDeepWater"))
+        {
+            _builder.WithHasDeepWater();
         }
 
         if (dict.ContainsKey("RecruitFrom"))

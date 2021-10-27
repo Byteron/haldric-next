@@ -9,7 +9,8 @@ public class TerrainScript : TerrainLoader
         NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
         NewBase("Dd", new List<TerrainType>() { TerrainType.Rough });
         
-        NewWater("Ww", new List<TerrainType>() { TerrainType.Aqueous });
+        NewShallowWater("Ws", new List<TerrainType>() { TerrainType.Aqueous });
+        NewDeepWater("Wo", new List<TerrainType>() { TerrainType.Oceanic });
         
         NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });
 
@@ -24,7 +25,8 @@ public class TerrainScript : TerrainLoader
         AddTerrainTexture("Rd", "assets/graphics/images/stone.png");
         AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
         AddTerrainTexture("Kh", "assets/graphics/images/stone.png");
-        AddTerrainTexture("Ww", "assets/graphics/images/mud.png");
+        AddTerrainTexture("Ws", "assets/graphics/images/mud.png");
+        AddTerrainTexture("Wo", "assets/graphics/images/mud.png");
 
         AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
         AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
@@ -52,6 +54,7 @@ public class TerrainScript : TerrainLoader
         AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_House 10.tres");
         AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_Village_human_hall_outer_01.tres");
         
-        AddWaterGraphic("Ww", "assets/graphics/models/water.tres");
+        AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
+        AddWaterGraphic("Wo", "assets/graphics/models/water.tres");
     }
 }

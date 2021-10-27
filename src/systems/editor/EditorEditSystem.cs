@@ -91,8 +91,6 @@ public class EditorEditSystem : IEcsSystem
 
         ref var elevation = ref locEntity.Get<Elevation>();
 
-        var wasWater = baseTerrainEntity.Has<HasWater>() ? true : false;
-
         if (editorView.UseTerrain)
         {
             if (editorView.TerrainEntity.Has<IsOverlayTerrain>())
@@ -112,22 +110,21 @@ public class EditorEditSystem : IEcsSystem
                 }
 
                 baseTerrainEntity = editorView.TerrainEntity;
-            }
 
-            if (!wasWater && baseTerrainEntity.Has<HasWater>())
-            {
-                elevation.Value -= 1;
+                if (baseTerrainEntity.Has<HasShallowWater>())
+                {
+                    elevation.Offset = -1;
+                }
+                else if (baseTerrainEntity.Has<HasDeepWater>())
+                {
+                    elevation.Offset = -2;
+                }
             }
         }
 
         if (editorView.UseElevation)
         {
             elevation.Value = editorView.Elevation;
-
-            if (baseTerrainEntity.Has<HasWater>())
-            {
-                elevation.Value -= 1;
-            }
         }
     }
 

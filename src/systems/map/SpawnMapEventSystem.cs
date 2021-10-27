@@ -101,6 +101,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
                 locDict.Add("Terrain", new List<string>() { "Gg" });
                 locDict.Add("Elevation", 0);
+                locDict.Add("ElevationOffset", 0);
 
                 if (locsDict.Contains(coords.Cube))
                 {
@@ -154,14 +155,27 @@ public class SpawnMapEventSystem : IEcsSystem
 
             var terrainCodes = (Godot.Collections.Array)locationData["Terrain"];
             var elevation = System.Convert.ToInt32(locationData["Elevation"]);
+            var elevationOffset = 0;
 
-            locEntity.Add(new Elevation(elevation));
+            var baseTerrainEntity = Data.Instance.Terrains[(string)terrainCodes[0]];
 
-            locEntity.Add(new HasBaseTerrain(Data.Instance.Terrains[(string)terrainCodes[0]]));
+            if (baseTerrainEntity.Has<HasShallowWater>())
+            {
+                elevationOffset = -1;
+            }
+            else if (baseTerrainEntity.Has<HasDeepWater>())
+            {
+                elevationOffset = -2;
+            }
+
+            locEntity.Add(new Elevation(elevation, elevationOffset));
+
+            locEntity.Add(new HasBaseTerrain(baseTerrainEntity));
 
             if (terrainCodes.Count == 2)
             {
-                locEntity.Add(new HasOverlayTerrain(Data.Instance.Terrains[(string)terrainCodes[1]]));
+                var overlayTerrainEntity = Data.Instance.Terrains[(string)terrainCodes[1]];
+                locEntity.Add(new HasOverlayTerrain(overlayTerrainEntity));
             }
 
             locEntity.Add<Distance>();

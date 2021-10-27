@@ -9,4 +9,5 @@ public struct GivesIncome {}
 
 public struct Heals {}
 
-public struct HasWater {}
+public struct HasShallowWater {}
+public struct HasDeepWater {}
