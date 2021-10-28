@@ -16,13 +16,15 @@ public class UpdateUnitPlateSystem : IEcsSystem
 
         foreach (var entityId in query)
         {
-            ref var health = ref query.Get<Attribute<Health>>(entityId);
-            ref var moves = ref query.Get<Attribute<Moves>>(entityId);
-            ref var experience = ref query.Get<Attribute<Experience>>(entityId);
-            ref var team = ref query.Get<Team>(entityId);
+            var unitEntity = world.Entity(entityId);
 
-            var view = query.Get<NodeHandle<UnitView>>(entityId).Node;
-            var unitPlate = query.Get<NodeHandle<UnitPlate>>(entityId).Node;
+            ref var health = ref unitEntity.Get<Attribute<Health>>();
+            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+            ref var experience = ref unitEntity.Get<Attribute<Experience>>();
+            ref var team = ref unitEntity.Get<Team>();
+
+            var view = unitEntity.Get<NodeHandle<UnitView>>().Node;
+            var unitPlate = unitEntity.Get<NodeHandle<UnitPlate>>().Node;
 
             unitPlate.MaxHealth = health.Max;
             unitPlate.Health = health.Value;
@@ -36,6 +38,9 @@ public class UpdateUnitPlateSystem : IEcsSystem
             unitPlate.Position = view.Position + Vector3.Up * 7.5f;
 
             unitPlate.TeamColor = Data.Instance.TeamColors[team.Value];
+
+            unitPlate.IsLeader = unitEntity.Has<IsLeader>();
+            unitPlate.IsHero = unitEntity.Has<IsHero>();
         }
     }
 }
