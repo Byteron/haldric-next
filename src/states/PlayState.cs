@@ -19,6 +19,7 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateUnitPlateSystem());
         AddUpdateSystem(new UpdateStatsInfoSystem());
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));
+        AddUpdateSystem(new PreviewPathSystem());
         AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateHoveredUnitSystem());

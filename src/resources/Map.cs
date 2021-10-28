@@ -159,7 +159,12 @@ public class Map
         var path = new Path();
         path.Start = fromLocEntity;
         path.Destination = toLocEntity;
-
+        
+        if (fromCoords.Cube == toCoords.Cube)
+        {
+            return path;
+        }
+        
         fromLocEntity.Get<Distance>().Value = 0;
 
         List<EcsEntity> frontier = new List<EcsEntity>();
