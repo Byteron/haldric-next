@@ -11,7 +11,7 @@ Health = 48
 
 [node name="Dagger" parent="Attacks" index="0" instance=ExtResource( "2_ls8kt" )]
 Damage = 4
-Strikes = 4
+Strikes = 2
 
 [node name="Bow" parent="Attacks" index="1" instance=ExtResource( "2_ls8kt" )]
 Damage = 6
