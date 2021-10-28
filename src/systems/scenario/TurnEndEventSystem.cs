@@ -92,17 +92,15 @@ public class TurnEndEventSystem : IEcsSystem
         var daytime = schedule.GetCurrentDaytime();
 
         var tween = Main.Instance.GetTree().CreateTween();
+
         tween.SetTrans(Tween.TransitionType.Sine);
         tween.SetEase(Tween.EaseType.InOut);
+        
         tween.TweenProperty(Main.Instance.Light, "light_energy", daytime.Energy, 2.5f);
-        tween.Parallel();
-        tween.TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
-        tween.Parallel();
-        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.Color, 2.5f);
-        tween.Parallel();
-        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.Color, 2.5f);
-        tween.Parallel();
-        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.Color, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.Color, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.Color, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.Color, 2.5f);
         tween.Play();
     }
 }
