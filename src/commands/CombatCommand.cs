@@ -134,6 +134,7 @@ public partial class CombatCommand : Command
             Main.Instance.AddChild(projectile);
             
             projectile.Position = attackerView.Position + Vector3.Up * 5f;
+            projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
 
             _tween.TweenProperty(projectile, "position", defenderView.Position + Vector3.Up * 5f, 0.2f);
             _tween.TweenCallback(new Callable(projectile, "queue_free"));
