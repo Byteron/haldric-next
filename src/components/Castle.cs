@@ -19,6 +19,20 @@ public struct Castle : IEcsAutoReset<Castle>
         locEntity = default;
         return false;
     }
+
+    public bool IsLocFree(Coords coords)
+    {
+        foreach (var cLocEntity in List)
+        {
+            if (!cLocEntity.Has<HasUnit>() && cLocEntity.Get<Coords>().Cube == coords.Cube)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void AutoReset(ref Castle c)
     {
         c.List = new List<EcsEntity>();

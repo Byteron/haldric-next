@@ -46,12 +46,21 @@ public class RecruitInputSystem : IEcsSystem
                 return;
             }
             
+            EcsEntity freeLocEntity;
+
             ref var castle = ref castleLocEntity.Get<Castle>();
 
-            if (!castle.TryGetFreeLoc(out var freeLocEntity))
+            var hLocEntity = world.GetResource<HoveredLocation>().Entity;
+
+            if (hLocEntity.IsAlive() && castle.IsLocFree(hLocEntity.Get<Coords>()))
+            {
+                freeLocEntity = hLocEntity;
+            }
+            else if (!castle.TryGetFreeLoc(out freeLocEntity))
             {
                 return;
             }
+
             var gameStateController = world.GetResource<GameStateController>();
 
             var recruitState = new RecruitSelectionState(world);
