@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlyd8631tfthl"]
+
+[ext_resource type="Script" path="res://addons/wdk/Projectile.cs" id="1_acc0d"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6jrgh"]
+
+[node name="Projectile" type="MeshInstance3D"]
+mesh = SubResource( "BoxMesh_6jrgh" )
+surface_material_override/0 = null
+script = ExtResource( "1_acc0d" )

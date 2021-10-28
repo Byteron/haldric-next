@@ -1,5 +1,6 @@
 using Bitron.Ecs;
 using Haldric.Wdk;
+using Godot;
 
 public class UnitFactory
 {
@@ -50,7 +51,8 @@ public class UnitFactory
                 .Add(new Id(attack.Name))
                 .Add(new Damage(attack.Damage, attack.DamageType))
                 .Add(new Strikes(attack.Strikes))
-                .Add(new Range(attack.Range));
+                .Add(new Range(attack.Range))
+                .Add(new AssetHandle<PackedScene>(attack.Projectile));
 
             _builder.WithAttack(attackEntity);
         }
