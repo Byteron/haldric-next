@@ -126,6 +126,9 @@ public partial class CombatCommand : Command
         var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
         var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
 
+        attackerView.LookAt(defenderView.Position);
+        defenderView.LookAt(attackerView.Position);
+
         Vector3 attackPos = attackerView.Position;
 
         if (_attackData.IsRanged)
