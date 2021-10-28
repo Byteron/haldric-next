@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
+using Godot;
 
 public partial class PlayState : GameState
 {
@@ -49,10 +51,18 @@ public partial class PlayState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var scenario = new Scenario();
-
-        _world.AddResource(scenario);
         _world.AddResource(new Commander());
+
+        _world.AddResource(new Scenario());
+        _world.AddResource(new Schedule(new List<Daytime>()
+        {
+            new Daytime(0f, 0.5f, new Color("EF810E")),
+            new Daytime(-60f, 1.0f, new Color("FFFFFF")),
+            new Daytime(-120f, 1.0f, new Color("FFFFFF")),
+            new Daytime(-180f, 0.5f, new Color("EF810E")),
+            new Daytime(-240, 0f, new Color("053752")),
+            new Daytime(60f, 0f, new Color("053752")),
+        }));
 
         var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
         AddChild(hudView);

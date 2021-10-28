@@ -5,14 +5,13 @@ public struct TurnEndEvent { }
 
 public class TurnEndEventSystem : IEcsSystem
 {
+    private int _turn = 0;
+
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-
         var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
-
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
-        
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
         foreach (var eventEntityId in eventQuery)
@@ -20,7 +19,14 @@ public class TurnEndEventSystem : IEcsSystem
             var scenario = world.GetResource<Scenario>();
 
             scenario.EndTurn();
-            
+
+            if (_turn != scenario.Turn)
+            {
+                _turn = scenario.Turn;
+
+                ChangeDaytime(world);
+            }
+
             var player = scenario.GetCurrentPlayerEntity();
 
             foreach (var unitEntityId in unitQuery)
@@ -75,5 +81,28 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
         }
+    }
+
+    private static void ChangeDaytime(EcsWorld world)
+    {
+        var schedule = world.GetResource<Schedule>();
+
+        schedule.Next();
+
+        var daytime = schedule.GetCurrentDaytime();
+
+        var tween = Main.Instance.GetTree().CreateTween();
+        tween.SetTrans(Tween.TransitionType.Sine);
+        tween.SetEase(Tween.EaseType.InOut);
+        tween.TweenProperty(Main.Instance.Light, "light_energy", daytime.Energy, 2.5f);
+        tween.Parallel();
+        tween.TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
+        tween.Parallel();
+        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.Color, 2.5f);
+        tween.Parallel();
+        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.Color, 2.5f);
+        tween.Parallel();
+        tween.TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.Color, 2.5f);
+        tween.Play();
     }
 }

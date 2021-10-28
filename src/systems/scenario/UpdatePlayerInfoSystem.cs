@@ -24,6 +24,6 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         ref var team = ref player.Get<Team>();
         ref var gold = ref player.Get<Gold>();
 
-        hudView.PlayerLabel.Text = $"Player: {team.Value} | Gold: {gold.Value}";
+        hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {team.Value} | Gold: {gold.Value}";
     }
 }
