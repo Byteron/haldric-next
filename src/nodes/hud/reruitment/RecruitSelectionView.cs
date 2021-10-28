@@ -56,9 +56,16 @@ public partial class RecruitSelectionView : Control
         
         if (!_acceptButton.Disabled)
         {
-            _selectedOption = _container.GetChild<RecruitSelectionOption>(0);
-            _selectedOption.Pressed = true;
-            OnRecruitOptionSelected(_selectedOption);
+            foreach(RecruitSelectionOption button in _container.GetChildren())
+            {
+                if (!button.Disabled)
+                {
+                    _selectedOption = button;
+                    _selectedOption.Pressed = true;
+                    OnRecruitOptionSelected(_selectedOption);
+                    break;
+                }
+            }
         }
     }
 
