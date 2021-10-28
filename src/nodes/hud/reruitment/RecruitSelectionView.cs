@@ -58,6 +58,7 @@ public partial class RecruitSelectionView : Control
         {
             _selectedOption = _container.GetChild<RecruitSelectionOption>(0);
             _selectedOption.Pressed = true;
+            OnRecruitOptionSelected(_selectedOption);
         }
     }
 
@@ -72,6 +73,20 @@ public partial class RecruitSelectionView : Control
     private void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
     {
         _selectedOption = optionButton;
+        string s = "";
+        s += $"{optionButton.UnitType.Id}";
+        s += $"\n\nL: {optionButton.UnitType.Level}";
+        s += $"\nHP: {optionButton.UnitType.Health}";
+        s += $"\nAP: {optionButton.UnitType.Actions}";
+        s += $"\nMP: {optionButton.UnitType.Moves}";
+        s += $"\n";
+
+        foreach (Attack attack in optionButton.UnitType.GetNode<Node>("Attacks").GetChildren())
+        {
+            s += "\n" + attack.ToString();
+        }
+
+        _unitLabel.Text = s;
     }
 
     private void OnAcceptButtonPressed()
@@ -81,7 +96,7 @@ public partial class RecruitSelectionView : Control
 
         _container.RemoveChild(_selectedOption);
         _selectedOption.QueueFree();
-        
+
         var gameStateController = Main.Instance.World.GetResource<GameStateController>();
         gameStateController.PopState();
     }
