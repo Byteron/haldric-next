@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlyd8631tfthl"]
+[gd_scene load_steps=6 format=3 uid="uid://sd8smyegm5wh"]
 
-[ext_resource type="Script" path="res://addons/wdk/Projectile.cs" id="1_acc0d"]
+[ext_resource type="Script" path="res://addons/wdk/unit/Projectile.cs" id="1_gl04i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3e8og"]
 albedo_color = Color(0.290196, 0.227451, 0.113725, 1)
@@ -16,7 +16,7 @@ size = Vector3(0.2, 0.2, 2)
 material_override = SubResource( "StandardMaterial3D_3e8og" )
 mesh = SubResource( "BoxMesh_6jrgh" )
 surface_material_override/0 = null
-script = ExtResource( "1_acc0d" )
+script = ExtResource( "1_gl04i" )
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -1.08841)
