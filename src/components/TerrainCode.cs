@@ -1,6 +1,6 @@
 public struct TerrainCode
 {
-    public string Value;
+    public string Value { get; set; }
 
     public TerrainCode(string code)
     {

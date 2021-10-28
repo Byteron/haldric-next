@@ -4,8 +4,8 @@ using Haldric.Wdk;
 
 public struct DamageEvent
 {
-    public EcsEntity DamagerEntity;
-    public EcsEntity TargetEntity;
+    public EcsEntity DamagerEntity { get; set; }
+    public EcsEntity TargetEntity { get; set; }
 
     public DamageEvent(EcsEntity damagerEntity, EcsEntity targetEntity)
     {

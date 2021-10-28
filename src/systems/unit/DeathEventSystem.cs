@@ -2,8 +2,8 @@ using Bitron.Ecs;
 
 public struct DeathEvent
 {
-    public EcsEntity Entity;
-    
+    public EcsEntity Entity { get; set; }
+
     public DeathEvent(EcsEntity entity)
     {
         Entity = entity;

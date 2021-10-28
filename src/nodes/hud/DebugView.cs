@@ -3,7 +3,7 @@ using System;
 
 public partial class DebugView : CanvasLayer
 {
-    public Label StatsLabel;
+    public Label StatsLabel { get; set; }
 
     public override void _Input(InputEvent e)
     {

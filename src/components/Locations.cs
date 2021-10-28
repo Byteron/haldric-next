@@ -1,27 +1,25 @@
 using Godot;
 using System.Collections.Generic;
 using Bitron.Ecs;
+using System;
 
 public struct Locations : IEcsAutoReset<Locations>
 {
-    Dictionary<Vector3, EcsEntity> _dict;
+    public Dictionary<Vector3, EcsEntity> Dict { get; set; }
 
-    public Dictionary<Vector3, EcsEntity> Dict { get { return _dict; } }
-
-    public Dictionary<Vector3, EcsEntity>.ValueCollection Values { get { return _dict.Values; } }
-
-    public int Count { get { return _dict.Count; } }
+    public Dictionary<Vector3, EcsEntity>.ValueCollection Values { get { return Dict.Values; } }
+    public int Count { get { return Dict.Count; } }
 
     public bool Has(Vector3 cell)
     {
-        return _dict.ContainsKey(cell);
+        return Dict.ContainsKey(cell);
     }
 
     public EcsEntity Get(Vector3 cell)
     {
-        if (_dict.ContainsKey(cell))
+        if (Dict.ContainsKey(cell))
         {
-            return _dict[cell];
+            return Dict[cell];
         }
 
         return default;
@@ -29,30 +27,30 @@ public struct Locations : IEcsAutoReset<Locations>
 
     public void Set(Vector3 cell, EcsEntity entity)
     {
-        if (_dict == null)
+        if (Dict == null)
         {
-            _dict = new Dictionary<Vector3, EcsEntity>();
+            Dict = new Dictionary<Vector3, EcsEntity>();
         }
 
-        if (_dict.ContainsKey(cell))
+        if (Dict.ContainsKey(cell))
         {
-            _dict[cell] = entity;
+            Dict[cell] = entity;
         }
         else
         {
-            _dict.Add(cell, entity);
+            Dict.Add(cell, entity);
         }
     }
 
     public void AutoReset(ref Locations c)
     {
-        if (c._dict != null)
+        if (c.Dict != null)
         {
-            c._dict.Clear();
+            c.Dict.Clear();
         }
         else
         {
-            c._dict = new Dictionary<Vector3, EcsEntity>();
+            c.Dict = new Dictionary<Vector3, EcsEntity>();
         }
     }
 }

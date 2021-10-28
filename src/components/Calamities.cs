@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct Calamities: IEcsAutoReset<Calamities>
 {
-    public List<DamageType> List;
+    public List<DamageType> List { get; set; }
 
     public Calamities(List<DamageType> types)
     {

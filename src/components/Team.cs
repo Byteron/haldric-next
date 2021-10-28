@@ -1,6 +1,6 @@
 public struct Team
 {
-    public int Value;
+    public int Value { get; set; }
 
     public Team(int value)
     {

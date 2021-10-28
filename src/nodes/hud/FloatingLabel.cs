@@ -4,9 +4,9 @@ using Bitron.Ecs;
 
 public partial class FloatingLabel : Control
 {
-    public Vector3 Position;
-    public Color Color;
-    public string Text;
+    public Vector3 Position { get; set; }
+    public Color Color { get; set; }
+    public string Text { get; set; }
 
     private Label _label;
 

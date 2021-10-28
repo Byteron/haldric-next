@@ -8,8 +8,8 @@ public struct Actions { } // For Attribute<T>
 
 public struct Attribute<T>
 {
-    public int Value;
-    public int Max;
+    public int Value { get; set; }
+    public int Max { get; set; }
 
     public Attribute(int max)
     {

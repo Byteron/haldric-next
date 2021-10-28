@@ -4,7 +4,7 @@ using Haldric.Wdk;
 
 public struct TerrainTypes
 {
-    public List<TerrainType> List;
+    public List<TerrainType> List { get; set; }
 
     public TerrainTypes(List<TerrainType> list)
     {
@@ -61,23 +61,10 @@ public struct TerrainTypes
 
 	public override string ToString()
 	{
-		string s = "";
-
-		for (int i = 0; i < List.Count; i++)
-		{
-			s += List[i].ToString();
-
-			if (i < List.Count - 1)
-			{
-				s += ", ";
-			}
-			
-		}
+		string s = string.Join(", ", List);
 		foreach (var type in List)
 		{
 		}
-
-		s += "";
 		return s;
 	}
 }

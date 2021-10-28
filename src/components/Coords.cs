@@ -2,8 +2,8 @@ using Godot;
 
 public struct Coords
 {
-    int X;
-    int Z;
+    public int X { get; set; }
+    public int Z { get; set; }
 
     public Vector3 Axial
     {

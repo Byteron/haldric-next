@@ -4,9 +4,9 @@ using Haldric.Wdk;
 
 public struct SpawnUnitEvent
 {
-    public int Team;
-    public string Id;
-    public Coords Coords;
+    public int Team { get; set; }
+    public string Id { get; set; }
+    public Coords Coords { get; set; }
 
     public SpawnUnitEvent(int team, string id, Coords coords)
     {
@@ -41,7 +41,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             
             ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
 
-            ref var locations = ref map.Locations;
+            var locations = map.Locations;
 
             var locEntity = locations.Get(spawnEvent.Coords.Cube);
             ref var elevation = ref locEntity.Get<Elevation>();

@@ -5,9 +5,9 @@ using Bitron.Ecs;
 
 public struct SpawnMapEvent
 {
-    public int Width;
-    public int Height;
-    public Dictionary MapData;
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public Dictionary MapData { get; set; }
 
     public SpawnMapEvent(Dictionary mapData)
     {
@@ -59,9 +59,9 @@ public class SpawnMapEventSystem : IEcsSystem
 
             world.AddResource(map);
 
-            ref var locations = ref map.Locations;
-            ref var grid = ref map.Grid;
-            ref var chunkSize = ref map.ChunkSize;
+            var locations = map.Locations;
+            var grid = map.Grid;
+            var chunkSize = map.ChunkSize;
 
             InitializeHover();
 
@@ -84,10 +84,11 @@ public class SpawnMapEventSystem : IEcsSystem
 
     private Dictionary GetMapDataFromDimensions(int width, int height)
     {
-        var dict = new Dictionary();
-
-        dict.Add("Width", width);
-        dict.Add("Height", height);
+        var dict = new Dictionary
+        {
+            { "Width", width },
+            { "Height", height }
+        };
 
         var locsDict = new Dictionary();
 
@@ -97,11 +98,12 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var coords = Coords.FromOffset(x, z);
 
-                var locDict = new Dictionary();
-
-                locDict.Add("Terrain", new List<string>() { "Gg" });
-                locDict.Add("Elevation", 0);
-                locDict.Add("ElevationOffset", 0);
+                var locDict = new Dictionary
+                {
+                    { "Terrain", new List<string>() { "Gg" } },
+                    { "Elevation", 0 },
+                    { "ElevationOffset", 0 }
+                };
 
                 if (locsDict.Contains(coords.Cube))
                 {
@@ -135,7 +137,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
         var map = new Map(width, height, 4);
 
-        ref var locations = ref map.Locations;
+        var locations = map.Locations;
 
         var locationsData = (Dictionary)mapData["Locations"];
 
@@ -314,7 +316,7 @@ public class SpawnMapEventSystem : IEcsSystem
             var cLocEntity = frontier.Dequeue();
             ref var cNeighbors = ref cLocEntity.Get<Neighbors>();
 
-            foreach (var nLocEntity in cNeighbors.GetArray())
+            foreach (var nLocEntity in cNeighbors.Array)
             {
                 if (!nLocEntity.IsAlive())
                 {
@@ -364,7 +366,7 @@ public class SpawnMapEventSystem : IEcsSystem
             ref var coords = ref locEntity.Get<Coords>();
             ref var neighbors = ref locEntity.Get<Neighbors>();
             
-            foreach (var nLocEntity in neighbors.GetArray())
+            foreach (var nLocEntity in neighbors.Array)
             {
                 if (!nLocEntity.IsAlive())
                 {

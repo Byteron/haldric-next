@@ -7,8 +7,8 @@ public partial class AttackSelectionView : Control
 {
     [Export] PackedScene AttackSelectionOption;
 
-    private EcsEntity _attackerLocEntity { get; set; }
-    private EcsEntity _defenderLocEntity { get; set; }
+    private EcsEntity _attackerLocEntity;
+    private EcsEntity _defenderLocEntity;
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
     

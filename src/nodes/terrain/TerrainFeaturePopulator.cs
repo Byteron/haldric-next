@@ -4,8 +4,8 @@ using Bitron.Ecs;
 
 struct RenderData
 {
-    public Vector3 Position;
-    public Vector3 Rotation;
+    public Vector3 Position { get; set; }
+    public Vector3 Rotation { get; set; }
 }
 
 public partial class TerrainFeaturePopulator : Node3D
@@ -13,7 +13,7 @@ public partial class TerrainFeaturePopulator : Node3D
     private Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
     private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
     private List<RID> _rids = new List<RID>();
-
+    private Dictionary<Vector3, int> _randomIndicies = new Dictionary<Vector3, int>();
     public TerrainFeaturePopulator()
     {
         Name = "TerrainFeaturePopuplator";
@@ -57,8 +57,6 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    Dictionary<Vector3, int> randomIndicies = new Dictionary<Vector3, int>();
-
     public void AddDecoration(EcsEntity locEntity, string terrainCode)
     {
         var position = locEntity.Get<Coords>().World;
@@ -72,10 +70,10 @@ public partial class TerrainFeaturePopulator : Node3D
             }
             else
             {
-                if (!randomIndicies.TryGetValue(position, out var index))
+                if (!_randomIndicies.TryGetValue(position, out var index))
                 {
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                    randomIndicies.Add(position, index);
+                    _randomIndicies.Add(position, index);
                 }
                 
                 var mesh = terrainGraphic.Variations[index];
@@ -106,9 +104,9 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+            var nTerrainCode = nTerrainEntity.Get<TerrainCode>().Value;
 
             if (elevation.ValueWithOffset != nElevation.ValueWithOffset)
             {
@@ -125,10 +123,10 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndicies.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        randomIndicies.Add(position, index);
+                        _randomIndicies.Add(position, index);
                     }
                     
                     var mesh = terrainGraphic.Variations[index];
@@ -159,11 +157,11 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void AddWalls(EcsEntity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        var terrainCode = terrainEntity.Get<TerrainCode>().Value;
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
         center.y = locEntity.Get<Elevation>().HeightWithOffset;
@@ -180,9 +178,9 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+            var nTerrainCode = nTerrainEntity.Get<TerrainCode>().Value;
 
             // if (elevation.Level < nElevation.Level)
             // {
@@ -205,12 +203,12 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void AddTowers(EcsEntity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        var terrainCode = terrainEntity.Get<TerrainCode>().Value;
+        var elevation = locEntity.Get<Elevation>();
+        var plateauArea = locEntity.Get<PlateauArea>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
         center.y = locEntity.Get<Elevation>().HeightWithOffset;
@@ -227,9 +225,9 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
+            var nTerrainCode = nTerrainEntity.Get<TerrainCode>().Value;
 
             if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
             {
@@ -262,9 +260,11 @@ public partial class TerrainFeaturePopulator : Node3D
 
         var renderDatas = _renderData[meshId];
 
-        var renderData = new RenderData();
-        renderData.Position = origin;
-        renderData.Rotation = rotation;
+        var renderData = new RenderData
+        {
+            Position = origin,
+            Rotation = rotation
+        };
         renderDatas.Add(renderData);
     }
 

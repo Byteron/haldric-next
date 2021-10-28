@@ -2,7 +2,7 @@ using Bitron.Ecs;
 
 public struct Index : IEcsAutoReset<Index>
 {
-    public int Value;
+    public int Value { get; set; }
 
     public Index(int value)
     {

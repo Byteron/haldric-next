@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct UpdateTerrainFeaturePopulatorEvent
 {
-    public List<Vector3i> Chunks;
+    public List<Vector3i> Chunks { get; set; }
 
     public UpdateTerrainFeaturePopulatorEvent(List<Vector3i> chunks = null)
     {
@@ -14,7 +14,7 @@ public struct UpdateTerrainFeaturePopulatorEvent
 
 public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 {
-    TerrainFeaturePopulator _terrainFeaturePopulator;
+    private TerrainFeaturePopulator _terrainFeaturePopulator;
 
     public void Run(EcsWorld world)
     {
@@ -71,16 +71,16 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+        var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>();
 
 
         Populate(locEntity, baseTerrainCode);
 
         if (locEntity.Has<HasOverlayTerrain>())
         {
-            ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
-            ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+            var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
+            var overlayTerrainCode = overlayTerrainEntity.Get<TerrainCode>();
 
             Populate(locEntity, overlayTerrainCode);
         }

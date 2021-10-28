@@ -3,8 +3,8 @@ using Bitron.Ecs;
 
 public struct UnitHoveredEvent
 {
-    public EcsEntity UnitEntity;
-    
+    public EcsEntity UnitEntity { get; set; }
+
     public UnitHoveredEvent(EcsEntity unitEntity)
     {
         UnitEntity = unitEntity;
@@ -28,12 +28,12 @@ public class UnitHoveredEventSystem : IEcsSystem
             var mp = unitEntity.Get<Attribute<Moves>>();
             var xp = unitEntity.Get<Attribute<Experience>>();
 
-            var s = $"ID: {id}\nL: {l}\nHP: {hp.ToString()}\nAP: {ap.ToString()}\nMP: {mp.ToString()}\nXP: {xp.ToString()}";
+            var s = $"ID: {id}\nL: {l}\nHP: {hp}\nAP: {ap}\nMP: {mp}\nXP: {xp}";
 
             if (unitEntity.Has<Attacks>())
             {
                 s += "\nAttacks:";
-                foreach(EcsEntity attackEntity in unitEntity.Get<Attacks>().GetList())
+                foreach(EcsEntity attackEntity in unitEntity.Get<Attacks>().List)
                 {
                     ref var attackId = ref attackEntity.Get<Id>();
                     ref var damage = ref attackEntity.Get<Damage>();

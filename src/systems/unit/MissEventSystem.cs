@@ -4,7 +4,7 @@ using Haldric.Wdk;
 
 public struct MissEvent
 {
-    public EcsEntity TargetEntity;
+    public EcsEntity TargetEntity { get; set; }
 
     public MissEvent(EcsEntity targetEntity)
     {

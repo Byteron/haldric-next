@@ -13,8 +13,6 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 
         var hoveredLocation = world.GetResource<HoveredLocation>();
 
-        string text = "";
-
         var locEntity = hoveredLocation.Entity;
 
         if (!locEntity.IsAlive())
@@ -37,23 +35,23 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             overlayTerrainCode = "^" + overlayTerrainEntity.Get<TerrainCode>().Value;
         }
 
-        text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
+        string text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
         text += $"\nElevation: {elevation}";
         text += $"\nTerrain: {baseTerrainCode}{overlayTerrainCode}";
-        text += $"\nTypes: {terrainTypes.ToString()}";
+        text += $"\nTypes: {terrainTypes}";
         text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
         text += $"\nCost: {terrainTypes.GetMovementCost()}";
 
         if (locEntity.Has<Castle>())
         {
-            ref var castle = ref locEntity.Get<Castle>();
+            var castle = locEntity.Get<Castle>();
 
             text += "\nCastle: " + castle.List.Count;
         }
 
         if (locEntity.Has<Village>())
         {
-            ref var village = ref locEntity.Get<Village>();
+            var village = locEntity.Get<Village>();
 
             text += "\nVillage: " + village.List.Count;
         }

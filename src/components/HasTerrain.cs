@@ -2,7 +2,7 @@ using Bitron.Ecs;
 
 struct HasBaseTerrain : IEcsAutoReset<HasBaseTerrain>
 {
-    public EcsEntity Entity;
+    public EcsEntity Entity { get; set; }
 
     public HasBaseTerrain(EcsEntity terrainEntity)
     {
@@ -17,7 +17,7 @@ struct HasBaseTerrain : IEcsAutoReset<HasBaseTerrain>
 
 struct HasOverlayTerrain : IEcsAutoReset<HasOverlayTerrain>
 {
-    public EcsEntity Entity;
+    public EcsEntity Entity { get; set; }
 
     public HasOverlayTerrain(EcsEntity terrainEntity)
     {

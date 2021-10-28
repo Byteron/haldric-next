@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=2 format=3 uid="uid://burfnhtyqogxd"]
 
-[ext_resource type="Material" uid="uid://dt6noux6kiuj" path="res://assets/graphics/materials/Village_human_basefloor_01.res" id="1_aup5i"]
+[ext_resource type="Material" uid="uid://dt6noux6kiuj" path="res://assets/graphics/materials/Village_human_basefloor_01.res" id="1_6vyny"]
 
 [resource]
 resource_name = "Village_human_Village_human_center_02-Village_human_basefloor_01"
@@ -10,7 +10,7 @@ _surfaces = [{
 "format": 4119,
 "index_count": 60,
 "index_data": PackedByteArray(0, 0, 10, 0, 3, 0, 5, 0, 11, 0, 12, 0, 4, 0, 13, 0, 8, 0, 6, 0, 9, 0, 14, 0, 15, 0, 16, 0, 1, 0, 17, 0, 2, 0, 18, 0, 7, 0, 20, 0, 19, 0, 21, 0, 23, 0, 22, 0, 24, 0, 26, 0, 25, 0, 27, 0, 29, 0, 28, 0, 0, 0, 30, 0, 10, 0, 5, 0, 31, 0, 11, 0, 4, 0, 32, 0, 13, 0, 6, 0, 33, 0, 9, 0, 15, 0, 34, 0, 16, 0, 17, 0, 35, 0, 2, 0, 7, 0, 36, 0, 20, 0, 21, 0, 37, 0, 23, 0, 24, 0, 38, 0, 26, 0, 27, 0, 39, 0, 29, 0),
-"material": ExtResource( "1_aup5i" ),
+"material": ExtResource( "1_6vyny" ),
 "name": "Village_human_basefloor_01",
 "primitive": 3,
 "vertex_count": 40,

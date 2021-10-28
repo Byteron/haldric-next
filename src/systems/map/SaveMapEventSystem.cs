@@ -5,7 +5,7 @@ using Bitron.Ecs;
 
 public struct SaveMapEvent
 {
-    public string Name;
+    public string Name { get; set; }
 
     public SaveMapEvent(string name)
     {
@@ -30,8 +30,8 @@ public class SaveMapEventSystem : IEcsSystem
             var saveData = new Dictionary();
             var locationsData = new Dictionary();
 
-            ref var locations = ref map.Locations;
-            ref var grid = ref map.Grid;
+            var locations = map.Locations;
+            var grid = map.Grid;
 
             foreach (var item in locations.Dict)
             {
@@ -40,15 +40,15 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var terrainCodes = new List<string>();
 
-                ref var baseTerrainEntity = ref location.Get<HasBaseTerrain>().Entity;
-                ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+                var baseTerrainEntity = location.Get<HasBaseTerrain>().Entity;
+                var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>();
 
                 terrainCodes.Add(baseTerrainCode.Value);
 
                 if (location.Has<HasOverlayTerrain>())
                 {
-                    ref var overlayTerrainEntity = ref location.Get<HasOverlayTerrain>().Entity;
-                    ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+                    var overlayTerrainEntity = location.Get<HasOverlayTerrain>().Entity;
+                    var overlayTerrainCode = overlayTerrainEntity.Get<TerrainCode>();
 
                     terrainCodes.Add(overlayTerrainCode.Value);
                 }
@@ -71,7 +71,7 @@ public class SaveMapEventSystem : IEcsSystem
     private void SaveToFile(string name, Dictionary saveData)
     {
         var json = new JSON();
-        var jsonString = (string)json.Stringify(saveData);
+        var jsonString = json.Stringify(saveData);
         var file = new File();
         file.Open(Path + name + ".json", File.ModeFlags.Write);
         file.StoreString(jsonString);

@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct UpdateMapEvent
 {
-    public List<Vector3i> Chunks;
+    public List<Vector3i> Chunks { get; set; }
 
     public UpdateMapEvent(List<Vector3i> chunks = null)
     {

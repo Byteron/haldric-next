@@ -3,8 +3,8 @@ using Godot;
 
 public struct HighlightLocationEvent
 {
-    public Coords Coords;
-    public int Range;
+    public Coords Coords { get; set; }
+    public int Range { get; set; }
 
     public HighlightLocationEvent(Coords coords, int range)
     {
@@ -22,7 +22,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
         foreach (var eventEntityId in query)
         {
             var map = world.GetResource<Map>();
-            ref var grid = ref map.Grid;
+            var grid = map.Grid;
 
             var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
             

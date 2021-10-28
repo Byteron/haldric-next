@@ -67,7 +67,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
                 _terrainMesh = chunkEntity.Get<NodeHandle<TerrainMesh>>().Node;
 
-                ref var locations = ref chunkEntity.Get<Locations>();
+                var locations = chunkEntity.Get<Locations>();
 
                 Triangulate(locations);
 
@@ -109,10 +109,10 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     {
         var index = locEntity.Get<Index>().Value;
 
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>().Value;
+        var elevation = locEntity.Get<Elevation>();
+        var plateauArea = locEntity.Get<PlateauArea>();
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        var terrainCode = terrainEntity.Get<TerrainCode>().Value;
 
         Vector3 center = locEntity.Get<Coords>().World;
         center.y = elevation.HeightWithOffset;
@@ -134,10 +134,10 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     {
         var locIndex = locEntity.Get<Index>().Value;
 
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
-        ref var terrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
 
         if (!neighbors.Has(direction))
         {
@@ -147,10 +147,10 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         var nLocEntity = neighbors.Get(direction);
         var nLocIndex = nLocEntity.Get<Index>().Value;
 
-        ref var nCoords = ref nLocEntity.Get<Coords>();
-        ref var nElevation = ref nLocEntity.Get<Elevation>();
-        ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
-        ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
+        var nCoords = nLocEntity.Get<Coords>();
+        var nElevation = nLocEntity.Get<Elevation>();
+        var nPlateauArea = nLocEntity.Get<PlateauArea>();
+        var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
 
         var bridge = Metrics.GetBridge(direction, nPlateauArea);
         bridge.y = (nCoords.World.y + nElevation.HeightWithOffset) - (coords.World.y + elevation.HeightWithOffset);
@@ -167,9 +167,9 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             var nextLocEntity = neighbors.Get(direction.Next());
             var nextLocIndex = nextLocEntity.Get<Index>().Value;
 
-            ref var nextElevation = ref nextLocEntity.Get<Elevation>();
-            ref var nextPlateauArea = ref nextLocEntity.Get<PlateauArea>();
-            ref var nextTerrainEntity = ref nextLocEntity.Get<HasBaseTerrain>().Entity;
+            var nextElevation = nextLocEntity.Get<Elevation>();
+            var nextPlateauArea = nextLocEntity.Get<PlateauArea>();
+            var nextTerrainEntity = nextLocEntity.Get<HasBaseTerrain>().Entity;
 
             var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
             v6.y = nextElevation.HeightWithOffset;
