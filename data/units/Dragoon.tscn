@@ -29,4 +29,4 @@ DamageType = 1
 Range = 2
 
 [node name="Unit" parent="UnitView" index="0" instance=ExtResource( "3_yd2qq" )]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+transform = Transform3D(-3, 0, -2.62268e-07, 0, 3, 0, 2.62268e-07, 0, -3, 0, 0, 0)
