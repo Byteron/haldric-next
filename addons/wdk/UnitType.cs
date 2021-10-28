@@ -6,6 +6,7 @@ namespace Haldric.Wdk
     public partial class UnitType : Node3D
     {
         [Export] public string Id = "";
+        [Export] public int Cost = 15;
         [Export] public int Level = 1;
         [Export] public int Health = 30;
         [Export] public int Actions = 1;

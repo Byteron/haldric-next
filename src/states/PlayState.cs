@@ -10,15 +10,17 @@ public partial class PlayState : GameState
         AddInputSystem(new SelectTargetSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
+        AddInputSystem(new RecruitInputSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());
+        AddUpdateSystem(new UpdatePlayerInfoSystem());
+        AddUpdateSystem(new UpdateUnitPlateSystem());
+        AddUpdateSystem(new UpdateStatsInfoSystem());
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));
         AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem());
-        AddUpdateSystem(new UpdateUnitPlateSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -28,6 +30,7 @@ public partial class PlayState : GameState
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
+        AddEventSystem<RecruitUnitEvent>(new RecruitUnitEventSystem(this));
         AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
         AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());

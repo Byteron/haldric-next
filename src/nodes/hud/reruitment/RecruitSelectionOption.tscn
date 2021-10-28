@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cflp78vsr0b02"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/reruitment/RecruitSelectionOption.cs" id="1_5iqw1"]
+
+[node name="RecruitSelectionOption" type="Button"]
+offset_right = 450.0
+offset_bottom = 50.0
+rect_min_size = Vector2(450, 50)
+toggle_mode = true
+script = ExtResource( "1_5iqw1" )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -74,8 +74,6 @@ public class TurnEndEventSystem : IEcsSystem
                     hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
                 }
             }
-
-            hudView.PlayerLabel.Text = $"Player: {player.Get<Team>().Value}, Gold: {player.Get<Gold>().Value}";
         }
     }
 }

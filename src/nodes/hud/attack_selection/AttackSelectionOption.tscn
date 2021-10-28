@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://e6mqw42cj1d3"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://src/nodes/hud/AttackSelectionOption.cs" id="1_dy6be"]
+[ext_resource type="Script" path="res://src/nodes/hud/attack_selection/AttackSelectionOption.cs" id="1_dy6be"]
 
 [node name="AttackSelectionOption" type="Button"]
 offset_right = 450.0

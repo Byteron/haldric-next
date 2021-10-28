@@ -7,12 +7,16 @@ public struct SpawnUnitEvent
     public int Team;
     public string Id;
     public Coords Coords;
+    public bool IsLeader;
+    public bool IsHero;
 
-    public SpawnUnitEvent(int team, string id, Coords coords)
+    public SpawnUnitEvent(int team, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
         Team = team;
         Id = id;
         Coords = coords;
+        IsLeader = isLeader;
+        IsHero = isHero;
     }
 }
 
@@ -65,6 +69,17 @@ public class SpawnUnitEventSystem : IEcsSystem
             
             unitEntity.Add(new Team(spawnEvent.Team));
             unitEntity.Add(spawnEvent.Coords);
+
+            if (spawnEvent.IsLeader)
+            {
+                unitEntity.Add(new IsLeader());
+            }
+            
+            if (spawnEvent.IsHero)
+            {
+                unitEntity.Add(new IsHero());
+            }
+
 
             unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
 

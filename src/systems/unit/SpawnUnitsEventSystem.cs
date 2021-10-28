@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
 
 public struct SpawnUnitsEvent { }
@@ -18,35 +19,15 @@ public class SpawnUnitsEventSystem : IEcsSystem
             {
                 var playerEntity = world.Spawn()
                     .Add(new Team(playerId))
-                    .Add(new Gold(100));
+                    .Add(new Gold(100))
+                    .Add(new Recruits(new List<string>() { "Cavalryman", "Bowman", "Spearman"}));
                 
                 scenario.Players.Add(playerEntity);
 
                 var locEntity = world.Entity(locEntityId);
                 ref var keep = ref locEntity.Get<Castle>();
 
-                world.Spawn().Add(new SpawnUnitEvent(playerId, "Dragoon", locEntity.Get<Coords>()));
-
-                foreach (var castleLoc in keep.List)
-                {
-                    if (castleLoc.Has<Castle>())
-                    {
-                        continue;
-                    }
-
-                    if (Godot.GD.Randf() < 0.33f)
-                    {
-                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Spearman", castleLoc.Get<Coords>()));
-                    }
-                    else if (Godot.GD.Randf() < 0.66f)
-                    {
-                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Bowman", castleLoc.Get<Coords>()));
-                    }
-                    else
-                    {
-                        world.Spawn().Add(new SpawnUnitEvent(playerId, "Cavalryman", castleLoc.Get<Coords>()));
-                    }
-                }
+                world.Spawn().Add(new SpawnUnitEvent(playerId, "Dragoon", locEntity.Get<Coords>(), true));
 
                 playerId += 1;
             }

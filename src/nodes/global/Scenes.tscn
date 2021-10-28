@@ -1,14 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxr5qduf6qbld"]
+[gd_scene load_steps=15 format=3 uid="uid://bxr5qduf6qbld"]
 
 [ext_resource type="Script" path="res://src/nodes/global/Scenes.cs" id="1"]
-[ext_resource type="PackedScene" path="res://src/nodes/editor/EditorView.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://dejear2wpo7dx" path="res://src/nodes/editor/EditorView.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://oeoq0rlbiox4" path="res://src/nodes/hud/Cursor3D.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://cq72yhdtb8v7c" path="res://src/nodes/menu/MainMenuView.tscn" id="3_wqxn1"]
 [ext_resource type="PackedScene" uid="uid://v3pjno5grfrw" path="res://src/nodes/menu/LoadingStateView.tscn" id="4_e3bw0"]
 [ext_resource type="PackedScene" uid="uid://dn8gmhek53gox" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
-[ext_resource type="PackedScene" uid="uid://b22rnbucih4bt" path="res://src/nodes/hud/AttackSelectionView.tscn" id="4_v3bgl"]
+[ext_resource type="PackedScene" path="res://src/nodes/hud/attack_selection/AttackSelectionView.tscn" id="4_v3bgl"]
 [ext_resource type="PackedScene" uid="uid://b67er0nylnvpd" path="res://src/nodes/hud/HUDView.tscn" id="5_ljnc1"]
 [ext_resource type="PackedScene" uid="uid://dmyvms7guc7jr" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
+[ext_resource type="PackedScene" uid="uid://dlpi2a0xlug5b" path="res://src/nodes/hud/reruitment/RecruitSelectionView.tscn" id="5_v23ql"]
 [ext_resource type="PackedScene" uid="uid://dxgr72l6bajwt" path="res://src/nodes/hud/TerrainHighlighter.tscn" id="7_smnkw"]
 [ext_resource type="PackedScene" uid="uid://doifba6dcwgky" path="res://src/nodes/hud/FloatingLabel.tscn" id="9_liy6q"]
 [ext_resource type="PackedScene" uid="uid://d06xn7gquqoud" path="res://src/nodes/hud/UnitPlate.tscn" id="10_rm84j"]
@@ -19,6 +20,7 @@ script = ExtResource( "1" )
 EditorView = ExtResource( "2" )
 MainMenuView = ExtResource( "3_wqxn1" )
 AttackSelectionView = ExtResource( "4_v3bgl" )
+RecruitSelectionView = ExtResource( "5_v23ql" )
 LoadingStateView = ExtResource( "4_e3bw0" )
 DebugView = ExtResource( "4_gx4dp" )
 HUDView = ExtResource( "5_ljnc1" )

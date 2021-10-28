@@ -184,10 +184,10 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
 
-            // if (elevation.Level < nElevation.Level)
-            // {
-            //     continue;
-            // }
+            if (nElevation.ValueWithOffset < 0)
+            {
+                continue;
+            }
 
             if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
             {
@@ -230,6 +230,11 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nElevation = ref nLocEntity.Get<Elevation>();
             ref var nTerrainEntity = ref nLocEntity.Get<HasBaseTerrain>().Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>().Value;
+
+            if (nElevation.ValueWithOffset < 0)
+            {
+                continue;
+            }
 
             if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
             {
