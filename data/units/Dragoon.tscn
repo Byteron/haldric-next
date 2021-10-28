@@ -6,6 +6,7 @@
 
 [node name="Dragoon" instance=ExtResource( "1_jd77e" )]
 Id = "Dragoon"
+Cost = 28
 Level = 2
 Health = 68
 Moves = 9

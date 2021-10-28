@@ -6,6 +6,7 @@
 
 [node name="Cavalryman" instance=ExtResource( "1_xrcl7" )]
 Id = "Cavalryman"
+Cost = 17
 Health = 50
 Moves = 8
 Experience = 8

@@ -6,6 +6,7 @@
 
 [node name="Bowman" instance=ExtResource( "1_4ncdw" )]
 Id = "Bowman"
+Cost = 14
 Health = 48
 
 [node name="Dagger" parent="Attacks" index="0" instance=ExtResource( "2_ls8kt" )]
