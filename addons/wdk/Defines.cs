@@ -22,8 +22,9 @@ namespace Haldric.Wdk
         Infested,
         Rough,
         Rocky,
-        Aqueous,
-        Oceanic,
+        Reefy,
+        ShallowWaters,
+        DeepWaters,
         Unwalkable,
         Impassable,
     }
@@ -44,8 +45,8 @@ namespace Haldric.Wdk
             { TerrainType.Infested, 2 },
             { TerrainType.Rough, 3 },
             { TerrainType.Rocky, 3 },
-            { TerrainType.Aqueous, 3 },
-            { TerrainType.Oceanic, 99 },
+            { TerrainType.ShallowWaters, 3 },
+            { TerrainType.DeepWaters, 99 },
             { TerrainType.Unwalkable, 99 },
             { TerrainType.Impassable, 99 },
         };
@@ -59,8 +60,8 @@ namespace Haldric.Wdk
             { TerrainType.Infested, 0.3f },
             { TerrainType.Rough, 0.0f },
             { TerrainType.Rocky, 0.4f },
-            { TerrainType.Aqueous, 0f },
-            { TerrainType.Oceanic, 0f },
+            { TerrainType.ShallowWaters, 0f },
+            { TerrainType.DeepWaters, 0f },
             { TerrainType.Unwalkable, 0f },
             { TerrainType.Impassable, 0f },
         };
