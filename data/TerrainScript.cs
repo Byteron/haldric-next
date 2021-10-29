@@ -9,8 +9,8 @@ public class TerrainScript : TerrainLoader
         NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
         NewBase("Dd", new List<TerrainType>() { TerrainType.Rough });
         
-        NewShallowWater("Ws", new List<TerrainType>() { TerrainType.Aqueous });
-        NewDeepWater("Wo", new List<TerrainType>() { TerrainType.Oceanic });
+        NewShallowWater("Ws", new List<TerrainType>() { TerrainType.ShallowWaters });
+        NewDeepWater("Wo", new List<TerrainType>() { TerrainType.DeepWaters });
         
         NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });
 
