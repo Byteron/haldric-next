@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/nodes/menu/MainMenuView.cs" id="1_30ybv"]
 
-[node name="MainMenuView" type="Control"]
+[node name="MainMenuView" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( "1_30ybv" )
@@ -11,30 +11,34 @@ __meta__ = {
 }
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 1913.0
+offset_bottom = 1073.0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-offset_left = 925.0
-offset_top = 492.0
-offset_right = 995.0
-offset_bottom = 587.0
+offset_left = 903.0
+offset_top = 469.0
+offset_right = 1003.0
+offset_bottom = 597.0
 script = null
 
 [node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
-offset_right = 70.0
-offset_bottom = 29.0
+offset_right = 100.0
+offset_bottom = 40.0
+rect_min_size = Vector2(100, 40)
 text = "PLAY"
 script = null
 
 [node name="EditorButton" type="Button" parent="CenterContainer/VBoxContainer"]
-offset_top = 33.0
-offset_right = 70.0
-offset_bottom = 62.0
+offset_top = 44.0
+offset_right = 100.0
+offset_bottom = 84.0
+rect_min_size = Vector2(100, 40)
 text = "EDITOR"
 script = null
 __meta__ = {
@@ -42,9 +46,10 @@ __meta__ = {
 }
 
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
-offset_top = 66.0
-offset_right = 70.0
-offset_bottom = 95.0
+offset_top = 88.0
+offset_right = 100.0
+offset_bottom = 128.0
+rect_min_size = Vector2(100, 40)
 text = "QUIT"
 script = null
 __meta__ = {
