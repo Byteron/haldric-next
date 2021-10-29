@@ -28,13 +28,13 @@ public partial class EditorView : CanvasLayer
 
     public override void _Ready()
     {
-        _terrains = GetNode<Control>("Tools/VBoxContainer/Terrains/GridContainer");
+        _terrains = GetNode<Control>("Tools/Terrain/Terrains/CenterContainer/GridContainer");
 
-        _elevationSlider = GetNode<HSlider>("Tools/VBoxContainer/Elevation/HSlider");
-        _brushSizeSlider = GetNode<HSlider>("Tools/VBoxContainer/BrushSize/HSlider");
+        _elevationSlider = GetNode<HSlider>("Tools/Terrain/Elevation/HSlider");
+        _brushSizeSlider = GetNode<HSlider>("Tools/Terrain/BrushSize/HSlider");
 
-        _elevationCheckBox = GetNode<CheckBox>("Tools/VBoxContainer/Elevation/HBoxContainer/CheckBox");
-        _terrainCheckBox = GetNode<CheckBox>("Tools/VBoxContainer/Terrains/HBoxContainer/CheckBox");
+        _elevationCheckBox = GetNode<CheckBox>("Tools/Terrain/Elevation/HBoxContainer/CheckBox");
+        _terrainCheckBox = GetNode<CheckBox>("Tools/Terrain/Terrains/HBoxContainer/CheckBox");
 
         _widthTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Width/TextEdit");
         _heightTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Height/TextEdit");
@@ -51,6 +51,7 @@ public partial class EditorView : CanvasLayer
             var code = item.Key;
 
             var button = new Button();
+            button.RectMinSize = new Vector2(50, 50);
             button.Text = code;
             button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
             _terrains.AddChild(button);

@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 
+public class Faction
+{
+    public string Name = "Loyalists";
+    public List<string> Recruits = new List<string>() { "Cavalryman", "Bowman", "Spearman" };
+}
+
 public struct SpawnUnitsEvent { }
 
 public class SpawnUnitsEventSystem : IEcsSystem
