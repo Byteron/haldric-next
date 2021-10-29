@@ -7,6 +7,7 @@ public struct SpawnMapEvent
 {
     public int Width;
     public int Height;
+    public Dictionary Players;
     public Dictionary MapData;
 
     public SpawnMapEvent(Dictionary mapData)
@@ -14,6 +15,15 @@ public struct SpawnMapEvent
         MapData = mapData;
         Width = (int)(float)mapData["Width"];
         Height = (int)(float)mapData["Height"];
+
+        if (mapData.Contains("Players"))
+        {
+            Players = (Dictionary)mapData["Players"];
+        }
+        else
+        {
+            Players = null;
+        }
     }
 
     public SpawnMapEvent(int width, int height)
@@ -21,6 +31,7 @@ public struct SpawnMapEvent
         Width = width;
         Height = height;
         MapData = null;
+        Players = null;
     }
 }
 
@@ -55,6 +66,7 @@ public class SpawnMapEventSystem : IEcsSystem
             _parent.AddChild(terrainHighlighter);
             world.AddResource(terrainHighlighter);
 
+            Dictionary players = spawnEvent.Players;
             Map map = CreateMapFromMapData(spawnEvent.MapData);
 
             world.AddResource(map);
@@ -70,7 +82,28 @@ public class SpawnMapEventSystem : IEcsSystem
             InitializeCastles(locations);
             InitializeVillages(locations);
             InitializePathFinding(map);
+            InitializePlayers(locations, players);
             SendUpdateMapEvent();
+        }
+    }
+
+    private void InitializePlayers(Locations locations, Dictionary players)
+    {
+        if (players == null)
+        {
+            return;
+        }
+
+        foreach (var locEntity in locations.Values)
+        {
+            ref var coords = ref locEntity.Get<Coords>();
+
+            if (players.Contains(coords.Cube.ToString()))
+            {
+                var team = (int)(float)players[coords.Cube.ToString()];
+
+                locEntity.Add(new IsStartingPositionOfTeam(team));
+            }
         }
     }
 

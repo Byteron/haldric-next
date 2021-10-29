@@ -4,8 +4,14 @@ using Godot;
 
 public partial class PlayState : GameState
 {
-    public PlayState(EcsWorld world) : base(world)
+    private string _mapName;
+    private Dictionary<int, string> _factions;
+
+    public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions) : base(world)
     {
+        _mapName = mapName;
+        _factions = factions;
+
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
         AddInputSystem(new SelectUnitSystem());
@@ -71,8 +77,8 @@ public partial class PlayState : GameState
 
         _world.AddResource(hudView);
 
-        _world.Spawn().Add(new LoadMapEvent("map"));
-        _world.Spawn().Add(new SpawnPlayersEvent());
+        _world.Spawn().Add(new LoadMapEvent(_mapName));
+        _world.Spawn().Add(new SpawnPlayersEvent(_factions));
         _world.Spawn().Add(new TurnEndEvent());
     }
 

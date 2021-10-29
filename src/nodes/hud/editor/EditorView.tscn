@@ -230,29 +230,6 @@ offset_right = -4.0
 offset_bottom = -4.0
 script = null
 
-[node name="Options" type="VBoxContainer" parent="Tools/Players"]
-offset_right = 193.0
-offset_bottom = 341.0
-size_flags_vertical = 3
-script = null
-
-[node name="PlayerOption" type="PanelContainer" parent="Tools/Players/Options"]
-offset_right = 193.0
-offset_bottom = 40.0
-script = null
-
-[node name="Label" type="Label" parent="Tools/Players/Options/PlayerOption"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 186.0
-offset_bottom = 33.0
-size_flags_horizontal = 3
-text = "WIP"
-align = 1
-valign = 1
-structured_text_bidi_override_options = []
-script = null
-
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -287,5 +264,6 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="Create/VBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
+[connection signal="tab_changed" from="Tools" to="." method="OnToolsTabChanged"]
 [connection signal="pressed" from="HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
 [connection signal="pressed" from="HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]

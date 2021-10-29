@@ -29,6 +29,7 @@ public partial class LoadingState : GameState
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
         _loadingStates.Enqueue(new LoadingData("Factions", Data.Instance.LoadFactions));
         _loadingStates.Enqueue(new LoadingData("Terrain", Data.Instance.LoadTerrain));
+        _loadingStates.Enqueue(new LoadingData("Maps", Data.Instance.LoadMaps));
 
         _view = Scenes.Instance.LoadingStateView.Instantiate<LoadingStateView>();
         AddChild(_view);

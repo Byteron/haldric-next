@@ -6,7 +6,8 @@ public partial class EditorState : GameState
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
-        AddInputSystem(new EditorEditSystem(this));
+        AddInputSystem(new EditorEditTerrainSystem(this));
+        AddInputSystem(new EditorEditPlayerSystem(this));
         AddInputSystem(new UndoCommandSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());

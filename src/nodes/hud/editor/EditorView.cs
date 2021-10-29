@@ -1,9 +1,17 @@
+using System.Collections.Generic;
 using Godot;
-using System;
 using Bitron.Ecs;
 
 public partial class EditorView : CanvasLayer
 {
+    public enum EditorMode
+    {
+        Terrain,
+        Player,
+    }
+
+    public EditorMode Mode { get; set; } = EditorMode.Terrain;
+
     public int BrushSize { get { return (int)_brushSizeSlider.Value; } }
     public int Elevation { get { return (int)_elevationSlider.Value; } }
 
@@ -12,6 +20,8 @@ public partial class EditorView : CanvasLayer
 
     public EcsEntity TerrainEntity { get { return _selectedTerrain; } }
 
+    public Dictionary<Coords, int> Players = new Dictionary<Coords, int>();
+    
     EcsEntity _selectedTerrain;
 
     HSlider _brushSizeSlider;
@@ -24,6 +34,9 @@ public partial class EditorView : CanvasLayer
 
     TextEdit _widthTextEdit;
     TextEdit _heightTextEdit;
+
+    VBoxContainer _playerContainer;
+
 
 
     public override void _Ready()
@@ -39,10 +52,48 @@ public partial class EditorView : CanvasLayer
         _widthTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Width/TextEdit");
         _heightTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Height/TextEdit");
 
+        _playerContainer = GetNode<VBoxContainer>("Tools/Players");
+
         InitializeTerrains();
     }
 
-    public void InitializeTerrains()
+    public void AddPlayer(Coords coords)
+    {
+        Players.Add(coords, Players.Count);
+        UpdatePlayers();
+    }
+
+    public void RemovePlayer(Coords coords)
+    {
+        Players.Remove(coords);
+        UpdatePlayers();
+    }
+
+    private void UpdatePlayers()
+    {
+        foreach (Label child in _playerContainer.GetChildren())
+        {
+            _playerContainer.RemoveChild(child);
+            child.QueueFree();
+        }
+
+        foreach(var pair in Players)
+        {
+            Coords coords = pair.Key;
+            int id = pair.Value;
+
+            var label = new Label();
+            label.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
+            label.RectMinSize = new Vector2(0, 50);
+            label.Align = Label.AlignEnum.Center;
+            label.Valign = Label.VAlign.Center;
+            label.Text = $"Player: {id}, Position: {coords.Offset.x}, {coords.Offset.z}";
+
+            _playerContainer.AddChild(label);
+        }
+    }
+
+    private void InitializeTerrains()
     {
         _selectedTerrain = Data.Instance.Terrains["Gg"];
 
@@ -58,7 +109,7 @@ public partial class EditorView : CanvasLayer
         }
     }
 
-    public void OnCreateButtonPressed()
+    private void OnCreateButtonPressed()
     {
         int width = int.Parse(_widthTextEdit.Text);
         int height = int.Parse(_heightTextEdit.Text);
@@ -67,17 +118,29 @@ public partial class EditorView : CanvasLayer
         Main.Instance.World.Spawn().Add(new SpawnMapEvent(width, height));
     }
 
-    public void OnTerrainSelected(string code)
+    private void OnToolsTabChanged(int index)
+    {
+        if (index == 0)
+        {
+            Mode = EditorMode.Terrain;
+        }
+        else if (index == 1)
+        {
+            Mode = EditorMode.Player;
+        }
+    }
+
+    private void OnTerrainSelected(string code)
     {
         _selectedTerrain = Data.Instance.Terrains[code];
     }
 
-    public void OnSaveButtonPressed()
+    private void OnSaveButtonPressed()
     {
         Main.Instance.World.Spawn().Add(new SaveMapEvent("map"));
     }
 
-    public void OnLoadButtonPressed()
+    private void OnLoadButtonPressed()
     {
         Main.Instance.World.Spawn().Add(new DespawnMapEvent());
         Main.Instance.World.Spawn().Add(new LoadMapEvent("map"));

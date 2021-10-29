@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using Godot;
 using Bitron.Ecs;
 
-public class EditorEditSystem : IEcsSystem
+public class EditorEditTerrainSystem : IEcsSystem
 {
     Node3D _parent;
 
     Vector3 _previousCoords;
 
-    public EditorEditSystem(Node3D parent)
+    public EditorEditTerrainSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -26,6 +26,11 @@ public class EditorEditSystem : IEcsSystem
         }
 
         var editorView = world.GetResource<EditorView>();
+        
+        if (editorView.Mode != EditorView.EditorMode.Terrain)
+        {
+            return;
+        }
         
         var locEntity = hoveredLocation.Entity;
 

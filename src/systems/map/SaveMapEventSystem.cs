@@ -29,6 +29,7 @@ public class SaveMapEventSystem : IEcsSystem
 
             var saveData = new Dictionary();
             var locationsData = new Dictionary();
+            var playersData = new Dictionary();
 
             ref var locations = ref map.Locations;
             ref var grid = ref map.Grid;
@@ -36,18 +37,18 @@ public class SaveMapEventSystem : IEcsSystem
             foreach (var item in locations.Dict)
             {
                 var cell = item.Key;
-                var location = item.Value;
+                var locEntity = item.Value;
 
                 var terrainCodes = new List<string>();
 
-                ref var baseTerrainEntity = ref location.Get<HasBaseTerrain>().Entity;
+                ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
                 ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
 
                 terrainCodes.Add(baseTerrainCode.Value);
 
-                if (location.Has<HasOverlayTerrain>())
+                if (locEntity.Has<HasOverlayTerrain>())
                 {
-                    ref var overlayTerrainEntity = ref location.Get<HasOverlayTerrain>().Entity;
+                    ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
                     ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
 
                     terrainCodes.Add(overlayTerrainCode.Value);
@@ -55,7 +56,13 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var locationData = new Dictionary();
                 locationData.Add("Terrain", terrainCodes);
-                locationData.Add("Elevation", location.Get<Elevation>().Value);
+                locationData.Add("Elevation", locEntity.Get<Elevation>().Value);
+
+                if (locEntity.Has<IsStartingPositionOfTeam>())
+                {
+                    ref var startPos = ref locEntity.Get<IsStartingPositionOfTeam>();
+                    playersData.Add(cell, startPos.Value);
+                }
 
                 locationsData.Add(cell, locationData);
             }
@@ -63,6 +70,7 @@ public class SaveMapEventSystem : IEcsSystem
             saveData.Add("Width", grid.Width);
             saveData.Add("Height", grid.Height);
             saveData.Add("Locations", locationsData);
+            saveData.Add("Players", playersData);
 
             SaveToFile(saveMapEvent.Name, saveData);
         }
