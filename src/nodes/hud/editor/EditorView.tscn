@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dejear2wpo7dx"]
+[gd_scene load_steps=2 format=3 uid="uid://5ylnwotv7ruq"]
 
-[ext_resource type="Script" path="res://src/nodes/editor/EditorView.cs" id="1"]
+[ext_resource type="Script" path="res://src/nodes/hud/editor/EditorView.cs" id="1_sv8np"]
 
 [node name="EditorView" type="CanvasLayer"]
-script = ExtResource( "1" )
+script = ExtResource( "1_sv8np" )
 
 [node name="Create" type="PanelContainer" parent="."]
 anchor_left = 1.0
