@@ -77,8 +77,9 @@ public partial class PlayState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
-        _world.RemoveResource<Scenario>();
         _world.RemoveResource<Commander>();
+        _world.RemoveResource<Scenario>();
+        _world.RemoveResource<Schedule>();
 
         _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DespawnMapEvent());
