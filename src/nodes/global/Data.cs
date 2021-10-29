@@ -19,6 +19,7 @@ public partial class Data : Node
     };
 
     public Dictionary<string, PackedScene> Units = new Dictionary<string, PackedScene>();
+    public Dictionary<string, Faction> Factions = new Dictionary<string, Faction>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
 
@@ -36,6 +37,18 @@ public partial class Data : Node
     public override void _Ready()
     {
         Instance = this;
+    }
+
+    public void LoadFactions()
+    {
+        Factions.Clear();
+        
+        var faction = new Faction();
+        faction.Name = "Loyalists";
+        faction.Recruits = new List<string>() { "Cavalryman", "Bowman", "Spearman" };
+        faction.Leaders = new List<string>() { "Dragoon" };
+        
+        Factions.Add(faction.Name, faction);
     }
 
     public void LoadUnits()

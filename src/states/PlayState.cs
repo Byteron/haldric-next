@@ -31,7 +31,8 @@ public partial class PlayState : GameState
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
-        AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
+        AddEventSystem<SpawnPlayersEvent>(new SpawnPlayersEventSystem());
+        AddEventSystem<SpawnPlayerEvent>(new SpawnPlayerEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
         AddEventSystem<RecruitUnitEvent>(new RecruitUnitEventSystem(this));
         AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
@@ -71,7 +72,7 @@ public partial class PlayState : GameState
         _world.AddResource(hudView);
 
         _world.Spawn().Add(new LoadMapEvent("map"));
-        _world.Spawn().Add(new SpawnUnitsEvent());
+        _world.Spawn().Add(new SpawnPlayersEvent());
         _world.Spawn().Add(new TurnEndEvent());
     }
 
