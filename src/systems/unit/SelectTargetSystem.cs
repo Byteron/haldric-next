@@ -43,7 +43,7 @@ public class SelectTargetSystem : IEcsSystem
 
             var defenderUnitEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-            if (attackerUnitEntity.Get<Team>().Value == defenderUnitEntity.Get<Team>().Value)
+            if (attackerUnitEntity.Get<Side>().Value == defenderUnitEntity.Get<Side>().Value)
             {
                 return;
             }

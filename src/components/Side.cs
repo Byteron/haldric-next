@@ -1,8 +1,8 @@
-public struct Team
+public struct Side
 {
     public int Value;
 
-    public Team(int value)
+    public Side(int value)
     {
         Value = value;
     }

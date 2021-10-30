@@ -4,15 +4,15 @@ using Haldric.Wdk;
 
 public struct SpawnUnitEvent
 {
-    public int Team;
+    public int Side;
     public string Id;
     public Coords Coords;
     public bool IsLeader;
     public bool IsHero;
 
-    public SpawnUnitEvent(int team, string id, Coords coords, bool isLeader = false, bool isHero = false)
+    public SpawnUnitEvent(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
-        Team = team;
+        Side = side;
         Id = id;
         Coords = coords;
         IsLeader = isLeader;
@@ -67,7 +67,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitView.Position = position;
 
             
-            unitEntity.Add(new Team(spawnEvent.Team));
+            unitEntity.Add(new Side(spawnEvent.Side));
             unitEntity.Add(spawnEvent.Coords);
 
             if (spawnEvent.IsLeader)

@@ -4,12 +4,12 @@ using Godot;
 public struct CaptureVillageEvent
 {
     public EcsEntity LocEntity;
-    public int Team;
+    public int Side;
 
-    public CaptureVillageEvent(EcsEntity locEntity, int team)
+    public CaptureVillageEvent(EcsEntity locEntity, int side)
     {
         LocEntity = locEntity;
-        Team = team;
+        Side = side;
     }
 }
 
@@ -54,7 +54,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             flagView.Position = pos;
 
             locEntity.Add(new NodeHandle<FlagView>(flagView));
-            locEntity.Add(new IsCapturedByTeam(captureEvent.Team));
+            locEntity.Add(new IsCapturedByTeam(captureEvent.Side));
         }
     }
 }

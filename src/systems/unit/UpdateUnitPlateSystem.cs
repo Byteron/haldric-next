@@ -11,7 +11,7 @@ public class UpdateUnitPlateSystem : IEcsSystem
             .Inc<Attribute<Moves>>()
             .Inc<Attribute<Experience>>()
             .Inc<NodeHandle<UnitPlate>>()
-            .Inc<Team>()
+            .Inc<Side>()
             .End();
 
         foreach (var entityId in query)
@@ -21,7 +21,7 @@ public class UpdateUnitPlateSystem : IEcsSystem
             ref var health = ref unitEntity.Get<Attribute<Health>>();
             ref var moves = ref unitEntity.Get<Attribute<Moves>>();
             ref var experience = ref unitEntity.Get<Attribute<Experience>>();
-            ref var team = ref unitEntity.Get<Team>();
+            ref var side = ref unitEntity.Get<Side>();
 
             var view = unitEntity.Get<NodeHandle<UnitView>>().Node;
             var unitPlate = unitEntity.Get<NodeHandle<UnitPlate>>().Node;
@@ -37,7 +37,7 @@ public class UpdateUnitPlateSystem : IEcsSystem
 
             unitPlate.Position = view.Position + Vector3.Up * 7.5f;
 
-            unitPlate.TeamColor = Data.Instance.TeamColors[team.Value];
+            unitPlate.TeamColor = Data.Instance.TeamColors[side.Value];
 
             unitPlate.IsLeader = unitEntity.Has<IsLeader>();
             unitPlate.IsHero = unitEntity.Has<IsHero>();

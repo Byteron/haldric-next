@@ -100,9 +100,9 @@ public class SpawnMapEventSystem : IEcsSystem
 
             if (players.Contains(coords.Cube.ToString()))
             {
-                var team = (int)(float)players[coords.Cube.ToString()];
+                var side = (int)(float)players[coords.Cube.ToString()];
 
-                locEntity.Add(new IsStartingPositionOfTeam(team));
+                locEntity.Add(new IsStartingPositionOfTeam(side));
             }
         }
     }

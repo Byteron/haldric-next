@@ -9,7 +9,7 @@ public class RecruitInputSystem : IEcsSystem
         {
             var scenario = world.GetResource<Scenario>();
             var player = scenario.GetCurrentPlayerEntity();
-            var team = player.Get<Team>();
+            var side = player.Get<Side>();
 
             var castleQuery = world.Query<Castle>().End();
             
@@ -32,7 +32,7 @@ public class RecruitInputSystem : IEcsSystem
                     continue;
                 }
 
-                if (castleUnitEntity.Get<Team>().Value != team.Value)
+                if (castleUnitEntity.Get<Side>().Value != side.Value)
                 {
                     continue;
                 }

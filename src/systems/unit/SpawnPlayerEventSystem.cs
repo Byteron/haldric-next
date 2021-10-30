@@ -10,14 +10,14 @@ public class Faction
 
 public struct SpawnPlayerEvent
 {
-    public int Team;
+    public int Side;
     public Coords Coords;
     public string Faction;
     public int Gold;
 
-    public SpawnPlayerEvent(int team, Coords coords, string faction, int gold)
+    public SpawnPlayerEvent(int side, Coords coords, string faction, int gold)
     {
-        Team = team;
+        Side = side;
         Coords = coords;
         Faction = faction;
         Gold = gold;
@@ -39,13 +39,13 @@ public class SpawnPlayerEventSystem : IEcsSystem
             var faction = Data.Instance.Factions[spawnEvent.Faction];
 
             var playerEntity = world.Spawn()
-                .Add(new Team(spawnEvent.Team))
+                .Add(new Side(spawnEvent.Side))
                 .Add(new Gold(spawnEvent.Gold))
                 .Add(new Recruits(faction.Recruits));
             
             scenario.Players.Add(playerEntity);
 
-            world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Team, faction.Leaders[0], spawnEvent.Coords, true));
+            world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
         }
     }
 }

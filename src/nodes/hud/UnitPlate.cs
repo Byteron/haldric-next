@@ -21,7 +21,7 @@ public partial class UnitPlate : Control
 
     private TextureProgressBar _healthBar;
     private TextureProgressBar _xpBar;
-    private ColorRect _teamColorRect;
+    private ColorRect _sideColorRect;
     private ColorRect _heroColorRect;
     private ColorRect _leaderColorRect;
     private Control _actionContainer;
@@ -30,7 +30,7 @@ public partial class UnitPlate : Control
     {
         _healthBar = GetNode<TextureProgressBar>("VBoxContainer/HealthProgressBar");
         _xpBar = GetNode<TextureProgressBar>("VBoxContainer/HBoxContainer/VBoxContainer/ExperienceProgressBar");
-        _teamColorRect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/TeamColorRect");
+        _sideColorRect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/TeamColorRect");
         _leaderColorRect = GetNode<ColorRect>("VBoxContainer/LeaderColorRect");
         _heroColorRect = GetNode<ColorRect>("VBoxContainer/HeroColorRect");
         _actionContainer = GetNode<Control>("VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer");
@@ -46,7 +46,7 @@ public partial class UnitPlate : Control
         _xpBar.MaxValue = MaxExperience;
         _xpBar.Value = Experience;
 
-        _teamColorRect.Color = TeamColor;
+        _sideColorRect.Color = TeamColor;
 
         if (camera.IsPositionBehind(Position))
         {

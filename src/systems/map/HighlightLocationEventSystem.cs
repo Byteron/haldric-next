@@ -29,7 +29,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
             var locEntity = map.Locations.Get(eventData.Coords.Cube);
             var unitEntity = locEntity.Get<HasUnit>().Entity;
 
-            ref var team = ref unitEntity.Get<Team>();
+            ref var side = ref unitEntity.Get<Side>();
             ref var attacks = ref unitEntity.Get<Attacks>();
             
             var terrainHighlighter = world.GetResource<TerrainHighlighter>();
@@ -62,7 +62,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 if (hasUnit)
                 {
-                    if (nLocEntity.Get<HasUnit>().Entity.Get<Team>().Value == team.Value)
+                    if (nLocEntity.Get<HasUnit>().Entity.Get<Side>().Value == side.Value)
                     continue;
                 }
 
@@ -103,7 +103,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 if (hasUnit)
                 {
-                    if (nLocEntity.Get<HasUnit>().Entity.Get<Team>().Value == team.Value)
+                    if (nLocEntity.Get<HasUnit>().Entity.Get<Side>().Value == side.Value)
                     continue;
                 }
 

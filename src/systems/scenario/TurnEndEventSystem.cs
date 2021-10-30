@@ -10,7 +10,7 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
+        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
@@ -31,8 +31,8 @@ public class TurnEndEventSystem : IEcsSystem
 
             foreach (var unitEntityId in unitQuery)
             {
-                var team = unitQuery.Get<Team>(unitEntityId);
-                if (team.Value == scenario.CurrentPlayer)
+                var side = unitQuery.Get<Side>(unitEntityId);
+                if (side.Value == scenario.CurrentPlayer)
                 {
                     ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
                     ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
@@ -44,12 +44,12 @@ public class TurnEndEventSystem : IEcsSystem
             foreach (var locEntityId in locsWithCapturedVillagesQuery)
             {
                 ref var village = ref locsWithCapturedVillagesQuery.Get<Village>(locEntityId);
-                ref var team = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
+                ref var side = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
 
-                if (scenario.CurrentPlayer == team.Value)
+                if (scenario.CurrentPlayer == side.Value)
                 {
                     player.Get<Gold>().Value += village.List.Count;
-                    GD.Print($"Player: {team}, Income + {village.List.Count}");
+                    GD.Print($"Player: {side}, Income + {village.List.Count}");
                 }
             }
 
@@ -69,9 +69,9 @@ public class TurnEndEventSystem : IEcsSystem
                 var unitEntity = locWithUnitQuery.Get<HasUnit>(locEntityId).Entity;
 
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
-                ref var team = ref unitEntity.Get<Team>();
+                ref var side = ref unitEntity.Get<Side>();
 
-                if (canHeal && team.Value == scenario.CurrentPlayer && !health.IsFull())
+                if (canHeal && side.Value == scenario.CurrentPlayer && !health.IsFull())
                 {
                     var diff = Mathf.Min(health.GetDifference(), 8);
 

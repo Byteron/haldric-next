@@ -21,9 +21,9 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         
         var player = scenario.GetCurrentPlayerEntity();
 
-        ref var team = ref player.Get<Team>();
+        ref var side = ref player.Get<Side>();
         ref var gold = ref player.Get<Gold>();
 
-        hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {team.Value} | Gold: {gold.Value}";
+        hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {side.Value} | Gold: {gold.Value}";
     }
 }

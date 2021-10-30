@@ -11,7 +11,7 @@ public partial class RecruitSelectionView : Control
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
     
-    private int _team;
+    private int _side;
     private EcsEntity _locEntity;
     private RecruitSelectionOption _selectedOption;
 
@@ -30,7 +30,7 @@ public partial class RecruitSelectionView : Control
 
     public void UpdateInfo(EcsEntity locEntity, EcsEntity player, List<string> unitTypeIds)
     {
-        _team = player.Get<Team>().Value;
+        _side = player.Get<Side>().Value;
         var gold = player.Get<Gold>().Value;
         _locEntity = locEntity;
 
@@ -98,7 +98,7 @@ public partial class RecruitSelectionView : Control
 
     private void OnAcceptButtonPressed()
     {
-        var recruitEvent = new RecruitUnitEvent(_team, _selectedOption.UnitType, _locEntity);
+        var recruitEvent = new RecruitUnitEvent(_side, _selectedOption.UnitType, _locEntity);
         Main.Instance.World.Spawn().Add(recruitEvent);
 
         _container.RemoveChild(_selectedOption);

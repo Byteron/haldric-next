@@ -98,7 +98,7 @@ public partial class MoveUnitCommand : Command
 
             if (locEntity.Has<Village>())
             {
-                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(locEntity, _unitEntity.Get<Team>().Value));
+                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(locEntity, _unitEntity.Get<Side>().Value));
             }
 
             var coords = locEntity.Get<Coords>();

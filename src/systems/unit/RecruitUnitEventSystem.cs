@@ -4,13 +4,13 @@ using Haldric.Wdk;
 
 public struct RecruitUnitEvent
 {
-    public int Team;
+    public int Side;
     public UnitType UnitType;
     public EcsEntity LocEntity;
 
-    public RecruitUnitEvent(int team, UnitType unitType, EcsEntity locEntity)
+    public RecruitUnitEvent(int side, UnitType unitType, EcsEntity locEntity)
     {
-        Team = team;
+        Side = side;
         UnitType = unitType;
         LocEntity = locEntity;
     }
@@ -63,7 +63,7 @@ public class RecruitUnitEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            unitEntity.Add(new Team(recruitEvent.Team));
+            unitEntity.Add(new Side(recruitEvent.Side));
             unitEntity.Add(freeCoords);
 
             unitEntity.Get<Attribute<Moves>>().Empty();

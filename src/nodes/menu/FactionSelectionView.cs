@@ -20,7 +20,7 @@ public partial class FactionSelectionView : PanelContainer
         for (int i = 0; i < PlayerCount; i++)
         {
             var option = PlayerOption.Instantiate<PlayerOption>();
-            option.Team = i;
+            option.Side = i;
             _container.AddChild(option);
         }
     }
@@ -29,7 +29,7 @@ public partial class FactionSelectionView : PanelContainer
     {
         foreach (PlayerOption option in _container.GetChildren())
         {
-            _factions.Add(option.Team, option.Faction);
+            _factions.Add(option.Side, option.Faction);
         }
         
         var gameStateController = Main.Instance.World.GetResource<GameStateController>();
