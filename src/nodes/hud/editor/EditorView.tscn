@@ -230,21 +230,38 @@ offset_right = -4.0
 offset_bottom = -4.0
 script = null
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -210.0
-offset_top = -40.0
+offset_left = -211.0
+offset_top = -63.0
+offset_right = -1.0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SaveButton" type="Button" parent="HBoxContainer"]
+[node name="MapTextEdit" type="TextEdit" parent="VBoxContainer"]
+offset_right = 210.0
+offset_bottom = 30.0
+rect_min_size = Vector2(0, 30)
+structured_text_bidi_override_options = []
+script = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 34.0
+offset_right = 210.0
+offset_bottom = 63.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 offset_right = 103.0
-offset_bottom = 40.0
+offset_bottom = 29.0
 size_flags_horizontal = 3
 text = "Save"
 script = null
@@ -252,10 +269,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LoadButton" type="Button" parent="HBoxContainer"]
+[node name="LoadButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 offset_left = 107.0
 offset_right = 210.0
-offset_bottom = 40.0
+offset_bottom = 29.0
 size_flags_horizontal = 3
 text = "Load"
 script = null
@@ -265,5 +282,5 @@ __meta__ = {
 
 [connection signal="pressed" from="Create/VBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
 [connection signal="tab_changed" from="Tools" to="." method="OnToolsTabChanged"]
-[connection signal="pressed" from="HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
-[connection signal="pressed" from="HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]

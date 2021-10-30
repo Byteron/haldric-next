@@ -35,6 +35,8 @@ public partial class EditorView : CanvasLayer
     TextEdit _widthTextEdit;
     TextEdit _heightTextEdit;
 
+    TextEdit _mapNameTextEdit;
+
     VBoxContainer _playerContainer;
 
 
@@ -51,6 +53,8 @@ public partial class EditorView : CanvasLayer
 
         _widthTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Width/TextEdit");
         _heightTextEdit = GetNode<TextEdit>("Create/VBoxContainer/HBoxContainer/Height/TextEdit");
+
+        _mapNameTextEdit = GetNode<TextEdit>("VBoxContainer/MapTextEdit");
 
         _playerContainer = GetNode<VBoxContainer>("Tools/Players");
 
@@ -137,12 +141,38 @@ public partial class EditorView : CanvasLayer
 
     private void OnSaveButtonPressed()
     {
-        Main.Instance.World.Spawn().Add(new SaveMapEvent("map"));
+        if (string.IsNullOrEmpty(_mapNameTextEdit.Text))
+        {
+            GD.PushWarning("Invalid Map Name: Please specify a Map Name");
+            return;
+        }
+
+        if (_mapNameTextEdit.Text.IsValidIdentifier())
+        {
+            Main.Instance.World.Spawn().Add(new SaveMapEvent(_mapNameTextEdit.Text));
+        }
+        else
+        {
+            GD.PushWarning("Invalid Map Name: Not a Valid Identifier");
+        }
     }
 
     private void OnLoadButtonPressed()
     {
-        Main.Instance.World.Spawn().Add(new DespawnMapEvent());
-        Main.Instance.World.Spawn().Add(new LoadMapEvent("map"));
+        if (string.IsNullOrEmpty(_mapNameTextEdit.Text))
+        {
+            GD.PushWarning("Invalid Map Name: Please specify a Map Name");
+            return;
+        }
+
+        if (_mapNameTextEdit.Text.IsValidIdentifier())
+        {
+            Main.Instance.World.Spawn().Add(new DespawnMapEvent());
+            Main.Instance.World.Spawn().Add(new LoadMapEvent(_mapNameTextEdit.Text));
+        }
+        else
+        {
+            GD.PushWarning("Invalid Map Name: Not a Valid Identifier");
+        }
     }
 }
