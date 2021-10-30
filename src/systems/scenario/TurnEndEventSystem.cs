@@ -10,7 +10,7 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
+        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().Inc<Level>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
@@ -28,16 +28,23 @@ public class TurnEndEventSystem : IEcsSystem
             }
 
             var player = scenario.GetCurrentPlayerEntity();
+            ref var gold = ref player.Get<Gold>();
 
             foreach (var unitEntityId in unitQuery)
             {
                 var side = unitQuery.Get<Side>(unitEntityId);
+
                 if (side.Value == scenario.CurrentPlayer)
                 {
                     ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
                     ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
+
                     actions.Restore();
                     moves.Restore();
+
+                    ref var level = ref unitQuery.Get<Level>(unitEntityId);
+                    gold.Value -= level.Value;
+                    GD.Print($"Player: {side}, Income - {level.Value}");
                 }
             }
 
@@ -48,7 +55,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                 if (scenario.CurrentPlayer == side.Value)
                 {
-                    player.Get<Gold>().Value += village.List.Count;
+                    gold.Value += village.List.Count;
                     GD.Print($"Player: {side}, Income + {village.List.Count}");
                 }
             }
