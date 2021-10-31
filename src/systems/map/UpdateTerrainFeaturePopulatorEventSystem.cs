@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct UpdateTerrainFeaturePopulatorEvent
 {
-    public List<Vector3i> Chunks;
+    public List<Vector3i> Chunks { get; set; }
 
     public UpdateTerrainFeaturePopulatorEvent(List<Vector3i> chunks = null)
     {
@@ -14,7 +14,7 @@ public struct UpdateTerrainFeaturePopulatorEvent
 
 public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 {
-    TerrainFeaturePopulator _terrainFeaturePopulator;
+    private TerrainFeaturePopulator _terrainFeaturePopulator;
 
     public void Run(EcsWorld world)
     {
@@ -29,9 +29,9 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         {
             foreach (var chunkEntityId in chunksQuery)
             {
-                var updateEvent = eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
+                ref var updateEvent = ref eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
 
-                var chunkCell = chunksQuery.Get<Vector3i>(chunkEntityId);
+                ref var chunkCell = ref chunksQuery.Get<Vector3i>(chunkEntityId);
 
                 if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
                 {
@@ -71,16 +71,16 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-        ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+        ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
+        ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
 
 
         Populate(locEntity, baseTerrainCode);
 
         if (locEntity.Has<HasOverlayTerrain>())
         {
-            ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
-            ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+            ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
+            ref var overlayTerrainCode = ref overlayTerrain.Entity.Get<TerrainCode>();
 
             Populate(locEntity, overlayTerrainCode);
         }

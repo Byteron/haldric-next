@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct Resistances: IEcsAutoReset<Resistances>
 {
-    public List<DamageType> List;
+    public List<DamageType> List { get; set; }
 
     public Resistances(List<DamageType> types)
     {

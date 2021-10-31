@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Path
 {
-    public EcsEntity Start;
-    public EcsEntity Destination;
+    public EcsEntity Start { get; set; }
+    public EcsEntity Destination { get; set; }
 
-    public Queue<EcsEntity> Checkpoints = new Queue<EcsEntity>();
+    public Queue<EcsEntity> Checkpoints { get; set; } = new Queue<EcsEntity>();
 
     
     public override string ToString()

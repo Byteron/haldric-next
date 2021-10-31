@@ -1,6 +1,6 @@
 public struct Gold
 {
-    public int Value;
+    public int Value { get; set; }
 
     public Gold(int value)
     {

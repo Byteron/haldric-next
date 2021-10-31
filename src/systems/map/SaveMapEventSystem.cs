@@ -5,7 +5,7 @@ using Bitron.Ecs;
 
 public struct SaveMapEvent
 {
-    public string Name;
+    public string Name { get; set; }
 
     public SaveMapEvent(string name)
     {
@@ -25,14 +25,14 @@ public class SaveMapEventSystem : IEcsSystem
         {
             var map = world.GetResource<Map>();
 
-            var saveMapEvent = eventQuery.Get<SaveMapEvent>(eventEntityId);
+            ref var saveMapEvent = ref eventQuery.Get<SaveMapEvent>(eventEntityId);
 
             var saveData = new Dictionary();
             var locationsData = new Dictionary();
             var playersData = new Dictionary();
 
-            ref var locations = ref map.Locations;
-            ref var grid = ref map.Grid;
+            var locations = map.Locations;
+            var grid = map.Grid;
 
             foreach (var item in locations.Dict)
             {
@@ -41,23 +41,26 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var terrainCodes = new List<string>();
 
-                ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-                ref var baseTerrainCode = ref baseTerrainEntity.Get<TerrainCode>();
+                ref var baseTerrain = ref location.Get<HasBaseTerrain>();
+                var entity = baseTerrain.Entity;
+                ref var baseTerrainCode = ref entity.Get<TerrainCode>();
 
                 terrainCodes.Add(baseTerrainCode.Value);
 
                 if (locEntity.Has<HasOverlayTerrain>())
                 {
-                    ref var overlayTerrainEntity = ref locEntity.Get<HasOverlayTerrain>().Entity;
-                    ref var overlayTerrainCode = ref overlayTerrainEntity.Get<TerrainCode>();
+                    ref var overlayTerrain = ref location.Get<HasOverlayTerrain>();
+                    var overlayEntity = overlayTerrain.Entity;
+                    ref var overlayTerrainCode = ref overlayEntity.Get<TerrainCode>();
 
                     terrainCodes.Add(overlayTerrainCode.Value);
                 }
 
-                var locationData = new Dictionary();
-                locationData.Add("Terrain", terrainCodes);
-                locationData.Add("Elevation", locEntity.Get<Elevation>().Value);
-
+                var locationData = new Dictionary
+                {
+                    { "Terrain", terrainCodes },
+                    { "Elevation", location.Get<Elevation>().Value }
+                };
                 if (locEntity.Has<IsStartingPositionOfTeam>())
                 {
                     ref var startPos = ref locEntity.Get<IsStartingPositionOfTeam>();
@@ -79,7 +82,7 @@ public class SaveMapEventSystem : IEcsSystem
     private void SaveToFile(string name, Dictionary saveData)
     {
         var json = new JSON();
-        var jsonString = (string)json.Stringify(saveData);
+        var jsonString = json.Stringify(saveData);
         var file = new File();
         file.Open(Path + name + ".json", File.ModeFlags.Write);
         file.StoreString(jsonString);

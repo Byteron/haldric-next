@@ -2,7 +2,7 @@ using Bitron.Ecs;
 
 public struct Id : IEcsAutoReset<Id>
 {
-    public string Value;
+    public string Value { get; set; }
 
     public Id(string value)
     {

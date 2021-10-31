@@ -9,8 +9,8 @@ public partial class LoadingState : GameState
 {
     private struct LoadingData
     {
-        public string Info;
-        public Action Action;
+        public string Info { get; set; }
+        public Action Action { get; set; }
 
         public LoadingData(string info, Action action)
         {

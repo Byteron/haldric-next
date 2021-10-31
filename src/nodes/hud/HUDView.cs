@@ -3,9 +3,9 @@ using Bitron.Ecs;
 
 public partial class HUDView : CanvasLayer
 {
-    public Label TerrainLabel;
-    public Label UnitLabel;
-    public Label PlayerLabel;
+    public Label TerrainLabel { get; set; }
+    public Label UnitLabel { get; set; }
+    public Label PlayerLabel { get; set; }
 
     public override void _Ready()
     {

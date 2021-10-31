@@ -2,7 +2,7 @@ using Bitron.Ecs;
 
 public struct HasLocation : IEcsAutoReset<HasLocation>
 {
-    public EcsEntity Entity;
+    public EcsEntity Entity { get; set; }
 
     public HasLocation(EcsEntity entity)
     {

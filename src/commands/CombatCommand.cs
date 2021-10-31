@@ -7,13 +7,13 @@ public partial class CombatCommand : Command
 {
     private struct AttackData
     {
-        public EcsEntity AttackerEntity;
-        public EcsEntity DefenderEntity;
-        public TerrainTypes TerrainTypes;
-        public DamageEvent DamageEvent;
-        public int DefenderLevel;
-        public PackedScene Projectile;
-        public bool IsRanged;
+        public EcsEntity AttackerEntity { get; set; }
+        public EcsEntity DefenderEntity { get; set; }
+        public TerrainTypes TerrainTypes { get; set; }
+        public DamageEvent DamageEvent { get; set; }
+        public int DefenderLevel { get; set; }
+        public PackedScene Projectile {get; set;}
+        public bool IsRanged { get; set; }
 
         public AttackData(
             EcsEntity attackerEntity, 

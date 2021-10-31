@@ -1,6 +1,6 @@
 public struct IsCapturedByTeam
 {
-    public int Value;
+    public int Value { get; set; }
 
     public IsCapturedByTeam(int value)
     {

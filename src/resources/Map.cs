@@ -6,7 +6,7 @@ using Haldric.Wdk;
 
 public struct Distance
 {
-    public int Value;
+    public int Value { get; set; }
 
     public Distance(int value)
     {
@@ -16,7 +16,7 @@ public struct Distance
 
 public struct PathFrom
 {
-    public EcsEntity LocEntity;
+    public EcsEntity LocEntity { get; set; }
 
     public PathFrom(EcsEntity locEntity)
     {
@@ -26,16 +26,18 @@ public struct PathFrom
 
 public class Map
 {
-    public Grid Grid;
-    public Locations Locations;
-    public Vector2i ChunkSize;
-    public PathFinder PathFinder;
+    public Grid Grid { get; set; }
+    public Locations Locations { get; set; }
+    public Vector2i ChunkSize { get; set; }
+    public PathFinder PathFinder { get; set; }
 
     public Map(int width, int height, int chunkSize)
     {
         Grid = new Grid(width, height);
-        Locations = new Locations();
-        Locations.AutoReset(ref Locations);
+        Locations = new Locations()
+        {
+            Dict = new Dictionary<Vector3, EcsEntity>()
+        };
         ChunkSize = new Vector2i(chunkSize, chunkSize);
         PathFinder = new PathFinder();
     }
@@ -84,7 +86,7 @@ public class Map
             var cDistance = cLocEntity.Get<Distance>().Value;
             var cElevation = cLocEntity.Get<Elevation>().Value;
 
-            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
                 if (!nLocEntity.IsAlive())
                 {
@@ -211,7 +213,7 @@ public class Map
             var cDistance = cLocEntity.Get<Distance>().Value;
             var cElevation = cLocEntity.Get<Elevation>().Value;
 
-            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().GetArray())
+            foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
                 if (!nLocEntity.IsAlive())
                 {

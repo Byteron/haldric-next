@@ -3,8 +3,8 @@ using Godot;
 
 public struct GainExperienceEvent
 {
-    public EcsEntity Entity;
-    public int Amount;
+    public EcsEntity Entity { get; set; }
+    public int Amount { get; set; }
 
     public GainExperienceEvent(EcsEntity entity, int amount)
     {

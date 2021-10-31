@@ -4,11 +4,11 @@ using Haldric.Wdk;
 
 public struct SpawnUnitEvent
 {
-    public int Side;
-    public string Id;
-    public Coords Coords;
-    public bool IsLeader;
-    public bool IsHero;
+    public int Side { get; set; }
+    public string Id { get; set; }
+    public Coords Coords { get; set; }
+    public bool IsLeader { get; set; }
+    public bool IsHero { get; set; }
 
     public SpawnUnitEvent(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
@@ -45,7 +45,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             
             ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
 
-            ref var locations = ref map.Locations;
+            var locations = map.Locations;
 
             var locEntity = locations.Get(spawnEvent.Coords.Cube);
             ref var elevation = ref locEntity.Get<Elevation>();

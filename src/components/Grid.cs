@@ -3,8 +3,8 @@ using Bitron.Ecs;
 
 public struct Grid : IEcsAutoReset<Grid>
 {
-    public int Width;
-    public int Height;
+    public int Width { get; set; }
+    public int Height { get; set; }
 
     public Grid(int width, int height)
     {

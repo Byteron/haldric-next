@@ -3,8 +3,8 @@ using Godot;
 
 public struct CaptureVillageEvent
 {
-    public EcsEntity LocEntity;
-    public int Side;
+    public EcsEntity LocEntity { get; set; }
+    public int Side { get; set; }
 
     public CaptureVillageEvent(EcsEntity locEntity, int side)
     {
