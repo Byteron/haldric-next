@@ -3,33 +3,23 @@ using Bitron.Ecs;
 
 public struct Attacks : IEcsAutoReset<Attacks>
 {
-    List<EcsEntity> _list;
+    public List<EcsEntity> List { get; set; }
 
     public void Add(EcsEntity attackEntity)
     {
-        if (_list == null)
+        if (List == null)
         {
-            _list = new List<EcsEntity>();
+            List = new List<EcsEntity>();
         }
 
-        _list.Add(attackEntity);
-    }
-
-    public List<EcsEntity> GetList()
-    {
-        return _list;
-    }
-
-    public EcsEntity GetFirst()
-    {
-        return _list[0];
+        List.Add(attackEntity);
     }
 
     public EcsEntity GetUsableAttack(int attackRange, int bonusAttackRange = 0)
     {
         bool isInMeleeRange = attackRange == 1;
 
-        foreach(var attack in _list)
+        foreach(var attack in List)
         {
             if (isInMeleeRange)
             {
@@ -55,7 +45,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
 
         bool isInMeleeRange = attackDistance == 1;
         
-        foreach(var attack in _list)
+        foreach(var attack in List)
         {
             if (isInMeleeRange)
             {
@@ -79,7 +69,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
     {
         var range = 0;
 
-        foreach(var attack in _list)
+        foreach(var attack in List)
         {
             var attackRange = attack.Get<Range>().Value;
 
@@ -94,13 +84,13 @@ public struct Attacks : IEcsAutoReset<Attacks>
 
     public void AutoReset(ref Attacks c)
     {
-        if (c._list == null)
+        if (c.List == null)
         {
-            c._list = new List<EcsEntity>();
+            c.List = new List<EcsEntity>();
         }
         else
         {
-            c._list.Clear();
+            c.List.Clear();
         }
     }
 }

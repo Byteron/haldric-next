@@ -39,7 +39,7 @@ public class EditorEditTerrainSystem : IEcsSystem
             return;
         }
         
-        ref var locations = ref map.Locations;
+        var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
         if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
@@ -58,7 +58,7 @@ public class EditorEditTerrainSystem : IEcsSystem
                 var nLocEntity = locations.Get(cube);
                 EditLocation(editorView, nLocEntity);
 
-                var chunkCell = nLocEntity.Get<Vector3i>();
+                ref var chunkCell = ref nLocEntity.Get<Vector3i>();
 
                 if (!chunks.Contains(chunkCell))
                 {
@@ -92,8 +92,7 @@ public class EditorEditTerrainSystem : IEcsSystem
 
     private void EditLocation(EditorView editorView, EcsEntity locEntity)
     {
-        ref var baseTerrainEntity = ref locEntity.Get<HasBaseTerrain>().Entity;
-
+        ref HasBaseTerrain baseTerrain = ref locEntity.Get<HasBaseTerrain>();
         ref var elevation = ref locEntity.Get<Elevation>();
 
         if (editorView.UseTerrain)
@@ -114,13 +113,13 @@ public class EditorEditTerrainSystem : IEcsSystem
                     locEntity.Remove<HasOverlayTerrain>();
                 }
 
-                baseTerrainEntity = editorView.TerrainEntity;
+                baseTerrain.Entity = editorView.TerrainEntity;
 
-                if (baseTerrainEntity.Has<HasShallowWater>())
+                if (baseTerrain.Entity.Has<HasShallowWater>())
                 {
                     elevation.Offset = Metrics.ShallowWaterOffset;
                 }
-                else if (baseTerrainEntity.Has<HasDeepWater>())
+                else if (baseTerrain.Entity.Has<HasDeepWater>())
                 {
                     elevation.Offset = Metrics.DeepWaterOffset;
                 }

@@ -18,8 +18,8 @@ public partial class CameraOperator : Node3D
     private Node3D _gimbalV;
     private Camera3D _camera;
 
-    public Vector3 MinimumPosition;
-    public Vector3 MaximumPosition;
+    public Vector3 MinimumPosition { get; set; }
+    public Vector3 MaximumPosition { get; set; }
 
 
     public override void _Ready()

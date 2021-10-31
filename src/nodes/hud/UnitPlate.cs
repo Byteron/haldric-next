@@ -3,18 +3,18 @@ using System;
 
 public partial class UnitPlate : Control
 {
-    public Vector3 Position;
+    public Vector3 Position { get; set; }
 
-    public int MaxHealth;
-    public int  Health;
+    public int MaxHealth { get; set; }
+    public int  Health { get; set; }
 
-    public int MaxMoves;
-    public int  Moves;
+    public int MaxMoves { get; set; }
+    public int  Moves { get; set; }
 
-    public int MaxExperience;
-    public int  Experience;
+    public int MaxExperience { get; set; }
+    public int  Experience { get; set; }
 
-    public Color TeamColor;
+    public Color TeamColor { get; set; }
 
     public bool IsLeader;
     public bool IsHero;
@@ -66,8 +66,10 @@ public partial class UnitPlate : Control
 
         for (int i = 0; i < MaxMoves; i++)
         {
-            var colorRect = new ColorRect();
-            colorRect.SizeFlagsHorizontal = (int) Control.SizeFlags.ExpandFill;
+            var colorRect = new ColorRect
+            {
+                SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill
+            };
 
             if (i < Moves)
             {

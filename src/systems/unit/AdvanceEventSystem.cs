@@ -4,7 +4,7 @@ using Godot;
 
 public struct AdvanceEvent
 {
-    public EcsEntity Entity;
+    public EcsEntity Entity { get; set; }
 
     public AdvanceEvent(EcsEntity entity)
     {

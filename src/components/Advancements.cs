@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct Advancements: IEcsAutoReset<Advancements>
 {
-    public List<string> List;
+    public List<string> List { get; set; }
 
     public Advancements(List<string> unitTypeIds)
     {

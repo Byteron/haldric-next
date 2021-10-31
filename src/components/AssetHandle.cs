@@ -3,7 +3,7 @@ using Bitron.Ecs;
 
 public struct AssetHandle<T> : IEcsAutoReset<AssetHandle<T>> where T : Resource
 {
-    public T Asset;
+    public T Asset { get; set; }
 
     public AssetHandle(T asset)
     {

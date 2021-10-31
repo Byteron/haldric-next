@@ -2,8 +2,8 @@ using Bitron.Ecs;
 
 public struct Elevation : IEcsAutoReset<Elevation>
 {
-    public int Value;
-    public int Offset;
+    public int Value { get; set; }
+    public int Offset { get; set; }
 
     public float ValueWithOffset { get { return Value + Offset; }}
     public float Height { get { return Value * Metrics.ElevationStep; }}

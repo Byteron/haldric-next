@@ -3,9 +3,9 @@ using Godot;
 
 public struct FileData
 {
-    public string Id;
-    public string Path;
-    public Resource Data;
+    public string Id { get; set; }
+    public string Path { get; set; }
+    public Resource Data { get; set; }
 }
 
 public static class Loader
@@ -31,12 +31,9 @@ public static class Loader
             return directoryData;
         }
 
-        var subPath = "";
-
         while (true)
         {
-            subPath = directory.GetNext();
-
+            string subPath = directory.GetNext();
             if (subPath == "." || subPath == ".." || subPath.BeginsWith("_"))
             {
                 continue;

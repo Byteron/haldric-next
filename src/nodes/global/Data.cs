@@ -18,21 +18,21 @@ public partial class Data : Node
         new Color("FFFFFF"),
     };
 
-    public Dictionary<string, PackedScene> Units = new Dictionary<string, PackedScene>();
-    public Dictionary<string, Faction> Factions = new Dictionary<string, Faction>();
-    public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
-    public Dictionary<string, EcsEntity> Terrains = new Dictionary<string, EcsEntity>();
-    public Dictionary<string, Godot.Collections.Dictionary> Maps = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
+    public Dictionary<string, Faction> Factions { get; set; }= new Dictionary<string, Faction>();
+    public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
+    public Dictionary<string, EcsEntity> Terrains { get; set; } = new Dictionary<string, EcsEntity>();
+    public Dictionary<string, Godot.Collections.Dictionary> Maps { get; set; } = new Dictionary<string, Godot.Collections.Dictionary>();
 
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
+    public Dictionary<string, TerrainGraphic> WaterGraphics { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> WallSegments { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> WallTowers { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> KeepPlateaus { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, Texture2D> TerrainTextures { get; set; } = new Dictionary<string, Texture2D>();
 
-    public Dictionary<string, int> TextureArrayIds = new Dictionary<string, int>();
+    public Dictionary<string, int> TextureArrayIds { get; set; } = new Dictionary<string, int>();
     public Texture2DArray TextureArray { get; private set; }
 
     public override void _Ready()

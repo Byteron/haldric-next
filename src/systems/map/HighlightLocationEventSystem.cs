@@ -3,8 +3,8 @@ using Godot;
 
 public struct HighlightLocationEvent
 {
-    public Coords Coords;
-    public int Range;
+    public Coords Coords { get; set; }
+    public int Range { get; set; }
 
     public HighlightLocationEvent(Coords coords, int range)
     {
@@ -22,13 +22,13 @@ public class HighlightLocationsEventSystem : IEcsSystem
         foreach (var eventEntityId in query)
         {
             var map = world.GetResource<Map>();
-            ref var grid = ref map.Grid;
+            var grid = map.Grid;
 
             var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
             
             var locEntity = map.Locations.Get(eventData.Coords.Cube);
-            var unitEntity = locEntity.Get<HasUnit>().Entity;
-
+            ref var unit = ref locEntity.Get<HasUnit>();
+            var unitEntity = unit.Entity;
             ref var side = ref unitEntity.Get<Side>();
             ref var attacks = ref unitEntity.Get<Attacks>();
             
@@ -65,7 +65,9 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 if (hasUnit)
                 {
                     if (nLocEntity.Get<HasUnit>().Entity.Get<Side>().Value == side.Value)
-                    continue;
+                    {
+                        continue;
+                    }
                 }
 
                 if (attack.IsAlive())

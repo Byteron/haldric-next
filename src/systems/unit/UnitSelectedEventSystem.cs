@@ -3,7 +3,7 @@ using Bitron.Ecs;
 
 public struct UnitSelectedEvent
 {
-    public EcsEntity Unit;
+    public EcsEntity Unit { get; set; }
 
     public UnitSelectedEvent(EcsEntity unit)
     {

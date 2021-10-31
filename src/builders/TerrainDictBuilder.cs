@@ -7,14 +7,18 @@ public class TerrainDictBuilder
 
     public TerrainDictBuilder CreateBase()
     {
-        _terrainDict = new Dictionary<string, object> ();
-        _terrainDict["BaseTerrain"] = true;
+        _terrainDict = new Dictionary<string, object>
+        {
+            ["BaseTerrain"] = true
+        };
         return this;
     }
     public TerrainDictBuilder CreateOverlay()
     {
-        _terrainDict = new Dictionary<string, object> ();
-        _terrainDict["OverlayTerrain"] = true;
+        _terrainDict = new Dictionary<string, object>
+        {
+            ["OverlayTerrain"] = true
+        };
         return this;
     }
 

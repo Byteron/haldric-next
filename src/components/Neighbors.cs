@@ -2,30 +2,25 @@ using Bitron.Ecs;
 
 public struct Neighbors : IEcsAutoReset<Neighbors>
 {
-    private EcsEntity[] _array;
+    public EcsEntity[] Array { get; private set; }
 
     public bool Has(Direction direction)
     {
-        return _array[(int)direction].IsAlive();
+        return Array[(int)direction].IsAlive();
     }
 
     public EcsEntity Get(Direction direction)
     {
-        return _array[(int)direction];
+        return Array[(int)direction];
     }
 
     public void Set(Direction direction, EcsEntity entity)
     {
-        _array[(int)direction] = entity;
-    }
-
-    public EcsEntity[] GetArray()
-    {
-        return _array;
+        Array[(int)direction] = entity;
     }
 
     public void AutoReset(ref Neighbors c)
     {
-        c._array = new EcsEntity[6];
+        c.Array = new EcsEntity[6];
     }
 }

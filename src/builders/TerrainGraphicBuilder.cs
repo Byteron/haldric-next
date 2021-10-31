@@ -3,10 +3,10 @@ using Godot;
 
 public class TerrainGraphic
 {
-    public string Code = "";
-    public Mesh Mesh = null;
-    public List<Mesh> Variations = new List<Mesh>();
-    public Vector3 Offset = Vector3.Zero;
+    public string Code { get; set; } = "";
+    public Mesh Mesh { get; set; } = null;
+    public List<Mesh> Variations { get; set; } = new List<Mesh>();
+    public Vector3 Offset { get; set; } = Vector3.Zero;
 }
 
 public class TerrainGraphicBuilder

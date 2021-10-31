@@ -3,7 +3,7 @@ using Bitron.Ecs;
 
 public struct Castle : IEcsAutoReset<Castle>
 {
-    public List<EcsEntity> List;
+    public List<EcsEntity> List { get; set; }
 
     public bool TryGetFreeLoc(out EcsEntity locEntity)
     {

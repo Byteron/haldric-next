@@ -13,8 +13,6 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 
         var hoveredLocation = world.GetResource<HoveredLocation>();
 
-        string text = "";
-
         var locEntity = hoveredLocation.Entity;
 
         if (!locEntity.IsAlive())
@@ -22,25 +20,26 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             return;
         }
 
-        var coords = locEntity.Get<Coords>();
+        ref var coords = ref locEntity.Get<Coords>();
 
-        var elevation = locEntity.Get<Elevation>().Value;
-        var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>().Value;
+        ref var elevation = ref locEntity.Get<Elevation>();
+        ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
+        ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
         var overlayTerrainCode = "";
 
         var terrainTypes = TerrainTypes.FromLocEntity(locEntity);
 
         if (locEntity.Has<HasOverlayTerrain>())
         {
-            var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
-            overlayTerrainCode = "^" + overlayTerrainEntity.Get<TerrainCode>().Value;
+            ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
+            ref var overlayCode = ref overlayTerrain.Entity.Get<TerrainCode>();
+            overlayTerrainCode = "^" + overlayCode.Value;
         }
 
-        text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
-        text += $"\nElevation: {elevation}";
-        text += $"\nTerrain: {baseTerrainCode}{overlayTerrainCode}";
-        text += $"\nTypes: {terrainTypes.ToString()}";
+        string text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
+        text += $"\nElevation: {elevation.Value}";
+        text += $"\nTerrain: {baseTerrainCode.Value}{overlayTerrainCode}";
+        text += $"\nTypes: {terrainTypes}";
         text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
         text += $"\nCost: {terrainTypes.GetMovementCost()}";
 

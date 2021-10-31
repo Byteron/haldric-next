@@ -3,9 +3,9 @@ using Bitron.Ecs;
 
 public class Scenario
 {
-    public int Turn = 0;
-    public int CurrentPlayer = -1;
-    public List<EcsEntity> Players = new List<EcsEntity>();
+    public int Turn { get; set; } = 0;
+    public int CurrentPlayer { get; set; } = -1;
+    public List<EcsEntity> Players { get; set; } = new List<EcsEntity>();
 
     public void EndTurn()
     {
