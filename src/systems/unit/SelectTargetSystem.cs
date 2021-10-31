@@ -57,13 +57,16 @@ public class SelectTargetSystem : IEcsSystem
             var map = world.GetResource<Map>();
             
             var attackDistance = map.GetEffectiveAttackDistance(attackerCoords, defenderCoords);
-            var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(attackDistance);
+            var attackerBonusAttackRange = map.GetBonusAttackRange(attackerCoords, defenderCoords);
+            var defenderBonusAttackRange = map.GetBonusAttackRange(defenderCoords, attackerCoords);
+
+            var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(attackDistance, attackerBonusAttackRange);
             
             var attackPairs = new Dictionary<EcsEntity, EcsEntity>();
 
             foreach(var attackerAttackEntity in attackerUsableAttacks)
             {
-                var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance);
+                var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance, defenderBonusAttackRange);
                 attackPairs.Add(attackerAttackEntity, defenderAttackEntity);
             }
 
@@ -79,7 +82,7 @@ public class SelectTargetSystem : IEcsSystem
             attackSelectionState.AttackerLocEntity = attackerLocEntity;
             attackSelectionState.DefenderLocEntity = defenderLocEntity;
             attackSelectionState.AttackPairs = attackPairs;
-
+            attackSelectionState.AttackDistance = attackDistance;
             gameStateController.PushState(attackSelectionState);
         }
     }

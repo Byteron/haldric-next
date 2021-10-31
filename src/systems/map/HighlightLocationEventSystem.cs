@@ -51,7 +51,9 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 var nLocEntity = map.Locations.Dict[nCoords.Cube];
 
                 var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
-                var attack = attacks.GetUsableAttack(attackRange);
+                var attackerBonusAttackRange = map.GetBonusAttackRange(eventData.Coords, nCoords);
+
+                var attack = attacks.GetUsableAttack(attackRange, attackerBonusAttackRange);
 
                 ref var nElevation = ref nLocEntity.Get<Elevation>();
                 

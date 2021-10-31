@@ -7,8 +7,10 @@ public partial class AttackSelectionView : Control
 {
     [Export] PackedScene AttackSelectionOption;
 
-    private EcsEntity _attackerLocEntity { get; set; }
-    private EcsEntity _defenderLocEntity { get; set; }
+    private EcsEntity _attackerLocEntity;
+    private EcsEntity _defenderLocEntity;
+
+    private int _attackDistance;
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
     
@@ -26,10 +28,11 @@ public partial class AttackSelectionView : Control
         _defenderLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/DefenderLabel");
     }
 
-    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs)
+    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs, int attackDistance)
     {
         _attackerLocEntity = attackerLocEntity;
         _defenderLocEntity = defenderLocEntity;
+        _attackDistance = attackDistance;
 
         _attackerLabel.Text = $"{_attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
         _defenderLabel.Text = $"{_defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
@@ -69,7 +72,7 @@ public partial class AttackSelectionView : Control
         var commander = Main.Instance.World.GetResource<Commander>();
         var gameStateController = Main.Instance.World.GetResource<GameStateController>();
 
-        commander.Enqueue(new CombatCommand(_attackerLocEntity, _selectedOption.AttackerAttackEntity, _defenderLocEntity, _selectedOption.DefenderAttackEntity));
+        commander.Enqueue(new CombatCommand(_attackerLocEntity, _selectedOption.AttackerAttackEntity, _defenderLocEntity, _selectedOption.DefenderAttackEntity, _attackDistance));
             
         gameStateController.PopState();
         gameStateController.PushState(new CommanderState(Main.Instance.World));

@@ -25,19 +25,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return _list[0];
     }
 
-    public bool HasAttackWithRange(int range)
-    {
-        foreach(var attack in _list)
-        {
-            if (attack.Get<Range>().Value >= range)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public EcsEntity GetUsableAttack(int attackRange)
+    public EcsEntity GetUsableAttack(int attackRange, int bonusAttackRange = 0)
     {
         bool isInMeleeRange = attackRange == 1;
 
@@ -52,7 +40,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
             }
             else
             {
-                if (attack.Get<Range>().Value >= attackRange)
+                if (attack.Get<Range>().Value + bonusAttackRange >= attackRange)
                 {
                     return attack;
                 }
@@ -61,11 +49,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return default;
     }
 
-    public EcsEntity[] GetUsableAttacks(int attackRange)
+    public EcsEntity[] GetUsableAttacks(int attackDistance, int bonusAttackRange = 0)
     {
         List<EcsEntity> list = new List<EcsEntity>();
 
-        bool isInMeleeRange = attackRange == 1;
+        bool isInMeleeRange = attackDistance == 1;
         
         foreach(var attack in _list)
         {
@@ -78,7 +66,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
             }
             else
             {
-                if (attack.Get<Range>().Value >= attackRange)
+                if (attack.Get<Range>().Value + bonusAttackRange >= attackDistance)
                 {
                     list.Add(attack);
                 }

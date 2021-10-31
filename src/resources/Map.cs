@@ -146,6 +146,19 @@ public class Map
         return (int)(distance + diff * 0.5f);
     }
 
+    public int GetBonusAttackRange(Coords fromCoords, Coords toCoords)
+    {
+        var fromLocEntity = Locations.Get(fromCoords.Cube);
+        var toLocEntity = Locations.Get(toCoords.Cube);
+
+        ref var fromElevation = ref fromLocEntity.Get<Elevation>();
+        ref var toElevation = ref toLocEntity.Get<Elevation>();
+
+        var elevationDiff =  fromElevation.Value - toElevation.Value;
+
+        return (int)(Mathf.Max(elevationDiff, 0) * 0.5f);
+    }
+
     public Path FindPath(Coords fromCoords, Coords toCoords, int side)
     {
         foreach (var loc in Locations.Dict.Values)

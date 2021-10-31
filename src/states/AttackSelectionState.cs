@@ -6,6 +6,7 @@ public partial class AttackSelectionState : GameState
     public EcsEntity AttackerLocEntity { get; set; }
     public EcsEntity DefenderLocEntity { get; set; }
     public Dictionary<EcsEntity, EcsEntity> AttackPairs { get; set; }
+    public int AttackDistance { get; set; }
 
     private AttackSelectionView _view;
 
@@ -20,7 +21,7 @@ public partial class AttackSelectionState : GameState
         
         hudView.AddChild(_view);
 
-        _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);
+        _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs, AttackDistance);
     }
 
     public override void Exit(GameStateController gameStates)

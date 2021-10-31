@@ -38,6 +38,8 @@ public partial class CombatCommand : Command
     private EcsEntity _attackerAttackEntity;
     private EcsEntity _defenderAttackEntity;
 
+    private int _attackDistance;
+    
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
 
@@ -46,12 +48,13 @@ public partial class CombatCommand : Command
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity)
+    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
     {
         _attackerLocEntity = attackerLocEntity;
         _attackerAttackEntity = attackerAttackEntity;
         _defenderLocEntity = defenderLocEntity;
         _defenderAttackEntity = defenderAttackEntity;
+        _attackDistance = attackDistance;
         _attackerEntity = _attackerLocEntity.Get<HasUnit>().Entity;
         _defenderEntity = _defenderLocEntity.Get<HasUnit>().Entity;
     }
@@ -158,10 +161,17 @@ public partial class CombatCommand : Command
     private void OnStrike()
     {
         var defense = _attackData.TerrainTypes.GetDefense();
+        var accuracy = 0f;
+
+        if (_attackData.IsRanged)
+        {
+            accuracy -= _attackDistance / 10f;
+            GD.Print("Accuracy: " + accuracy);
+        }
 
         GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
         
-        if (defense < GD.Randf())
+        if (defense < GD.Randf() + accuracy)
         {
             Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
         }
