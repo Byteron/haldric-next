@@ -3,6 +3,7 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avpnm"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_n5dxn"]
+
 _surfaces = [{
 "aabb": AABB(-6.30943, -4, -6.65864, 12.4956, 9.42874, 13.1079),
 "format": 4097,
@@ -31,3 +32,4 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource( "ArrayMesh_n5dxn" )
+

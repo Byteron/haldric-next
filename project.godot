@@ -19,11 +19,13 @@ config/icon="res://icon.png"
 Scenes="*res://src/nodes/global/Scenes.tscn"
 Data="*res://src/nodes/global/Data.tscn"
 
+[debug]
+
+settings/fps/force_fps=60
+
 [display]
 
-window/size/width=1920
-window/size/height=1080
-window/vsync/use_vsync=false
+window/vsync/use_vsync=true
 
 [input]
 

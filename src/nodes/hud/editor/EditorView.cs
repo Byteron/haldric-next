@@ -115,11 +115,18 @@ public partial class EditorView : CanvasLayer
 
     private void OnCreateButtonPressed()
     {
-        int width = int.Parse(_widthTextEdit.Text);
-        int height = int.Parse(_heightTextEdit.Text);
-
-        Main.Instance.World.Spawn().Add(new DespawnMapEvent());
-        Main.Instance.World.Spawn().Add(new SpawnMapEvent(width, height));
+        if (_widthTextEdit.Text.IsValidInteger() && _heightTextEdit.Text.IsValidInteger()){
+            int width = int.Parse(_widthTextEdit.Text);
+            int height = int.Parse(_heightTextEdit.Text);
+            
+            Main.Instance.World.Spawn().Add(new DespawnMapEvent());
+            Main.Instance.World.Spawn().Add(new SpawnMapEvent(width, height));
+        } 
+        else
+        {
+            GD.PushWarning("Please specify valid map size!");
+            return;
+        }
     }
 
     private void OnToolsTabChanged(int index)
