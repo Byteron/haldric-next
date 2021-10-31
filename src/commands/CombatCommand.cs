@@ -74,7 +74,7 @@ public partial class CombatCommand : Command
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity);
+                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity, _attackerEntity.Get<Aligned>().Value);
                 _attackDataQueue.Enqueue(new AttackData(
                     _attackerEntity,
                     _defenderEntity,
@@ -87,7 +87,7 @@ public partial class CombatCommand : Command
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity);
+                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity, _defenderEntity.Get<Aligned>().Value);
                 _attackDataQueue.Enqueue(new AttackData(
                     _defenderEntity,
                     _attackerEntity,

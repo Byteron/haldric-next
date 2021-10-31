@@ -37,6 +37,7 @@ public class UnitFactory
             .WithHealth(unitType.Health)
             .WithActions(unitType.Actions)
             .WithMoves(unitType.Moves)
+            .WithAligned(unitType.Alignment)
             .WithExperience(unitType.Experience)
             .WithWeaknesses(unitType.Weaknesses)
             .WithResistances(unitType.Resistances)

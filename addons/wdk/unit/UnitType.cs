@@ -13,6 +13,7 @@ namespace Haldric.Wdk
         [Export] public int Moves = 5;
         [Export] public int Experience = 40;
 
+        [Export] public Alignment Alignment;
         [Export] public List<DamageType> Weaknesses;
         [Export] public List<DamageType> Calamities;
         [Export] public List<DamageType> Resistances;

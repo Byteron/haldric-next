@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://bukes2it76wa7"]
 
 [ext_resource type="PackedScene" path="res://addons/wdk/unit/UnitType.tscn" id="1_4ncdw"]
-[ext_resource type="PackedScene" path="res://addons/wdk/unit/Attack.tscn" id="2_ls8kt"]
+[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_ls8kt"]
 [ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/gltf/Infantry.glb" id="3_xkntm"]
 
 [node name="Bowman" instance=ExtResource( "1_4ncdw" )]

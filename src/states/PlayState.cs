@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
+using Haldric.Wdk;
 
 public partial class PlayState : GameState
 {
@@ -65,12 +66,12 @@ public partial class PlayState : GameState
         _world.AddResource(new Scenario());
         _world.AddResource(new Schedule(new List<Daytime>()
         {
-            new Daytime(0f, 0.5f, new Color("EF810E")),
-            new Daytime(-60f, 1.0f, new Color("FFFFFF")),
-            new Daytime(-120f, 1.0f, new Color("FFFFFF")),
-            new Daytime(-180f, 0.5f, new Color("EF810E")),
-            new Daytime(-240, 0f, new Color("053752")),
-            new Daytime(60f, 0f, new Color("053752")),
+            new Daytime(0f, 0.5f, new Color("EF810E"), new List<Alignment>() { Haldric.Wdk.Alignment.Liminal }, null),
+            new Daytime(-60f, 1.0f, new Color("FFFFFF"), new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }, new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }),
+            new Daytime(-120f, 1.0f, new Color("FFFFFF"), new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }, new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }),
+            new Daytime(-180f, 0.5f, new Color("EF810E"), new List<Alignment>() { Haldric.Wdk.Alignment.Liminal }, null),
+            new Daytime(-240, 0f, new Color("053752"), new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }, new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }),
+            new Daytime(60f, 0f, new Color("053752"), new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }, new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }),
         }));
 
         var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();

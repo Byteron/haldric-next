@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Haldric.Wdk;
 
 public class Daytime
 {
@@ -7,11 +8,33 @@ public class Daytime
     public float Energy = 0f;
     public Color Color;
 
-    public Daytime(float angle, float energy, Color color)
+    private List<Alignment> _bonuses;
+    private List<Alignment> _maluses;
+
+    public Daytime(float angle, float energy, Color color, List<Alignment> bonuses, List<Alignment> maluses)
     {
         Angle = angle;
         Energy = energy;
         Color = color;
+        _bonuses = bonuses;
+        _maluses = maluses;
+    }
+
+    public float GetDamageModifier(Alignment alignment)
+    {
+        float mod = 1f;
+
+        if (_bonuses != null && _bonuses.Contains(alignment))
+        {
+            mod += 0.25f;
+        }
+
+        if (_maluses != null && _maluses.Contains(alignment))
+        {
+            mod -= 0.25f;
+        }
+
+        return mod;
     }
 }
 

@@ -2,6 +2,14 @@ using System.Collections.Generic;
 
 namespace Haldric.Wdk
 {
+    public enum Alignment
+    {
+        Lawful,
+        Neutral,
+        Chaotic,
+        Liminal,
+    }
+
     public enum DamageType
     {
         Slash,
