@@ -39,7 +39,7 @@ public class EditorEditPlayerSystem : IEcsSystem
             return;
         }
         
-        ref var locations = ref map.Locations;
+        var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
         if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))

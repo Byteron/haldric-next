@@ -41,7 +41,7 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var terrainCodes = new List<string>();
 
-                ref var baseTerrain = ref location.Get<HasBaseTerrain>();
+                ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
                 var entity = baseTerrain.Entity;
                 ref var baseTerrainCode = ref entity.Get<TerrainCode>();
 
@@ -49,7 +49,7 @@ public class SaveMapEventSystem : IEcsSystem
 
                 if (locEntity.Has<HasOverlayTerrain>())
                 {
-                    ref var overlayTerrain = ref location.Get<HasOverlayTerrain>();
+                    ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
                     var overlayEntity = overlayTerrain.Entity;
                     ref var overlayTerrainCode = ref overlayEntity.Get<TerrainCode>();
 
@@ -59,7 +59,7 @@ public class SaveMapEventSystem : IEcsSystem
                 var locationData = new Dictionary
                 {
                     { "Terrain", terrainCodes },
-                    { "Elevation", location.Get<Elevation>().Value }
+                    { "Elevation", locEntity.Get<Elevation>().Value }
                 };
                 if (locEntity.Has<IsStartingPositionOfTeam>())
                 {
