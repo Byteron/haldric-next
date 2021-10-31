@@ -36,7 +36,12 @@ public class TerrainScript : TerrainLoader
 		AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 
-		AddDecorationGraphic("Ff", "assets/graphics/models/forest_low_poly.tres");
+		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
+		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");
+
+		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_02.tres", "outer");
+		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_03.tres", "outer");
 
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_01.tres", "center");
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_02.tres", "center");
