@@ -27,8 +27,8 @@ public class HighlightLocationsEventSystem : IEcsSystem
             var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
             
             var locEntity = map.Locations.Get(eventData.Coords.Cube);
-            var unitEntity = locEntity.Get<HasUnit>().Entity;
-
+            ref var unit = ref locEntity.Get<HasUnit>();
+            var unitEntity = unit.Entity;
             ref var team = ref unitEntity.Get<Team>();
             ref var attacks = ref unitEntity.Get<Attacks>();
             
@@ -63,7 +63,9 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 if (hasUnit)
                 {
                     if (nLocEntity.Get<HasUnit>().Entity.Get<Team>().Value == team.Value)
-                    continue;
+                    {
+                        continue;
+                    }
                 }
 
                 if (attack.IsAlive())

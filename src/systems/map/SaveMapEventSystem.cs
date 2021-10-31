@@ -25,7 +25,7 @@ public class SaveMapEventSystem : IEcsSystem
         {
             var map = world.GetResource<Map>();
 
-            var saveMapEvent = eventQuery.Get<SaveMapEvent>(eventEntityId);
+            ref var saveMapEvent = ref eventQuery.Get<SaveMapEvent>(eventEntityId);
 
             var saveData = new Dictionary();
             var locationsData = new Dictionary();
@@ -40,22 +40,26 @@ public class SaveMapEventSystem : IEcsSystem
 
                 var terrainCodes = new List<string>();
 
-                var baseTerrainEntity = location.Get<HasBaseTerrain>().Entity;
-                var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>();
+                ref var baseTerrain = ref location.Get<HasBaseTerrain>();
+                var entity = baseTerrain.Entity;
+                ref var baseTerrainCode = ref entity.Get<TerrainCode>();
 
                 terrainCodes.Add(baseTerrainCode.Value);
 
                 if (location.Has<HasOverlayTerrain>())
                 {
-                    var overlayTerrainEntity = location.Get<HasOverlayTerrain>().Entity;
-                    var overlayTerrainCode = overlayTerrainEntity.Get<TerrainCode>();
+                    ref var overlayTerrain = ref location.Get<HasOverlayTerrain>();
+                    var overlayEntity = overlayTerrain.Entity;
+                    ref var overlayTerrainCode = ref overlayEntity.Get<TerrainCode>();
 
                     terrainCodes.Add(overlayTerrainCode.Value);
                 }
 
-                var locationData = new Dictionary();
-                locationData.Add("Terrain", terrainCodes);
-                locationData.Add("Elevation", location.Get<Elevation>().Value);
+                var locationData = new Dictionary
+                {
+                    { "Terrain", terrainCodes },
+                    { "Elevation", location.Get<Elevation>().Value }
+                };
 
                 locationsData.Add(cell, locationData);
             }

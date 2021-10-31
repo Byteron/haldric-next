@@ -53,7 +53,7 @@ public class EditorEditSystem : IEcsSystem
                 var nLocEntity = locations.Get(cube);
                 EditLocation(editorView, nLocEntity);
 
-                var chunkCell = nLocEntity.Get<Vector3i>();
+                ref var chunkCell = ref nLocEntity.Get<Vector3i>();
 
                 if (!chunks.Contains(chunkCell))
                 {

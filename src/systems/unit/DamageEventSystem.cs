@@ -77,7 +77,8 @@ public class DamageEventSystem : IEcsSystem
 
             health.Decrease(finalDamage);
 
-            var position = damageEvent.TargetEntity.Get<Coords>().World + Vector3.Up * 5f;
+            ref var coords = ref damageEvent.TargetEntity.Get<Coords>();
+            var position = coords.World + Vector3.Up * 5f;
             var text = finalDamage.ToString();
             var color = new Color(1f, 0f, 0f);
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);

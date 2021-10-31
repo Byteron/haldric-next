@@ -29,9 +29,9 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         {
             foreach (var chunkEntityId in chunksQuery)
             {
-                var updateEvent = eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
+                ref var updateEvent = ref eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
 
-                var chunkCell = chunksQuery.Get<Vector3i>(chunkEntityId);
+                ref var chunkCell = ref chunksQuery.Get<Vector3i>(chunkEntityId);
 
                 if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
                 {
@@ -71,16 +71,16 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 
     private void Populate(Direction direction, EcsEntity locEntity)
     {
-        var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        var baseTerrainCode = baseTerrainEntity.Get<TerrainCode>();
+        ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
+        ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
 
 
         Populate(locEntity, baseTerrainCode);
 
         if (locEntity.Has<HasOverlayTerrain>())
         {
-            var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
-            var overlayTerrainCode = overlayTerrainEntity.Get<TerrainCode>();
+            ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
+            ref var overlayTerrainCode = ref overlayTerrain.Entity.Get<TerrainCode>();
 
             Populate(locEntity, overlayTerrainCode);
         }
