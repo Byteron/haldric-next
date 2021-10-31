@@ -61,10 +61,6 @@ public struct TerrainTypes
 
 	public override string ToString()
 	{
-		string s = string.Join(", ", List);
-		foreach (var type in List)
-		{
-		}
-		return s;
+		return string.Join(", ", List);
 	}
 }
