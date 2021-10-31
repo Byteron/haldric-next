@@ -2,7 +2,7 @@ using Bitron.Ecs;
 
 public struct Neighbors : IEcsAutoReset<Neighbors>
 {
-    public EcsEntity[] Array { get; set; }
+    public EcsEntity[] Array { get; private set; }
 
     public bool Has(Direction direction)
     {
