@@ -16,16 +16,23 @@ public partial class UnitPlate : Control
 
     public Color TeamColor { get; set; }
 
+    public bool IsLeader;
+    public bool IsHero;
+
     private TextureProgressBar _healthBar;
     private TextureProgressBar _xpBar;
-    private ColorRect _rect;
+    private ColorRect _sideColorRect;
+    private ColorRect _heroColorRect;
+    private ColorRect _leaderColorRect;
     private Control _actionContainer;
 
     public override void _Ready()
     {
         _healthBar = GetNode<TextureProgressBar>("VBoxContainer/HealthProgressBar");
         _xpBar = GetNode<TextureProgressBar>("VBoxContainer/HBoxContainer/VBoxContainer/ExperienceProgressBar");
-        _rect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/TeamColorRect");
+        _sideColorRect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/TeamColorRect");
+        _leaderColorRect = GetNode<ColorRect>("VBoxContainer/LeaderColorRect");
+        _heroColorRect = GetNode<ColorRect>("VBoxContainer/HeroColorRect");
         _actionContainer = GetNode<Control>("VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer");
     }
 
@@ -39,7 +46,7 @@ public partial class UnitPlate : Control
         _xpBar.MaxValue = MaxExperience;
         _xpBar.Value = Experience;
 
-        _rect.Color = TeamColor;
+        _sideColorRect.Color = TeamColor;
 
         if (camera.IsPositionBehind(Position))
         {
@@ -73,6 +80,19 @@ public partial class UnitPlate : Control
                 colorRect.Color = new Color(0f, 0.4f, 0f);
             }
             _actionContainer.AddChild(colorRect);
+        }
+
+        _leaderColorRect.Hide();
+        _heroColorRect.Hide();
+        
+        if (IsHero)
+        {
+            _heroColorRect.Show();
+        }
+
+        if (IsLeader)
+        {
+            _leaderColorRect.Show();
         }
     }
 }

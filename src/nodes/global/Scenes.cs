@@ -8,6 +8,9 @@ public partial class Scenes : Node
     [Export] public PackedScene EditorView;
     [Export] public PackedScene MainMenuView;
     [Export] public PackedScene AttackSelectionView;
+    [Export] public PackedScene FactionSelectionView;
+    [Export] public PackedScene ScenarioSelectionView;
+    [Export] public PackedScene RecruitSelectionView;
     [Export] public PackedScene LoadingStateView;
     [Export] public PackedScene DebugView;
     [Export] public PackedScene HUDView;

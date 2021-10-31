@@ -83,6 +83,16 @@ public struct Coords
         return (int)this.Offset.z * width + (int)this.Offset.x;
     }
 
+    public override bool Equals(object obj)
+    {
+        if (obj is Coords coords)
+        {
+            return coords.X == this.X && coords.Z == this.Z;
+        }
+
+        return false;
+    }
+
     public override string ToString()
     {
         return string.Format("({0}, {1})", X, Z);

@@ -12,13 +12,15 @@ public partial class CombatCommand : Command
         public TerrainTypes TerrainTypes { get; set; }
         public DamageEvent DamageEvent { get; set; }
         public int DefenderLevel { get; set; }
+        public PackedScene Projectile {get; set;}
         public bool IsRanged { get; set; }
 
         public AttackData(
             EcsEntity attackerEntity, 
-            EcsEntity defenderEntity, 
+            EcsEntity defenderEntity,
             TerrainTypes terrainTypes,
-            DamageEvent damageEvent, 
+            DamageEvent damageEvent,
+            PackedScene projectile,
             bool isRanged)
         {
             AttackerEntity = attackerEntity;
@@ -26,6 +28,7 @@ public partial class CombatCommand : Command
             TerrainTypes = terrainTypes;
             DamageEvent = damageEvent;
             DefenderLevel = DefenderEntity.Get<Level>().Value;
+            Projectile = projectile;
             IsRanged = isRanged;
         }
     }
@@ -35,6 +38,8 @@ public partial class CombatCommand : Command
     private EcsEntity _attackerAttackEntity;
     private EcsEntity _defenderAttackEntity;
 
+    private int _attackDistance;
+    
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
 
@@ -43,12 +48,13 @@ public partial class CombatCommand : Command
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity)
+    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
     {
         _attackerLocEntity = attackerLocEntity;
         _attackerAttackEntity = attackerAttackEntity;
         _defenderLocEntity = defenderLocEntity;
         _defenderAttackEntity = defenderAttackEntity;
+        _attackDistance = attackDistance;
         _attackerEntity = _attackerLocEntity.Get<HasUnit>().Entity;
         _defenderEntity = _defenderLocEntity.Get<HasUnit>().Entity;
     }
@@ -68,14 +74,28 @@ public partial class CombatCommand : Command
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity);
-                _attackDataQueue.Enqueue(new AttackData(_attackerEntity, _defenderEntity, TerrainTypes.FromLocEntity(_defenderLocEntity), damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity, _attackerEntity.Get<Aligned>().Value);
+                _attackDataQueue.Enqueue(new AttackData(
+                    _attackerEntity,
+                    _defenderEntity,
+                    TerrainTypes.FromLocEntity(_defenderLocEntity),
+                    damageEvent,
+                    _attackerAttackEntity.Get<AssetHandle<PackedScene>>().Asset,
+                    attackerRange > 1
+                ));
             }
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity);
-                _attackDataQueue.Enqueue(new AttackData(_defenderEntity, _attackerEntity, TerrainTypes.FromLocEntity(_attackerLocEntity), damageEvent, attackerRange > 1));
+                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity, _defenderEntity.Get<Aligned>().Value);
+                _attackDataQueue.Enqueue(new AttackData(
+                    _defenderEntity,
+                    _attackerEntity,
+                    TerrainTypes.FromLocEntity(_attackerLocEntity),
+                    damageEvent,
+                    _attackerAttackEntity.Get<AssetHandle<PackedScene>>().Asset,
+                    attackerRange > 1
+                ));
             }
         }
 
@@ -109,14 +129,28 @@ public partial class CombatCommand : Command
         var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
         var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
 
+        attackerView.LookAt(defenderView.Position);
+        defenderView.LookAt(attackerView.Position);
+
         Vector3 attackPos = attackerView.Position;
 
-        if (!_attackData.IsRanged)
+        if (_attackData.IsRanged)
+        {
+            var projectile = _attackData.Projectile.Instantiate<Projectile>();
+            Main.Instance.AddChild(projectile);
+            
+            projectile.Position = attackerView.Position + Vector3.Up * 5f;
+            projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
+
+            _tween.TweenProperty(projectile, "position", defenderView.Position + Vector3.Up * 5f, 0.2f);
+            _tween.TweenCallback(new Callable(projectile, "queue_free"));
+        }
+        else
         {
             attackPos = (attackerView.Position + defenderView.Position) / 2;
+            _tween.TweenProperty(attackerView, "position", attackPos, 0.2f);
         }
 
-        _tween.TweenProperty(attackerView, "position", attackPos, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrike"));
         _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrikeFinished"));
@@ -127,10 +161,17 @@ public partial class CombatCommand : Command
     private void OnStrike()
     {
         var defense = _attackData.TerrainTypes.GetDefense();
+        var accuracy = 0f;
+
+        if (_attackData.IsRanged)
+        {
+            accuracy -= _attackDistance / 10f;
+            GD.Print("Accuracy: " + accuracy);
+        }
 
         GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
         
-        if (defense < GD.Randf())
+        if (defense < GD.Randf() + accuracy)
         {
             Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
         }

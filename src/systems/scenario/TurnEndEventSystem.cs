@@ -5,14 +5,13 @@ public struct TurnEndEvent { }
 
 public class TurnEndEventSystem : IEcsSystem
 {
+    private int _turn = 0;
+
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-
-        var unitQuery = world.Query<Team>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().End();
-
+        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().Inc<Level>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
-        
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
         foreach (var eventEntityId in eventQuery)
@@ -20,30 +19,44 @@ public class TurnEndEventSystem : IEcsSystem
             var scenario = world.GetResource<Scenario>();
 
             scenario.EndTurn();
-            
+
+            if (_turn != scenario.Turn)
+            {
+                _turn = scenario.Turn;
+
+                ChangeDaytime(world);
+            }
+
             var player = scenario.GetCurrentPlayerEntity();
+            ref var gold = ref player.Get<Gold>();
 
             foreach (var unitEntityId in unitQuery)
             {
-                var team = unitQuery.Get<Team>(unitEntityId);
-                if (team.Value == scenario.CurrentPlayer)
+                var side = unitQuery.Get<Side>(unitEntityId);
+
+                if (side.Value == scenario.CurrentPlayer)
                 {
                     ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
                     ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
+
                     actions.Restore();
                     moves.Restore();
+
+                    ref var level = ref unitQuery.Get<Level>(unitEntityId);
+                    gold.Value -= level.Value;
+                    GD.Print($"Player: {side}, Income - {level.Value}");
                 }
             }
 
             foreach (var locEntityId in locsWithCapturedVillagesQuery)
             {
                 ref var village = ref locsWithCapturedVillagesQuery.Get<Village>(locEntityId);
-                ref var team = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
+                ref var side = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
 
-                if (scenario.CurrentPlayer == team.Value)
+                if (scenario.CurrentPlayer == side.Value)
                 {
-                    player.Get<Gold>().Value += village.List.Count;
-                    GD.Print($"Player: {team}, Income + {village.List.Count}");
+                    gold.Value += village.List.Count;
+                    GD.Print($"Player: {side}, Income + {village.List.Count}");
                 }
             }
 
@@ -63,9 +76,9 @@ public class TurnEndEventSystem : IEcsSystem
                 var unitEntity = locWithUnitQuery.Get<HasUnit>(locEntityId).Entity;
 
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
-                ref var team = ref unitEntity.Get<Team>();
+                ref var side = ref unitEntity.Get<Side>();
 
-                if (canHeal && team.Value == scenario.CurrentPlayer && !health.IsFull())
+                if (canHeal && side.Value == scenario.CurrentPlayer && !health.IsFull())
                 {
                     var diff = Mathf.Min(health.GetDifference(), 8);
 
@@ -74,8 +87,27 @@ public class TurnEndEventSystem : IEcsSystem
                     hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
                 }
             }
-
-            hudView.PlayerLabel.Text = $"Player: {player.Get<Team>().Value}, Gold: {player.Get<Gold>().Value}";
         }
+    }
+
+    private static void ChangeDaytime(EcsWorld world)
+    {
+        var schedule = world.GetResource<Schedule>();
+
+        schedule.Next();
+
+        var daytime = schedule.GetCurrentDaytime();
+
+        var tween = Main.Instance.GetTree().CreateTween();
+
+        tween.SetTrans(Tween.TransitionType.Sine);
+        tween.SetEase(Tween.EaseType.InOut);
+        
+        tween.TweenProperty(Main.Instance.Light, "light_energy", daytime.Energy, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.Color, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.Color, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.Color, 2.5f);
+        tween.Play();
     }
 }

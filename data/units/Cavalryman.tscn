@@ -1,11 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://twaixwo87css"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="PackedScene" uid="uid://dqw5v5gf0onxy" path="res://addons/wdk/UnitType.tscn" id="1_xrcl7"]
-[ext_resource type="PackedScene" uid="uid://c04frxgexwoli" path="res://addons/wdk/Attack.tscn" id="2_3ggjw"]
+[ext_resource type="PackedScene" path="res://addons/wdk/unit/UnitType.tscn" id="1_xrcl7"]
+[ext_resource type="PackedScene" path="res://addons/wdk/unit/Attack.tscn" id="2_3ggjw"]
 [ext_resource type="PackedScene" uid="uid://bbll0id2147m2" path="res://assets/graphics/gltf/Unit.gltf" id="2_hwijx"]
 
 [node name="Cavalryman" instance=ExtResource( "1_xrcl7" )]
 Id = "Cavalryman"
+Cost = 17
 Health = 50
 Moves = 8
 Experience = 8
@@ -22,4 +23,4 @@ Strikes = 2
 DamageType = 2
 
 [node name="Unit" parent="UnitView" index="0" instance=ExtResource( "2_hwijx" )]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+transform = Transform3D(-3, 0, -2.62268e-07, 0, 3, 0, 2.62268e-07, 0, -3, 0, 0, 0)

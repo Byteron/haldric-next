@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv6f2olg81jiv"]
+
+[ext_resource type="Script" path="res://addons/wdk/unit/Attack.cs" id="1_w2tl8"]
+[ext_resource type="PackedScene" path="res://addons/wdk/unit/Projectile.tscn" id="2_kkkqy"]
+
+[node name="Attack" type="Node"]
+script = ExtResource( "1_w2tl8" )
+Projectile = ExtResource( "2_kkkqy" )

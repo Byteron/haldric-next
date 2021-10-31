@@ -60,7 +60,7 @@ public class Map
         return coords.World;
     }
 
-    public void UpdateDistances(Coords fromCoords, int team)
+    public void UpdateDistances(Coords fromCoords, int side)
     {
         foreach (var loc in Locations.Dict.Values)
         {
@@ -107,7 +107,7 @@ public class Map
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 
-                    if (unitEntity.Get<Team>().Value != team)
+                    if (unitEntity.Get<Side>().Value != side)
                     {
                         nMovementCost = 99;
                     }
@@ -148,7 +148,20 @@ public class Map
         return (int)(distance + diff * 0.5f);
     }
 
-    public Path FindPath(Coords fromCoords, Coords toCoords, int team)
+    public int GetBonusAttackRange(Coords fromCoords, Coords toCoords)
+    {
+        var fromLocEntity = Locations.Get(fromCoords.Cube);
+        var toLocEntity = Locations.Get(toCoords.Cube);
+
+        ref var fromElevation = ref fromLocEntity.Get<Elevation>();
+        ref var toElevation = ref toLocEntity.Get<Elevation>();
+
+        var elevationDiff =  fromElevation.Value - toElevation.Value;
+
+        return (int)(Mathf.Max(elevationDiff, 0) * 0.5f);
+    }
+
+    public Path FindPath(Coords fromCoords, Coords toCoords, int side)
     {
         foreach (var loc in Locations.Dict.Values)
         {
@@ -161,7 +174,12 @@ public class Map
         var path = new Path();
         path.Start = fromLocEntity;
         path.Destination = toLocEntity;
-
+        
+        if (fromCoords.Cube == toCoords.Cube)
+        {
+            return path;
+        }
+        
         fromLocEntity.Get<Distance>().Value = 0;
 
         List<EcsEntity> frontier = new List<EcsEntity>();
@@ -216,7 +234,7 @@ public class Map
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 
-                    if (unitEntity.Get<Team>().Value != team)
+                    if (unitEntity.Get<Side>().Value != side)
                     {
                         nMovementCost = 99;
                     }

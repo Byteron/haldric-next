@@ -22,7 +22,7 @@ public class SelectUnitSystem : IEcsSystem
             var scenario = world.GetResource<Scenario>();
             var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
             
-            if (unitEntity.Get<Team>().Value != scenario.CurrentPlayer)
+            if (unitEntity.Get<Side>().Value != scenario.CurrentPlayer)
             {
                 return;
             }

@@ -4,15 +4,19 @@ using Haldric.Wdk;
 
 public struct SpawnUnitEvent
 {
-    public int Team { get; set; }
+    public int Side { get; set; }
     public string Id { get; set; }
     public Coords Coords { get; set; }
+    public bool IsLeader { get; set; }
+    public bool IsHero { get; set; }
 
-    public SpawnUnitEvent(int team, string id, Coords coords)
+    public SpawnUnitEvent(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
-        Team = team;
+        Side = side;
         Id = id;
         Coords = coords;
+        IsLeader = isLeader;
+        IsHero = isHero;
     }
 }
 
@@ -63,8 +67,19 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitView.Position = position;
 
             
-            unitEntity.Add(new Team(spawnEvent.Team));
+            unitEntity.Add(new Side(spawnEvent.Side));
             unitEntity.Add(spawnEvent.Coords);
+
+            if (spawnEvent.IsLeader)
+            {
+                unitEntity.Add(new IsLeader());
+            }
+            
+            if (spawnEvent.IsHero)
+            {
+                unitEntity.Add(new IsHero());
+            }
+
 
             unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
 

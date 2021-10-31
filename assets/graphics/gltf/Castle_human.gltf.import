@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://1cgwgg56my4d"
+uid="uid://4dfy8seo1b2i"
 path="res://.godot/imported/Castle_human.gltf-f76928f04cd9e2965e8e475ac3597167.scn"
 
 [deps]
@@ -49,6 +49,10 @@ _subresources={
 }
 },
 "meshes": {
+"Castle_human_Castle_human_floor_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/castle_plateau.tres"
+},
 "Castle_human_Castle_human_tower_01": {
 "save_to_file/enabled": true,
 "save_to_file/make_streamable": false,

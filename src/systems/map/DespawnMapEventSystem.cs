@@ -34,7 +34,13 @@ public class DespawnMapEventSystem : IEcsSystem
             world.RemoveResource<Map>();
             world.RemoveResource<ShaderData>();
             world.RemoveResource<HoveredLocation>();
+
+            var cursor = world.GetResource<Cursor3D>();
+            cursor.QueueFree();
             world.RemoveResource<Cursor3D>();
+
+            var highlighter = world.GetResource<TerrainHighlighter>();
+            highlighter.QueueFree();
             world.RemoveResource<TerrainHighlighter>();
 
             if (world.HasResource<SelectedLocation>())

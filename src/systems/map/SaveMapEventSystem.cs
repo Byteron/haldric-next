@@ -29,6 +29,7 @@ public class SaveMapEventSystem : IEcsSystem
 
             var saveData = new Dictionary();
             var locationsData = new Dictionary();
+            var playersData = new Dictionary();
 
             var locations = map.Locations;
             var grid = map.Grid;
@@ -36,7 +37,7 @@ public class SaveMapEventSystem : IEcsSystem
             foreach (var item in locations.Dict)
             {
                 var cell = item.Key;
-                var location = item.Value;
+                var locEntity = item.Value;
 
                 var terrainCodes = new List<string>();
 
@@ -46,7 +47,7 @@ public class SaveMapEventSystem : IEcsSystem
 
                 terrainCodes.Add(baseTerrainCode.Value);
 
-                if (location.Has<HasOverlayTerrain>())
+                if (locEntity.Has<HasOverlayTerrain>())
                 {
                     ref var overlayTerrain = ref location.Get<HasOverlayTerrain>();
                     var overlayEntity = overlayTerrain.Entity;
@@ -60,6 +61,11 @@ public class SaveMapEventSystem : IEcsSystem
                     { "Terrain", terrainCodes },
                     { "Elevation", location.Get<Elevation>().Value }
                 };
+                if (locEntity.Has<IsStartingPositionOfTeam>())
+                {
+                    ref var startPos = ref locEntity.Get<IsStartingPositionOfTeam>();
+                    playersData.Add(cell, startPos.Value);
+                }
 
                 locationsData.Add(cell, locationData);
             }
@@ -67,6 +73,7 @@ public class SaveMapEventSystem : IEcsSystem
             saveData.Add("Width", grid.Width);
             saveData.Add("Height", grid.Height);
             saveData.Add("Locations", locationsData);
+            saveData.Add("Players", playersData);
 
             SaveToFile(saveMapEvent.Name, saveData);
         }

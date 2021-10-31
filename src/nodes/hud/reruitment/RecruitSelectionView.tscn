@@ -1,0 +1,95 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlpi2a0xlug5b"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/reruitment/RecruitSelectionView.cs" id="1_0uk8u"]
+[ext_resource type="PackedScene" uid="uid://cflp78vsr0b02" path="res://src/nodes/hud/reruitment/RecruitSelectionOption.tscn" id="2_ufnex"]
+
+[node name="RecruitSelectionView" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_0uk8u" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+RecruitSelectionOption = ExtResource( "2_ufnex" )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -57.0
+offset_right = 200.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 393.0
+offset_bottom = 131.0
+grow_horizontal = 2
+grow_vertical = 2
+script = null
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+offset_right = 386.0
+offset_bottom = 26.0
+text = "Recruitment"
+align = 1
+valign = 1
+structured_text_bidi_override_options = []
+script = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+offset_top = 30.0
+offset_right = 386.0
+offset_bottom = 80.0
+script = null
+
+[node name="UnitLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+offset_right = 191.0
+offset_bottom = 50.0
+rect_min_size = Vector2(0, 50)
+size_flags_horizontal = 3
+structured_text_bidi_override_options = []
+script = null
+
+[node name="OptionButtons" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+offset_left = 195.0
+offset_right = 386.0
+offset_bottom = 50.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+
+[node name="Buttons" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+offset_top = 84.0
+offset_right = 386.0
+offset_bottom = 124.0
+alignment = 1
+script = null
+
+[node name="AcceptButton" type="Button" parent="PanelContainer/VBoxContainer/Buttons"]
+offset_left = 111.0
+offset_right = 191.0
+offset_bottom = 40.0
+rect_min_size = Vector2(80, 40)
+text = "Accept"
+script = null
+
+[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/Buttons"]
+offset_left = 195.0
+offset_right = 275.0
+offset_bottom = 40.0
+rect_min_size = Vector2(80, 40)
+text = "Cancel"
+script = null
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/AcceptButton" to="." method="OnAcceptButtonPressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/CancelButton" to="." method="OnCancelButtonPressed"]

@@ -6,7 +6,8 @@ public partial class EditorState : GameState
     {
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
-        AddInputSystem(new EditorEditSystem(this));
+        AddInputSystem(new EditorEditTerrainSystem(this));
+        AddInputSystem(new EditorEditPlayerSystem(this));
         AddInputSystem(new UndoCommandSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());
@@ -30,11 +31,6 @@ public partial class EditorState : GameState
     {
         _world.AddResource(new Commander());
 
-        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
-        AddChild(hudView);
-
-        _world.AddResource(hudView);
-
         var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
         AddChild(editorView);
 
@@ -47,7 +43,6 @@ public partial class EditorState : GameState
     {
         _world.RemoveResource<Commander>();
         _world.RemoveResource<EditorView>();
-        _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 

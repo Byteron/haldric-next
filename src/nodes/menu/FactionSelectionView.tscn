@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx34w4jqo13n6"]
+
+[ext_resource type="Script" path="res://src/nodes/menu/FactionSelectionView.cs" id="1_870ed"]
+[ext_resource type="PackedScene" uid="uid://cs4y4gne11krg" path="res://src/nodes/menu/PlayerOption.tscn" id="2_bor52"]
+
+[node name="FactionSelectionView" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_870ed" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+PlayerOption = ExtResource( "2_bor52" )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 1913.0
+offset_bottom = 1073.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+offset_left = 851.0
+offset_top = 506.0
+offset_right = 1055.0
+offset_bottom = 560.0
+script = null
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+offset_right = 204.0
+script = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+offset_top = 4.0
+offset_right = 204.0
+offset_bottom = 54.0
+script = null
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+offset_right = 100.0
+offset_bottom = 50.0
+rect_min_size = Vector2(100, 50)
+text = "Continue"
+script = null
+
+[node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+offset_left = 104.0
+offset_right = 204.0
+offset_bottom = 50.0
+rect_min_size = Vector2(100, 50)
+text = "Back"
+script = null
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="." method="OnContinueButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="OnBackButtonPressed"]

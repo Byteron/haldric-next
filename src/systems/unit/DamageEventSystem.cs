@@ -6,11 +6,13 @@ public struct DamageEvent
 {
     public EcsEntity DamagerEntity { get; set; }
     public EcsEntity TargetEntity { get; set; }
+    public Alignment Alignment { get; set; }
 
-    public DamageEvent(EcsEntity damagerEntity, EcsEntity targetEntity)
+    public DamageEvent(EcsEntity damagerEntity, EcsEntity targetEntity, Alignment alignment)
     {
         DamagerEntity = damagerEntity;
         TargetEntity = targetEntity;
+        Alignment = alignment;
     }
 }
 
@@ -18,7 +20,15 @@ public class DamageEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
+
+        if (!world.TryGetResource<Schedule>(out var schedule))
+        {
+            return;
+        }
+
         var query = world.Query<DamageEvent>().End();
+
+        var daytime = schedule.GetCurrentDaytime();
 
         foreach (var eventEntityId in query)
         {
@@ -29,7 +39,7 @@ public class DamageEventSystem : IEcsSystem
 
             ref var damage = ref damagerEntity.Get<Damage>();
 
-            var modifier = 1.0f;
+            var modifier = 1.0f * daytime.GetDamageModifier(damageEvent.Alignment);
 
             if (targetEntity.Has<Weaknesses>())
             {

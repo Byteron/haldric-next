@@ -146,3 +146,19 @@ script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="LeaderColorRect" type="ColorRect" parent="VBoxContainer"]
+offset_top = 12.0
+offset_right = 40.0
+offset_bottom = 15.0
+rect_min_size = Vector2(0, 3)
+color = Color(1, 0.784314, 0.301961, 1)
+script = null
+
+[node name="HeroColorRect" type="ColorRect" parent="VBoxContainer"]
+offset_top = 16.0
+offset_right = 40.0
+offset_bottom = 19.0
+rect_min_size = Vector2(0, 3)
+color = Color(0.905882, 0.960784, 0.941176, 1)
+script = null

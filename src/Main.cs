@@ -7,7 +7,10 @@ public partial class Main : Node3D
 
 	private GameStateController _gameController = new GameStateController();
 
-	public EcsWorld World { get; private set; } = new EcsWorld();
+    public WorldEnvironment Environment { get; private set; }
+    public DirectionalLight3D Light { get; private set; }
+    
+    public EcsWorld World { get; private set; } = new EcsWorld();
 
 	public override void _Ready()
 	{
@@ -19,8 +22,11 @@ public partial class Main : Node3D
 		World.AddResource(_gameController);
 		World.AddResource(GetTree());
 
-		_gameController.PushState(new ApplicationState(World));
-	}
+        Environment = GetNode<WorldEnvironment>("WorldEnvironment");
+        Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
+
+        _gameController.PushState(new ApplicationState(World));
+    }
 
 	public override void _ExitTree()
 	{

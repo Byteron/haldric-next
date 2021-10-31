@@ -45,7 +45,7 @@ public class MoveUnitSystem : IEcsSystem
             
             var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
 
-            var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Team>().Value);
+            var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Side>().Value);
 
             if (path.Checkpoints.Count == 0)
             {

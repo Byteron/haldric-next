@@ -1,24 +1,36 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
+using Godot;
+using Haldric.Wdk;
 
 public partial class PlayState : GameState
 {
-    public PlayState(EcsWorld world) : base(world)
+    private string _mapName;
+    private Dictionary<int, string> _factions;
+
+    public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions) : base(world)
     {
+        _mapName = mapName;
+        _factions = factions;
+
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
         AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new SelectTargetSystem());
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
+        AddInputSystem(new RecruitInputSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());
+        AddUpdateSystem(new UpdatePlayerInfoSystem());
+        AddUpdateSystem(new UpdateUnitPlateSystem());
+        AddUpdateSystem(new UpdateStatsInfoSystem());
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));
+        AddUpdateSystem(new PreviewPathSystem());
         AddUpdateSystem(new UpdateMapCursorSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem());
-        AddUpdateSystem(new UpdateUnitPlateSystem());
 
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -26,8 +38,10 @@ public partial class PlayState : GameState
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
-        AddEventSystem<SpawnUnitsEvent>(new SpawnUnitsEventSystem());
+        AddEventSystem<SpawnPlayersEvent>(new SpawnPlayersEventSystem());
+        AddEventSystem<SpawnPlayerEvent>(new SpawnPlayerEventSystem());
         AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
+        AddEventSystem<RecruitUnitEvent>(new RecruitUnitEventSystem(this));
         AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
         AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
@@ -40,31 +54,41 @@ public partial class PlayState : GameState
         AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem(this));
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
         AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
+        AddEventSystem<CheckVictoryConditionEvent>(new CheckVictoryConditionEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());
     }
 
     public override void Enter(GameStateController gameStates)
     {
-        var scenario = new Scenario();
-
-        _world.AddResource(scenario);
         _world.AddResource(new Commander());
+
+        _world.AddResource(new Scenario());
+        _world.AddResource(new Schedule(new List<Daytime>()
+        {
+            new Daytime(0f, 0.5f, new Color("EF810E"), new List<Alignment>() { Haldric.Wdk.Alignment.Liminal }, null),
+            new Daytime(-60f, 1.0f, new Color("FFFFFF"), new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }, new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }),
+            new Daytime(-120f, 1.0f, new Color("FFFFFF"), new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }, new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }),
+            new Daytime(-180f, 0.5f, new Color("EF810E"), new List<Alignment>() { Haldric.Wdk.Alignment.Liminal }, null),
+            new Daytime(-240, 0f, new Color("053752"), new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }, new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }),
+            new Daytime(60f, 0f, new Color("053752"), new List<Alignment>() { Haldric.Wdk.Alignment.Chaotic }, new List<Alignment>() { Haldric.Wdk.Alignment.Lawful }),
+        }));
 
         var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
         AddChild(hudView);
 
         _world.AddResource(hudView);
 
-        _world.Spawn().Add(new LoadMapEvent("map"));
-        _world.Spawn().Add(new SpawnUnitsEvent());
+        _world.Spawn().Add(new LoadMapEvent(_mapName));
+        _world.Spawn().Add(new SpawnPlayersEvent(_factions));
         _world.Spawn().Add(new TurnEndEvent());
     }
 
     public override void Exit(GameStateController gameStates)
     {
-        _world.RemoveResource<Scenario>();
         _world.RemoveResource<Commander>();
+        _world.RemoveResource<Scenario>();
+        _world.RemoveResource<Schedule>();
 
         _world.RemoveResource<HUDView>();
         _world.Spawn().Add(new DespawnMapEvent());

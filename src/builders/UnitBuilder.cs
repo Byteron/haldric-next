@@ -56,6 +56,12 @@ public class UnitBuilder
         return this;
     }
 
+    public UnitBuilder WithAligned(Alignment value)
+    {
+        _entity.Add(new Aligned(value));
+        return this;
+    }
+
     public UnitBuilder WithWeaknesses(List<DamageType> types)
     {
         _entity.Add(new Weaknesses(types));
