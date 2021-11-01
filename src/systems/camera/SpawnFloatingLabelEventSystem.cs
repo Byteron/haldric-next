@@ -29,7 +29,7 @@ public class SpawnFloatingLabelEventSystem : IEcsSystem
 
         foreach (var eventEntityId in query)
         {
-            var spawnEvent = query.Get<SpawnFloatingLabelEvent>(eventEntityId);
+            var spawnEvent = world.Entity(eventEntityId).Get<SpawnFloatingLabelEvent>();
             hudView.SpawnFloatingLabel(spawnEvent.Position, spawnEvent.Text, spawnEvent.Color);
         }
     }

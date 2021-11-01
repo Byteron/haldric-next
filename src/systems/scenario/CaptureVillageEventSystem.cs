@@ -28,7 +28,7 @@ public class CaptureVillageEventSystem : IEcsSystem
 
         foreach(var id in query)
         {
-            ref var captureEvent = ref query.Get<CaptureVillageEvent>(id);
+            ref var captureEvent = ref world.Entity(id).Get<CaptureVillageEvent>();
             
             var locEntity = captureEvent.LocEntity;
 

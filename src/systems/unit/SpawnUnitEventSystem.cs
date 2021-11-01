@@ -43,7 +43,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             var hudView = world.GetResource<HUDView>();
             var map = world.GetResource<Map>();
             
-            ref var spawnEvent = ref eventQuery.Get<SpawnUnitEvent>(eventEntityId);
+            ref var spawnEvent = ref world.Entity(eventEntityId).Get<SpawnUnitEvent>();
 
             var locations = map.Locations;
 

@@ -32,7 +32,7 @@ public class DamageEventSystem : IEcsSystem
 
         foreach (var eventEntityId in query)
         {
-            ref var damageEvent = ref query.Get<DamageEvent>(eventEntityId);
+            ref var damageEvent = ref world.Entity(eventEntityId).Get<DamageEvent>();
 
             var damagerEntity = damageEvent.DamagerEntity;
             var targetEntity = damageEvent.TargetEntity;

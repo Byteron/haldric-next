@@ -29,22 +29,24 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         {
             foreach (var chunkEntityId in chunksQuery)
             {
-                ref var updateEvent = ref eventQuery.Get<UpdateTerrainFeaturePopulatorEvent>(eventEntityId);
+                ref var updateEvent = ref world.Entity(eventEntityId).Get<UpdateTerrainFeaturePopulatorEvent>();
 
-                ref var chunkCell = ref chunksQuery.Get<Vector3i>(chunkEntityId);
+                var chunkEntity = world.Entity(chunkEntityId);
+
+                ref var chunkCell = ref chunkEntity.Get<Vector3i>();
 
                 if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
                 {
                     continue;
                 }
 
-                _terrainFeaturePopulator = chunksQuery.Get<NodeHandle<TerrainFeaturePopulator>>(chunkEntityId).Node;
+                _terrainFeaturePopulator = chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
 
-                ref var locations = ref chunksQuery.Get<Locations>(chunkEntityId);
+                ref var locations = ref chunkEntity.Get<Locations>();
 
                 Populate(locations);
 
-                var terrainCollider = chunksQuery.Get<NodeHandle<TerrainCollider>>(chunkEntityId).Node;
+                var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
             }
         }
     }

@@ -25,7 +25,7 @@ public class SaveMapEventSystem : IEcsSystem
         {
             var map = world.GetResource<Map>();
 
-            ref var saveMapEvent = ref eventQuery.Get<SaveMapEvent>(eventEntityId);
+            ref var saveMapEvent = ref world.Entity(eventEntityId).Get<SaveMapEvent>();
 
             var saveData = new Dictionary();
             var locationsData = new Dictionary();

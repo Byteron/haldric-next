@@ -42,7 +42,7 @@ public class RecruitUnitEventSystem : IEcsSystem
 
             ref var gold = ref player.Get<Gold>();
 
-            ref var recruitEvent = ref eventQuery.Get<RecruitUnitEvent>(eventEntityId);
+            ref var recruitEvent = ref world.Entity(eventEntityId).Get<RecruitUnitEvent>();
 
             var freeCoords = recruitEvent.LocEntity.Get<Coords>();
 

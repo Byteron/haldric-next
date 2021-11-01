@@ -20,7 +20,7 @@ public class MissEventSystem : IEcsSystem
 
         foreach (var eventEntityId in query)
         {
-            ref var missEvent = ref query.Get<MissEvent>(eventEntityId);
+            ref var missEvent = ref world.Entity(eventEntityId).Get<MissEvent>();
 
             var targetEntity = missEvent.TargetEntity;
 

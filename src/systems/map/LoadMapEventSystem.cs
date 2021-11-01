@@ -22,7 +22,7 @@ public class LoadMapEventSystem : IEcsSystem
 
 		foreach (var eventEntityId in eventQuery)
 		{
-			var loadMapEvent = eventQuery.Get<LoadMapEvent>(eventEntityId);
+			var loadMapEvent = world.Entity(eventEntityId).Get<LoadMapEvent>();
 
 			var saveData = LoadFromFile(loadMapEvent.Name);
 

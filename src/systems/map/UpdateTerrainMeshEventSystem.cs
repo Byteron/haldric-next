@@ -53,7 +53,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         {
             _shaderData = world.GetResource<ShaderData>();
             
-            ref var updateEvent = ref eventQuery.Get<UpdateTerrainMeshEvent>(eventEntityId);
+            ref var updateEvent = ref world.Entity(eventEntityId).Get<UpdateTerrainMeshEvent>();
 
             foreach (var chunkEntityId in chunkQuery)
             {

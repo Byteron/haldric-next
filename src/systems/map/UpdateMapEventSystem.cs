@@ -20,7 +20,7 @@ public class UpdateMapEventSystem : IEcsSystem
 
         foreach (var eventEntityId in eventQuery)
         {
-            var updateEvent = eventQuery.Get<UpdateMapEvent>(eventEntityId);
+            var updateEvent = world.Entity(eventEntityId).Get<UpdateMapEvent>();
 
             SendUpdateTerrainMeshEvent(world, updateEvent);
             SendUpdateTerrainFeaturePopulatorEvent(world, updateEvent);

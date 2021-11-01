@@ -20,7 +20,7 @@ public class SpawnPlayersEventSystem : IEcsSystem
 
         foreach (var e in eventQuery)
         {
-            ref var spawnEvent = ref eventQuery.Get<SpawnPlayersEvent>(e);
+            ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayersEvent>();
 
             foreach (var locEntityId in startingLocQuery)
             {

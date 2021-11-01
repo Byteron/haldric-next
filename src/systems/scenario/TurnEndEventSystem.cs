@@ -33,17 +33,20 @@ public class TurnEndEventSystem : IEcsSystem
 
             foreach (var unitEntityId in unitQuery)
             {
-                var side = unitQuery.Get<Side>(unitEntityId);
+                var unitEntity = world.Entity(unitEntityId);
+
+                ref var side = ref unitEntity.Get<Side>();
 
                 if (side.Value == scenario.CurrentPlayer)
                 {
-                    ref var actions = ref unitQuery.Get<Attribute<Actions>>(unitEntityId);
-                    ref var moves = ref unitQuery.Get<Attribute<Moves>>(unitEntityId);
+                    ref var actions = ref unitEntity.Get<Attribute<Actions>>();
+                    ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
                     actions.Restore();
                     moves.Restore();
 
-                    ref var level = ref unitQuery.Get<Level>(unitEntityId);
+                    ref var level = ref unitEntity.Get<Level>();
+                    
                     gold.Value -= level.Value;
                     GD.Print($"Player: {side}, Income - {level.Value}");
                 }
@@ -51,8 +54,10 @@ public class TurnEndEventSystem : IEcsSystem
 
             foreach (var locEntityId in locsWithCapturedVillagesQuery)
             {
-                ref var village = ref locsWithCapturedVillagesQuery.Get<Village>(locEntityId);
-                ref var side = ref locsWithCapturedVillagesQuery.Get<IsCapturedByTeam>(locEntityId);
+                var locEntity = world.Entity(locEntityId);
+
+                ref var village = ref locEntity.Get<Village>();
+                ref var side = ref locEntity.Get<IsCapturedByTeam>();
 
                 if (scenario.CurrentPlayer == side.Value)
                 {
@@ -74,7 +79,7 @@ public class TurnEndEventSystem : IEcsSystem
                     canHeal = canHeal || locEntity.Get<HasOverlayTerrain>().Entity.Has<Heals>();
                 }
 
-                var unitEntity = locWithUnitQuery.Get<HasUnit>(locEntityId).Entity;
+                var unitEntity = locEntity.Get<HasUnit>().Entity;
 
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
                 ref var side = ref unitEntity.Get<Side>();

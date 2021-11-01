@@ -53,7 +53,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
         foreach (var eventEntity in query)
         {
-            var spawnEvent = query.Get<SpawnMapEvent>(eventEntity);
+            var spawnEvent = world.Entity(eventEntity).Get<SpawnMapEvent>();
 
             if (spawnEvent.MapData == null)
             {

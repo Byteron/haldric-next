@@ -23,7 +23,7 @@ public class GainExperienceEventSystem : IEcsSystem
         {
             var hudView = world.GetResource<HUDView>();
 
-            ref var gainEvent = ref query.Get<GainExperienceEvent>(id);
+            ref var gainEvent = ref world.Entity(id).Get<GainExperienceEvent>();
 
             var entity = gainEvent.Entity;
             var amount = gainEvent.Amount;

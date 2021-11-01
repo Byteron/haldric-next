@@ -16,7 +16,7 @@ public class UpdateCameraOperatorSystem : IEcsSystem
 
         foreach (var entityId in query)
         {
-            CameraOperator cameraOperator = query.Get<NodeHandle<CameraOperator>>(entityId).Node;
+            CameraOperator cameraOperator = world.Entity(entityId).Get<NodeHandle<CameraOperator>>().Node;
 
             if (Input.IsActionPressed("camera_zoom_out"))
             {

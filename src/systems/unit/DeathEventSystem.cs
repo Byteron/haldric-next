@@ -20,7 +20,7 @@ public class DeathEventSystem : IEcsSystem
         {
             var map = world.GetResource<Map>();
 
-            ref var deathEvent = ref query.Get<DeathEvent>(eventEntityId);
+            ref var deathEvent = ref world.Entity(eventEntityId).Get<DeathEvent>();
 
             ref var coords = ref deathEvent.Entity.Get<Coords>();
 

@@ -22,7 +22,7 @@ public class AdvanceEventSystem : IEcsSystem
         {
             var hudView = world.GetResource<HUDView>();
             
-            ref var advanceEvent = ref query.Get<AdvanceEvent>(id);
+            ref var advanceEvent = ref world.Entity(id).Get<AdvanceEvent>();
 
             var entity = advanceEvent.Entity;
 
