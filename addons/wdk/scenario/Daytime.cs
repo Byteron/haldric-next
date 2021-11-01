@@ -6,8 +6,8 @@ namespace Haldric.Wdk
     public partial class Daytime : Node
     {
         [Export] public float Angle = 0f;
-        [Export] public float SkyEnergy = 1f;
-        [Export] public float LightEnergy = 1f;
+        [Export] public float SkyIntensity = 1f;
+        [Export] public float LightIntensity = 1f;
         [Export] public Color SkyColor = new Color("FFFFFF");
         [Export] public Color LightColor = new Color("FFFFFF");
 

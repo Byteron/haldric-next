@@ -8,16 +8,16 @@ script = ExtResource( "1_hcuj0" )
 
 [node name="Dawn" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
-SkyEnergy = 0.5
-LightEnergy = 0.5
+SkyIntensity = 0.5
+LightIntensity = 0.5
 SkyColor = Color(1, 0.745098, 0.607843, 1)
 Bonuses = [3]
 
 [node name="Morning" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
 Angle = -60.0
-SkyEnergy = 0.8
-LightEnergy = 0.8
+SkyIntensity = 0.8
+LightIntensity = 0.8
 SkyColor = Color(1, 0.988235, 0.803922, 1)
 Bonuses = [0]
 Maluses = [2]
@@ -25,8 +25,8 @@ Maluses = [2]
 [node name="Afternoon" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
 Angle = -120.0
-SkyEnergy = 0.8
-LightEnergy = 0.8
+SkyIntensity = 0.8
+LightIntensity = 0.8
 SkyColor = Color(1, 0.972549, 0.87451, 1)
 Bonuses = [0]
 Maluses = [2]
@@ -34,16 +34,16 @@ Maluses = [2]
 [node name="Dusk" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
 Angle = -180.0
-SkyEnergy = 0.5
-LightEnergy = 0.5
+SkyIntensity = 0.5
+LightIntensity = 0.5
 SkyColor = Color(1, 0.670588, 0.592157, 1)
 Bonuses = [3]
 
 [node name="FirstWatch" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
 Angle = -240.0
-SkyEnergy = 0.4
-LightEnergy = 0.0
+SkyIntensity = 0.4
+LightIntensity = 0.0
 SkyColor = Color(0.192157, 0.223529, 0.372549, 1)
 Bonuses = [2]
 Maluses = [0]
@@ -51,8 +51,8 @@ Maluses = [0]
 [node name="SecondWatch" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
 Angle = 60.0
-SkyEnergy = 0.4
-LightEnergy = 0.0
+SkyIntensity = 0.4
+LightIntensity = 0.0
 SkyColor = Color(0.231373, 0.278431, 0.388235, 1)
 Bonuses = [2]
 Maluses = [0]

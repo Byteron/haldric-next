@@ -106,9 +106,9 @@ public class TurnEndEventSystem : IEcsSystem
 
         tween.Parallel().TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
         tween.Parallel().TweenProperty(Main.Instance.Light, "light_color", daytime.LightColor, 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Light, "light_energy", daytime.LightEnergy, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Light, "light_energy", daytime.LightIntensity, 2.5f);
 
-        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyEnergy, 2.5f);
+        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyIntensity, 2.5f);
         tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyColor, 2.5f);
         tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyColor, 2.5f);
         tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.SkyColor, 2.5f);
