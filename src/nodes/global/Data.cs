@@ -142,8 +142,10 @@ public partial class Data : Node
 
             var terrainEntity = Terrains[terrainCode];
             terrainEntity.Add(new TerrainTypeIndex(index));
-
-            textures.Add(terrainTexture.GetImage());
+            
+            var image = terrainTexture.GetImage();
+            GD.Print(image.GetFormat().ToString());
+            textures.Add(image);
             TextureArrayIds.Add(terrainCode, index);
             
             index += 1;
