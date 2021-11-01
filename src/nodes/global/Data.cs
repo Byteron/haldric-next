@@ -51,7 +51,7 @@ public partial class Data : Node
 
         var bows = new Faction();
         bows.Name = "Bows";
-        bows.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
+        bows.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman", "Orcish Archer" };
         bows.Leaders = new List<string>() { "Bowman" };
         
         Factions.Add(spears.Name, spears);

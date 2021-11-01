@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bukes2it76wa7"]
 
-[ext_resource type="PackedScene" path="res://addons/wdk/unit/UnitType.tscn" id="1_4ncdw"]
+[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_4ncdw"]
 [ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_ls8kt"]
 [ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/gltf/Infantry.glb" id="3_xkntm"]
 
@@ -20,4 +20,4 @@ DamageType = 1
 Range = 2
 
 [node name="Infantry" parent="UnitView" index="0" instance=ExtResource( "3_xkntm" )]
-transform = Transform3D(-3, 0, -2.62268e-07, 0, 3, 0, 2.62268e-07, 0, -3, 0, 0, 0)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)

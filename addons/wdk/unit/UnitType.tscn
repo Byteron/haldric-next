@@ -1,13 +1,15 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://m1dn36qbyare"]
 
 [ext_resource type="Script" path="res://addons/wdk/unit/UnitType.cs" id="1_ab082"]
 [ext_resource type="Script" path="res://addons/wdk/unit/UnitView.cs" id="3_jrinh"]
 
 [node name="UnitType" type="Node3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 script = ExtResource( "1_ab082" )
 
 [node name="Attacks" type="Node" parent="."]
 script = null
 
 [node name="UnitView" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 script = ExtResource( "3_jrinh" )
