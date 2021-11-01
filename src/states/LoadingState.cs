@@ -27,6 +27,7 @@ public partial class LoadingState : GameState
     public override void Enter(GameStateController gameStates)
     {
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
+        _loadingStates.Enqueue(new LoadingData("Schedules", Data.Instance.LoadSchedules));
         _loadingStates.Enqueue(new LoadingData("Factions", Data.Instance.LoadFactions));
         _loadingStates.Enqueue(new LoadingData("Terrain", Data.Instance.LoadTerrain));
         _loadingStates.Enqueue(new LoadingData("Maps", Data.Instance.LoadMaps));

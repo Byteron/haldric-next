@@ -18,6 +18,7 @@ public partial class Data : Node
         new Color("FFFFFF"),
     };
 
+    public Dictionary<string, PackedScene> Schedules { get; set; } = new Dictionary<string, PackedScene>();
     public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
     public Dictionary<string, Faction> Factions { get; set; }= new Dictionary<string, Faction>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
@@ -65,6 +66,16 @@ public partial class Data : Node
         foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"tscn"}))
         {
             Units.Add(data.Id, (PackedScene)data.Data);
+        }
+    }
+
+    public void LoadSchedules()
+    {
+        Schedules.Clear();
+
+        foreach(var data in Loader.LoadDir("res://data/schedules", new List<string>() {"tscn"}))
+        {
+            Schedules.Add(data.Id, (PackedScene)data.Data);
         }
     }
 

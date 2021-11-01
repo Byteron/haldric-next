@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbfpyrftokqnw"]
+
+[ext_resource type="Script" path="res://addons/wdk/scenario/Schedule.cs" id="1_hcuj0"]
+[ext_resource type="Script" path="res://addons/wdk/scenario/Daytime.cs" id="2_4es4v"]
+
+[node name="DefaultSchedule" type="Node"]
+script = ExtResource( "1_hcuj0" )
+
+[node name="Dawn" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Energy = 0.5
+SkyColor = Color(1, 0.745098, 0.607843, 1)
+Bonuses = [3]
+
+[node name="Morning" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Angle = -60.0
+Energy = 0.8
+SkyColor = Color(1, 0.988235, 0.803922, 1)
+Bonuses = [0]
+Maluses = [2]
+
+[node name="Afternoon" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Angle = -120.0
+Energy = 0.8
+SkyColor = Color(1, 0.972549, 0.87451, 1)
+Bonuses = [0]
+Maluses = [2]
+
+[node name="Dusk" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Angle = -180.0
+Energy = 0.5
+SkyColor = Color(1, 0.670588, 0.592157, 1)
+Bonuses = [3]
+
+[node name="FirstWatch" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Angle = -240.0
+SkyColor = Color(0.192157, 0.223529, 0.372549, 1)
+Bonuses = [2]
+Maluses = [0]
+
+[node name="SecondWatch" type="Node" parent="."]
+script = ExtResource( "2_4es4v" )
+Angle = 60.0
+SkyColor = Color(0.231373, 0.278431, 0.388235, 1)
+Bonuses = [2]
+Maluses = [0]
