@@ -136,28 +136,41 @@ public partial class CombatCommand : Command
 
         if (_attackData.IsRanged)
         {
-            var projectile = _attackData.Projectile.Instantiate<Projectile>();
-            Main.Instance.AddChild(projectile);
-            
-            projectile.Position = attackerView.Position + Vector3.Up * 5f;
-            projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
-
-            _tween.TweenProperty(projectile, "position", defenderView.Position + Vector3.Up * 5f, 0.2f);
-            _tween.TweenCallback(new Callable(projectile, "queue_free"));
+            attackerView.Play("Attack");
+            _tween.TweenCallback(new Callable(this, nameof(SpawnProjectile))).SetDelay(0.5f);
+            _tween.TweenProperty(attackerView, "position", attackPos, 0.5f);
         }
         else
         {
             attackPos = (attackerView.Position + defenderView.Position) / 2;
             _tween.TweenProperty(attackerView, "position", attackPos, 0.2f);
+            _tween.TweenCallback(new Callable(this, "OnStrike"));
         }
 
-        _tween.TweenCallback(new Callable(this, "OnStrike"));
         _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.2f);
         _tween.TweenCallback(new Callable(this, "OnStrikeFinished"));
 
         _tween.Play();
     }
 
+    private void SpawnProjectile()
+    {
+        var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
+        var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
+
+        var tween = Main.Instance.CreateTween();
+
+        var projectile = _attackData.Projectile.Instantiate<Projectile>();
+        Main.Instance.AddChild(projectile);
+
+        projectile.Position = attackerView.Position + Vector3.Up * 5f;
+        projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
+
+        tween.TweenProperty(projectile, "position", defenderView.Position + Vector3.Up * 5f, 0.2f);
+
+        tween.TweenCallback(new Callable(projectile, "queue_free"));
+        tween.TweenCallback(new Callable(this, "OnStrike"));
+    }
     private void OnStrike()
     {
         var defense = _attackData.TerrainTypes.GetDefense();

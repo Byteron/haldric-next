@@ -35,5 +35,5 @@ script = null
 shadow_enabled = true
 shadow_bias = 0.05
 directional_shadow_mode = 1
-directional_shadow_max_distance = 4000.0
+directional_shadow_max_distance = 400.0
 script = null

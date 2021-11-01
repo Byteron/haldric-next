@@ -13,3 +13,6 @@ script = null
 [node name="UnitView" type="Node3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 script = ExtResource( "3_jrinh" )
+
+[node name="AnimationTree" type="AnimationTree" parent="UnitView"]
+script = null

@@ -1,14 +1,46 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4ygms1io222n"]
+[gd_scene load_steps=12 format=3 uid="uid://c4ygms1io222n"]
 
 [ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_hoqyh"]
 [ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_cjnxs"]
 [ext_resource type="PackedScene" uid="uid://btfu5vqdkro0v" path="res://assets/graphics/models/OrcishArcher.tscn" id="3_e6p5a"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8bi24"]
+filters = []
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_upldg"]
+filters = []
+animation = &"Death"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7p1ot"]
+filters = []
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7bboo"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0o6k6"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g054j"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_brbw2"]
+states/Attack/node = SubResource( "AnimationNodeAnimation_8bi24" )
+states/Attack/position = Vector2(791, 224)
+states/Death/node = SubResource( "AnimationNodeAnimation_upldg" )
+states/Death/position = Vector2(665, 129)
+states/Idle/node = SubResource( "AnimationNodeAnimation_7p1ot" )
+states/Idle/position = Vector2(599, 224)
+transitions = [&"Idle", &"Death", SubResource( "AnimationNodeStateMachineTransition_7bboo" ), &"Idle", &"Attack", SubResource( "AnimationNodeStateMachineTransition_0o6k6" ), &"Attack", &"Idle", SubResource( "AnimationNodeStateMachineTransition_g054j" )]
+start_node = "Attack"
+end_node = "Death"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_84gkf"]
+
 [node name="Orcish Archer" instance=ExtResource( "1_hoqyh" )]
 Id = "Orcish Archer"
 Health = 43
 Alignment = 2
-AnimationPlayerNode = NodePath("UnitView/orc_archer/AnimationPlayer")
 
 [node name="Dagger" parent="Attacks" index="0" instance=ExtResource( "2_cjnxs" )]
 Damage = 4
@@ -26,32 +58,37 @@ Strikes = 2
 DamageType = 4
 Range = 2
 
-[node name="orc_archer" parent="UnitView" index="0" instance=ExtResource( "3_e6p5a" )]
+[node name="AnimationTree" parent="UnitView" index="0"]
+tree_root = SubResource( "AnimationNodeStateMachine_brbw2" )
+anim_player = NodePath("../orc_archer/AnimationPlayer")
+active = true
+parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_84gkf" )
+
+[node name="orc_archer" parent="UnitView" index="1" instance=ExtResource( "3_e6p5a" )]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="Bip001" parent="UnitView/orc_archer/SK_Orc_Archer_A" index="0"]
-transform = Transform3D(0.000302854, 2.76956e-05, -0.0299985, 0.0015801, 0.0299583, 4.36108e-05, 0.0299568, -0.00158046, 0.000300974, -0.0273993, 0.841103, -0.0383054)
+transform = Transform3D(0.000102156, 6.28353e-05, -0.0299998, 0.00157667, 0.0299584, 6.81179e-05, 0.0299583, -0.00157689, 9.87126e-05, -0.0311746, 0.839307, -0.0391297)
 
 [node name="Skeleton3D" parent="UnitView/orc_archer/SK_Orc_Archer_A/Bip001" index="0"]
-bones/1/position = Vector3(4.43264, -0.174882, 0.0519879)
-bones/1/rotation = Quaternion(0.0123186, -0.00448965, -0.00115834, 0.999913)
-bones/3/rotation = Quaternion(0.0971131, -0.0614469, -0.238863, 0.964229)
-bones/5/rotation = Quaternion(0.216727, 0.37144, -0.0705716, 0.900045)
-bones/6/rotation = Quaternion(-2.14857e-07, -1.36689e-05, -0.226946, 0.973907)
-bones/7/rotation = Quaternion(-0.770103, -0.0266885, 0.0876811, 0.631302)
-bones/12/rotation = Quaternion(-0.346403, -0.416442, -0.11855, 0.832182)
-bones/13/rotation = Quaternion(-3.87043e-08, 3.75696e-06, -0.274153, 0.961686)
-bones/14/rotation = Quaternion(0.856073, -0.0204865, 0.0538, 0.513638)
-bones/20/rotation = Quaternion(-0.0477973, -0.978505, -0.186663, 0.0734893)
-bones/21/rotation = Quaternion(1.98932e-07, -2.22351e-08, -0.171175, 0.985241)
-bones/22/rotation = Quaternion(0.079617, -0.0623002, 0.104285, 0.989396)
-bones/24/rotation = Quaternion(0.00500349, 0.991744, -0.0897697, 0.0914385)
-bones/25/rotation = Quaternion(-7.54886e-08, -1.72618e-07, -0.173706, 0.984798)
-bones/26/rotation = Quaternion(-0.0792214, 0.0671812, 0.159527, 0.981714)
-bones/27/position = Vector3(4.11565, 9.18406, 2.52788e-06)
+bones/1/position = Vector3(4.43262, -0.174882, 0.0519875)
+bones/1/rotation = Quaternion(0.0123391, -0.00325958, -0.00185287, 0.999917)
+bones/3/rotation = Quaternion(0.103055, -0.0646084, -0.237295, 0.963793)
+bones/5/rotation = Quaternion(0.219172, 0.372653, -0.0669289, 0.89923)
+bones/6/rotation = Quaternion(6.0655e-08, -1.36986e-05, -0.229839, 0.973229)
+bones/7/rotation = Quaternion(-0.769313, -0.0297288, 0.0901071, 0.631787)
+bones/12/rotation = Quaternion(-0.345562, -0.415469, -0.119932, 0.83282)
+bones/13/rotation = Quaternion(-4.02042e-07, 3.85165e-06, -0.274209, 0.96167)
+bones/14/rotation = Quaternion(0.855818, -0.018125, 0.0557612, 0.513944)
+bones/20/rotation = Quaternion(-0.0508182, -0.978171, -0.186121, 0.0771866)
+bones/21/rotation = Quaternion(5.22554e-09, -1.90895e-09, -0.178917, 0.983864)
+bones/22/rotation = Quaternion(0.0766857, -0.0651609, 0.110769, 0.988738)
+bones/24/rotation = Quaternion(0.012342, 0.991888, -0.0894883, 0.0894343)
+bones/25/rotation = Quaternion(2.40367e-08, -1.59736e-07, -0.186905, 0.982378)
+bones/26/rotation = Quaternion(-0.082953, 0.063988, 0.167826, 0.980234)
+bones/27/position = Vector3(4.11565, 9.18405, 0.000122411)
 
 [node name="AnimationPlayer" parent="UnitView/orc_archer" index="1"]
-autoplay = "Idle"
 blend_times = []
 
 [editable path="UnitView/orc_archer"]
