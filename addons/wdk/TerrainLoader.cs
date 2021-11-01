@@ -97,7 +97,7 @@ namespace Haldric.Wdk
                 else
                 {
                     var graphic = dict[name];
-                    graphic.Variations.Add(LoadAsset<Mesh>(path));
+                    graphic.AddVariation(LoadAsset<Mesh>(path));
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace Haldric.Wdk
                 else
                 {
                     var graphic = dict[name];
-                    graphic.Variations.Add(LoadAsset<Mesh>(path));
+                    graphic.AddVariation(LoadAsset<Mesh>(path));
                 }
             }
         }

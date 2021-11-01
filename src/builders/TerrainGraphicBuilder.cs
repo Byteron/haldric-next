@@ -5,8 +5,18 @@ public class TerrainGraphic
 {
     public string Code { get; set; } = "";
     public Mesh Mesh { get; set; } = null;
-    public List<Mesh> Variations { get; set; } = new List<Mesh>();
+    public List<Mesh> Variations { get; private set; } = new List<Mesh>();
     public Vector3 Offset { get; set; } = Vector3.Zero;
+
+    public void AddVariation(Mesh mesh)
+    {
+        if (Variations.Count == 0)
+        {
+            Variations.Add(Mesh);
+        }
+
+        Variations.Add(mesh);
+    }
 }
 
 public class TerrainGraphicBuilder
@@ -28,6 +38,12 @@ public class TerrainGraphicBuilder
     public TerrainGraphicBuilder WithMesh(Mesh mesh)
     {
         _graphic.Mesh = mesh;
+        return this;
+    }
+
+    public TerrainGraphicBuilder WithVariation(Mesh mesh)
+    {
+        _graphic.AddVariation(mesh);
         return this;
     }
 

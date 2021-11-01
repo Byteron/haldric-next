@@ -18,7 +18,8 @@ void fragment()
 	
 	vec4 back = texture(SCREEN_TEXTURE, SCREEN_UV);
 	
-	ALBEDO = mix(back.rgb, color.rgb, 1.0 - depth);
+//	ALBEDO = mix(back.rgb, color.rgb, 1.0 - depth);
+	ALBEDO = color.rgb;
 }"
 
 [resource]
