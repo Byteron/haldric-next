@@ -46,7 +46,7 @@ Bonuses = [3]
 
 [node name="FirstWatch" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
-Angle = -40.0
+Angle = -240.0
 LightColor = Color(0, 0.819608, 1, 1)
 LightIntensity = 0.3
 SkyColor = Color(0.121569, 0.2, 0.360784, 1)
@@ -56,7 +56,7 @@ Maluses = [0]
 
 [node name="SecondWatch" type="Node" parent="."]
 script = ExtResource( "2_4es4v" )
-Angle = -140.0
+Angle = 60.0
 LightColor = Color(0, 0.819608, 1, 1)
 LightIntensity = 0.3
 SkyColor = Color(0.121569, 0.2, 0.360784, 1)
