@@ -36,14 +36,14 @@ vec4 get_cell_data(vec3 uvw, int index)
 }
 
 vec4 get_terrain_color(vec4 color, vec2 position, int index)
-{	
+{
 	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
 	vec4 c = texture(textures, uvw);
 	return c * color[index] * visibility[index];
 }
 
 vec4 get_terrain_normal(vec2 position, int index)
-{	
+{
 	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
 	vec4 c = texture(normal_textures, uvw);
 	return c;

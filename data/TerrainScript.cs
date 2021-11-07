@@ -22,7 +22,7 @@ public class TerrainScript : TerrainLoader
 
 		AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
 		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass.png");
-		AddTerrainRougnessTexture("Gg", "assets/graphics/images/grass.png");
+		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass.png");
 
 		AddTerrainTexture("Dd", "assets/graphics/images/mud.png");
 		AddTerrainTexture("Rd", "assets/graphics/images/stone.png");

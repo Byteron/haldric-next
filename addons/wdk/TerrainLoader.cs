@@ -80,7 +80,7 @@ namespace Haldric.Wdk
             TerrainNormalTextures.Add(code, LoadAsset<Texture2D>(path));
         }
 
-        public void AddTerrainRougnessTexture(string code, string path)
+        public void AddTerrainRoughnessTexture(string code, string path)
         {
             TerrainRoughnessTextures.Add(code, LoadAsset<Texture2D>(path));
         }
