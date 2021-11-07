@@ -5,12 +5,12 @@ public class Hex
 {
     private static readonly Vector3[] _neighborTable = new Vector3[6]
     {
-        new Vector3(0, -1, 1), // NE
-        new Vector3(1, -1, 0), // SW
-        new Vector3(1, 0, -1), // W
-        new Vector3(0, 1, -1), // NW
-        new Vector3(-1, 1, 0), // E
-        new Vector3(-1, 0, 1), // SE
+        new Vector3(0, -1, 1), // E
+        new Vector3(1, -1, 0), // SE
+        new Vector3(1, 0, -1), // SW
+        new Vector3(0, 1, -1), // W
+        new Vector3(-1, 1, 0), // NW
+        new Vector3(-1, 0, 1), // NE
     };
 
     public static Vector3 Cube2Axial(Vector3 cube)
