@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5acx55501wng"]
 
-[ext_resource type="Script" path="res://src/nodes/hud/Cursor3D.cs" id="1_jobg0"]
+[ext_resource type="Script" path="res://src/nodes/hud/Border3D.cs" id="1_iee5d"]
 [ext_resource type="Texture2D" uid="uid://d1rw07c583on3" path="res://assets/graphics/images/cell-outline-directional.png" id="2_ix7q3"]
 
 [sub_resource type="PlaneMesh" id="1"]
@@ -13,7 +13,7 @@ albedo_texture = ExtResource( "2_ix7q3" )
 albedo_tex_force_srgb = true
 
 [node name="Border3D" type="Node3D"]
-script = ExtResource( "1_jobg0" )
+script = ExtResource( "1_iee5d" )
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
