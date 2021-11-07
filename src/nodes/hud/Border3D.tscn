@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5acx55501wng"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/Cursor3D.cs" id="1_jobg0"]
+[ext_resource type="Texture2D" uid="uid://d1rw07c583on3" path="res://assets/graphics/images/cell-outline-directional.png" id="2_ix7q3"]
+
+[sub_resource type="PlaneMesh" id="1"]
+size = Vector2(10, 10)
+
+[sub_resource type="StandardMaterial3D" id="2"]
+transparency = 1
+no_depth_test = true
+albedo_texture = ExtResource( "2_ix7q3" )
+albedo_tex_force_srgb = true
+
+[node name="Border3D" type="Node3D"]
+script = ExtResource( "1_jobg0" )
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+layers = 2
+mesh = SubResource( "1" )
+surface_material_override/0 = SubResource( "2" )
+script = null
