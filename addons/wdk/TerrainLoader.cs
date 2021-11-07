@@ -13,6 +13,8 @@ namespace Haldric.Wdk
         public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
+        public Dictionary<string, Texture2D> TerrainNormalTextures = new Dictionary<string, Texture2D>();
+        public Dictionary<string, Texture2D> TerrainRoughnessTextures = new Dictionary<string, Texture2D>();
 
         private TerrainDictBuilder _terrainBuilder = new TerrainDictBuilder();
 
@@ -71,6 +73,16 @@ namespace Haldric.Wdk
         public void AddTerrainTexture(string code, string path)
         {
             TerrainTextures.Add(code, LoadAsset<Texture2D>(path));
+        }
+
+        public void AddTerrainNormalTexture(string code, string path)
+        {
+            TerrainNormalTextures.Add(code, LoadAsset<Texture2D>(path));
+        }
+
+        public void AddTerrainRougnessTexture(string code, string path)
+        {
+            TerrainRoughnessTextures.Add(code, LoadAsset<Texture2D>(path));
         }
 
         public void AddDecorationGraphic(string code, string path, string name = null)

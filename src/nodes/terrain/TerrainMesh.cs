@@ -24,6 +24,8 @@ public partial class TerrainMesh : MeshInstance3D
 
 		var material = GD.Load<Material>("res://assets/graphics/materials/terrain.tres");
 		material.Set("shader_param/textures", Data.Instance.TextureArray);
+		material.Set("shader_param/normal_textures", Data.Instance.NormalTextureArray);
+		material.Set("shader_param/roughness_textures", Data.Instance.RoughnessTextureArray);
 		MaterialOverride = material;
 	}
 

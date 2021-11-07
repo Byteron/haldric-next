@@ -21,6 +21,9 @@ public class TerrainScript : TerrainLoader
 		NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled });
 
 		AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
+		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass.png");
+		AddTerrainRougnessTexture("Gg", "assets/graphics/images/grass.png");
+
 		AddTerrainTexture("Dd", "assets/graphics/images/mud.png");
 		AddTerrainTexture("Rd", "assets/graphics/images/stone.png");
 		AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
@@ -32,7 +35,7 @@ public class TerrainScript : TerrainLoader
 		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
 		AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
 
-		AddKeepPlateauGraphic("Ch", "assets/graphics/models/castle_plateau.tres", new Godot.Vector3(0f, 0.05f, 0f));
+		// AddKeepPlateauGraphic("Ch", "assets/graphics/models/castle_plateau.tres", new Godot.Vector3(0f, 0.05f, 0f));
 		AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 

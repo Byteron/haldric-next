@@ -32,9 +32,14 @@ public partial class Data : Node
     public Dictionary<string, TerrainGraphic> WallTowers { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures { get; set; } = new Dictionary<string, Texture2D>();
+    public Dictionary<string, Texture2D> TerrainNormalTextures { get; set; } = new Dictionary<string, Texture2D>();
+    public Dictionary<string, Texture2D> TerrainRoughnessTextures { get; set; } = new Dictionary<string, Texture2D>();
 
     public Dictionary<string, int> TextureArrayIds { get; set; } = new Dictionary<string, int>();
-    public Texture2DArray TextureArray { get; private set; }
+
+    public Texture2DArray TextureArray { get; private set; } = new Texture2DArray();
+    public Texture2DArray NormalTextureArray { get; private set; } = new Texture2DArray();
+    public Texture2DArray RoughnessTextureArray { get; private set; } = new Texture2DArray();
 
     public override void _Ready()
     {
@@ -107,8 +112,14 @@ public partial class Data : Node
         WallTowers = terrainScript.WallTowers;
         KeepPlateaus = terrainScript.KeepPlateaus;
         TerrainTextures = terrainScript.TerrainTextures;
+        TerrainNormalTextures = terrainScript.TerrainNormalTextures;
+        TerrainRoughnessTextures = terrainScript.TerrainRoughnessTextures;
 
-        TextureArray = CreateTextureArray();
+        CreateTextureArrayIds();
+
+        TextureArray = CreateTextureArray(TextureArray, TerrainTextures);
+        NormalTextureArray = CreateTextureArray(NormalTextureArray, TerrainNormalTextures);
+        RoughnessTextureArray = CreateTextureArray(RoughnessTextureArray, TerrainRoughnessTextures);
     }
 
     public void LoadMaps()
@@ -139,27 +150,40 @@ public partial class Data : Node
         return json.GetData() as Godot.Collections.Dictionary;
     }
 
-    public Texture2DArray CreateTextureArray()
-	{
-		Texture2DArray texArray = new Texture2DArray();
-        
-        var textures = new Godot.Collections.Array();
-        
+    public void CreateTextureArrayIds()
+	{   
         var index = 0;
-        foreach (var item in TerrainTextures)
+        foreach (var item in Terrains)
+        {
+            var terrainCode = item.Key;
+            var terrainEntity = item.Value;
+
+            terrainEntity.Add(new TerrainTypeIndex(index));
+            
+            TextureArrayIds.Add(terrainCode, index);
+            index += 1;
+        }
+	}
+
+    public Texture2DArray CreateTextureArray(Texture2DArray texArray, Dictionary<string, Texture2D> textureDict)
+	{   
+        var textures = new Godot.Collections.Array();
+        textures.Resize(Terrains.Count);
+        
+        for (int i = 0; i < textures.Count; i++)
+        {
+            textures[i] = textureDict["Gg"].GetImage();
+        }
+
+        foreach (var item in textureDict)
         {
             var terrainCode = item.Key;
             var terrainTexture = item.Value;
 
-            var terrainEntity = Terrains[terrainCode];
-            terrainEntity.Add(new TerrainTypeIndex(index));
+            var index = TextureArrayIds[terrainCode];
             
             var image = terrainTexture.GetImage();
-            GD.Print(image.GetFormat().ToString());
-            textures.Add(image);
-            TextureArrayIds.Add(terrainCode, index);
-            
-            index += 1;
+            textures[index] = image;
         }
 
         texArray._Images = textures;
