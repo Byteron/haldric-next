@@ -77,7 +77,7 @@ public partial class TerrainFeaturePopulator : Node3D
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
                     _randomIndicies.Add(position, index);
                 }
-                
+
                 var mesh = terrainGraphic.Variations[index];
                 AddRenderData(mesh, position, Vector3.Zero);
             }
@@ -95,8 +95,10 @@ public partial class TerrainFeaturePopulator : Node3D
         center.y = elevation.HeightWithOffset;
 
         var rotation = 240;
-        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        for (int i = 0; i < 6; i++)
         {
+            var direction = (Direction)i;
+
             rotation += 60;
 
             if (!neighbors.Has(direction))
@@ -111,7 +113,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
-            
+
 
             if (elevation.ValueWithOffset != nElevation.ValueWithOffset)
             {
@@ -133,7 +135,7 @@ public partial class TerrainFeaturePopulator : Node3D
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
                         _randomIndicies.Add(position, index);
                     }
-                    
+
                     var mesh = terrainGraphic.Variations[index];
                     AddRenderData(mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
                 }
@@ -177,8 +179,10 @@ public partial class TerrainFeaturePopulator : Node3D
         center.y = elevation.HeightWithOffset;
 
         var rotation = 240;
-        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        for (int i = 0; i < 6; i++)
         {
+            var direction = (Direction)i;
+
             rotation += 60;
 
             if (!neighbors.Has(direction))
@@ -220,14 +224,16 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        ref var neighbors = ref locEntity .Get<Neighbors>();
+        ref var neighbors = ref locEntity.Get<Neighbors>();
 
         var center = locEntity.Get<Coords>().World;
         center.y = locEntity.Get<Elevation>().HeightWithOffset;
 
         var rotation = 240;
-        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        for (int i = 0; i < 6; i++)
         {
+            var direction = (Direction)i;
+
             rotation += 60;
 
             if (!neighbors.Has(direction))
@@ -257,7 +263,7 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var towerPosition = center + Metrics.GetFirstCorner(direction);
-    
+
             AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, towerPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
         }
     }

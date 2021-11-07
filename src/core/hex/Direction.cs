@@ -1,5 +1,5 @@
 
-public enum Direction { NE, SW, W, NW, E, SE }
+public enum Direction { NE, E, SE, SW, W, NW }
 
 public static class DirectionExtentions
 {
@@ -10,12 +10,12 @@ public static class DirectionExtentions
 
 	public static Direction Previous(this Direction direction)
 	{
-		return direction == Direction.NE ? Direction.SE : (direction - 1);
+		return direction == Direction.NE ? Direction.NW : (direction - 1);
 	}
 
 	public static Direction Next(this Direction direction)
 	{
-		return direction == Direction.SE ? Direction.NE : (direction + 1);
+		return direction == Direction.NW ? Direction.NE : (direction + 1);
 	}
 
 	public static Direction Previous2(this Direction direction)
@@ -27,6 +27,6 @@ public static class DirectionExtentions
 	public static Direction Next2(this Direction direction)
 	{
 		direction += 2;
-		return direction >= Direction.SE ? direction : (direction - 6);
+		return direction >= Direction.NW ? direction : (direction - 6);
 	}
 }

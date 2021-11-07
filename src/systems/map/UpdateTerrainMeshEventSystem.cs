@@ -99,9 +99,9 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void Triangulate(EcsEntity locEntity)
     {
-        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        for (int i = 0; i < 6; i++)
         {
-            Triangulate(direction, locEntity);
+            Triangulate((Direction)i, locEntity);
         }
     }
 
@@ -124,7 +124,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
         TriangulatePlateau(center, e, index.Value);
 
-        if (direction <= Direction.W)
+        if (direction <= (Direction)2)
         {
             TriangulateConnection(direction, locEntity, e);
         }
@@ -162,7 +162,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
         TriangulateSlope(e1, e2, locIndex, nLocIndex.Value);
 
-        if (direction <= Direction.SW && neighbors.Has(direction.Next()))
+        if (direction <= (Direction)1 && neighbors.Has(direction.Next()))
         {
             var nextLocEntity = neighbors.Get(direction.Next());
             ref var nextLocIndex = ref nextLocEntity.Get<Index>();
