@@ -62,6 +62,9 @@ public class UpdateHoveredLocationSystem : IEcsSystem
         var from = camera.ProjectRayOrigin(mousePosition);
         var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
 
-        return spaceState.IntersectRay(from, to);
+        var parameters3D = new PhysicsRayQueryParameters3D();
+        parameters3D.From = from;
+        parameters3D.To = to;
+        return spaceState.IntersectRay(parameters3D);
     }
 }
