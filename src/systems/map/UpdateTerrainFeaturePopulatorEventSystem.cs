@@ -65,9 +65,9 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
 
     private void Populate(EcsEntity locEntity)
     {
-        for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+        for (int i = 0; i < 6; i++)
         {
-            Populate(direction, locEntity);
+            Populate((Direction)i, locEntity);
         }
     }
 

@@ -283,8 +283,10 @@ public class SpawnMapEventSystem : IEcsSystem
             ref var coords = ref locEntity.Get<Coords>();
             ref var neighbors = ref locEntity.Get<Neighbors>();
 
-            for (Direction direction = Direction.NE; direction <= Direction.SE; direction++)
+            for (int i = 0; i < 6; i++)
             {
+                var direction = (Direction)i;
+            
                 Vector3 nCell = Hex.GetNeighbor(coords.Cube, direction);
 
                 if (!locations.Has(nCell))
