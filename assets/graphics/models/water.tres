@@ -1,14 +1,12 @@
-[gd_resource type="PlaneMesh" load_steps=3 format=3 uid="uid://0k3axwlwo5oj"]
+[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://0k3axwlwo5oj"]
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_iy55w"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qs7a"]
-albedo_color = Color(0.0823529, 0.145098, 0.329412, 1)
-roughness = 0.0
-heightmap_texture = SubResource( "NoiseTexture_iy55w" )
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gohnm"]
+albedo_color = Color(0.0431373, 0.0941176, 0.282353, 0.862745)
+metallic = 0.2
+roughness = 0.2
 
 [resource]
-material = SubResource( "StandardMaterial3D_6qs7a" )
+material = SubResource( "StandardMaterial3D_gohnm" )
 size = Vector2(13, 13)
 subdivide_width = 10
 subdivide_depth = 10
