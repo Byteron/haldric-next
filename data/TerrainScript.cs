@@ -42,13 +42,13 @@ public class TerrainScript : TerrainLoader
 		AddTerrainNormalTexture("Rd", "assets/graphics/images/dirt_normal.png");
 		AddTerrainRoughnessTexture("Rd", "assets/graphics/images/dirt_roughness.png");
 
-		AddTerrainTexture("Ch", "assets/graphics/images/stone_basecolor.png");
-		AddTerrainNormalTexture("Ch", "assets/graphics/images/stone_normal.png");
-		AddTerrainRoughnessTexture("Ch", "assets/graphics/images/stone_roughness.png");
+		AddTerrainTexture("Ch", "assets/graphics/images/dirt_basecolor.png");
+		AddTerrainNormalTexture("Ch", "assets/graphics/images/dirt_normal.png");
+		AddTerrainRoughnessTexture("Ch", "assets/graphics/images/dirt_roughness.png");
 		
-		AddTerrainTexture("Kh", "assets/graphics/images/stone_basecolor.png");
-		AddTerrainNormalTexture("Kh", "assets/graphics/images/stone_normal.png");
-		AddTerrainRoughnessTexture("Kh", "assets/graphics/images/stone_roughness.png");
+		AddTerrainTexture("Kh", "assets/graphics/images/dirt_basecolor.png");
+		AddTerrainNormalTexture("Kh", "assets/graphics/images/dirt_normal.png");
+		AddTerrainRoughnessTexture("Kh", "assets/graphics/images/dirt_roughness.png");
 		
 		AddTerrainTexture("Ws", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Ws", "assets/graphics/images/mud_normal.png");
