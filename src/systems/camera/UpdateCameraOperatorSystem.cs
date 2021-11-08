@@ -57,6 +57,6 @@ public class UpdateCameraOperatorSystem : IEcsSystem
         int forward = Input.IsActionPressed("camera_forward") ? 1 : 0;
         int back = Input.IsActionPressed("camera_back") ? 1 : 0;
 
-        return new Vector3(left - right, 0, forward - back).Normalized();
+        return new Vector3(right - left, 0, back - forward).Normalized();
     }
 }

@@ -12,7 +12,6 @@ _maxDistance = 150.0
 _zoomCurve = SubResource( "1" )
 
 [node name="HorizontalGimbal" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0)
 script = null
 
 [node name="VerticalGimbal" type="Node3D" parent="HorizontalGimbal"]
