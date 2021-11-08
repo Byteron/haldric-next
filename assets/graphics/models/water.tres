@@ -1,9 +1,14 @@
-[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://0k3axwlwo5oj"]
+[gd_resource type="PlaneMesh" load_steps=3 format=3 uid="uid://0k3axwlwo5oj"]
 
-[ext_resource type="Material" uid="uid://jjnbwddt1rdq" path="res://assets/graphics/materials/water.tres" id="1_sp8lq"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_iy55w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qs7a"]
+albedo_color = Color(0.0823529, 0.145098, 0.329412, 1)
+roughness = 0.0
+heightmap_texture = SubResource( "NoiseTexture_iy55w" )
 
 [resource]
-material = ExtResource( "1_sp8lq" )
+material = SubResource( "StandardMaterial3D_6qs7a" )
 size = Vector2(13, 13)
 subdivide_width = 10
 subdivide_depth = 10
