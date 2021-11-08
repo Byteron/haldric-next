@@ -114,15 +114,6 @@ public class EditorEditTerrainSystem : IEcsSystem
                 }
 
                 baseTerrain.Entity = editorView.TerrainEntity;
-
-                if (baseTerrain.Entity.Has<HasShallowWater>())
-                {
-                    elevation.Offset = Metrics.ShallowWaterOffset;
-                }
-                else if (baseTerrain.Entity.Has<HasDeepWater>())
-                {
-                    elevation.Offset = Metrics.DeepWaterOffset;
-                }
             }
         }
 

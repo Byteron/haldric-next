@@ -34,15 +34,9 @@ public class TerrainDictBuilder
         return this;
     }
 
-    public TerrainDictBuilder WithHasShallowWater()
+    public TerrainDictBuilder WithElevationOffset(float elevationOffset)
     {
-        _terrainDict["HasShallowWater"] = true;
-        return this;
-    }
-
-    public TerrainDictBuilder WithHasDeepWater()
-    {
-        _terrainDict["HasDeepWater"] = true;
+        _terrainDict["ElevationOffset"] = elevationOffset;
         return this;
     }
 

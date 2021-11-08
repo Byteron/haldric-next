@@ -194,15 +194,6 @@ public class SpawnMapEventSystem : IEcsSystem
 
             var baseTerrainEntity = Data.Instance.Terrains[(string)terrainCodes[0]];
 
-            if (baseTerrainEntity.Has<HasShallowWater>())
-            {
-                elevationOffset = Metrics.ShallowWaterOffset;
-            }
-            else if (baseTerrainEntity.Has<HasDeepWater>())
-            {
-                elevationOffset = Metrics.DeepWaterOffset;
-            }
-
             locEntity.Add(new Elevation(elevation, elevationOffset));
 
             locEntity.Add(new HasBaseTerrain(baseTerrainEntity));

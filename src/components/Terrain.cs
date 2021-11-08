@@ -8,6 +8,3 @@ public struct IsCapturable {}
 public struct GivesIncome {}
 
 public struct Heals {}
-
-public struct HasShallowWater {}
-public struct HasDeepWater {}

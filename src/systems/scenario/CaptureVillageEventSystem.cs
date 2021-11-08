@@ -35,6 +35,9 @@ public class CaptureVillageEventSystem : IEcsSystem
             ref var coords = ref locEntity.Get<Coords>();
             ref var elevation = ref locEntity.Get<Elevation>();
 
+            var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
             if (locEntity.Has<IsCapturedByTeam>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
@@ -50,7 +53,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
             _parent.AddChild(flagView);
             var pos = coords.World;
-            pos.y = elevation.HeightWithOffset;
+            pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 
             locEntity.Add(new NodeHandle<FlagView>(flagView));

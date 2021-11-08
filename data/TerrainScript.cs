@@ -7,7 +7,7 @@ public class TerrainScript : TerrainLoader
 	{
 		NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
 		NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
-		NewBase("Dd", new List<TerrainType>() { TerrainType.Rough });
+		NewBase("Dd", new List<TerrainType>() { TerrainType.Rough }, -0.4f);
 		
 		NewShallowWater("Ws", new List<TerrainType>() { TerrainType.ShallowWaters });
 		NewDeepWater("Wo", new List<TerrainType>() { TerrainType.DeepWaters });
@@ -31,7 +31,7 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Ws", "assets/graphics/images/mud.png");
 		AddTerrainTexture("Wo", "assets/graphics/images/mud.png");
 
-		AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
+		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
 		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
 		AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
 

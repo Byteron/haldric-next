@@ -46,8 +46,12 @@ public partial class MoveUnitCommand : Command
             ref var targetCoords = ref checkpointLocEntity.Get<Coords>();
             ref var targetElevation = ref checkpointLocEntity.Get<Elevation>();
 
+            var terrainEntity = checkpointLocEntity.Get<HasBaseTerrain>().Entity;
+            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
             var newPos = targetCoords.World;
-            newPos.y = targetElevation.HeightWithOffset;
+            newPos.y = targetElevation.Height + elevationOffset.Value;
+            
             _tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
             _tween.TweenProperty(_unitView, "position", newPos, 0.2f);
         }

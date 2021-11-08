@@ -61,8 +61,12 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
+        
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
         var position = coords.World;
-        position.y = elevation.HeightWithOffset;
+        position.y = elevation.Height + elevationOffset.Value;
 
         foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode].Values)
         {
@@ -90,9 +94,12 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
+        
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World;
-        center.y = elevation.HeightWithOffset;
+        center.y = elevation.Height + elevationOffset.Value;
 
         var rotation = 240;
         for (int i = 0; i < 6; i++)
@@ -115,7 +122,7 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
 
-            if (elevation.ValueWithOffset != nElevation.ValueWithOffset)
+            if (elevation.Value != nElevation.Value)
             {
                 continue;
             }
@@ -148,9 +155,12 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
+
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
         var position = coords.World;
 
-        position.y = elevation.HeightWithOffset;
+        position.y = elevation.Height + elevationOffset.Value;
         position += Data.Instance.KeepPlateaus[terrainCode].Offset;
 
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
@@ -170,13 +180,16 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
-
+        
+        var terrainEntity = terrainBase.Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        
         var center = coords.World;
-        center.y = elevation.HeightWithOffset;
+
+        center.y = elevation.Height + elevationOffset.Value;
 
         var rotation = 240;
         for (int i = 0; i < 6; i++)
@@ -197,16 +210,16 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.ValueWithOffset < 0)
+            if (nElevation.Value < 0)
             {
                 continue;
             }
 
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }
@@ -220,14 +233,16 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
-        var center = locEntity.Get<Coords>().World;
-        center.y = locEntity.Get<Elevation>().HeightWithOffset;
+        var terrainEntity = terrainBase.Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
+        var center = coords.World;
+        center.y = elevation.Height + elevationOffset.Value;
 
         var rotation = 240;
         for (int i = 0; i < 6; i++)
@@ -248,16 +263,16 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.ValueWithOffset < 0)
+            if (nElevation.Value < 0)
             {
                 continue;
             }
 
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }

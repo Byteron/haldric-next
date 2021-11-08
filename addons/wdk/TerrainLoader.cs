@@ -22,21 +22,21 @@ namespace Haldric.Wdk
 
         public abstract void Load();
 
-        public void NewBase(string code, List<TerrainType> types)
+        public void NewBase(string code, List<TerrainType> types, float elevationOffset = 0)
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).Build();
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset).Build();
             TerrainDicts.Add(code, terrain);
         }
 
         public void NewShallowWater(string code, List<TerrainType> types)
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasShallowWater().Build();
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.ShallowWaterOffset).Build();
             TerrainDicts.Add(code, terrain);
         }
 
         public void NewDeepWater(string code, List<TerrainType> types)
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithHasDeepWater().Build();
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.DeepWaterOffset).Build();
             TerrainDicts.Add(code, terrain);
         }
 
@@ -48,7 +48,7 @@ namespace Haldric.Wdk
 
         public void NewKeep(string code, List<TerrainType> types)
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitFrom().WithRecruitTo().Build();
+            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
             TerrainDicts.Add(code, terrain);
         }
 
