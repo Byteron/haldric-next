@@ -9,11 +9,11 @@ uniform float texture_zoom : hint_range(0,1);
 uniform sampler2DArray textures : hint_albedo;
 uniform sampler2D cell_texture : hint_albedo;
 
-uniform sampler2DArray normal_textures : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform sampler2DArray normal_textures;
 uniform float normal_scale : hint_range(-16,16);
 
 uniform float roughness : hint_range(0,1);
-uniform sampler2DArray roughness_textures : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+uniform sampler2DArray roughness_textures;
 
 uniform vec2 texel_size;
 
@@ -45,8 +45,8 @@ vec4 get_terrain_color(vec4 color, vec2 position, int index)
 vec4 get_terrain_normal(vec2 position, int index)
 {
 	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
-	vec4 c = texture(normal_textures, uvw);
-	return c;
+	vec4 n = texture(normal_textures, uvw);
+	return n;
 }
 
 float get_terrain_roughness(vec2 position, int index)

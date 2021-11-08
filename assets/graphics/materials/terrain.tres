@@ -6,6 +6,6 @@
 render_priority = 0
 shader = ExtResource( "1_sbrex" )
 shader_param/texture_zoom = 0.02
-shader_param/normal_scale = 0.2
+shader_param/normal_scale = 0.1
 shader_param/roughness = 1.0
 shader_param/texel_size = null
