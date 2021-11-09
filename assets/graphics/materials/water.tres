@@ -83,7 +83,7 @@ void fragment() {
 	float z_fade = rim(FRAGCOORD.z);
 	float fade_diff = z_depth_fade - z_fade;
 	
-	vec4 gradientcolor = mix(color, deep_water, z_depth_fade);
+	vec4 gradientcolor = mix(deep_water, color, z_depth_fade);
 	
 	vec2 displacement = vec2(sum * 0.05);
 	diff += displacement.x * 70f;
@@ -152,8 +152,8 @@ noise = SubResource( "OpenSimplexNoise_dunak" )
 render_priority = 0
 shader = SubResource( "Shader_iqweo" )
 shader_param/speed = 0.01
-shader_param/color = Color(0, 0.12549, 1, 1)
-shader_param/deep_water = Color(0.117647, 0.505882, 0.560784, 0.658824)
+shader_param/color = Color(0.0392157, 0.466667, 0.666667, 0.443137)
+shader_param/deep_water = Color(0.0313726, 0.188235, 0.478431, 0.976471)
 shader_param/beer_law_factor = 1.0
 shader_param/_distance = 100.0
 shader_param/edge_color = Color(1, 1, 1, 1)
