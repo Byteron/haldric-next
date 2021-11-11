@@ -58,7 +58,7 @@ public partial class LobbyView : Control
 
     private void UpdateUsers()
     {
-        foreach(Node child in _userListContainer.GetChildren())
+        foreach (Node child in _userListContainer.GetChildren())
         {
             _userListContainer.RemoveChild(child);
             child.QueueFree();
