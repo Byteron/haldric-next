@@ -9,8 +9,8 @@ public partial class LobbyView : Control
     private bool persistence = true;
     private bool hidden = false;
 
-    private VBoxContainer _userList;
-    private Dictionary<string, Label> _userLabels;
+    private VBoxContainer _userListContainer;
+    private List<IUserPresence> _users = new List<IUserPresence>();
 
     private VBoxContainer _messages;
 
@@ -20,22 +20,24 @@ public partial class LobbyView : Control
 
     public override void _Ready()
     {
-        _userList = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/UserList");
-        _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Messages");
+        _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/Panel/UserList");
+        _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/Messages");
         _input = GetNode<LineEdit>("PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit");
 
         EnterChat(roomname, ChannelType.Room, persistence, hidden);
-
-        NewUser(Network.Instance.Account.User.Username);
     }
 
     public async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
     {
         var socket = Network.Instance.Socket;
 
-        _channel = await socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
-        GD.Print("Now connected to channel id: ", _channel.Id);
         socket.ReceivedChannelMessage += OnReceivedChannelMessage;
+        socket.ReceivedChannelPresence += OnReceivedChannelPresence;
+
+        _channel = await socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
+        _users.AddRange(_channel.Presences);
+
+        UpdateUsers();
     }
 
     private void OnSendButtonPressed()
@@ -54,11 +56,26 @@ public partial class LobbyView : Control
         var sendAck = await socket.WriteChatMessageAsync(_channel.Id, content);
     }
 
-    private void NewUser(string username)
+    private void UpdateUsers()
     {
-        var label = new Label();
-        label.Text = username;
-        _userList.AddChild(label);
+        foreach(Node child in _userListContainer.GetChildren())
+        {
+            _userListContainer.RemoveChild(child);
+            child.QueueFree();
+        }
+
+        foreach (var user in _users)
+        {
+            var label = new Label();
+            label.Text = user.Username;
+
+            if (user.Username == Network.Instance.Account.User.Username)
+            {
+                label.Modulate = new Color("AAAAFF");
+            }
+
+            _userListContainer.AddChild(label);
+        }
     }
 
     private void NewMessage(string username, string message)
@@ -73,6 +90,22 @@ public partial class LobbyView : Control
             _messages.RemoveChild(child);
             child.QueueFree();
         }
+    }
+
+    private void OnLineEditTextSubmitted(string text)
+    {
+        SendMessage();
+    }
+
+    private void OnReceivedChannelPresence(IChannelPresenceEvent presenceEvent)
+    {
+        foreach (var presence in presenceEvent.Leaves)
+        {
+            _users.Remove(presence);
+        }
+
+        _users.AddRange(presenceEvent.Joins);
+        UpdateUsers();
     }
 
     private void OnReceivedChannelMessage(IApiChannelMessage message)

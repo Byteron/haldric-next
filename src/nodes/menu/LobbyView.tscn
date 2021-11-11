@@ -31,12 +31,21 @@ offset_right = 1368.0
 offset_bottom = 772.0
 size_flags_horizontal = 3
 
-[node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
+offset_right = 1368.0
+offset_bottom = 735.0
+size_flags_vertical = 3
+
+[node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
+offset_top = 4.0
 offset_right = 1368.0
 offset_bottom = 735.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
 offset_top = 739.0
@@ -56,10 +65,19 @@ offset_bottom = 33.0
 rect_min_size = Vector2(100, 0)
 text = "Send"
 
-[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer"]
 offset_left = 1372.0
 offset_right = 1572.0
 offset_bottom = 772.0
 rect_min_size = Vector2(200, 0)
 
+[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2(200, 0)
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SendButton" to="." method="OnSendButtonPressed"]
