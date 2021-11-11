@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://jjnbwddt1rdq"]
 
-[sub_resource type="Shader" id="Shader_un5sf"]
+[sub_resource type="Shader" id="Shader_l02ne"]
 code = "shader_type spatial;
 render_mode specular_phong, cull_disabled;
 
@@ -51,11 +51,7 @@ float calc_depth_fade(float depth, mat4 projection_matrix, vec4 fragcoord, float
 	// application of beers law
 	scene_depth = exp(-scene_depth * beer_factor);
 	
-	float screen_depth = fragcoord.z;
-	
-	float depth_fade = (scene_depth - screen_depth) / __distance;
-
-	depth_fade = clamp(depth_fade, 0.0, 1.0);
+	scene_depth = clamp(scene_depth, 0.0, 1.0);
 	
 	return scene_depth;
 }
@@ -104,31 +100,31 @@ void fragment() {
 	ROUGHNESS = 0.1;
 }"
 
-[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_xj8n5"]
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_h4mx1"]
 lacunarity = 4.0
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_l4ari"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_vyl50"]
 seamless = true
-noise = SubResource( "OpenSimplexNoise_xj8n5" )
+noise = SubResource( "OpenSimplexNoise_h4mx1" )
 
-[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_a6w8k"]
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_ucx32"]
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_klqgf"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_g1x73"]
 seamless = true
-noise = SubResource( "OpenSimplexNoise_a6w8k" )
+noise = SubResource( "OpenSimplexNoise_ucx32" )
 
-[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_7im7l"]
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_kvwyp"]
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_wy0i5"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_fo3ud"]
 seamless = true
 as_normal_map = true
 bump_strength = 4.0
-noise = SubResource( "OpenSimplexNoise_7im7l" )
+noise = SubResource( "OpenSimplexNoise_kvwyp" )
 
 [resource]
 render_priority = 0
-shader = SubResource( "Shader_un5sf" )
-shader_param/_distance = 100.0
+shader = SubResource( "Shader_l02ne" )
+shader_param/_distance = 0.0
 shader_param/beer_law_factor = 0.2
 shader_param/wave_strength = Vector2(0, 0)
 shader_param/deep_water = Color(0.0117647, 0.0705882, 0.0196078, 1)
@@ -140,6 +136,6 @@ shader_param/color = Color(0.152941, 0.619608, 0.764706, 0.470588)
 shader_param/speed = 0.05
 shader_param/near = 0.1
 shader_param/far = 100.0
-shader_param/noise1 = SubResource( "NoiseTexture_l4ari" )
-shader_param/noise2 = SubResource( "NoiseTexture_klqgf" )
-shader_param/normalmap = SubResource( "NoiseTexture_wy0i5" )
+shader_param/noise1 = SubResource( "NoiseTexture_vyl50" )
+shader_param/noise2 = SubResource( "NoiseTexture_g1x73" )
+shader_param/normalmap = SubResource( "NoiseTexture_fo3ud" )
