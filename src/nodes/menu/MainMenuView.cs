@@ -8,9 +8,14 @@ public partial class MainMenuView : PanelContainer
         Main.Instance.World.GetResource<GameStateController>().PushState(new ScenarioSelectionState(Main.Instance.World));
     }
 
-    private void OnLoginButtonPressed()
+    private void OnLobbyButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PushState(new LoginState(Main.Instance.World));
+        Main.Instance.World.GetResource<GameStateController>().PushState(new LobbyState(Main.Instance.World));
+    }
+
+    private void OnMatchButtonPressed()
+    {
+        Main.Instance.World.GetResource<GameStateController>().PushState(new MatchState(Main.Instance.World));
     }
 
     private void OnEditorButtonPressed()

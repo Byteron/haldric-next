@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dfmr3sa4hmpd4"]
+[gd_scene load_steps=20 format=3 uid="uid://dfmr3sa4hmpd4"]
 
 [ext_resource type="Script" path="res://src/nodes/global/Scenes.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://5ylnwotv7ruq" path="res://src/nodes/hud/editor/EditorView.tscn" id="2"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bgkk5yo3e3hly" path="res://src/nodes/menu/LobbyView.tscn" id="5_oh3a3"]
 [ext_resource type="PackedScene" uid="uid://dmyvms7guc7jr" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
 [ext_resource type="PackedScene" uid="uid://dlpi2a0xlug5b" path="res://src/nodes/hud/reruitment/RecruitSelectionView.tscn" id="5_v23ql"]
+[ext_resource type="PackedScene" uid="uid://bjbs0pcb7su3" path="res://src/nodes/menu/MatchView.tscn" id="6_f3yn4"]
 [ext_resource type="PackedScene" uid="uid://pdb6u6eqi5q8" path="res://src/nodes/menu/ScenarioSelectionView.tscn" id="6_y4d76"]
 [ext_resource type="PackedScene" uid="uid://dxgr72l6bajwt" path="res://src/nodes/hud/TerrainHighlighter.tscn" id="7_smnkw"]
 [ext_resource type="PackedScene" uid="uid://doifba6dcwgky" path="res://src/nodes/hud/FloatingLabel.tscn" id="9_liy6q"]
@@ -25,6 +26,7 @@ EditorView = ExtResource( "2" )
 MainMenuView = ExtResource( "3_wqxn1" )
 LoginView = ExtResource( "4_8ipd3" )
 LobbyView = ExtResource( "5_oh3a3" )
+MatchView = ExtResource( "6_f3yn4" )
 AttackSelectionView = ExtResource( "4_v3bgl" )
 FactionSelectionView = ExtResource( "5_h0hoj" )
 ScenarioSelectionView = ExtResource( "6_y4d76" )

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using Nakama;
 using Nakama.TinyJson;
+using Bitron.Ecs;
 
 public partial class LobbyView : Control
 {
@@ -20,11 +21,21 @@ public partial class LobbyView : Control
 
     public override void _Ready()
     {
-        _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/Panel/UserList");
+        _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer2/Panel/UserList");
         _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/Messages");
         _input = GetNode<LineEdit>("PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit");
 
         EnterChat(roomname, ChannelType.Room, persistence, hidden);
+    }
+
+    public override void _ExitTree()
+    {
+        var socket = Network.Instance.Socket;
+
+        socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
+        socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
+
+        socket.LeaveChatAsync(_channel);
     }
 
     public async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
@@ -46,6 +57,11 @@ public partial class LobbyView : Control
         {
             SendMessage();
         }
+    }
+
+    private void OnBackButtonPressed()
+    {
+        Main.Instance.World.GetResource<GameStateController>().PopState();
     }
 
     private async void SendMessage()

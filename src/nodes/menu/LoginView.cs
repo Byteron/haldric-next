@@ -48,8 +48,7 @@ public partial class LoginView : Control
 
             if (string.IsNullOrEmpty(message))
             {
-                Main.Instance.World.GetResource<GameStateController>().PopState();
-                Main.Instance.World.GetResource<GameStateController>().PushState(new LobbyState(Main.Instance.World));
+                _warnLabel.Text = "Logged In!";
             }
             else
             {

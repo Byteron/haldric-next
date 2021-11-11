@@ -33,7 +33,7 @@ size_flags_horizontal = 3
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
 offset_right = 1368.0
-offset_bottom = 735.0
+offset_bottom = 728.0
 size_flags_vertical = 3
 
 [node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
@@ -48,30 +48,35 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
-offset_top = 739.0
+offset_top = 732.0
 offset_right = 1368.0
 offset_bottom = 772.0
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_right = 1264.0
-offset_bottom = 33.0
+offset_bottom = 40.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 
 [node name="SendButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 1268.0
 offset_right = 1368.0
-offset_bottom = 33.0
-rect_min_size = Vector2(100, 0)
+offset_bottom = 40.0
+rect_min_size = Vector2(100, 40)
 text = "Send"
 
-[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
 offset_left = 1372.0
 offset_right = 1572.0
 offset_bottom = 772.0
-rect_min_size = Vector2(200, 0)
 
-[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/Panel"]
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_right = 200.0
+offset_bottom = 728.0
+rect_min_size = Vector2(200, 0)
+size_flags_vertical = 3
+
+[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2(200, 0)
@@ -79,5 +84,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BackButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 732.0
+offset_right = 200.0
+offset_bottom = 772.0
+rect_min_size = Vector2(0, 40)
+text = "Back"
+
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SendButton" to="." method="OnSendButtonPressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/BackButton" to="." method="OnBackButtonPressed"]
