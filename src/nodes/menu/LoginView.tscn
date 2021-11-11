@@ -1,0 +1,140 @@
+[gd_scene load_steps=2 format=3 uid="uid://cii280r8q1acs"]
+
+[ext_resource type="Script" path="res://src/nodes/menu/LoginView.cs" id="1_4ednk"]
+
+[node name="LoginView" type="Control"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 1593.0
+offset_bottom = 793.0
+mouse_filter = 2
+script = ExtResource( "1_4ednk" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 1579.0
+offset_bottom = 779.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
+offset_left = 611.0
+offset_top = 281.0
+offset_right = 961.0
+offset_bottom = 490.0
+
+[node name="Username" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+offset_right = 350.0
+offset_bottom = 40.0
+rect_min_size = Vector2(350, 40)
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Username"]
+offset_right = 100.0
+offset_bottom = 40.0
+rect_min_size = Vector2(100, 0)
+size_flags_vertical = 3
+text = "Username"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Username"]
+offset_left = 104.0
+offset_right = 350.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+align = 1
+
+[node name="Email" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+offset_top = 44.0
+offset_right = 350.0
+offset_bottom = 84.0
+rect_min_size = Vector2(350, 40)
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Email"]
+offset_right = 100.0
+offset_bottom = 40.0
+rect_min_size = Vector2(100, 0)
+size_flags_vertical = 3
+text = "Email
+"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Email"]
+offset_left = 104.0
+offset_right = 350.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Password" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+offset_top = 88.0
+offset_right = 350.0
+offset_bottom = 128.0
+rect_min_size = Vector2(350, 40)
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Password"]
+offset_right = 100.0
+offset_bottom = 40.0
+rect_min_size = Vector2(100, 0)
+size_flags_vertical = 3
+text = "Password"
+align = 2
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Password"]
+offset_left = 104.0
+offset_right = 350.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+align = 1
+secret = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
+offset_top = 132.0
+offset_right = 350.0
+offset_bottom = 182.0
+
+[node name="LoginButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+offset_right = 173.0
+offset_bottom = 50.0
+rect_min_size = Vector2(0, 50)
+size_flags_horizontal = 3
+text = "Login"
+
+[node name="CancelButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+offset_left = 177.0
+offset_right = 350.0
+offset_bottom = 50.0
+rect_min_size = Vector2(0, 50)
+size_flags_horizontal = 3
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WarnLabel" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer"]
+modulate = Color(1, 0.784314, 0, 1)
+offset_top = 186.0
+offset_right = 350.0
+offset_bottom = 209.0
+align = 1
+valign = 1
+
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/LoginButton" to="." method="OnLoginButtonPressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]

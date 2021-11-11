@@ -5,4 +5,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>HaldricNext</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Bitron.Ecs">
+      <HintPath>addons\ecs\Bitron.Ecs</HintPath>
+    </Reference>
+    <Reference Include="Nakama">
+      <HintPath>addons\nakama\Nakama.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
