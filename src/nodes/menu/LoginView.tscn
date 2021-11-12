@@ -51,6 +51,7 @@ offset_bottom = 40.0
 focus_next = NodePath("../../Email/LineEdit")
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
+text = "Haldric"
 align = 1
 
 [node name="Email" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
@@ -75,6 +76,8 @@ offset_right = 350.0
 offset_bottom = 40.0
 focus_next = NodePath("../../Password/LineEdit")
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "mail@haldric.com"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -101,6 +104,7 @@ offset_right = 350.0
 offset_bottom = 40.0
 focus_next = NodePath("../../HBoxContainer/LoginButton")
 size_flags_horizontal = 3
+text = "HaldricHaldric"
 align = 1
 secret = true
 __meta__ = {
