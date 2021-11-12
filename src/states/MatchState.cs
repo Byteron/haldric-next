@@ -1,14 +1,25 @@
 using Bitron.Ecs;
+using Godot.Collections;
 
 public partial class MatchState : GameState
 {
-    MatchView _view;
+    private MatchView _view;
+    private string _mapName;
+    private int _playerCount;
 
-    public MatchState(EcsWorld world) : base(world) { }
+    public MatchState(EcsWorld world, string mapName) : base(world)
+    {
+        _mapName = mapName;
+        var mapDict = Data.Instance.Maps[mapName];
+        var playerDict = (Dictionary)mapDict["Players"];
+        _playerCount = playerDict.Count;
+    }
 
     public override void Enter(GameStateController gameStates)
     {
         _view = Scenes.Instance.MatchView.Instantiate<MatchView>();
+        _view.MapName = _mapName;
+        _view.PlayerCount = _playerCount;
         AddChild(_view);
     }
 

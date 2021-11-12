@@ -3,28 +3,35 @@ using Bitron.Ecs;
 
 public partial class MainMenuView : PanelContainer
 {
+    [Signal] delegate void PlayButtonPressed();
+    [Signal] delegate void LobbyButtonPressed();
+    [Signal] delegate void MatchButtonPressed();
+    [Signal] delegate void EditorButtonPressed();
+    [Signal] delegate void QuitButtonPressed();
+
     private void OnPlayButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PushState(new ScenarioSelectionState(Main.Instance.World));
+        EmitSignal(nameof(PlayButtonPressed));
     }
 
     private void OnLobbyButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PushState(new LobbyState(Main.Instance.World));
+        EmitSignal(nameof(LobbyButtonPressed));
     }
 
     private void OnMatchButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PushState(new MatchState(Main.Instance.World));
+        EmitSignal(nameof(MatchButtonPressed));
     }
 
     private void OnEditorButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PushState(new EditorState(Main.Instance.World));
+        EmitSignal(nameof(EditorButtonPressed));
     }
 
     public void OnQuitButtonPressed()
     {   
+        EmitSignal(nameof(QuitButtonPressed));
         GetTree().Quit();
     }
 }

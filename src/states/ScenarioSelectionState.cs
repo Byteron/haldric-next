@@ -21,7 +21,7 @@ public partial class ScenarioSelectionState : GameState
     {
         var gameStateController = _world.GetResource<GameStateController>();
         gameStateController.PopState();
-        gameStateController.PushState(new FactionSelectionState(_world, mapName));
+        gameStateController.PushState(new MatchState(_world, mapName));
     }
 
     public void OnCancelPressed()

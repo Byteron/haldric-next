@@ -4,7 +4,11 @@ using Godot;
 using Nakama;
 public partial class MatchView : Control
 {
-    Label _label;
+    public string MapName { get; set; } = "";
+    public int PlayerCount { get; set; } = 2;
+
+    Label _infoLabel;
+    Label _mapLabel;
 
     ISocket _socket;
     IMatchmakerTicket _ticket;
@@ -13,7 +17,10 @@ public partial class MatchView : Control
 
     public override void _Ready()
     {
-        _label = GetNode<Label>("PanelContainer/CenterContainer/VBoxContainer/Label");
+        _infoLabel = GetNode<Label>("PanelContainer/CenterContainer/VBoxContainer/InfoLabel");
+        _mapLabel = GetNode<Label>("PanelContainer/CenterContainer/VBoxContainer/MapLabel");
+
+        _mapLabel.Text = $"Map: {MapName}, Players: {PlayerCount}";
 
         _socket = Main.Instance.World.GetResource<ISocket>();
 
@@ -46,13 +53,13 @@ public partial class MatchView : Control
         {
             _socket.RemoveMatchmakerAsync(_ticket);
             _ticket = null;
-            _label.Text = "Left Matchmaking";
+            _infoLabel.Text = "Left Matchmaking";
         }
         else if (_match != null)
         {
             _socket.LeaveMatchAsync(_match);
             _match = null;
-            _label.Text = "Closed Match";
+            _infoLabel.Text = "Closed Match";
         }
         else
         {
@@ -82,7 +89,7 @@ public partial class MatchView : Control
         Main.Instance.World.AddResource(localPlayer);
         Main.Instance.World.AddResource(_match);
 
-        Main.Instance.World.GetResource<GameStateController>().PushState(new FactionSelectionState(Main.Instance.World, "map"));
+        Main.Instance.World.GetResource<GameStateController>().PushState(new FactionSelectionState(Main.Instance.World, MapName));
     }
 
     private async Task CreateMatch()
@@ -93,7 +100,7 @@ public partial class MatchView : Control
         }
 
         _match = await _socket.CreateMatchAsync();
-        _label.Text = "Match Created: " + _match.Id;
+        _infoLabel.Text = "Match Created: " + _match.Id;
 
     }
 
@@ -105,10 +112,10 @@ public partial class MatchView : Control
         }
 
         var query = "*";
-        var minCount = 2;
-        var maxCount = 2;
+        var minCount = PlayerCount;
+        var maxCount = PlayerCount;
 
         _ticket = await _socket.AddMatchmakerAsync(query, minCount, maxCount);
-        _label.Text = "Looking for Match...";
+        _infoLabel.Text = "Looking for Match...";
     }
 }
