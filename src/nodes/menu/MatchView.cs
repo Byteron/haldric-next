@@ -8,8 +8,8 @@ public partial class MatchView : Control
 
     ISocket _socket;
     IMatchmakerTicket _ticket;
+
     IMatch _match;
-    IUserPresence _localPlayer;
 
     public override void _Ready()
     {
@@ -62,9 +62,21 @@ public partial class MatchView : Control
 
     private async void CreateMatchWith(IMatchmakerMatched matched)
     {
-        _localPlayer = matched.Self.Presence;
         _match = await _socket.JoinMatchAsync(matched);
-        _label.Text = _localPlayer.Username + " Joined Match: " + _match.Id;
+
+        var playerId = 0;
+        foreach (var presence in matched.Users)
+        {
+            if (matched.Self.Presence.UserId == presence.Presence.UserId)
+            {
+                Network.Instance.LocalPlayerId = playerId;
+            }
+            playerId += 1;
+        }
+
+        Network.Instance.Match = _match;
+        Network.Instance.LocalPlayer = matched.Self.Presence;
+        Main.Instance.World.GetResource<GameStateController>().PushState(new FactionSelectionState(Main.Instance.World, "map"));
     }
 
     private async Task CreateMatch()

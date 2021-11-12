@@ -2,6 +2,9 @@ using Godot;
 
 public partial class PlayerOption : HBoxContainer
 {
+    [Signal]
+    public delegate void FactionSelected(int side, int index);
+
     public int Side { get; set; }
     public string Faction { get => _options.GetItemText(_options.GetSelectedId()); }
 
@@ -10,8 +13,14 @@ public partial class PlayerOption : HBoxContainer
 
     public override void _Ready()
     {
+
         _label = GetNode<Label>("Label");
         _options = GetNode<OptionButton>("OptionButton");
+
+        if (Network.Instance.LocalPlayerId != Side)
+        {
+            _options.Disabled = true;
+        }
 
         _label.Text = $"Player {Side} ";
 
@@ -24,5 +33,15 @@ public partial class PlayerOption : HBoxContainer
         {
             _options.Select(0);
         }
+    }
+
+    public void Select(int index)
+    {
+        _options.Select(index);
+    }
+
+    private void OnOptionButtonItemSelected(int index)
+    {
+        EmitSignal(nameof(FactionSelected), Side, index);
     }
 }

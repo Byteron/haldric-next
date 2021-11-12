@@ -17,15 +17,14 @@ offset_right = 61.0
 offset_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
+theme_override_font_sizes/font_size = 16
 text = "Player 1"
 valign = 1
-structured_text_bidi_override_options = []
-script = null
 
 [node name="OptionButton" type="OptionButton" parent="."]
 offset_left = 65.0
 offset_right = 94.0
 offset_bottom = 50.0
 size_flags_horizontal = 3
-items = []
-script = null
+
+[connection signal="item_selected" from="OptionButton" to="." method="OnOptionButtonItemSelected"]

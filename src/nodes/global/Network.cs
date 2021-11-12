@@ -3,9 +3,9 @@ using System;
 using Nakama;
 using System.Threading.Tasks;
 
-public class ChannelMessageEventArgs : EventArgs
+public enum NetworkOperation
 {
-    public IApiChannelMessage Message;
+    FactionSelected,
 }
 
 public partial class Network : Node
@@ -17,6 +17,10 @@ public partial class Network : Node
     private const int _port = 7350;
     private const string _serverKey = "defaultkey";
 
+    public IMatch Match { get; set; }
+    public int LocalPlayerId { get; set; } = -1;
+    public IUserPresence LocalPlayer { get; set; }
+
     public ISession Session { get; private set; }
     public ISocket Socket { get; private set; }
     public IApiAccount Account { get; private set; }
@@ -24,7 +28,7 @@ public partial class Network : Node
 
     public override void _Ready()
     {
-        Instance = this;    
+        Instance = this;
     }
 
     public async Task<string> Login(string email, string password, string username)
@@ -42,17 +46,7 @@ public partial class Network : Node
                 Session = await _client.AuthenticateEmailAsync(email, password, username);
             }
 
-            GD.Print(Session.AuthToken); // raw JWT token
-            GD.Print(Session.RefreshToken); // raw JWT token.
-            GD.Print(Session.UserId);
-            GD.Print(Session.Username);
-            GD.Print("Session has expired: {0}", Session.IsExpired);
-            GD.Print("Session expires at: {0}", Session.ExpireTime);
-
             Account = await _client.GetAccountAsync(Session);
-            GD.Print(Account.User.Id);
-            GD.Print(Account.User.Username);
-            GD.Print(Account.Wallet);
 
             Socket = Nakama.Socket.From(_client);
             Socket.Connected += () => GD.Print("Connected!");
