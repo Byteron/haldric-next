@@ -1,9 +1,11 @@
 using Godot;
-using Bitron.Ecs;
 
 public partial class ScenarioSelectionView : PanelContainer
 {
-    OptionButton _options;
+    [Signal] public delegate void ContinuePressed(string mapName);
+    [Signal] public delegate void CancelPressed();
+
+    private OptionButton _options;
 
     public override void _Ready()
     {
@@ -23,13 +25,11 @@ public partial class ScenarioSelectionView : PanelContainer
     private void OnContinueButtonPressed()
     {
         var mapName = _options.GetItemText(_options.GetSelectedId());
-        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
-        gameStateController.PopState();
-        gameStateController.PushState(new FactionSelectionState(Main.Instance.World, mapName));
+        EmitSignal(nameof(ContinuePressed), mapName);
     }
 
     private void OnBackButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PopState();
+        EmitSignal(nameof(CancelPressed));
     }
 }
