@@ -25,11 +25,13 @@ public partial class FactionSelectionView : PanelContainer
             var option = PlayerOption.Instantiate<PlayerOption>();
             option.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));
             option.Side = i;
+            option.LocalPlayerId = Main.Instance.World.GetResource<LocalPlayer>().Side;
             _container.AddChild(option);
             _options.Add(i, option);
         }
 
-        Network.Instance.Socket.ReceivedMatchState += OnMatchStateReceived;
+        
+        Main.Instance.World.GetResource<ISocket>().ReceivedMatchState += OnMatchStateReceived;
     }
 
     private void OnMatchStateReceived(IMatchState state)
@@ -49,7 +51,7 @@ public partial class FactionSelectionView : PanelContainer
 
     private void OnFactionSelected(int side, int index)
     {
-        var matchId = Network.Instance.Match.Id;
+        var matchId = Main.Instance.World.GetResource<IMatch>().Id;
         var opCode = (int)NetworkOperation.FactionSelected;
         
         var newState = new Dictionary<string, int>
@@ -58,7 +60,7 @@ public partial class FactionSelectionView : PanelContainer
             { "index", index },
         };
 
-        Network.Instance.Socket.SendMatchStateAsync(matchId, opCode, newState.ToJson());
+        Main.Instance.World.GetResource<ISocket>().SendMatchStateAsync(matchId, opCode, newState.ToJson());
     }
 
     private void OnContinueButtonPressed()

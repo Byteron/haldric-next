@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cq72yhdtb8v7c"]
+[gd_scene load_steps=2 format=3 uid="uid://cq72yhdtb8v7c"]
 
 [ext_resource type="Script" path="res://src/nodes/menu/MainMenuView.cs" id="1_30ybv"]
-[ext_resource type="PackedScene" uid="uid://cii280r8q1acs" path="res://src/nodes/menu/LoginView.tscn" id="2_ka3do"]
 
 [node name="MainMenuView" type="PanelContainer"]
 anchor_right = 1.0
@@ -75,14 +74,6 @@ text = "QUIT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="LoginView" parent="." instance=ExtResource( "2_ka3do" )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/LobbyButton" to="." method="OnLobbyButtonPressed"]

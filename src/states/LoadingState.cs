@@ -48,7 +48,7 @@ public partial class LoadingState : GameState
             loadingData.Action();
         }
 
-        gameStates.ChangeState(new MenuState(_world));
+        gameStates.ChangeState(new LoginState(_world));
     }
 
     public void CallAction(Action action)

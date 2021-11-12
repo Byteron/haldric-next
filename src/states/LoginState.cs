@@ -1,4 +1,6 @@
 using Bitron.Ecs;
+using Godot;
+using Nakama;
 
 public partial class LoginState : GameState
 {
@@ -8,7 +10,13 @@ public partial class LoginState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
+        AddEventSystem<LoginEvent>(new LoginEventSystem());
+
         _view = Scenes.Instance.LoginView.Instantiate<LoginView>();
+
+        _view.Connect("LoginPressed", new Callable(this, nameof(OnLoginPressed)));
+        _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
+        
         AddChild(_view);
     }
 
@@ -25,5 +33,22 @@ public partial class LoginState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _view.QueueFree();
+    }
+
+    public void OnLoginPressed(string email, string password, string username)
+    {
+        if (!_world.HasResource<Client>())
+        {
+            var settings = _world.GetResource<ServerSettings>();
+            var client = new Client(settings.Scheme, settings.Host, settings.Port, settings.ServerKey);
+            _world.AddResource(client);
+        }
+
+        _world.Spawn().Add(new LoginEvent(email, password, username));
+    }
+
+    public void OnCancelPressed()
+    {
+        _world.GetResource<GameStateController>().PopState();
     }
 }

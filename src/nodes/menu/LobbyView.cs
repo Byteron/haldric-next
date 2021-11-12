@@ -6,12 +6,9 @@ using Bitron.Ecs;
 
 public partial class LobbyView : Control
 {
-    private string roomname = "general";
-    private bool persistence = true;
-    private bool hidden = false;
+    public string Username { get; set; }
 
     private VBoxContainer _userListContainer;
-    private List<IUserPresence> _users = new List<IUserPresence>();
 
     private VBoxContainer _messages;
 
@@ -19,33 +16,36 @@ public partial class LobbyView : Control
 
     private IChannel _channel;
 
+    private ISocket _socket;
+
+    private List<IUserPresence> _users = new List<IUserPresence>();
+
     public override void _Ready()
     {
         _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer2/Panel/UserList");
         _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/Messages");
         _input = GetNode<LineEdit>("PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit");
 
-        EnterChat(roomname, ChannelType.Room, persistence, hidden);
+        _socket = Main.Instance.World.GetResource<ISocket>();
+        
+        var settings = Main.Instance.World.GetResource<LobbySettings>();
+        EnterChat(settings.RoomName, ChannelType.Room, settings.Persistence, settings.Hidden);
     }
 
     public override void _ExitTree()
     {
-        var socket = Network.Instance.Socket;
+        _socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
+        _socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
 
-        socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
-        socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
-
-        socket.LeaveChatAsync(_channel);
+        _socket.LeaveChatAsync(_channel);
     }
 
     public async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
     {
-        var socket = Network.Instance.Socket;
+        _socket.ReceivedChannelMessage += OnReceivedChannelMessage;
+        _socket.ReceivedChannelPresence += OnReceivedChannelPresence;
 
-        socket.ReceivedChannelMessage += OnReceivedChannelMessage;
-        socket.ReceivedChannelPresence += OnReceivedChannelPresence;
-
-        _channel = await socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
+        _channel = await _socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
         _users.AddRange(_channel.Presences);
 
         UpdateUsers();
@@ -66,10 +66,9 @@ public partial class LobbyView : Control
 
     private async void SendMessage()
     {
-        var socket = Network.Instance.Socket;
         var content = new Dictionary<string, string> { { "message", _input.Text } }.ToJson();
         _input.Text = "";
-        var sendAck = await socket.WriteChatMessageAsync(_channel.Id, content);
+        var sendAck = await _socket.WriteChatMessageAsync(_channel.Id, content);
     }
 
     private void UpdateUsers()
@@ -85,7 +84,7 @@ public partial class LobbyView : Control
             var label = new Label();
             label.Text = user.Username;
 
-            if (user.Username == Network.Instance.Account.User.Username)
+            if (user.Username == Username)
             {
                 label.Modulate = new Color("AAAAFF");
             }

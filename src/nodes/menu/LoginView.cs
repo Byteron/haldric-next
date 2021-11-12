@@ -4,6 +4,9 @@ using System;
 
 public partial class LoginView : Control
 {
+    [Signal] public delegate void LoginPressed(string email, string password, string username);
+    [Signal] public delegate void CancelPressed();
+
     private LineEdit _usernameText;
     private LineEdit _emailText;
     private LineEdit _passwordText;
@@ -21,20 +24,11 @@ public partial class LoginView : Control
     
     void OnLoginButtonPressed()
     {
-        Login();
-    }
-
-    async void Login()
-    {
         var username = _usernameText.Text;
         var email = _emailText.Text;
         var password = _passwordText.Text;
         
-        if (string.IsNullOrEmpty(username))
-        {
-            _warnLabel.Text = "no username defined!";
-        }
-        else if (string.IsNullOrEmpty(email))
+        if (string.IsNullOrEmpty(email))
         {
             _warnLabel.Text = "no email defined!";
         }
@@ -44,21 +38,12 @@ public partial class LoginView : Control
         }
         else
         {
-            var message = await Network.Instance.Login(email, password, username);
-
-            if (string.IsNullOrEmpty(message))
-            {
-                _warnLabel.Text = "Logged In!";
-            }
-            else
-            {
-                _warnLabel.Text = message;
-            }
+            EmitSignal(nameof(LoginPressed), email, password, username);
         }
     }
 
     void OnCancelButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PopState();
+        EmitSignal(nameof(CancelPressed));
     }
 }

@@ -18,7 +18,6 @@ config/icon="res://icon.png"
 
 Scenes="*res://src/nodes/global/Scenes.tscn"
 Data="*res://src/nodes/global/Data.tscn"
-Network="*res://src/nodes/global/Network.cs"
 
 [debug]
 

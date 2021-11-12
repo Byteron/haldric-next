@@ -12,10 +12,8 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -223.0
-offset_right = 364.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -23,12 +21,14 @@ __meta__ = {
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
 offset_left = 7.0
 offset_top = 7.0
-offset_right = 357.0
-offset_bottom = 216.0
+offset_right = 1593.0
+offset_bottom = 793.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
-offset_right = 350.0
-offset_bottom = 209.0
+offset_left = 618.0
+offset_top = 288.0
+offset_right = 968.0
+offset_bottom = 497.0
 
 [node name="Username" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
 offset_right = 350.0
@@ -40,7 +40,7 @@ offset_right = 100.0
 offset_bottom = 40.0
 rect_min_size = Vector2(100, 0)
 size_flags_vertical = 3
-text = "Username"
+text = "User"
 align = 2
 valign = 1
 
@@ -51,7 +51,6 @@ offset_bottom = 40.0
 focus_next = NodePath("../../Email/LineEdit")
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
-text = "Haldric"
 align = 1
 
 [node name="Email" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]

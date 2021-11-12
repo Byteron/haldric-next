@@ -9,8 +9,11 @@ public partial class LobbyState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        
+        var account = _world.GetResource<IApiAccount>();
+
         _view = Scenes.Instance.LobbyView.Instantiate<LobbyView>();
+        _view.Username = account.User.Username;
+        
         AddChild(_view);
     }
 

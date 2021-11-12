@@ -15,7 +15,7 @@ public partial class MatchView : Control
     {
         _label = GetNode<Label>("PanelContainer/CenterContainer/VBoxContainer/Label");
 
-        _socket = Network.Instance.Socket;
+        _socket = Main.Instance.World.GetResource<ISocket>();
 
         _socket.ReceivedMatchmakerMatched += OnReceivedMatchmakerMatched;
     }
@@ -62,20 +62,26 @@ public partial class MatchView : Control
 
     private async void CreateMatchWith(IMatchmakerMatched matched)
     {
+        
         _match = await _socket.JoinMatchAsync(matched);
+        
+        var localPlayer = new LocalPlayer();
+
+        localPlayer.Presence = matched.Self.Presence;
 
         var playerId = 0;
         foreach (var presence in matched.Users)
         {
             if (matched.Self.Presence.UserId == presence.Presence.UserId)
             {
-                Network.Instance.LocalPlayerId = playerId;
+                localPlayer.Side = playerId;
             }
             playerId += 1;
         }
 
-        Network.Instance.Match = _match;
-        Network.Instance.LocalPlayer = matched.Self.Presence;
+        Main.Instance.World.AddResource(localPlayer);
+        Main.Instance.World.AddResource(_match);
+
         Main.Instance.World.GetResource<GameStateController>().PushState(new FactionSelectionState(Main.Instance.World, "map"));
     }
 

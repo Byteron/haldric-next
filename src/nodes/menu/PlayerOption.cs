@@ -7,6 +7,7 @@ public partial class PlayerOption : HBoxContainer
 
     public int Side { get; set; }
     public string Faction { get => _options.GetItemText(_options.GetSelectedId()); }
+    public int LocalPlayerId { get; set; }
 
     Label _label;
     OptionButton _options;
@@ -17,7 +18,7 @@ public partial class PlayerOption : HBoxContainer
         _label = GetNode<Label>("Label");
         _options = GetNode<OptionButton>("OptionButton");
 
-        if (Network.Instance.LocalPlayerId != Side)
+        if (LocalPlayerId != Side)
         {
             _options.Disabled = true;
         }
