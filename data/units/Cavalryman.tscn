@@ -9,7 +9,7 @@ Id = "Cavalryman"
 Cost = 17
 Health = 50
 Moves = 8
-Experience = 8
+Experience = 40
 Weaknesses = [1]
 Advancements = ["Dragoon"]
 
