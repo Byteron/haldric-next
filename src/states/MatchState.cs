@@ -46,6 +46,17 @@ public partial class MatchState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _socket.ReceivedMatchmakerMatched -= OnReceivedMatchmakerMatched;
+        
+        if (_world.HasResource<IMatch>())
+        {
+            _world.RemoveResource<IMatch>();
+        }
+
+        if (_world.HasResource<LocalPlayer>())
+        {
+            _world.RemoveResource<LocalPlayer>();
+        }
+
         _view.QueueFree();
     }
 
@@ -70,7 +81,7 @@ public partial class MatchState : GameState
         _world.AddResource(localPlayer);
         _world.AddResource(_match);
 
-        _world.GetResource<GameStateController>().ChangeState(new FactionSelectionState(_world, _mapName));
+        _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
     }
 
     private async void JoinMatchmaking()
@@ -103,15 +114,15 @@ public partial class MatchState : GameState
 
         if (_ticket != null)
         {
-            _socket.LeaveMatchAsync(_match);
-            _match = null;
+            _socket.RemoveMatchmakerAsync(_ticket);
+            _ticket = null;
             _view.UpdateInfo("Left Matchmaking");
         }
 
         if (_match != null)
         {
-            _socket.RemoveMatchmakerAsync(_ticket);
-            _ticket = null;
+            _socket.LeaveMatchAsync(_match);
+            _match = null;
             _view.UpdateInfo("Closed Match");
         }
     }

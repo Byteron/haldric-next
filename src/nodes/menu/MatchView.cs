@@ -19,6 +19,14 @@ public partial class MatchView : Control
         _mapLabel.Text = $"Map: {MapName}, Players: {PlayerCount}";
     }
 
+    public override void _Input(InputEvent e)
+    {
+        if (e.IsActionPressed("ui_cancel"))
+        {
+            OnCancelButtonPressed();
+        }
+    }
+
     public void UpdateInfo(string text)
     {
         _infoLabel.Text = text;
