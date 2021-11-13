@@ -39,6 +39,7 @@ public partial class CombatCommand : Command
     private EcsEntity _defenderAttackEntity;
 
     private int _attackDistance;
+    private ulong _seed;
     
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
@@ -48,8 +49,9 @@ public partial class CombatCommand : Command
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
+    public CombatCommand(ulong seed, EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
     {
+        _seed = seed;
         _attackerLocEntity = attackerLocEntity;
         _attackerAttackEntity = attackerAttackEntity;
         _defenderLocEntity = defenderLocEntity;
@@ -61,6 +63,8 @@ public partial class CombatCommand : Command
 
     public override void Execute()
     {
+        GD.Seed(_seed);
+        
         var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 

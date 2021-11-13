@@ -5,12 +5,10 @@ using Godot;
 
 public partial class AttackSelectionView : Control
 {
+    [Signal] public delegate void AttackSelected();
+    [Signal] public delegate void CancelButtonPressed();
+
     [Export] PackedScene AttackSelectionOption;
-
-    private EcsEntity _attackerLocEntity;
-    private EcsEntity _defenderLocEntity;
-
-    private int _attackDistance;
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
     
@@ -28,14 +26,20 @@ public partial class AttackSelectionView : Control
         _defenderLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/DefenderLabel");
     }
 
-    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs, int attackDistance)
+    public EcsEntity GetSelectedAttackerAttack()
     {
-        _attackerLocEntity = attackerLocEntity;
-        _defenderLocEntity = defenderLocEntity;
-        _attackDistance = attackDistance;
+        return _selectedOption.AttackerAttackEntity;
+    }
 
-        _attackerLabel.Text = $"{_attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
-        _defenderLabel.Text = $"{_defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+    public EcsEntity GetSelectedDefenderAttack()
+    {
+        return _selectedOption.DefenderAttackEntity;
+    }
+
+    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs)
+    {
+        _attackerLabel.Text = $"{attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
+        _defenderLabel.Text = $"{defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
         
         foreach(var attackPair in attackPairs)
         {
@@ -69,18 +73,12 @@ public partial class AttackSelectionView : Control
 
     private void OnAcceptButtonPressed()
     {
-        var commander = Main.Instance.World.GetResource<Commander>();
-        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
-
-        commander.Enqueue(new CombatCommand(_attackerLocEntity, _selectedOption.AttackerAttackEntity, _defenderLocEntity, _selectedOption.DefenderAttackEntity, _attackDistance));
-
-        gameStateController.ChangeState(new CommanderState(Main.Instance.World));
+        EmitSignal(nameof(AttackSelected));
     }
 
     private void OnCancelButtonPressed()
     {
-        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
-        gameStateController.PopState();
+        EmitSignal(nameof(CancelButtonPressed));
     }
 
     private string AttackToString(EcsEntity attackEntity)

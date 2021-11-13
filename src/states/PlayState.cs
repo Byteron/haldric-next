@@ -134,11 +134,37 @@ public partial class PlayState : GameState
             }
             case NetworkOperation.RecruitUnit:
             {
-                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
                 var map = _world.GetResource<Map>();
+                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
                 var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
                 var locEntity = map.Locations.Get(message.Coords.Cube());
                 _world.Spawn().Add(new RecruitUnitEvent(message.Side, unitType, locEntity));
+                break;
+            }
+            case NetworkOperation.AttackUnit:
+            {
+                var map = _world.GetResource<Map>();
+                var commander = _world.GetResource<Commander>();
+                var gameStateController = _world.GetResource<GameStateController>();
+                
+                var message = JsonParser.FromJson<AttackUnitMessage>(data);
+
+                var attackerLocEntity = map.Locations.Get(message.From.Cube());
+                var defenderLocEntity = map.Locations.Get(message.To.Cube());
+
+                var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
+                var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
+
+                ref var attackerAttacks = ref attackerEntity.Get<Attacks>();
+                ref var defenderAttacks = ref defenderEntity.Get<Attacks>();
+
+                var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
+                var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
+                
+                var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity, message.Distance);
+                commander.Enqueue(command);
+
+                gameStateController.PushState(new CommanderState(_world));
                 break;
             }
         }

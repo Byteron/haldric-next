@@ -6,6 +6,7 @@ public enum NetworkOperation
     TurnEnd,
     MoveUnit,
     RecruitUnit,
+    AttackUnit,
 }
 
 public struct FactionSelectedMessage
@@ -16,17 +17,25 @@ public struct FactionSelectedMessage
 
 public struct TurnEndMessage { }
 
-[Serializable]
 public struct MoveUnitMessage
 {
     public Coords From { get; set; }
     public Coords To { get; set; }
 }
 
-[Serializable]
 public struct RecruitUnitMessage
 {
     public int Side { get; set; }
     public Coords Coords { get; set; }
     public string UnitTypeId { get; set; }
+}
+
+public struct AttackUnitMessage
+{
+    public ulong Seed { get; set; }
+    public int Distance { get; set; }
+    public Coords From { get; set; }
+    public Coords To { get; set; }
+    public string AttackerAttackId { get; set; }
+    public string DefenderAttackId { get; set; }
 }
