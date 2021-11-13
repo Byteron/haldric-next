@@ -29,7 +29,7 @@ public class MoveUnitSystem : IEcsSystem
 
         var selectedLocEntity = selectedLocation.Entity;
 
-        if (selectedLocEntity.Get<Coords>().Cube == hoveredLocEntity.Get<Coords>().Cube)
+        if (selectedLocEntity.Get<Coords>().Cube() == hoveredLocEntity.Get<Coords>().Cube())
         {
             return;
         }
@@ -42,13 +42,13 @@ public class MoveUnitSystem : IEcsSystem
             var socket = world.GetResource<ISocket>();
             var match = world.GetResource<IMatch>();
             
-            var message = new MoveUnitMessage { From = fromCoords.Cube.ToSVector3(), To = toCoords.Cube.ToSVector3() };
+            var message = new MoveUnitMessage { From = fromCoords, To = toCoords };
             var json = message.ToJson();
             
             world.Spawn().Add(new UnitDeselectedEvent());
             
             socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.MoveUnit, json);
-            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube, To = toCoords.Cube });
+            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
         }
     }
 }

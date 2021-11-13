@@ -45,19 +45,19 @@ public class Map
     public Vector3 GetBeginPosition()
     {
         var coords = Coords.FromOffset(0, 0);
-        return coords.World;
+        return coords.World();
     }
 
     public Vector3 GetEndPosition()
     {
         var coords = Coords.FromOffset(Grid.Width - 1, Grid.Height - 1);
-        return coords.World;
+        return coords.World();
     }
 
     public Vector3 GetCenterPosition()
     {
         var coords = Coords.FromOffset(Grid.Width / 2, Grid.Height / 2);
-        return coords.World;
+        return coords.World();
     }
 
     public void UpdateDistances(Coords fromCoords, int side)
@@ -67,7 +67,7 @@ public class Map
             loc.Get<Distance>().Value = int.MaxValue;
         }
 
-        var fromLocEntity = Locations.Dict[fromCoords.Cube];
+        var fromLocEntity = Locations.Dict[fromCoords.Cube()];
 
         fromLocEntity.Get<Distance>().Value = 0;
 
@@ -103,7 +103,7 @@ public class Map
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
 
-                if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
+                if (cLocEntity.Has<HasUnit>() && cCoords.Cube() != fromCoords.Cube())
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 
@@ -136,13 +136,13 @@ public class Map
 
     public int GetEffectiveAttackDistance(Coords fromCoords, Coords toCoords)
     {
-        var fromLocEntity = Locations.Get(fromCoords.Cube);
-        var toLocEntity = Locations.Get(toCoords.Cube);
+        var fromLocEntity = Locations.Get(fromCoords.Cube());
+        var toLocEntity = Locations.Get(toCoords.Cube());
 
         ref var fromElevation = ref fromLocEntity.Get<Elevation>();
         ref var toElevation = ref toLocEntity.Get<Elevation>();
 
-        var distance = Hex.GetDistance(fromCoords.Cube, toCoords.Cube);
+        var distance = Hex.GetDistance(fromCoords.Cube(), toCoords.Cube());
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
         return (int)(distance + diff * 0.5f);
@@ -150,8 +150,8 @@ public class Map
 
     public int GetBonusAttackRange(Coords fromCoords, Coords toCoords)
     {
-        var fromLocEntity = Locations.Get(fromCoords.Cube);
-        var toLocEntity = Locations.Get(toCoords.Cube);
+        var fromLocEntity = Locations.Get(fromCoords.Cube());
+        var toLocEntity = Locations.Get(toCoords.Cube());
 
         ref var fromElevation = ref fromLocEntity.Get<Elevation>();
         ref var toElevation = ref toLocEntity.Get<Elevation>();
@@ -168,14 +168,14 @@ public class Map
             loc.Get<Distance>().Value = int.MaxValue;
         }
 
-        var fromLocEntity = Locations.Dict[fromCoords.Cube];
-        var toLocEntity = Locations.Dict[toCoords.Cube];
+        var fromLocEntity = Locations.Dict[fromCoords.Cube()];
+        var toLocEntity = Locations.Dict[toCoords.Cube()];
 
         var path = new Path();
         path.Start = fromLocEntity;
         path.Destination = toLocEntity;
         
-        if (fromCoords.Cube == toCoords.Cube)
+        if (fromCoords.Cube() == toCoords.Cube())
         {
             return path;
         }
@@ -192,14 +192,14 @@ public class Map
 
             var cCoords = cLocEntity.Get<Coords>();
 
-            if (cCoords.Cube == toCoords.Cube)
+            if (cCoords.Cube() == toCoords.Cube())
             {
                 path.Checkpoints.Enqueue(cLocEntity);
 
                 var current = cLocEntity.Get<PathFrom>().LocEntity;
                 var cPathFrom = current.Get<PathFrom>();
 
-                while (current.Get<Coords>().Cube != fromCoords.Cube)
+                while (current.Get<Coords>().Cube() != fromCoords.Cube())
                 {
                     path.Checkpoints.Enqueue(current);
                     current = cPathFrom.LocEntity;
@@ -230,7 +230,7 @@ public class Map
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
 
-                if (cLocEntity.Has<HasUnit>() && cCoords.Cube != fromCoords.Cube)
+                if (cLocEntity.Has<HasUnit>() && cCoords.Cube() != fromCoords.Cube())
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
@@ -6,13 +5,13 @@ using Haldric.Wdk;
 
 public partial class RecruitSelectionView : Control
 {
+    [Signal] public delegate void RecruitSelected(string unitTypeId);
+    [Signal] public delegate void CancelButtonPressed();
+
     [Export] PackedScene RecruitSelectionOption;
 
-
     private ButtonGroup _buttonGroup = new ButtonGroup();
-    
-    private int _side;
-    private EcsEntity _locEntity;
+
     private RecruitSelectionOption _selectedOption;
 
     private Label _unitLabel;
@@ -30,9 +29,8 @@ public partial class RecruitSelectionView : Control
 
     public void UpdateInfo(EcsEntity locEntity, EcsEntity player, List<string> unitTypeIds)
     {
-        _side = player.Get<Side>().Value;
+        var side = player.Get<Side>().Value;
         var gold = player.Get<Gold>().Value;
-        _locEntity = locEntity;
 
         foreach (var unitTypeId in unitTypeIds)
         {
@@ -53,10 +51,10 @@ public partial class RecruitSelectionView : Control
 
             _container.AddChild(optionButton);
         }
-        
+
         if (!_acceptButton.Disabled)
         {
-            foreach(RecruitSelectionOption button in _container.GetChildren())
+            foreach (RecruitSelectionOption button in _container.GetChildren())
             {
                 if (!button.Disabled)
                 {
@@ -71,7 +69,7 @@ public partial class RecruitSelectionView : Control
 
     public void Cleanup()
     {
-        foreach(RecruitSelectionOption button in _container.GetChildren())
+        foreach (RecruitSelectionOption button in _container.GetChildren())
         {
             button.UnitType.QueueFree();
         }
@@ -98,19 +96,11 @@ public partial class RecruitSelectionView : Control
 
     private void OnAcceptButtonPressed()
     {
-        var recruitEvent = new RecruitUnitEvent(_side, _selectedOption.UnitType, _locEntity);
-        Main.Instance.World.Spawn().Add(recruitEvent);
-
-        _container.RemoveChild(_selectedOption);
-        _selectedOption.QueueFree();
-
-        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
-        gameStateController.PopState();
+        EmitSignal(nameof(RecruitSelected), _selectedOption.UnitType.Name);
     }
 
     private void OnCancelButtonPressed()
     {
-        var gameStateController = Main.Instance.World.GetResource<GameStateController>();
-        gameStateController.PopState();
+        EmitSignal(nameof(CancelButtonPressed));
     }
 }

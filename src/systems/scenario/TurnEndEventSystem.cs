@@ -101,7 +101,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                     health.Increase(diff);
 
-                    hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
+                    hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
                 }
             }
         }

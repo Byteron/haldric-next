@@ -49,7 +49,7 @@ public partial class MoveUnitCommand : Command
             var terrainEntity = checkpointLocEntity.Get<HasBaseTerrain>().Entity;
             ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-            var newPos = targetCoords.World;
+            var newPos = targetCoords.World();
             newPos.y = targetElevation.Height + elevationOffset.Value;
             
             _tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
@@ -105,7 +105,7 @@ public partial class MoveUnitCommand : Command
 
             var coords = locEntity.Get<Coords>();
 
-            _unitView.LookAt(coords.World, Vector3.Up);
+            _unitView.LookAt(coords.World(), Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
             
             var movementCosts = TerrainTypes.FromLocEntity(locEntity).GetMovementCost();

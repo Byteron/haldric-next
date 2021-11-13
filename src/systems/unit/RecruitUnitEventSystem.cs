@@ -62,7 +62,7 @@ public class RecruitUnitEventSystem : IEcsSystem
             
             unitType.QueueFree();
 
-            var position = freeCoords.World;
+            var position = freeCoords.World();
             position.y = locEntity.Get<Elevation>().Height + elevationOffset.Value;
 
             unitView.Position = position;

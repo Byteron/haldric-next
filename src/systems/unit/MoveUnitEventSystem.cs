@@ -27,7 +27,7 @@ public class MoveUnitEventSystem : IEcsSystem
             ref var fromCoords = ref fromLocEntity.Get<Coords>();
             ref var toCoords = ref toLocEntity.Get<Coords>();
 
-            if (fromCoords.Cube == toCoords.Cube)
+            if (fromCoords.Cube() == toCoords.Cube())
             {
                 return;
             }

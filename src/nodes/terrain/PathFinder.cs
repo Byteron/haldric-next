@@ -12,7 +12,7 @@ public class Path
     
     public override string ToString()
     {
-        return $"From: {Start.Get<Coords>().Cube}, To: {Start.Get<Coords>().Cube}, Checkpoints: {Checkpoints.Count}";
+        return $"From: {Start.Get<Coords>().Cube()}, To: {Start.Get<Coords>().Cube()}, Checkpoints: {Checkpoints.Count}";
     }
 }
 

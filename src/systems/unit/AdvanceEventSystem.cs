@@ -53,7 +53,7 @@ public class AdvanceEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            hudView.SpawnFloatingLabel(coords.World + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
+            hudView.SpawnFloatingLabel(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
         }
     }
 }

@@ -114,7 +114,7 @@ public partial class CombatCommand : Command
 
     private void SpawnFloatingLabelEvent(Coords coords, string text, Color color)
     {
-        var position = coords.World + Vector3.Up * 5f;
+        var position = coords.World() + Vector3.Up * 5f;
         var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
         Main.Instance.World.Spawn().Add(spawnLabelEvent);

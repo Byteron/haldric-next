@@ -127,9 +127,20 @@ public partial class PlayState : GameState
                 _world.Spawn().Add(new TurnEndEvent());
                 break;
             case NetworkOperation.MoveUnit:
+            {
                 var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                _world.Spawn().Add(new MoveUnitEvent() { From = message.From.ToVector3(), To = message.To.ToVector3() });
+                _world.Spawn().Add(new MoveUnitEvent() { From = message.From.Cube(), To = message.To.Cube() });
                 break;
+            }
+            case NetworkOperation.RecruitUnit:
+            {
+                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
+                var map = _world.GetResource<Map>();
+                var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
+                var locEntity = map.Locations.Get(message.Coords.Cube());
+                _world.Spawn().Add(new RecruitUnitEvent(message.Side, unitType, locEntity));
+                break;
+            }
         }
     }
 }

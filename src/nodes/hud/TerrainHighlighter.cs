@@ -21,7 +21,7 @@ public partial class TerrainHighlighter : Node3D
             ref var coords = ref pLocEntity.Get<Coords>();
             ref var elevation = ref pLocEntity.Get<Elevation>();
 
-            var pos = coords.World;
+            var pos = coords.World();
             pos.y = elevation.Height;
 
             PlaceHighlight(pos, new Color("FFFFFF"), 0.7f, true);

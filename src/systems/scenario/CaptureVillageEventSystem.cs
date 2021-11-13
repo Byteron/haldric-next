@@ -52,7 +52,7 @@ public class CaptureVillageEventSystem : IEcsSystem
 
             var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
             _parent.AddChild(flagView);
-            var pos = coords.World;
+            var pos = coords.World();
             pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 

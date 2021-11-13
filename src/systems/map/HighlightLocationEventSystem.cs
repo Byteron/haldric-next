@@ -26,7 +26,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
             var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
             
-            var locEntity = map.Locations.Get(eventData.Coords.Cube);
+            var locEntity = map.Locations.Get(eventData.Coords.Cube());
             ref var unit = ref locEntity.Get<HasUnit>();
             var unitEntity = unit.Entity;
             ref var side = ref unitEntity.Get<Side>();
@@ -37,8 +37,8 @@ public class HighlightLocationsEventSystem : IEcsSystem
             
             var maxAttackRange = attacks.GetMaxAttackRange();
 
-            var cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
-            var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube, maxAttackRange);
+            var cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube(), eventData.Range);
+            var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube(), maxAttackRange);
 
             foreach (var cCell in cellsInAttackRange)
             {
@@ -48,7 +48,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                     continue;
                 }
 
-                var nLocEntity = map.Locations.Dict[nCoords.Cube];
+                var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
                 var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
                 var attackerBonusAttackRange = map.GetBonusAttackRange(eventData.Coords, nCoords);
@@ -57,7 +57,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 ref var nElevation = ref nLocEntity.Get<Elevation>();
                 
-                var position = nCoords.World;
+                var position = nCoords.World();
                 position.y = nElevation.Height + 0.1f;
                 
                 var hasUnit = nLocEntity.Has<HasUnit>();
@@ -91,7 +91,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                     continue;
                 }
 
-                var nLocEntity = map.Locations.Dict[nCoords.Cube];
+                var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
                 if (nLocEntity.Get<Distance>().Value > eventData.Range)
                 {
@@ -100,7 +100,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 ref var nElevation = ref nLocEntity.Get<Elevation>();
                 
-                var position = nCoords.World;
+                var position = nCoords.World();
                 position.y = nElevation.Height + 0.1f;
                 
                 var hasUnit = nLocEntity.Has<HasUnit>();

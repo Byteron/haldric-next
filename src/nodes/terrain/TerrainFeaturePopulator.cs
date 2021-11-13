@@ -65,7 +65,7 @@ public partial class TerrainFeaturePopulator : Node3D
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-        var position = coords.World;
+        var position = coords.World();
         position.y = elevation.Height + elevationOffset.Value;
 
         foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode].Values)
@@ -98,7 +98,7 @@ public partial class TerrainFeaturePopulator : Node3D
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
-        var center = coords.World;
+        var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
         var rotation = 240;
@@ -158,7 +158,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
-        var position = coords.World;
+        var position = coords.World();
 
         position.y = elevation.Height + elevationOffset.Value;
         position += Data.Instance.KeepPlateaus[terrainCode].Offset;
@@ -170,7 +170,7 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        var position = coords.World;
+        var position = coords.World();
         position.y = elevation.Height - Metrics.ElevationStep * 0.5f;
 
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
@@ -187,7 +187,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
         
-        var center = coords.World;
+        var center = coords.World();
 
         center.y = elevation.Height + elevationOffset.Value;
 
@@ -241,7 +241,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-        var center = coords.World;
+        var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
         var rotation = 240;

@@ -30,7 +30,7 @@ public class UpdateMapCursorSystem : IEcsSystem
         ref var coords = ref locEntity.Get<Coords>();
         var height = locEntity.Get<Elevation>().Height;
 
-        var position = coords.World;
+        var position = coords.World();
         position.y = height;
 
         cursor.Position = position;

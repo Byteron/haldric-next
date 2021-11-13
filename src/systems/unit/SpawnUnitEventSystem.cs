@@ -47,7 +47,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
             var locations = map.Locations;
 
-            var locEntity = locations.Get(spawnEvent.Coords.Cube);
+            var locEntity = locations.Get(spawnEvent.Coords.Cube());
             ref var elevation = ref locEntity.Get<Elevation>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
@@ -64,7 +64,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
             unitType.QueueFree();
 
-            var position = spawnEvent.Coords.World;
+            var position = spawnEvent.Coords.World();
             position.y = elevation.Height + elevationOffset.Value;
 
             unitView.Position = position;

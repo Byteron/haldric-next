@@ -33,7 +33,7 @@ public class GainExperienceEventSystem : IEcsSystem
             experience.Increase(amount);
 
             ref var coords = ref entity.Get<Coords>();
-            hudView.SpawnFloatingLabel(coords.World + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f));
+            hudView.SpawnFloatingLabel(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f));
 
             if (experience.IsFull())
             {

@@ -42,13 +42,13 @@ public class EditorEditTerrainSystem : IEcsSystem
         var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
-        if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
+        if (hoveredCoords.Cube() != _previousCoords && Input.IsActionPressed("editor_select"))
         {
-            _previousCoords = hoveredCoords.Cube;
+            _previousCoords = hoveredCoords.Cube();
 
             var chunks = new List<Vector3i>();
 
-            foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube, editorView.BrushSize))
+            foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube(), editorView.BrushSize))
             {
                 if (!locations.Has(cube))
                 {
