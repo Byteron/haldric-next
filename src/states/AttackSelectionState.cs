@@ -35,6 +35,8 @@ public partial class AttackSelectionState : GameState
 
     private void OnAttackSelected()
     {
+        _world.Spawn().Add(new UnitDeselectedEvent());
+        
         var commander = _world.GetResource<Commander>();
 
         var attackerAttackEntity = _view.GetSelectedAttackerAttack();
@@ -52,7 +54,7 @@ public partial class AttackSelectionState : GameState
             From = AttackerLocEntity.Get<Coords>(),
             To = DefenderLocEntity.Get<Coords>(),
             AttackerAttackId = attackerAttackEntity.Get<Id>().Value,
-            DefenderAttackId = defenderAttackEntity.Get<Id>().Value,
+            DefenderAttackId = defenderAttackEntity.IsAlive() ? defenderAttackEntity.Get<Id>().Value : "",
         };
         
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.AttackUnit, message.ToJson());
