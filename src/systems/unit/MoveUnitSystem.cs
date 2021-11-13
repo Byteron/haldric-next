@@ -4,7 +4,7 @@ using Bitron.Ecs;
 public class MoveUnitSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
-    {   
+    {
         if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
         {
             return;

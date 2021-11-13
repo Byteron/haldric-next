@@ -1,11 +1,16 @@
 using Bitron.Ecs;
+using Godot;
 using Godot.Collections;
 using Haldric.Wdk;
+using Nakama;
+using Nakama.TinyJson;
 
 public partial class PlayState : GameState
 {
     private string _mapName;
     private Dictionary<int, string> _factions;
+    private ISocket _socket;
+    private IMatch _match;
 
     public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions) : base(world)
     {
@@ -60,12 +65,18 @@ public partial class PlayState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
+        _socket = _world.GetResource<ISocket>();
+        _socket.ReceivedMatchState += OnReceivedMatchState;
+
+        _match = _world.GetResource<IMatch>();
+
         _world.AddResource(new Commander());
 
         _world.AddResource(new Scenario());
         _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
 
         var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        hudView.Connect("TurnEndButtonPressed", new Callable(this, nameof(OnTurnEndButtonPressed)));
         AddChild(hudView);
 
         _world.AddResource(hudView);
@@ -77,6 +88,8 @@ public partial class PlayState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
+        _socket.ReceivedMatchState -= OnReceivedMatchState;
+
         _world.RemoveResource<Commander>();
         _world.RemoveResource<Scenario>();
         _world.RemoveResource<Schedule>();
@@ -90,6 +103,28 @@ public partial class PlayState : GameState
         if (e.IsActionPressed("ui_cancel"))
         {
             gameStates.PopState();
+        }
+    }
+
+    public void OnTurnEndButtonPressed()
+    {
+        var opCode = (int)NetworkOperation.TurnEnd;
+        var state = new TurnEndMessage();
+        _socket.SendMatchStateAsync(_match.Id, opCode, state.ToJson());
+        _world.Spawn().Add(new TurnEndEvent());
+    }
+
+    private void OnReceivedMatchState(IMatchState state)
+    {
+        var enc = System.Text.Encoding.UTF8;
+        var data = (string)enc.GetString(state.State);
+        var operation = (NetworkOperation)state.OpCode;
+
+        switch (operation)
+        {
+            case NetworkOperation.TurnEnd:
+                _world.Spawn().Add(new TurnEndEvent());
+                break;
         }
     }
 }

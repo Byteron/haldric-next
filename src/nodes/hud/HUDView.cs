@@ -3,15 +3,20 @@ using Bitron.Ecs;
 
 public partial class HUDView : CanvasLayer
 {
+    [Signal] public delegate void TurnEndButtonPressed();
+
     public Label TerrainLabel { get; set; }
     public Label UnitLabel { get; set; }
     public Label PlayerLabel { get; set; }
+
+    public Button TurnEndButton { get; private set; }
 
     public override void _Ready()
     {
         TerrainLabel = GetNode<Label>("VBoxContainer/TerrainLabel");
         UnitLabel = GetNode<Label>("VBoxContainer2/UnitLabel");
         PlayerLabel = GetNode<Label>("PlayerLabel");
+        TurnEndButton = GetNode<Button>("EndTurnButton");
     }
 
     public void SpawnFloatingLabel(Vector3 position, string text, Color color)
@@ -32,6 +37,6 @@ public partial class HUDView : CanvasLayer
 
     private void OnEndTurnButtonPressed()
     {
-        Main.Instance.World.Spawn().Add(new TurnEndEvent());
+        EmitSignal(nameof(TurnEndButtonPressed));
     }
 }

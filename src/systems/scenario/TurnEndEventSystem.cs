@@ -14,11 +14,11 @@ public class TurnEndEventSystem : IEcsSystem
         var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().Inc<Level>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
-
+        
         foreach (var eventEntityId in eventQuery)
         {
             var scenario = world.GetResource<Scenario>();
-
+            
             scenario.EndTurn();
 
             if (_turn != scenario.Turn)
@@ -29,6 +29,7 @@ public class TurnEndEventSystem : IEcsSystem
             }
 
             var player = scenario.GetCurrentPlayerEntity();
+
             ref var gold = ref player.Get<Gold>();
 
             foreach (var unitEntityId in unitQuery)
@@ -67,7 +68,17 @@ public class TurnEndEventSystem : IEcsSystem
             }
 
             var hudView = world.GetResource<HUDView>();
+            var localPlayer = world.GetResource<LocalPlayer>();
 
+            if (scenario.CurrentPlayer == localPlayer.Side)
+            {
+                hudView.TurnEndButton.Disabled = false;
+            }
+            else
+            {
+                hudView.TurnEndButton.Disabled = true;
+            }
+            
             foreach (var locEntityId in locWithUnitQuery)
             {
                 var locEntity = world.Entity(locEntityId);
