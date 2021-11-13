@@ -97,4 +97,9 @@ public struct Coords
     {
         return string.Format("({0}, {1})", X, Z);
     }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }
