@@ -62,7 +62,7 @@ namespace Haldric.Wdk
         public static readonly Dictionary<TerrainType, float> Defenses = new Dictionary<TerrainType, float>()
         {
             { TerrainType.Flat, 0f },
-            { TerrainType.Settled, 0.3f },
+            { TerrainType.Settled, 0.2f },
             { TerrainType.Fortified, 0.5f },
             { TerrainType.Forested, 0.3f },
             { TerrainType.Infested, 0.3f },
