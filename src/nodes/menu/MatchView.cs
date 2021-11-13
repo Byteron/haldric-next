@@ -37,11 +37,6 @@ public partial class MatchView : Control
         CreateMatchWith(matched);
     }
 
-    void OnCreateButtonPressed()
-    {
-        CreateMatch();
-    }
-
     void OnJoinButtonPressed()
     {
         JoinMatchmaking();
@@ -90,18 +85,6 @@ public partial class MatchView : Control
         Main.Instance.World.AddResource(_match);
 
         Main.Instance.World.GetResource<GameStateController>().PushState(new FactionSelectionState(Main.Instance.World, MapName));
-    }
-
-    private async Task CreateMatch()
-    {
-        if (_ticket != null || _match != null)
-        {
-            return;
-        }
-
-        _match = await _socket.CreateMatchAsync();
-        _infoLabel.Text = "Match Created: " + _match.Id;
-
     }
 
     private async void JoinMatchmaking()

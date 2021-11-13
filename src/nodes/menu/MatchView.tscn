@@ -46,14 +46,6 @@ offset_right = 200.0
 offset_bottom = 94.0
 rect_min_size = Vector2(200, 0)
 
-[node name="CreateButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-visible = false
-offset_right = 98.0
-offset_bottom = 40.0
-rect_min_size = Vector2(0, 40)
-size_flags_horizontal = 3
-text = "Create"
-
 [node name="JoinButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 offset_right = 200.0
 offset_bottom = 40.0
@@ -77,6 +69,5 @@ theme_override_font_sizes/font_size = 16
 align = 1
 valign = 1
 
-[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/JoinButton" to="." method="OnJoinButtonPressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]
