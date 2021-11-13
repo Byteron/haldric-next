@@ -51,14 +51,14 @@ public partial class Data : Node
         Factions.Clear();
         
         var spears = new Faction();
-        spears.Name = "Spears";
+        spears.Name = "Humans";
         spears.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
         spears.Leaders = new List<string>() { "Spearman" };
 
         var bows = new Faction();
-        bows.Name = "Bows";
-        bows.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman", "Orcish Archer" };
-        bows.Leaders = new List<string>() { "Bowman" };
+        bows.Name = "Orcs";
+        bows.Recruits = new List<string>() { "Orcish Archer" };
+        bows.Leaders = new List<string>() { "Orcish Archer" };
         
         Factions.Add(spears.Name, spears);
         Factions.Add(bows.Name, bows);
