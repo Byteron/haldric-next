@@ -1,77 +1,24 @@
 using System.Collections.Generic;
 using Godot;
 using Nakama;
-using Nakama.TinyJson;
-using Bitron.Ecs;
 
 public partial class LobbyView : Control
 {
-    public string Username { get; set; }
+    [Signal] public delegate void MessageSubmitted(string message);
+    [Signal] public delegate void BackButtonPressed();
 
     private VBoxContainer _userListContainer;
-
     private VBoxContainer _messages;
-
     private LineEdit _input;
-
-    private IChannel _channel;
-
-    private ISocket _socket;
-
-    private List<IUserPresence> _users = new List<IUserPresence>();
 
     public override void _Ready()
     {
         _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer2/Panel/UserList");
-        _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/Messages");
+        _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/Messages");
         _input = GetNode<LineEdit>("PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit");
-
-        _socket = Main.Instance.World.GetResource<ISocket>();
-        
-        var settings = Main.Instance.World.GetResource<LobbySettings>();
-        EnterChat(settings.RoomName, ChannelType.Room, settings.Persistence, settings.Hidden);
     }
 
-    public override void _ExitTree()
-    {
-        _socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
-        _socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
-
-        _socket.LeaveChatAsync(_channel);
-    }
-
-    public async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
-    {
-        _socket.ReceivedChannelMessage += OnReceivedChannelMessage;
-        _socket.ReceivedChannelPresence += OnReceivedChannelPresence;
-
-        _channel = await _socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
-        _users.AddRange(_channel.Presences);
-
-        UpdateUsers();
-    }
-
-    private void OnSendButtonPressed()
-    {
-        if (!string.IsNullOrEmpty(_input.Text))
-        {
-            SendMessage();
-        }
-    }
-
-    private void OnBackButtonPressed()
-    {
-        Main.Instance.World.GetResource<GameStateController>().PopState();
-    }
-
-    private async void SendMessage()
-    {
-        var content = new Dictionary<string, string> { { "message", _input.Text } }.ToJson();
-        _input.Text = "";
-        var sendAck = await _socket.WriteChatMessageAsync(_channel.Id, content);
-    }
-
-    private void UpdateUsers()
+    public void UpdateUsers(string username, List<IUserPresence> users)
     {
         foreach (Node child in _userListContainer.GetChildren())
         {
@@ -79,12 +26,12 @@ public partial class LobbyView : Control
             child.QueueFree();
         }
 
-        foreach (var user in _users)
+        foreach (var user in users)
         {
             var label = new Label();
             label.Text = user.Username;
 
-            if (user.Username == Username)
+            if (user.Username == username)
             {
                 label.Modulate = new Color("AAAAFF");
             }
@@ -93,7 +40,7 @@ public partial class LobbyView : Control
         }
     }
 
-    private void NewMessage(string username, string message)
+    public void NewMessage(string username, string message)
     {
         var label = new Label();
         label.Text = username + ": " + message;
@@ -109,31 +56,20 @@ public partial class LobbyView : Control
 
     private void OnLineEditTextSubmitted(string text)
     {
-        SendMessage();
+        OnSendButtonPressed();
     }
 
-    private void OnReceivedChannelPresence(IChannelPresenceEvent presenceEvent)
+    private void OnSendButtonPressed()
     {
-        foreach (var presence in presenceEvent.Leaves)
+        if (!string.IsNullOrEmpty(_input.Text))
         {
-            _users.Remove(presence);
+            EmitSignal(nameof(MessageSubmitted), _input.Text);
+            _input.Text = "";
         }
-
-        _users.AddRange(presenceEvent.Joins);
-        UpdateUsers();
     }
 
-    private void OnReceivedChannelMessage(IApiChannelMessage message)
+    private void OnBackButtonPressed()
     {
-        switch (message.Code)
-        {
-            case 0:
-                var dict = JsonParser.FromJson<Dictionary<string, string>>(message.Content);
-                NewMessage(message.Username, dict["message"]);
-                break;
-            default:
-                NewMessage(message.Username, message.Content);
-                break;
-        }
+        EmitSignal(nameof(BackButtonPressed));
     }
 }

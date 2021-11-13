@@ -4,9 +4,9 @@ public partial class PlayerOption : HBoxContainer
 {
     [Signal] public delegate void FactionSelected(int side, int index);
 
+    public int LocalPlayerId { get; set; }
     public int Side { get; set; }
     public string Faction { get => _options.GetItemText(_options.GetSelectedId()); }
-    public int LocalPlayerId { get; set; }
 
     Label _label;
     OptionButton _options;

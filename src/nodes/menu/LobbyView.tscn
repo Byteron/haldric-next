@@ -36,10 +36,22 @@ offset_right = 1368.0
 offset_bottom = 728.0
 size_flags_vertical = 3
 
-[node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
-offset_top = 4.0
-offset_right = 1368.0
-offset_bottom = 735.0
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1363.0
+offset_bottom = 723.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
