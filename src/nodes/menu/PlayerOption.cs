@@ -2,8 +2,7 @@ using Godot;
 
 public partial class PlayerOption : HBoxContainer
 {
-    [Signal]
-    public delegate void FactionSelected(int side, int index);
+    [Signal] public delegate void FactionSelected(int side, int index);
 
     public int Side { get; set; }
     public string Faction { get => _options.GetItemText(_options.GetSelectedId()); }

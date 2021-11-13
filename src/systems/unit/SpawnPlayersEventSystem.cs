@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Godot.Collections;
 using Bitron.Ecs;
 
 public struct SpawnPlayersEvent

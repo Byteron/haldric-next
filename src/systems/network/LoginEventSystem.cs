@@ -62,8 +62,7 @@ public class LoginEventSystem : IEcsSystem
             world.AddResource(account);
             world.AddResource(socket);
 
-            world.GetResource<GameStateController>().PopState();
-            world.GetResource<GameStateController>().PushState(new MenuState(world));
+            world.GetResource<GameStateController>().ChangeState(new MenuState(world));
         }
         catch (Exception e)
         {

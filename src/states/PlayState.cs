@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using Bitron.Ecs;
-using Godot;
+using Godot.Collections;
 using Haldric.Wdk;
 
 public partial class PlayState : GameState

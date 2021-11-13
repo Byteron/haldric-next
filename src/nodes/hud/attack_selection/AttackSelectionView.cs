@@ -73,9 +73,8 @@ public partial class AttackSelectionView : Control
         var gameStateController = Main.Instance.World.GetResource<GameStateController>();
 
         commander.Enqueue(new CombatCommand(_attackerLocEntity, _selectedOption.AttackerAttackEntity, _defenderLocEntity, _selectedOption.DefenderAttackEntity, _attackDistance));
-            
-        gameStateController.PopState();
-        gameStateController.PushState(new CommanderState(Main.Instance.World));
+
+        gameStateController.ChangeState(new CommanderState(Main.Instance.World));
     }
 
     private void OnCancelButtonPressed()

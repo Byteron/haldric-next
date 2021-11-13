@@ -20,8 +20,7 @@ public partial class ScenarioSelectionState : GameState
     public void OnContinuePressed(string mapName)
     {
         var gameStateController = _world.GetResource<GameStateController>();
-        gameStateController.PopState();
-        gameStateController.PushState(new MatchState(_world, mapName));
+        gameStateController.ChangeState(new MatchState(_world, mapName));
     }
 
     public void OnCancelPressed()
