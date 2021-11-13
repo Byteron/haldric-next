@@ -49,6 +49,7 @@ public partial class PlayState : GameState
         AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
         AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
         AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
+        AddEventSystem<MoveUnitEvent>(new MoveUnitEventSystem());
         AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
         AddEventSystem<DamageEvent>(new DamageEventSystem());
         AddEventSystem<MissEvent>(new MissEventSystem());
@@ -124,6 +125,10 @@ public partial class PlayState : GameState
         {
             case NetworkOperation.TurnEnd:
                 _world.Spawn().Add(new TurnEndEvent());
+                break;
+            case NetworkOperation.MoveUnit:
+                var message = JsonParser.FromJson<MoveUnitMessage>(data);
+                _world.Spawn().Add(new MoveUnitEvent() { From = message.From.ToVector3(), To = message.To.ToVector3() });
                 break;
         }
     }

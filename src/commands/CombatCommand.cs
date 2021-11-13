@@ -110,8 +110,6 @@ public partial class CombatCommand : Command
             _attackData = _attackDataQueue.Dequeue();
             Attack();
         }
-
-        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     private void SpawnFloatingLabelEvent(Coords coords, string text, Color color)

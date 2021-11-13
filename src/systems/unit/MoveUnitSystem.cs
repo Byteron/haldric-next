@@ -1,5 +1,7 @@
 using Godot;
 using Bitron.Ecs;
+using Nakama;
+using Nakama.TinyJson;
 
 public class MoveUnitSystem : IEcsSystem
 {
@@ -16,7 +18,6 @@ public class MoveUnitSystem : IEcsSystem
         }
 
         var commander = world.GetResource<Commander>();
-        
         var map = world.GetResource<Map>();
         
         var hoveredLocEntity = hoveredLocation.Entity;
@@ -35,33 +36,19 @@ public class MoveUnitSystem : IEcsSystem
 
         if (Input.IsActionJustPressed("select_unit"))
         {
-            ref var startCoords = ref selectedLocEntity.Get<Coords>();
-            ref var targetCoords = ref hoveredLocEntity.Get<Coords>();
+            ref var fromCoords = ref selectedLocEntity.Get<Coords>();
+            ref var toCoords = ref hoveredLocEntity.Get<Coords>();
 
-            if (startCoords.Cube == targetCoords.Cube)
-            {
-                return;
-            }
+            var socket = world.GetResource<ISocket>();
+            var match = world.GetResource<IMatch>();
             
-            var unitEntity = selectedLocEntity.Get<HasUnit>().Entity;
-
-            var path = map.FindPath(startCoords, targetCoords, unitEntity.Get<Side>().Value);
-
-            if (path.Checkpoints.Count == 0)
-            {
-                return;
-            }
+            var message = new MoveUnitMessage { From = fromCoords.Cube.ToSVector3(), To = toCoords.Cube.ToSVector3() };
+            var json = message.ToJson();
             
-            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-
-            if (path.Checkpoints.Count > moves.Value)
-            {
-                return;
-            }
-
-            commander.Enqueue(new MoveUnitCommand(path));
-            selectedLocation.Entity = hoveredLocEntity;
-            world.GetResource<GameStateController>().PushState(new CommanderState(world));
+            world.Spawn().Add(new UnitDeselectedEvent());
+            
+            socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.MoveUnit, json);
+            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube, To = toCoords.Cube });
         }
     }
 }

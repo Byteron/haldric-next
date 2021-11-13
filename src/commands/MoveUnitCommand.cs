@@ -63,8 +63,6 @@ public partial class MoveUnitCommand : Command
 
         _path.Destination.Add(new HasUnit(_unitEntity));
         unitCoords = _path.Destination.Get<Coords>();
-
-        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     public override void Revert()
