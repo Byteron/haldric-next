@@ -20,6 +20,7 @@ public partial class FactionSelectionState : GameState
     public override void Enter(GameStateController gameStates)
     {
         var socket = _world.GetResource<ISocket>();
+        var localPlayer = _world.GetResource<LocalPlayer>();
 
         socket.ReceivedMatchState += OnMatchStateReceived;
 
@@ -27,6 +28,7 @@ public partial class FactionSelectionState : GameState
 
         var playerDict = (Dictionary)_mapDict["Players"];
         _view.MapName = _mapName;
+        _view.LocalPlayerSide = localPlayer.Side;
         _view.PlayerCount = playerDict.Count;
         
         _view.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));

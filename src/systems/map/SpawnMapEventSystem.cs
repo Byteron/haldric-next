@@ -177,7 +177,7 @@ public class SpawnMapEventSystem : IEcsSystem
         foreach (var cellString in locationsData.Keys)
         {
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
-            var locEntity = Main.Instance.World.Spawn();
+            var locEntity = _world.Spawn();
 
             var coords = Coords.FromCube(cell);
 

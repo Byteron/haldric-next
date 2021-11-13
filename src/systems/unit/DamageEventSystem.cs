@@ -93,11 +93,11 @@ public class DamageEventSystem : IEcsSystem
             var color = new Color(1f, 0f, 0f);
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
-            Main.Instance.World.Spawn().Add(spawnLabelEvent);
+            world.Spawn().Add(spawnLabelEvent);
 
             if (health.IsEmpty())
             {
-                Main.Instance.World.Spawn().Add(new DeathEvent(targetEntity));
+                world.Spawn().Add(new DeathEvent(targetEntity));
             }
         }
     }

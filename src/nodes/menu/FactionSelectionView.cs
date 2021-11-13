@@ -12,6 +12,7 @@ public partial class FactionSelectionView : PanelContainer
 
     [Export] PackedScene PlayerOption;
 
+    public int LocalPlayerSide { get; set; }
     public int PlayerCount { get; set; }
     public string MapName { get; set; }
 
@@ -29,7 +30,7 @@ public partial class FactionSelectionView : PanelContainer
             var option = PlayerOption.Instantiate<PlayerOption>();
             option.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));
             option.Side = i;
-            option.LocalPlayerId = Main.Instance.World.GetResource<LocalPlayer>().Side;
+            option.LocalPlayerId = LocalPlayerSide;
             _container.AddChild(option);
             _options.Add(i, option);
         }

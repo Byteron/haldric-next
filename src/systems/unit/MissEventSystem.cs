@@ -27,7 +27,7 @@ public class MissEventSystem : IEcsSystem
             var position = missEvent.TargetEntity.Get<Coords>().World() + Vector3.Up * 5f;
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, "Miss!", new Color(0.7f, 0.7f, 0.7f));
 
-            Main.Instance.World.Spawn().Add(spawnLabelEvent);
+            world.Spawn().Add(spawnLabelEvent);
         }
     }
 }
