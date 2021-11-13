@@ -61,7 +61,7 @@ public partial class FactionSelectionState : GameState
 
     private void OnFactionSelected(int side, int index)
     {
-        var matchId = Main.Instance.World.GetResource<IMatch>().Id;
+        var matchId = _world.GetResource<IMatch>().Id;
         var opCode = (int)NetworkOperation.FactionSelected;
 
         var message = new FactionSelectedMessage()
@@ -70,7 +70,7 @@ public partial class FactionSelectionState : GameState
             Index = index,
         };
 
-        var socket = Main.Instance.World.GetResource<ISocket>();
+        var socket = _world.GetResource<ISocket>();
         socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
@@ -85,6 +85,6 @@ public partial class FactionSelectionState : GameState
 
     private void OnBackButtonPressed()
     {
-        Main.Instance.World.GetResource<GameStateController>().PopState();
+        _world.GetResource<GameStateController>().PopState();
     }
 }
