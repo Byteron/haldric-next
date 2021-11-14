@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://src/nodes/props/FlagView.cs" id="2_pk5i5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y1lsa"]
+resource_local_to_scene = true
 cull_mode = 2
 
 [node name="FlagView" type="Node3D"]
