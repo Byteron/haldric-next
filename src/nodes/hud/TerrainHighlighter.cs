@@ -6,7 +6,7 @@ public partial class TerrainHighlighter : Node3D
     [Export] public PackedScene TerrainHighlight;
     public List<TerrainHighlight> _path = new List<TerrainHighlight>();
 
-    public void ShowPath(Path path)
+    public void ClearPath()
     {
         foreach (var child in _path)
         {
@@ -15,7 +15,10 @@ public partial class TerrainHighlighter : Node3D
         }
 
         _path.Clear();
-
+    }
+    
+    public void ShowPath(Path path)
+    {
         foreach(var pLocEntity in path.Checkpoints)
         {
             ref var coords = ref pLocEntity.Get<Coords>();
