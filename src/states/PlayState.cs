@@ -123,14 +123,9 @@ public partial class PlayState : GameState
         ProcessMatchStateChance(state);
     }
 
-    private async void ProcessMatchStateChance(IMatchState state)
+    private void ProcessMatchStateChance(IMatchState state)
     {
-        GD.Print("State Change Received.");
-
         var gameStateController = _world.GetResource<GameStateController>();
-        await ToSignal(gameStateController, "PostProcessFrame");
-
-        GD.Print("Process State Change...");
 
         var enc = System.Text.Encoding.UTF8;
         var data = (string)enc.GetString(state.State);
@@ -186,7 +181,5 @@ public partial class PlayState : GameState
                 break;
             }
         }
-
-        GD.Print("State Change Processed.");
     }
 }
