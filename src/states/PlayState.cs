@@ -120,15 +120,31 @@ public partial class PlayState : GameState
 
     private void OnReceivedMatchState(IMatchState state)
     {
+        ProcessMatchStateChance(state);
+    }
+
+    private async void ProcessMatchStateChance(IMatchState state)
+    {
+        GD.Print("State Change Received.");
+
+        var gameStateController = _world.GetResource<GameStateController>();
+        await ToSignal(gameStateController, "PostProcessFrame");
+
+        GD.Print("Process State Change...");
+
         var enc = System.Text.Encoding.UTF8;
         var data = (string)enc.GetString(state.State);
         var operation = (NetworkOperation)state.OpCode;
 
+        GD.Print($"Network Operation: {operation.ToString()}\nJSON: {data}");
+
         switch (operation)
         {
             case NetworkOperation.TurnEnd:
+            {
                 _world.Spawn().Add(new TurnEndEvent());
                 break;
+            }
             case NetworkOperation.MoveUnit:
             {
                 var message = JsonParser.FromJson<MoveUnitMessage>(data);
@@ -148,7 +164,6 @@ public partial class PlayState : GameState
             {
                 var map = _world.GetResource<Map>();
                 var commander = _world.GetResource<Commander>();
-                var gameStateController = _world.GetResource<GameStateController>();
                 
                 var message = JsonParser.FromJson<AttackUnitMessage>(data);
 
@@ -158,8 +173,8 @@ public partial class PlayState : GameState
                 var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
                 var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-                ref var attackerAttacks = ref attackerEntity.Get<Attacks>();
-                ref var defenderAttacks = ref defenderEntity.Get<Attacks>();
+                var attackerAttacks = attackerEntity.Get<Attacks>();
+                var defenderAttacks = defenderEntity.Get<Attacks>();
 
                 var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
                 var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
@@ -171,5 +186,7 @@ public partial class PlayState : GameState
                 break;
             }
         }
+
+        GD.Print("State Change Processed.");
     }
 }

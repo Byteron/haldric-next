@@ -3,6 +3,9 @@ using Godot;
 
 public partial class GameStateController : Node3D
 {
+    [Signal] public delegate void PostProcessFrame();
+    [Signal] public delegate void PreProcessFrame();
+
     Stack<GameState> _states = new Stack<GameState>();
 
     public override void _UnhandledInput(InputEvent e)
@@ -19,6 +22,8 @@ public partial class GameStateController : Node3D
 
     public override void _Process(float delta)
     {
+        EmitSignal(nameof(PreProcessFrame));
+
         if (_states.Count == 0)
         {
             return;
@@ -28,6 +33,8 @@ public partial class GameStateController : Node3D
         currentState.RunUpdateSystems();
         currentState.RunEventSystems();
         currentState.Update(this, delta);
+
+        EmitSignal(nameof(PostProcessFrame));
     }
 
     public void PushState(GameState newState)
