@@ -16,9 +16,5 @@ Advancements = []
 Damage = 6
 Strikes = 3
 
-[node name="Hooves" parent="Attacks" index="1" instance=ExtResource( "2_3ggjw" )]
-Damage = 5
-Strikes = 2
-DamageType = 2
-
 [node name="cavalry" parent="UnitView" index="1" instance=ExtResource( "3_hkqbx" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
