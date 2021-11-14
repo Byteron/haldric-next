@@ -4,7 +4,7 @@ using Bitron.Ecs;
 
 public struct UpdateTerrainMeshEvent
 {
-    public List<Vector3i> Chunks;
+    public List<Vector3i> Chunks { get; set; }
 
     public UpdateTerrainMeshEvent(List<Vector3i> chunks = null)
     {
@@ -121,7 +121,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             center + Metrics.GetFirstSolidCorner(direction, plateauArea),
             center + Metrics.GetSecondSolidCorner(direction, plateauArea)
         );
-
+        
         TriangulatePlateau(center, e, index.Value);
 
         if (direction <= (Direction)2)
@@ -162,7 +162,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
         TriangulateSlope(e1, e2, locIndex, nLocIndex.Value);
 
-        if (direction <= (Direction)1 && neighbors.Has(direction.Next()))
+        if (direction <= (Direction)2 && neighbors.Has(direction.Next()))
         {
             var nextLocEntity = neighbors.Get(direction.Next());
             ref var nextLocIndex = ref nextLocEntity.Get<Index>();
@@ -178,20 +178,10 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
             if (elevation.Value <= nElevation.Value)
             {
-                if (elevation.Value <= nElevation.Value)
-                {
-                    indices.x = nLocIndex.Value;
-                    indices.y = locIndex;
-                    indices.z = nextLocIndex.Value;
-                    TriangulateCorner(e1.v5, e2.v5, v6, indices);
-                }
-                else
-                {
-                    indices.x = locIndex;
-                    indices.y = nextLocIndex.Value;
-                    indices.z = nLocIndex.Value;
-                    TriangulateCorner(v6, e1.v5, e2.v5, indices);
-                }
+                indices.x = nLocIndex.Value;
+                indices.y = locIndex;
+                indices.z = nextLocIndex.Value;
+                TriangulateCorner(e1.v5, e2.v5, v6, indices);
             }
             else if (nElevation.Value <= nextElevation.Value)
             {
@@ -212,17 +202,17 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
     {
-        _terrainMesh.AddTrianglePerturbed(left, bottom, right);
+        _terrainMesh.AddTrianglePerturbed(right, bottom, left);
         _terrainMesh.AddTriangleCellData(indices, ColorRed, ColorGreen, ColorBlue);
     }
 
     private void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
     {
         // _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v5);
-        _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v2);
-        _terrainMesh.AddTrianglePerturbed(edge.v2, center, edge.v3);
-        _terrainMesh.AddTrianglePerturbed(edge.v3, center, edge.v4);
-        _terrainMesh.AddTrianglePerturbed(edge.v4, center, edge.v5);
+        _terrainMesh.AddTrianglePerturbed(edge.v2, center, edge.v1);
+        _terrainMesh.AddTrianglePerturbed(edge.v3, center, edge.v2);
+        _terrainMesh.AddTrianglePerturbed(edge.v4, center, edge.v3);
+        _terrainMesh.AddTrianglePerturbed(edge.v5, center, edge.v4);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
@@ -232,10 +222,10 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2, float index1, float index2)
     {
         // _terrainMesh.AddQuadPerturbed(e1.v1, e1.v5, e2.v1, e2.v5);
-        _terrainMesh.AddQuadPerturbed(e1.v1, e1.v2, e2.v1, e2.v2);
-        _terrainMesh.AddQuadPerturbed(e1.v2, e1.v3, e2.v2, e2.v3);
-        _terrainMesh.AddQuadPerturbed(e1.v3, e1.v4, e2.v3, e2.v4);
-        _terrainMesh.AddQuadPerturbed(e1.v4, e1.v5, e2.v4, e2.v5);
+        _terrainMesh.AddQuadPerturbed(e1.v2, e1.v1, e2.v2, e2.v1);
+        _terrainMesh.AddQuadPerturbed(e1.v3, e1.v2, e2.v3, e2.v2);
+        _terrainMesh.AddQuadPerturbed(e1.v4, e1.v3, e2.v4, e2.v3);
+        _terrainMesh.AddQuadPerturbed(e1.v5, e1.v4, e2.v5, e2.v4);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);

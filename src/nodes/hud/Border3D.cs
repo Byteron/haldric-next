@@ -9,6 +9,6 @@ public partial class Border3D : Node3D
 	{
 		MeshInstance3D mesh = this.GetChild<MeshInstance3D>(0);
 		mesh.GetSurfaceOverrideMaterial(0).Set("albedo_color", Color);
-		Rotate(Vector3.Up, Direction);
+		Rotate(Vector3.Down, Direction);
 	}
 }

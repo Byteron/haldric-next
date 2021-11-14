@@ -20,7 +20,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             return;
         }
 
-        ref var coords = ref locEntity.Get<Coords>();
+        ref Coords coords = ref locEntity.Get<Coords>();
 
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
@@ -37,6 +37,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
         }
 
         string text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
+        //text += $"\nWorld Coords: {coords.World.x}, {coords.World.z}";
         text += $"\nElevation: {elevation.Value}";
         text += $"\nTerrain: {baseTerrainCode.Value}{overlayTerrainCode}";
         text += $"\nTypes: {terrainTypes}";
