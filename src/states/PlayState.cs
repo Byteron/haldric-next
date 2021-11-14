@@ -24,6 +24,8 @@ public partial class PlayState : GameState
         AddInputSystem(new DeselectUnitSystem());
         AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new RecruitInputSystem());
+        AddInputSystem(new NextUnitInputSystem());
+        AddInputSystem(new SuspendUnitInputSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());
         AddUpdateSystem(new UpdatePlayerInfoSystem());
@@ -35,7 +37,8 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
-
+        
+        AddEventSystem<FocusCameraEvent>(new FocusCameraEventSystem());
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());

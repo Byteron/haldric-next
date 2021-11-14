@@ -19,15 +19,26 @@ public class UnitSelectedEventSystem : IEcsSystem
 
         foreach (var eventEntityId in query)
         {
+            var map = world.GetResource<Map>();
+
             var unitEntity = world.Entity(eventEntityId).Get<UnitSelectedEvent>().Unit;
 
+            var coords = unitEntity.Get<Coords>();
             var moves = unitEntity.Get<Attribute<Moves>>();
 
-            var coords = unitEntity.Get<Coords>();
+            var locEntity = map.Locations.Get(coords.Cube());
 
-            var map = world.GetResource<Map>();
+            if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
+            {
+                selectedLocation.Entity = locEntity;
+            }
+            else
+            {
+                world.AddResource(new SelectedLocation(locEntity));
+            }
+
             map.UpdateDistances(coords, unitEntity.Get<Side>().Value);
-            
+
             world.Spawn().Add(new HighlightLocationEvent(coords, moves.Value));
         }
     }

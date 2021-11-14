@@ -46,6 +46,11 @@ public class TurnEndEventSystem : IEcsSystem
                     actions.Restore();
                     moves.Restore();
 
+                    if (unitEntity.Has<Suspended>())
+                    {
+                        unitEntity.Remove<Suspended>();
+                    }
+
                     ref var level = ref unitEntity.Get<Level>();
 
                     gold.Value -= level.Value;

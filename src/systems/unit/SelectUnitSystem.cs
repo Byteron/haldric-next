@@ -34,11 +34,12 @@ public class SelectUnitSystem : IEcsSystem
                 return;
             }
 
-            if (!world.HasResource<SelectedLocation>())
+            if (world.HasResource<SelectedLocation>())
             {
-                world.AddResource(new SelectedLocation(hoveredLocEntity));
-                world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                world.Spawn().Add(new UnitDeselectedEvent());
             }
+            
+            world.Spawn().Add(new UnitSelectedEvent(unitEntity));
         }
     }
 }

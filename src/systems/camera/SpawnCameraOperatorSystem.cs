@@ -12,11 +12,9 @@ public class SpawnCameraOperatorSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var cameraEntity = world.Spawn();
-
         var cameraOperator = Scenes.Instance.CameraOperator.Instantiate<CameraOperator>();
         _parent.AddChild(cameraOperator);
 
-        cameraEntity.Add(new NodeHandle<CameraOperator>(cameraOperator));
+        world.AddResource(cameraOperator);
     }
 }

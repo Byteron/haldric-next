@@ -44,6 +44,16 @@ public partial class CameraOperator : Node3D
         }
     }
 
+    public void Focus(Vector3 worldPosition)
+    {
+        var tween = GetTree().CreateTween();
+        tween.SetEase(Tween.EaseType.InOut)
+            .SetTrans(Tween.TransitionType.Sine)
+            .TweenProperty(this, "position", worldPosition, 0.25f);
+        
+        tween.Play();
+    }
+
     public void ZoomIn()
     {
         _targetZoom = Mathf.Clamp(_targetZoom + 0.05f, 0, 1);
