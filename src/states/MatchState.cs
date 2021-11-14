@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Bitron.Ecs;
 using Godot.Collections;
 using Nakama;
@@ -65,9 +67,12 @@ public partial class MatchState : GameState
         _match = await _socket.JoinMatchAsync(matched);
 
         var localPlayer = new LocalPlayer();
-
         localPlayer.Presence = matched.Self.Presence;
 
+        var users = new List<string>();
+        
+        users.Add(localPlayer.Presence.Username);
+        
         var playerId = 0;
         foreach (var presence in matched.Users)
         {
@@ -78,6 +83,9 @@ public partial class MatchState : GameState
             
             playerId += 1;
         }
+
+        var matchPlayers = new MatchPlayers();
+        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
 
         _world.AddResource(localPlayer);
         _world.AddResource(_match);

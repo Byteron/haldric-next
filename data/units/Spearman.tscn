@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_wbto5"]
 [ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_fqlix"]
-[ext_resource type="PackedScene" uid="uid://d2vlqoyjgr1gc" path="res://assets/graphics/gltf/Infantry.glb" id="2_wq0xh"]
+[ext_resource type="PackedScene" uid="uid://nbninrbkwd0f" path="res://assets/graphics/gltf/spearman.gltf" id="3_wgf6l"]
 
 [node name="Spearman" instance=ExtResource( "1_wbto5" )]
 Id = "Spearman"
@@ -21,5 +21,4 @@ Strikes = 1
 DamageType = 1
 Range = 2
 
-[node name="Infantry" parent="UnitView" index="0" instance=ExtResource( "2_wq0xh" )]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+[node name="spearman" parent="UnitView" index="1" instance=ExtResource( "3_wgf6l" )]
