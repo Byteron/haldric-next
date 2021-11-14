@@ -12,13 +12,8 @@ public class ShaderData
     private Material _terrainMaterial;
 
     public ShaderData(int width, int height)
-    {
-        GD.Print("Initialize ShaderData");
-        GD.Print("Width: " + width);
-        GD.Print("Height: " + height);
-        
-        
-        _terrainMaterial = ResourceLoader.Load<Material>("res://assets/graphics/materials/terrain.tres", null, ResourceLoader.CacheMode.Replace);
+    {   
+        _terrainMaterial = ResourceLoader.Load<Material>("res://assets/graphics/materials/terrain.tres");
 
         _width = width;
         _height = height;
