@@ -11,7 +11,7 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().Inc<Level>().End();
+        var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
         
@@ -49,7 +49,6 @@ public class TurnEndEventSystem : IEcsSystem
                     ref var level = ref unitEntity.Get<Level>();
                     
                     gold.Value -= level.Value;
-                    GD.Print($"Player: {side}, Income - {level.Value}");
                 }
             }
 

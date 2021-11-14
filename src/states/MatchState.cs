@@ -75,6 +75,7 @@ public partial class MatchState : GameState
             {
                 localPlayer.Side = playerId;
             }
+            
             playerId += 1;
         }
 
