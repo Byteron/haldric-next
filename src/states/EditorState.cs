@@ -8,7 +8,6 @@ public partial class EditorState : GameState
 
         AddInputSystem(new EditorEditTerrainSystem(this));
         AddInputSystem(new EditorEditPlayerSystem(this));
-        AddInputSystem(new UndoCommandSystem());
 
         AddUpdateSystem(new UpdateTerrainInfoSystem());
         AddUpdateSystem(new UpdateHoveredLocationSystem(this));

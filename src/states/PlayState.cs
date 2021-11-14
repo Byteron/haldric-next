@@ -22,7 +22,7 @@ public partial class PlayState : GameState
         AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new SelectTargetSystem());
         AddInputSystem(new DeselectUnitSystem());
-        AddInputSystem(new UndoCommandSystem());
+        // AddInputSystem(new UndoCommandSystem());
         AddInputSystem(new RecruitInputSystem());
         AddInputSystem(new NextUnitInputSystem());
         AddInputSystem(new SuspendUnitInputSystem());
