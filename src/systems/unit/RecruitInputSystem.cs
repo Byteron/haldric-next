@@ -8,9 +8,15 @@ public class RecruitInputSystem : IEcsSystem
         if (Input.IsActionJustPressed("recruit"))
         {
             var scenario = world.GetResource<Scenario>();
+            var localPlayer = world.GetResource<LocalPlayer>();
             var player = scenario.GetCurrentPlayerEntity();
             var side = player.Get<Side>();
 
+            if (localPlayer.Side != side.Value)
+            {
+                return;
+            }
+            
             var castleQuery = world.Query<Castle>().End();
             
             bool canRecruit = false;
@@ -63,8 +69,7 @@ public class RecruitInputSystem : IEcsSystem
 
             var gameStateController = world.GetResource<GameStateController>();
 
-            var recruitState = new RecruitSelectionState(world);
-            recruitState.FreeLocEntity = freeLocEntity;
+            var recruitState = new RecruitSelectionState(world, freeLocEntity);
             
             gameStateController.PushState(recruitState);
         }

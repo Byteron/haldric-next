@@ -4,42 +4,41 @@ using System.Collections.Generic;
 public partial class TerrainHighlighter : Node3D
 {
 	[Export] public PackedScene TerrainHighlight;
-	public List<Border3D> Path { get; set; } = new List<Border3D>();
+	public List<Border3D> Borders { get; set; } = new List<Border3D>();
+	public List<TerrainHighlight> Path { get; set; } = new List<TerrainHighlight>();
 
-	public void ShowPath(Path path)
+	public void ClearPath()
+    {
+        foreach (var child in Path)
+        {
+            RemoveChild(child);
+            child.QueueFree();
+        }
+
+        Path.Clear();
+    }
+    public void ShowPath(Path path)
+    {
+        foreach(var pLocEntity in path.Checkpoints)
+        {
+            ref var coords = ref pLocEntity.Get<Coords>();
+            ref var elevation = ref pLocEntity.Get<Elevation>();
+
+            var pos = coords.World();
+            pos.y = elevation.Height;
+
+            PlaceHighlight(pos, new Color("FFFFFF"), 0.7f);
+        }
+    }
+
+	public void PlaceHighlight(Vector3 position, Color color, float scaleFactor)
 	{
-		foreach (var child in Path)
-		{
-			RemoveChild(child);
-			child.QueueFree();
-		}
-
-		Path.Clear();
-
-		foreach(var pLocEntity in path.Checkpoints)
-		{
-			ref var coords = ref pLocEntity.Get<Coords>();
-			ref var elevation = ref pLocEntity.Get<Elevation>();
-
-			var pos = coords.World;
-			pos.y = elevation.Height;
-
-			//PlaceHighlight(pos, new Color("FFFFFF"), 0.7f, true);
-		}
-	}
-
-	public void PlaceHighlight(Vector3 position, Color color, float scaleFactor, bool isPath = false)
-	{
-		var highlight = TerrainHighlight.Instantiate<Border3D>();
-		highlight.Color = color;
-		//highlight.ScaleFactor = scaleFactor;
-		highlight.Position = position;
-		AddChild(highlight);
-
-		if (isPath)
-		{
-			Path.Add(highlight);
-		}
+        var highlight = TerrainHighlight.Instantiate<TerrainHighlight>();
+        highlight.Color = color;
+        highlight.ScaleFactor = scaleFactor;
+        highlight.Position = position;
+        AddChild(highlight);
+		Path.Add(highlight);
 	}
 
 	public void PlaceBorder(Vector3 position, Color color, float rotate)
@@ -49,6 +48,7 @@ public partial class TerrainHighlighter : Node3D
 		highlight.Direction = rotate;
 		highlight.Position = position;
 		AddChild(highlight);
+		Borders.Add(highlight);
 	}
 
 	public void Clear()
@@ -59,6 +59,6 @@ public partial class TerrainHighlighter : Node3D
 			child.QueueFree();
 		}
 
-		Path.Clear();
+		Borders.Clear();
 	}
 }

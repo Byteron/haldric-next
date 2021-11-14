@@ -11,6 +11,7 @@ public class TerrainBuilder
     {
         _terrainEntity = Main.Instance.World.Spawn();
         _terrainEntity.Add<IsBaseTerrain>();
+        _terrainEntity.Add<ElevationOffset>();
         return this;
     }
     public TerrainBuilder CreateOverlay()
@@ -32,15 +33,9 @@ public class TerrainBuilder
         return this;
     }
 
-    public TerrainBuilder WithHasShallowWater()
+    public TerrainBuilder WithElevationOffset(float elevationOffset)
     {
-        _terrainEntity.Add<HasShallowWater>();
-        return this;
-    }
-
-    public TerrainBuilder WithHasDeepWater()
-    {
-        _terrainEntity.Add<HasDeepWater>();
+        _terrainEntity.Get<ElevationOffset>().Value = elevationOffset;
         return this;
     }
 

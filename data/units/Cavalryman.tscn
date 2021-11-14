@@ -2,25 +2,19 @@
 
 [ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_xrcl7"]
 [ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_3ggjw"]
-[ext_resource type="PackedScene" uid="uid://bbll0id2147m2" path="res://assets/graphics/gltf/Unit.gltf" id="2_hwijx"]
+[ext_resource type="PackedScene" uid="uid://dkac7h03wq47u" path="res://assets/graphics/gltf/cavalry.gltf" id="3_hkqbx"]
 
 [node name="Cavalryman" instance=ExtResource( "1_xrcl7" )]
 Id = "Cavalryman"
 Cost = 17
 Health = 50
 Moves = 8
-Experience = 8
 Weaknesses = [1]
-Advancements = ["Dragoon"]
+Advancements = []
 
 [node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_3ggjw" )]
 Damage = 6
 Strikes = 3
 
-[node name="Hooves" parent="Attacks" index="1" instance=ExtResource( "2_3ggjw" )]
-Damage = 5
-Strikes = 2
-DamageType = 2
-
-[node name="Unit" parent="UnitView" index="0" instance=ExtResource( "2_hwijx" )]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+[node name="cavalry" parent="UnitView" index="1" instance=ExtResource( "3_hkqbx" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

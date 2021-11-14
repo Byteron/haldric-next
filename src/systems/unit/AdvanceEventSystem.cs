@@ -21,12 +21,23 @@ public class AdvanceEventSystem : IEcsSystem
         foreach (var id in query)
         {
             var hudView = world.GetResource<HUDView>();
-            
+
             ref var advanceEvent = ref world.Entity(id).Get<AdvanceEvent>();
 
-            var entity = advanceEvent.Entity;
+            var unitEntity = advanceEvent.Entity;
 
-            ref var advancements = ref entity.Get<Advancements>();
+            ref var health = ref unitEntity.Get<Attribute<Health>>();
+            ref var experience = ref unitEntity.Get<Attribute<Experience>>();
+            ref var oldMoves = ref unitEntity.Get<Attribute<Moves>>();
+            ref var oldActions = ref unitEntity.Get<Attribute<Actions>>();
+
+            health.Restore();
+            experience.Empty();
+
+            var remainingMoves = oldMoves.Value;
+            var remainingActions = oldActions.Value;
+
+            ref var advancements = ref unitEntity.Get<Advancements>();
 
             if (advancements.List.Count == 0)
             {
@@ -36,7 +47,7 @@ public class AdvanceEventSystem : IEcsSystem
             var unitTypeId = advancements.List[0];
             var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
-            var unitView = entity.Get<NodeHandle<UnitView>>().Node;
+            var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
             var position = unitView.Position;
             var parent = unitView.GetParent();
 
@@ -44,16 +55,22 @@ public class AdvanceEventSystem : IEcsSystem
             unitView = unitType.UnitView;
             unitType.RemoveChild(unitView);
             parent.AddChild(unitView);
-            UnitFactory.CreateFromUnitType(world, unitType, unitView, entity);
-            
+            UnitFactory.CreateFromUnitType(world, unitType, unitView, unitEntity);
+
             unitType.QueueFree();
-            
-            ref var coords = ref entity.Get<Coords>();
-            ref var level = ref entity.Get<Level>();
+
+            ref var coords = ref unitEntity.Get<Coords>();
+            ref var level = ref unitEntity.Get<Level>();
+
+            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+            ref var actions = ref unitEntity.Get<Attribute<Actions>>();
+
+            moves.Value = remainingMoves;
+            actions.Value = remainingActions;
 
             unitView.Position = position;
 
-            hudView.SpawnFloatingLabel(coords.World + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
+            hudView.SpawnFloatingLabel(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
         }
     }
 }

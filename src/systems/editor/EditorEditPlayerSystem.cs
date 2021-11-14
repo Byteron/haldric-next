@@ -42,12 +42,15 @@ public class EditorEditPlayerSystem : IEcsSystem
         var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
-        if (hoveredCoords.Cube != _previousCoords && Input.IsActionPressed("editor_select"))
+        if (hoveredCoords.Cube() != _previousCoords && Input.IsActionPressed("editor_select"))
         {
-            _previousCoords = hoveredCoords.Cube;
+            _previousCoords = hoveredCoords.Cube();
 
             ref var coords = ref locEntity.Get<Coords>();
             ref var elevation = ref locEntity.Get<Elevation>();
+
+            var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
             if (locEntity.Has<IsStartingPositionOfTeam>())
             {
@@ -65,8 +68,8 @@ public class EditorEditPlayerSystem : IEcsSystem
             {
                 var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
                 _parent.AddChild(flagView);
-                var pos = coords.World;
-                pos.y = elevation.HeightWithOffset;
+                var pos = coords.World();
+                pos.y = elevation.Height + elevationOffset.Value;
                 flagView.Position = pos;
 
                 locEntity.Add(new NodeHandle<FlagView>(flagView));

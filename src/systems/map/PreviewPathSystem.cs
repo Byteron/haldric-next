@@ -33,8 +33,15 @@ public class PreviewPathSystem : IEcsSystem
             return;
         }
 
-        var map = world.GetResource<Map>();
         var highlighter = world.GetResource<TerrainHighlighter>();
+        highlighter.ClearPath();
+        
+        if (hLocEntity.Has<HasUnit>())
+        {
+            return;
+        }
+
+        var map = world.GetResource<Map>();
         var scenario = world.GetResource<Scenario>();
 
         Path path = map.FindPath(sLocEntity.Get<Coords>(), hLocEntity.Get<Coords>(), scenario.CurrentPlayer);

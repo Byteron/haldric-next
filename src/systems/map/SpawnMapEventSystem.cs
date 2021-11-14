@@ -98,9 +98,9 @@ public class SpawnMapEventSystem : IEcsSystem
         {
             ref var coords = ref locEntity.Get<Coords>();
 
-            if (players.Contains(coords.Cube.ToString()))
+            if (players.Contains(coords.Cube().ToString()))
             {
-                var side = (int)(float)players[coords.Cube.ToString()];
+                var side = (int)(float)players[coords.Cube().ToString()];
 
                 locEntity.Add(new IsStartingPositionOfTeam(side));
             }
@@ -138,13 +138,13 @@ public class SpawnMapEventSystem : IEcsSystem
                     { "ElevationOffset", 0 }
                 };
 
-                if (locsDict.Contains(coords.Cube))
+                if (locsDict.Contains(coords.Cube()))
                 {
-                    locsDict[coords.Cube] = locDict;
+                    locsDict[coords.Cube()] = locDict;
                 }
                 else
                 {
-                    locsDict.Add(coords.Cube, locDict);
+                    locsDict.Add(coords.Cube(), locDict);
                 }
             }
         }
@@ -177,11 +177,11 @@ public class SpawnMapEventSystem : IEcsSystem
         foreach (var cellString in locationsData.Keys)
         {
             Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
-            var locEntity = Main.Instance.World.Spawn();
+            var locEntity = _world.Spawn();
 
             var coords = Coords.FromCube(cell);
 
-            locEntity.Add(new Index((int)coords.Offset.z * width + (int)coords.Offset.x));
+            locEntity.Add(new Index((int)coords.Offset().z * width + (int)coords.Offset().x));
             locEntity.Add(coords);
 
             locEntity.Add(new PlateauArea(0.75f));
@@ -193,15 +193,6 @@ public class SpawnMapEventSystem : IEcsSystem
             var elevationOffset = 0;
 
             var baseTerrainEntity = Data.Instance.Terrains[(string)terrainCodes[0]];
-
-            if (baseTerrainEntity.Has<HasShallowWater>())
-            {
-                elevationOffset = Metrics.ShallowWaterOffset;
-            }
-            else if (baseTerrainEntity.Has<HasDeepWater>())
-            {
-                elevationOffset = Metrics.DeepWaterOffset;
-            }
 
             locEntity.Add(new Elevation(elevation, elevationOffset));
 
@@ -232,7 +223,7 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var coords = Coords.FromOffset(x, z);
 
-                var chunkCell = (coords.Offset / new Vector3(chunkSize.x, 0f, chunkSize.y));
+                var chunkCell = (coords.Offset() / new Vector3(chunkSize.x, 0f, chunkSize.y));
                 var chunkCelli = new Vector3i((int)chunkCell.x, 0, (int)chunkCell.z);
 
                 if (!chunks.ContainsKey(chunkCelli))
@@ -241,7 +232,7 @@ public class SpawnMapEventSystem : IEcsSystem
                     chunks.Add(chunkCelli, newChunk);
                 }
 
-                var locEntity = locations.Get(coords.Cube);
+                var locEntity = locations.Get(coords.Cube());
                 locEntity.Add(chunkCelli);
 
                 var chunkEntity = chunks[chunkCelli];
@@ -252,7 +243,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
                 ref var chunkLocations = ref chunkEntity.Get<Locations>();
 
-                chunkLocations.Set(coords.Cube, locEntity);
+                chunkLocations.Set(coords.Cube(), locEntity);
 
 
             }
@@ -286,7 +277,7 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var direction = (Direction)i;
             
-                Vector3 nCell = Hex.GetNeighbor(coords.Cube, direction);
+                Vector3 nCell = Hex.GetNeighbor(coords.Cube(), direction);
 
                 if (!locations.Has(nCell))
                 {
@@ -392,7 +383,7 @@ public class SpawnMapEventSystem : IEcsSystem
         {
             ref var coords = ref locEntity.Get<Coords>();
             
-            map.PathFinder.AddPoint(coords.GetIndex(map.Grid.Width), coords.Cube, 1);
+            map.PathFinder.AddPoint(coords.GetIndex(map.Grid.Width), coords.Cube(), 1);
         }
 
         foreach (var locEntity in map.Locations.Dict.Values)

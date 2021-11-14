@@ -15,6 +15,7 @@ public class UnitFactory
                 .Remove<Attribute<Health>>()
                 .Remove<Attribute<Actions>>()
                 .Remove<Attribute<Moves>>()
+                .Remove<Aligned>()
                 .Remove<Attribute<Experience>>()
                 .Remove<Weaknesses>()
                 .Remove<Resistances>()

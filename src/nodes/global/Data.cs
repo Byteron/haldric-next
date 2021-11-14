@@ -20,7 +20,7 @@ public partial class Data : Node
 
     public Dictionary<string, PackedScene> Schedules { get; set; } = new Dictionary<string, PackedScene>();
     public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
-    public Dictionary<string, Faction> Factions { get; set; }= new Dictionary<string, Faction>();
+    public Dictionary<string, Faction> Factions { get; set; } = new Dictionary<string, Faction>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains { get; set; } = new Dictionary<string, EcsEntity>();
     public Dictionary<string, Godot.Collections.Dictionary> Maps { get; set; } = new Dictionary<string, Godot.Collections.Dictionary>();
@@ -49,17 +49,17 @@ public partial class Data : Node
     public void LoadFactions()
     {
         Factions.Clear();
-        
+
         var spears = new Faction();
-        spears.Name = "Spears";
+        spears.Name = "Humans";
         spears.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
         spears.Leaders = new List<string>() { "Spearman" };
 
         var bows = new Faction();
-        bows.Name = "Bows";
-        bows.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman", "Orcish Archer" };
-        bows.Leaders = new List<string>() { "Bowman" };
-        
+        bows.Name = "Orcs";
+        bows.Recruits = new List<string>() { "Orcish Grunt", "Orcish Archer", "Orcish Wolf Rider" };
+        bows.Leaders = new List<string>() { "Orcish Grunt" };
+
         Factions.Add(spears.Name, spears);
         Factions.Add(bows.Name, bows);
     }
@@ -68,7 +68,7 @@ public partial class Data : Node
     {
         Units.Clear();
 
-        foreach(var data in Loader.LoadDir("res://data/units", new List<string>() {"tscn"}))
+        foreach (var data in Loader.LoadDir("res://data/units", new List<string>() { "tscn" }))
         {
             Units.Add(data.Id, (PackedScene)data.Data);
         }
@@ -78,7 +78,7 @@ public partial class Data : Node
     {
         Schedules.Clear();
 
-        foreach(var data in Loader.LoadDir("res://data/schedules", new List<string>() {"tscn"}))
+        foreach (var data in Loader.LoadDir("res://data/schedules", new List<string>() { "tscn" }))
         {
             Schedules.Add(data.Id, (PackedScene)data.Data);
         }
@@ -126,7 +126,7 @@ public partial class Data : Node
     {
         Maps.Clear();
 
-        foreach(var data in Loader.LoadDir("res://data/maps", new List<string>() {"json"}, false))
+        foreach (var data in Loader.LoadDir("res://data/maps", new List<string>() { "json" }, false))
         {
             var dict = LoadJsonFromFile(data.Path);
             Maps.Add(data.Id, dict);
@@ -136,7 +136,7 @@ public partial class Data : Node
     private Godot.Collections.Dictionary LoadJsonFromFile(string path)
     {
         var file = new File();
-        
+
         if (!(file.Open(path, File.ModeFlags.Read) == Error.Ok))
         {
             GD.PushError("error reading file");
@@ -151,7 +151,7 @@ public partial class Data : Node
     }
 
     public void CreateTextureArrayIds()
-	{   
+    {
         var index = 0;
         foreach (var item in Terrains)
         {
@@ -159,17 +159,17 @@ public partial class Data : Node
             var terrainEntity = item.Value;
 
             terrainEntity.Add(new TerrainTypeIndex(index));
-            
+
             TextureArrayIds.Add(terrainCode, index);
             index += 1;
         }
-	}
+    }
 
     public Texture2DArray CreateTextureArray(Texture2DArray texArray, Dictionary<string, Texture2D> textureDict)
-	{   
+    {
         var textures = new Godot.Collections.Array();
         textures.Resize(Terrains.Count);
-        
+
         for (int i = 0; i < textures.Count; i++)
         {
             textures[i] = textureDict["Gg"].GetImage();
@@ -181,15 +181,15 @@ public partial class Data : Node
             var terrainTexture = item.Value;
 
             var index = TextureArrayIds[terrainCode];
-            
+
             var image = terrainTexture.GetImage();
             textures[index] = image;
         }
 
         texArray._Images = textures;
 
-		return texArray;
-	}
+        return texArray;
+    }
 
     public EcsEntity CreateTerrain(string terrainType)
     {

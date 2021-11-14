@@ -20,8 +20,8 @@ public struct Grid : IEcsAutoReset<Grid>
 
     public bool IsCoordsInGrid(Coords coords)
     {
-        return coords.Offset.x > -1 && coords.Offset.x < Width
-            && coords.Offset.z > -1 && coords.Offset.z < Height;
+        return coords.Offset().x > -1 && coords.Offset().x < Width
+            && coords.Offset().z > -1 && coords.Offset().z < Height;
     }
 
     public override string ToString()

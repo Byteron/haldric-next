@@ -7,7 +7,9 @@ public class TerrainScript : TerrainLoader
 	{
 		NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });
 		NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });
-		NewBase("Dd", new List<TerrainType>() { TerrainType.Rough });
+		NewBase("Sd", new List<TerrainType>() { TerrainType.Rough });
+		NewBase("Sm", new List<TerrainType>() { TerrainType.Rough }, -0.4f);
+		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);
 		
 		NewShallowWater("Ws", new List<TerrainType>() { TerrainType.ShallowWaters });
 		NewDeepWater("Wo", new List<TerrainType>() { TerrainType.DeepWaters });
@@ -20,18 +22,43 @@ public class TerrainScript : TerrainLoader
 		NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });
 		NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled });
 
-		AddTerrainTexture("Gg", "assets/graphics/images/grass.png");
-		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass.png");
-		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass.png");
+		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.png");
+		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.png");
+		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass_roughness.png");
 
-		AddTerrainTexture("Dd", "assets/graphics/images/mud.png");
-		AddTerrainTexture("Rd", "assets/graphics/images/stone.png");
-		AddTerrainTexture("Ch", "assets/graphics/images/stone.png");
-		AddTerrainTexture("Kh", "assets/graphics/images/stone.png");
-		AddTerrainTexture("Ws", "assets/graphics/images/mud.png");
-		AddTerrainTexture("Wo", "assets/graphics/images/mud.png");
+		AddTerrainTexture("Sd", "assets/graphics/images/sand_basecolor.png");
+		AddTerrainNormalTexture("Sd", "assets/graphics/images/sand_normal.png");
+		AddTerrainRoughnessTexture("Sd", "assets/graphics/images/sand_roughness.png");
 
-		AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
+		AddTerrainTexture("Sb", "assets/graphics/images/sand_basecolor.png");
+		AddTerrainNormalTexture("Sb", "assets/graphics/images/sand_normal.png");
+		AddTerrainRoughnessTexture("Sb", "assets/graphics/images/sand_roughness.png");
+
+		AddTerrainTexture("Sm", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Sm", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Sm", "assets/graphics/images/mud_roughness.png");
+
+		AddTerrainTexture("Rd", "assets/graphics/images/dirt_basecolor.png");
+		AddTerrainNormalTexture("Rd", "assets/graphics/images/dirt_normal.png");
+		AddTerrainRoughnessTexture("Rd", "assets/graphics/images/dirt_roughness.png");
+
+		AddTerrainTexture("Ch", "assets/graphics/images/dirt_basecolor.png");
+		AddTerrainNormalTexture("Ch", "assets/graphics/images/dirt_normal.png");
+		AddTerrainRoughnessTexture("Ch", "assets/graphics/images/dirt_roughness.png");
+		
+		AddTerrainTexture("Kh", "assets/graphics/images/dirt_basecolor.png");
+		AddTerrainNormalTexture("Kh", "assets/graphics/images/dirt_normal.png");
+		AddTerrainRoughnessTexture("Kh", "assets/graphics/images/dirt_roughness.png");
+		
+		AddTerrainTexture("Ws", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Ws", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Ws", "assets/graphics/images/mud_roughness.png");
+
+		AddTerrainTexture("Wo", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Wo", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Wo", "assets/graphics/images/mud_roughness.png");
+
+		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
 		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
 		AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
 

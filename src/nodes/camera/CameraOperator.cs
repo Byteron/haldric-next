@@ -11,6 +11,7 @@ public partial class CameraOperator : Node3D
     
     [Export] private Vector3 _cameraOffset = Vector3.Up;
     [Export] private float _walkSpeed = 30f;
+    [Export] private float _minDistance = 60f;
     [Export] private float _maxDistance = 60f;
     [Export] private Curve _zoomCurve;
 
@@ -42,6 +43,16 @@ public partial class CameraOperator : Node3D
         {
             ZoomIn();
         }
+    }
+
+    public void Focus(Vector3 worldPosition)
+    {
+        var tween = GetTree().CreateTween();
+        tween.SetEase(Tween.EaseType.InOut)
+            .SetTrans(Tween.TransitionType.Sine)
+            .TweenProperty(this, "position", worldPosition, 0.25f);
+        
+        tween.Play();
     }
 
     public void ZoomIn()
@@ -81,7 +92,7 @@ public partial class CameraOperator : Node3D
 
     public void UpdateRotation()
     {
-        _camera.Position = new Vector3(0, 0, Mathf.Lerp(0, _maxDistance, _zoom));
+        _camera.Position = new Vector3(0, 0, Mathf.Lerp(_minDistance, _maxDistance, _zoom));
 
         var rotation = Rotation;
         rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.Deg2Rad(_targetRotation), 0.08f);

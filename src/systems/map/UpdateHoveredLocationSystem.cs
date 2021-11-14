@@ -32,16 +32,16 @@ public class UpdateHoveredLocationSystem : IEcsSystem
             var position = (Vector3)result["position"];
             var coords = Coords.FromWorld(position);
 
-            if (previousCell != coords.Axial)
+            if (previousCell != coords.Axial())
             {
                 var map = world.GetResource<Map>();
 
-                var locEntity = map.Locations.Get(coords.Cube);
+                var locEntity = map.Locations.Get(coords.Cube());
                 
                 hoveredLocation.Entity = locEntity;
                 hoveredLocation.HasChanged = true;
 
-                previousCell = coords.Axial;
+                previousCell = coords.Axial();
             }
         }
     }

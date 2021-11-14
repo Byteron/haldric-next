@@ -39,6 +39,7 @@ public partial class CombatCommand : Command
     private EcsEntity _defenderAttackEntity;
 
     private int _attackDistance;
+    private ulong _seed;
     
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
@@ -48,8 +49,9 @@ public partial class CombatCommand : Command
 
     private Tween _tween;
 
-    public CombatCommand(EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
+    public CombatCommand(ulong seed, EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
     {
+        _seed = seed;
         _attackerLocEntity = attackerLocEntity;
         _attackerAttackEntity = attackerAttackEntity;
         _defenderLocEntity = defenderLocEntity;
@@ -61,6 +63,8 @@ public partial class CombatCommand : Command
 
     public override void Execute()
     {
+        GD.Seed(_seed);
+        
         var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 
@@ -110,13 +114,11 @@ public partial class CombatCommand : Command
             _attackData = _attackDataQueue.Dequeue();
             Attack();
         }
-
-        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     private void SpawnFloatingLabelEvent(Coords coords, string text, Color color)
     {
-        var position = coords.World + Vector3.Up * 5f;
+        var position = coords.World() + Vector3.Up * 5f;
         var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
         Main.Instance.World.Spawn().Add(spawnLabelEvent);
@@ -129,8 +131,11 @@ public partial class CombatCommand : Command
         var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
         var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
 
-        attackerView.LookAt(defenderView.Position);
-        defenderView.LookAt(attackerView.Position);
+        attackerView.LookAt(defenderView.Position, Vector3.Up);
+        defenderView.LookAt(attackerView.Position, Vector3.Up);
+
+        attackerView.Rotation = new Vector3(0f, attackerView.Rotation.y, 0f);
+        defenderView.Rotation = new Vector3(0f, defenderView.Rotation.y, 0f);
 
         Vector3 attackPos = attackerView.Position;
 

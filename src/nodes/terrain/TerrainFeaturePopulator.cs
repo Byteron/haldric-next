@@ -61,8 +61,12 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        var position = coords.World;
-        position.y = elevation.HeightWithOffset;
+        
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
+        var position = coords.World();
+        position.y = elevation.Height + elevationOffset.Value;
 
         foreach (var terrainGraphic in Data.Instance.Decorations[terrainCode].Values)
         {
@@ -90,9 +94,12 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
+        
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-        var center = coords.World;
-        center.y = elevation.HeightWithOffset;
+        var center = coords.World();
+        center.y = elevation.Height + elevationOffset.Value;
 
         for (int i = 0; i < 6; i++)
         {
@@ -112,9 +119,17 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
+            ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
 
+            
+            if (elevation.Value != nElevation.Value)
+            {
+                continue;
+            }
+            
+            var elevationOffsetDifference = elevationOffset.Value - nElevationOffset.Value;
 
-            if (elevation.ValueWithOffset != nElevation.ValueWithOffset)
+            if (Mathf.Abs(elevationOffsetDifference) > 0.5f)
             {
                 continue;
             }
@@ -147,9 +162,12 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        var position = coords.World;
 
-        position.y = elevation.HeightWithOffset;
+        var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var position = coords.World();
+
+        position.y = elevation.Height + elevationOffset.Value;
         position += Data.Instance.KeepPlateaus[terrainCode].Offset;
 
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
@@ -159,7 +177,7 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        var position = coords.World;
+        var position = coords.World();
         position.y = elevation.Height - Metrics.ElevationStep * 0.5f;
 
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
@@ -169,13 +187,16 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
+        
+        var terrainEntity = terrainBase.Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        
+        var center = coords.World();
 
-        var center = coords.World;
-        center.y = elevation.HeightWithOffset;
+        center.y = elevation.Height + elevationOffset.Value;
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
@@ -194,16 +215,16 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.ValueWithOffset < 0)
+            if (nElevation.Value < 0)
             {
                 continue;
             }
 
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }
@@ -217,14 +238,17 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
 
-        var center = coords.World;
-        center.y = elevation.HeightWithOffset;
+        var terrainEntity = terrainBase.Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
+        var center = coords.World();
+        center.y = elevation.Height + elevationOffset.Value;
+
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
@@ -243,16 +267,16 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.ValueWithOffset < 0)
+            if (nElevation.Value < 0)
             {
                 continue;
             }
 
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && nTerrainEntity.Has<CanRecruitFrom>())
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
             {
                 continue;
             }
-            if (elevation.ValueWithOffset == nElevation.ValueWithOffset && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
+            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
             {
                 continue;
             }

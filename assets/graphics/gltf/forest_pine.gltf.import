@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://f45aoq4m1qlm"
+uid="uid://d257njitki5do"
 path="res://.godot/imported/forest_pine.gltf-47a61ed7dcd15a806a7d36a8f364f0fc.scn"
 
 [deps]
@@ -17,15 +17,21 @@ nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
-meshes/generate_lods=true
+meshes/generate_lods=false
 meshes/create_shadow_meshes=true
-meshes/light_baking=2
+meshes/light_baking=1
 meshes/lightmap_texel_size=0.1
-skins/use_named_skins=true
-animation/import=true
+skins/use_named_skins=false
+animation/import=false
 animation/fps=15
 import_script/path=""
 _subresources={
+"materials": {
+"forest_pinetrees": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/forest_pinetrees.res"
+}
+},
 "meshes": {
 "forest_pine_center_01": {
 "save_to_file/enabled": true,

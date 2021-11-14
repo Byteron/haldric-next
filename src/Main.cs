@@ -22,6 +22,19 @@ public partial class Main : Node3D
 		World.AddResource(_gameController);
 		World.AddResource(GetTree());
 
+		World.AddResource(new ServerSettings {
+			Host = "49.12.208.4",
+			Port = 7350,
+			Scheme = "http",
+			ServerKey = "defaultkey",
+		});
+
+		World.AddResource(new LobbySettings {
+			RoomName = "general",
+			Persistence = true,
+			Hidden = false,
+		});
+
 		Environment = GetNode<WorldEnvironment>("WorldEnvironment");
 		Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
 

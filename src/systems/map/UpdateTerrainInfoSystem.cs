@@ -36,8 +36,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             overlayTerrainCode = "^" + overlayCode.Value;
         }
 
-        string text = $"Coords: {coords.Offset.x}, {coords.Offset.z}";
-        //text += $"\nWorld Coords: {coords.World.x}, {coords.World.z}";
+        string text = $"Coords: {coords.Offset().x}, {coords.Offset().z}";
         text += $"\nElevation: {elevation.Value}";
         text += $"\nTerrain: {baseTerrainCode.Value}{overlayTerrainCode}";
         text += $"\nTypes: {terrainTypes}";

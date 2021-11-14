@@ -1,28 +1,141 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://jjnbwddt1rdq"]
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://jjnbwddt1rdq"]
 
-[sub_resource type="Shader" id="Shader_iqweo"]
+[sub_resource type="Shader" id="Shader_l02ne"]
 code = "shader_type spatial;
+render_mode specular_phong, cull_disabled;
+
+uniform float speed: hint_range(-1, 1) = 0.0;
+
+uniform sampler2D noise1;
+uniform sampler2D noise2;
+uniform sampler2D normalmap: hint_normal;
 
 uniform vec4 color : hint_color;
+uniform vec4 deep_water: hint_color;
 
-void fragment()
-{
-	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+//depth-fade var
+uniform float beer_law_factor = 2.0;
+uniform float _distance = 0.0;
+
+//foam var
+uniform vec4 edge_color: hint_color;
+uniform float edge_scale = 0.25;
+uniform float near = 0.1;
+uniform float far = 100f;
+
+// wave var
+uniform vec2 wave_strength = vec2(0.5, 0.25);
+uniform vec2 wave_frequ = vec2(12.0, 12.0);
+uniform vec2 time_factor = vec2(1.0, 2.0);
+
+//float waves(vec2 pos, float time) {
+//	return (wave_strength.y * sin(pos.y * wave_frequ.y + time * time_factor.y)) + (wave_strength.x * sin(pos.x * wave_frequ.x + time * time_factor.x));
+//}
+//
+//void vertex() {
+//	VERTEX.y += waves(VERTEX.xy, TIME);
+//}
+
+float rim(float depth) {
+	depth = 2f * depth - 1f;
+	return near * far / (far + depth * (near - far));
+}
+
+float calc_depth_fade(float depth, mat4 projection_matrix, vec4 fragcoord, float beer_factor, float __distance, vec3 vertex) {
 	
-	depth = depth * 2.0 - 1.0;
-	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
-	depth += VERTEX.z;
-	// depth *= 0.1;
-	depth = exp(-depth * 0.2);
-	depth = clamp(depth, 0.0, 1.0);
+	float scene_depth = depth;
+
+	scene_depth = projection_matrix[3][2] / (scene_depth + projection_matrix[2][2]);
+	scene_depth += vertex.z; // z is negative
 	
-	vec4 back = texture(SCREEN_TEXTURE, SCREEN_UV);
+	// application of beers law
+	scene_depth = exp(-scene_depth * beer_factor);
 	
-//	ALBEDO = mix(back.rgb, color.rgb, 1.0 - depth);
-	ALBEDO = color.rgb;
+	scene_depth = clamp(scene_depth, 0.0, 1.0);
+	
+	return scene_depth;
+}
+
+void fragment() {
+	float time = TIME * speed;
+	
+	vec3 n1 = texture(noise1, UV + time).rgb;
+	vec3 n2 = texture(noise2, UV - time * 0.2).rgb;
+	
+	vec2 uv_movement = UV * 4f;
+	uv_movement += TIME * speed * 4f;
+	
+	float sum = (n1.r + n2.r) - 1f;
+	
+	float z_depth = rim(texture(DEPTH_TEXTURE, SCREEN_UV).x);
+	float z_pos = rim(FRAGCOORD.z);
+	float diff = z_depth - z_pos;
+	
+	// depth-fade
+	vec2 disp = vec2(sum * 0.05);
+	float z_depth_fade = calc_depth_fade(texture(DEPTH_TEXTURE, SCREEN_UV + disp).x, PROJECTION_MATRIX, FRAGCOORD, beer_law_factor, _distance, VERTEX);
+	float z_fade = rim(FRAGCOORD.z);
+	float fade_diff = z_depth_fade - z_fade;
+	
+	vec4 gradientcolor = mix(deep_water, color, z_depth_fade);
+	
+	vec2 displacement = vec2(sum * 0.05);
+	diff += displacement.x * 70f;
+	
+	vec4 col = mix(edge_color, gradientcolor, step(edge_scale, diff));
+	
+	vec4 alpha = texture(SCREEN_TEXTURE, SCREEN_UV + displacement);
+	
+	
+	float fin = 0.0;
+	if (sum > 0.0 && sum < 0.4) fin = 0.0;
+	if (sum > 0.4 && sum < 0.8) fin = 0.1;
+	if (sum > 0.8) fin = 1f;
+	
+	// konvertier fin in vec3 um
+	ALBEDO = vec3(fin) + mix(alpha.rgb, col.rgb, gradientcolor.a);
+	
+	NORMAL_MAP = texture(normalmap, uv_movement).rgb;
+	
+	ROUGHNESS = 0.1;
 }"
 
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_h4mx1"]
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id="NoiseTexture_vyl50"]
+seamless = true
+noise = SubResource( "OpenSimplexNoise_h4mx1" )
+
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_ucx32"]
+
+[sub_resource type="NoiseTexture" id="NoiseTexture_g1x73"]
+seamless = true
+noise = SubResource( "OpenSimplexNoise_ucx32" )
+
+[sub_resource type="OpenSimplexNoise" id="OpenSimplexNoise_kvwyp"]
+
+[sub_resource type="NoiseTexture" id="NoiseTexture_fo3ud"]
+seamless = true
+as_normal_map = true
+bump_strength = 4.0
+noise = SubResource( "OpenSimplexNoise_kvwyp" )
+
 [resource]
-render_priority = -1
-shader = SubResource( "Shader_iqweo" )
-shader_param/color = Color(0.0117647, 0.0784314, 0.180392, 1)
+render_priority = 0
+shader = SubResource( "Shader_l02ne" )
+shader_param/_distance = 0.0
+shader_param/beer_law_factor = 0.2
+shader_param/wave_strength = Vector2(0, 0)
+shader_param/deep_water = Color(0.0117647, 0.0705882, 0.0196078, 1)
+shader_param/time_factor = Vector2(0, 0)
+shader_param/wave_frequ = null
+shader_param/edge_color = Color(0.207843, 1, 0.87451, 1)
+shader_param/edge_scale = 0.25
+shader_param/color = Color(0.152941, 0.619608, 0.764706, 0.470588)
+shader_param/speed = 0.05
+shader_param/near = 0.1
+shader_param/far = 100.0
+shader_param/noise1 = SubResource( "NoiseTexture_vyl50" )
+shader_param/noise2 = SubResource( "NoiseTexture_g1x73" )
+shader_param/normalmap = SubResource( "NoiseTexture_fo3ud" )

@@ -11,7 +11,7 @@ public class TurnEndEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Side>().Inc<Attribute<Moves>>().Inc<Attribute<Actions>>().Inc<Level>().End();
+        var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
         var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
@@ -29,6 +29,7 @@ public class TurnEndEventSystem : IEcsSystem
             }
 
             var player = scenario.GetCurrentPlayerEntity();
+
             ref var gold = ref player.Get<Gold>();
 
             foreach (var unitEntityId in unitQuery)
@@ -45,10 +46,14 @@ public class TurnEndEventSystem : IEcsSystem
                     actions.Restore();
                     moves.Restore();
 
+                    if (unitEntity.Has<Suspended>())
+                    {
+                        unitEntity.Remove<Suspended>();
+                    }
+
                     ref var level = ref unitEntity.Get<Level>();
-                    
+
                     gold.Value -= level.Value;
-                    GD.Print($"Player: {side}, Income - {level.Value}");
                 }
             }
 
@@ -62,11 +67,20 @@ public class TurnEndEventSystem : IEcsSystem
                 if (scenario.CurrentPlayer == side.Value)
                 {
                     gold.Value += village.List.Count;
-                    GD.Print($"Player: {side}, Income + {village.List.Count}");
                 }
             }
 
             var hudView = world.GetResource<HUDView>();
+            var localPlayer = world.GetResource<LocalPlayer>();
+
+            if (scenario.CurrentPlayer == localPlayer.Side)
+            {
+                hudView.TurnEndButton.Disabled = false;
+            }
+            else
+            {
+                hudView.TurnEndButton.Disabled = true;
+            }
 
             foreach (var locEntityId in locWithUnitQuery)
             {
@@ -90,7 +104,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                     health.Increase(diff);
 
-                    hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
+                    hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
                 }
             }
         }

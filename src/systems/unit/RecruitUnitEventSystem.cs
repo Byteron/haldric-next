@@ -44,7 +44,11 @@ public class RecruitUnitEventSystem : IEcsSystem
 
             ref var recruitEvent = ref world.Entity(eventEntityId).Get<RecruitUnitEvent>();
 
-            var freeCoords = recruitEvent.LocEntity.Get<Coords>();
+            var locEntity = recruitEvent.LocEntity;
+            var freeCoords = locEntity.Get<Coords>();
+
+            var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
+            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
             UnitType unitType = recruitEvent.UnitType;
             _parent.AddChild(unitType);
@@ -58,8 +62,8 @@ public class RecruitUnitEventSystem : IEcsSystem
             
             unitType.QueueFree();
 
-            var position = freeCoords.World;
-            position.y = recruitEvent.LocEntity.Get<Elevation>().HeightWithOffset;
+            var position = freeCoords.World();
+            position.y = locEntity.Get<Elevation>().Height + elevationOffset.Value;
 
             unitView.Position = position;
 

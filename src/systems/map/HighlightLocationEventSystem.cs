@@ -14,7 +14,8 @@ public struct HighlightLocationEvent
 }
 
 public class HighlightLocationsEventSystem : IEcsSystem
-{	public void Run(EcsWorld world)
+{	
+	public void Run(EcsWorld world)
 	{
 		var query = world.Query<HighlightLocationEvent>().End();
 
@@ -25,7 +26,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
 			var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
 			
-			var locEntity = map.Locations.Get(eventData.Coords.Cube);
+			var locEntity = map.Locations.Get(eventData.Coords.Cube());
 			ref var unit = ref locEntity.Get<HasUnit>();
 			var unitEntity = unit.Entity;
 			ref var side = ref unitEntity.Get<Side>();
@@ -35,7 +36,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 			terrainHighlighter.Clear();
 			
 			var maxAttackRange = attacks.GetMaxAttackRange();
-			var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube, maxAttackRange);
+			var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube(), maxAttackRange);
 
 			List<Coords> filteredAttackList = new List<Coords>();
 			foreach (var cCell in cellsInAttackRange)
@@ -46,7 +47,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 					continue;
 				}
 
-				var nLocEntity = map.Locations.Dict[nCoords.Cube];
+				var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
 				var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
 				var attackerBonusAttackRange = map.GetBonusAttackRange(eventData.Coords, nCoords);
@@ -55,7 +56,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
 				ref var nElevation = ref nLocEntity.Get<Elevation>();
 				
-				var position = nCoords.World;
+				var position = nCoords.World();
 				position.y = nElevation.Height + 0.1f;
 				
 				var hasUnit = nLocEntity.Has<HasUnit>();
@@ -70,7 +71,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 				}
 			}
 
-			Vector3[] cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube, eventData.Range);
+			Vector3[] cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube(), eventData.Range);
 			List<Coords> filteredMoveList = new List<Coords>();
 
 			foreach (Vector3 cCell in cellsInMoveRange)
@@ -119,10 +120,10 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
 		foreach(Coords coord in locations)
 		{
-			Vector3 position = coord.World;
-			Elevation elevation = map.Locations.Dict[coord.Cube].Get<Elevation>();
+			Vector3 position = coord.World();
+			Elevation elevation = map.Locations.Dict[coord.Cube()].Get<Elevation>();
 			position.y = elevation.Height + 0.1f;
-			Vector3[] Neighbors = Hex.GetNeighbors(coord.Cube);
+			Vector3[] Neighbors = Hex.GetNeighbors(coord.Cube());
 			for (int i = 0; i < 6; i++) {
 				Direction direction = (Direction)i;
 				Vector3 cNeighbor = Neighbors[i];

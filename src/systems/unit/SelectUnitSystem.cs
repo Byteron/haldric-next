@@ -9,7 +9,7 @@ public class SelectUnitSystem : IEcsSystem
         {
             return;
         }
-        
+
         var hoveredLocEntity = hoveredLocation.Entity;
 
         if (!hoveredLocEntity.IsAlive())
@@ -20,18 +20,26 @@ public class SelectUnitSystem : IEcsSystem
         if (Input.IsActionJustPressed("select_unit") && hoveredLocEntity.Has<HasUnit>())
         {
             var scenario = world.GetResource<Scenario>();
+            var localPlayer = world.GetResource<LocalPlayer>();
+
+            if (scenario.CurrentPlayer != localPlayer.Side)
+            {
+                return;
+            }
+
             var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
-            
+
             if (unitEntity.Get<Side>().Value != scenario.CurrentPlayer)
             {
                 return;
             }
 
-            if (!world.HasResource<SelectedLocation>())
+            if (world.HasResource<SelectedLocation>())
             {
-                world.AddResource(new SelectedLocation(hoveredLocEntity));
-                world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                world.Spawn().Add(new UnitDeselectedEvent());
             }
+            
+            world.Spawn().Add(new UnitSelectedEvent(unitEntity));
         }
     }
 }

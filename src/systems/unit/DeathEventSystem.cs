@@ -24,7 +24,7 @@ public class DeathEventSystem : IEcsSystem
 
             ref var coords = ref deathEvent.Entity.Get<Coords>();
 
-            var locEntity = map.Locations.Get(coords.Cube);
+            var locEntity = map.Locations.Get(coords.Cube());
 
             locEntity.Remove<HasUnit>();
 

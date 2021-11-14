@@ -46,8 +46,12 @@ public partial class MoveUnitCommand : Command
             ref var targetCoords = ref checkpointLocEntity.Get<Coords>();
             ref var targetElevation = ref checkpointLocEntity.Get<Elevation>();
 
-            var newPos = targetCoords.World;
-            newPos.y = targetElevation.HeightWithOffset;
+            var terrainEntity = checkpointLocEntity.Get<HasBaseTerrain>().Entity;
+            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
+            var newPos = targetCoords.World();
+            newPos.y = targetElevation.Height + elevationOffset.Value;
+
             _tween.TweenCallback(new Callable(this, "OnUnitStepFinished"));
             _tween.TweenProperty(_unitView, "position", newPos, 0.2f);
         }
@@ -59,8 +63,6 @@ public partial class MoveUnitCommand : Command
 
         _path.Destination.Add(new HasUnit(_unitEntity));
         unitCoords = _path.Destination.Get<Coords>();
-
-        Main.Instance.World.Spawn().Add(new UnitDeselectedEvent());
     }
 
     public override void Revert()
@@ -81,6 +83,27 @@ public partial class MoveUnitCommand : Command
 
     private void OnUnitMoveFinished()
     {
+        ref var side = ref _unitEntity.Get<Side>();
+
+        if (_path.Destination.Has<Village>())
+        {
+            if (_path.Destination.Has<IsCapturedByTeam>())
+            {
+                ref var captured = ref _path.Destination.Get<IsCapturedByTeam>();
+
+                if (captured.Value != side.Value)
+                {
+                    _unitEntity.Get<Attribute<Moves>>().Empty();
+                    Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_path.Destination, _unitEntity.Get<Side>().Value));
+                }
+            }
+            else
+            {
+                _unitEntity.Get<Attribute<Moves>>().Empty();
+                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_path.Destination, _unitEntity.Get<Side>().Value));
+            }
+        }
+
         IsDone = true;
     }
 
@@ -96,16 +119,11 @@ public partial class MoveUnitCommand : Command
         {
             var locEntity = _path.Checkpoints.ToArray()[index];
 
-            if (locEntity.Has<Village>())
-            {
-                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(locEntity, _unitEntity.Get<Side>().Value));
-            }
-
             var coords = locEntity.Get<Coords>();
 
-            _unitView.LookAt(coords.World, Vector3.Up);
+            _unitView.LookAt(coords.World(), Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
-            
+
             var movementCosts = TerrainTypes.FromLocEntity(locEntity).GetMovementCost();
 
             if (IsReverted)
@@ -116,9 +134,8 @@ public partial class MoveUnitCommand : Command
             {
                 _unitEntity.Get<Attribute<Moves>>().Decrease(movementCosts);
             }
-            
+
             index += 1;
         }
-
     }
 }

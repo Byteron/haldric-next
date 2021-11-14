@@ -24,7 +24,7 @@ public struct Castle : IEcsAutoReset<Castle>
     {
         foreach (var cLocEntity in List)
         {
-            if (!cLocEntity.Has<HasUnit>() && cLocEntity.Get<Coords>().Cube == coords.Cube)
+            if (!cLocEntity.Has<HasUnit>() && cLocEntity.Get<Coords>().Cube() == coords.Cube())
             {
                 return true;
             }
