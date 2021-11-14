@@ -7,6 +7,8 @@ public partial class LobbyView : Control
     [Signal] public delegate void MessageSubmitted(string message);
     [Signal] public delegate void BackButtonPressed();
 
+    [Export] private PackedScene ChatMessageView;
+
     private VBoxContainer _userListContainer;
     private VBoxContainer _messages;
     private LineEdit _input;
@@ -40,11 +42,14 @@ public partial class LobbyView : Control
         }
     }
 
-    public void NewMessage(string username, string message)
+    public void NewMessage(string username, string message, string time)
     {
-        var label = new Label();
-        label.Text = username + ": " + message;
-        _messages.AddChild(label);
+        var messageView = ChatMessageView.Instantiate<ChatMessageView>();
+        messageView.Message = message;
+        messageView.User = username;
+        messageView.Time = time;
+        
+        _messages.AddChild(messageView);
 
         if (_messages.GetChildCount() > 20)
         {

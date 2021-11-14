@@ -93,14 +93,15 @@ public partial class LobbyState : GameState
 
     private void OnReceivedChannelMessage(IApiChannelMessage message)
     {
+        
         switch (message.Code)
         {
             case 0:
                 var channelMessage = JsonParser.FromJson<ChannelMessage>(message.Content);
-                _view.NewMessage(message.Username, channelMessage.Message);
+                _view.NewMessage(message.Username, channelMessage.Message, message.CreateTime);
                 break;
             default:
-                _view.NewMessage(message.Username, message.Content);
+                _view.NewMessage(message.Username, message.Content, message.CreateTime);
                 break;
         }
     }
