@@ -43,6 +43,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
             }
             else
             {
+                if (attack.Get<Range>().Value == 1)
+                {
+                    continue;
+                }
+                
                 if (attack.Get<Range>().Value + bonusAttackRange >= attackRange)
                 {
                     return attack;
