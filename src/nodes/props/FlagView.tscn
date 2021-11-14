@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://drjqa6cwkr064"]
+[gd_scene load_steps=4 format=3 uid="uid://drjqa6cwkr064"]
 
 [ext_resource type="PackedScene" uid="uid://dbygfb53py4jx" path="res://assets/graphics/gltf/Flag.gltf" id="1_3km2w"]
 [ext_resource type="Script" path="res://src/nodes/props/FlagView.cs" id="2_pk5i5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y1lsa"]
+cull_mode = 2
 
 [node name="FlagView" type="Node3D"]
 script = ExtResource( "2_pk5i5" )
 
 [node name="Flag" parent="." instance=ExtResource( "1_3km2w" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396762, 0, -3.33384)
+
+[node name="flag_human_01" parent="Flag" index="0"]
+material_override = SubResource( "StandardMaterial3D_y1lsa" )
+
+[editable path="Flag"]
