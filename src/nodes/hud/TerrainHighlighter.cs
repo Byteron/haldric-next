@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public partial class TerrainHighlighter : Node3D
 {
 	[Export] public PackedScene TerrainHighlight;
+	[Export] public PackedScene Border3D;
 	public List<Border3D> Borders { get; set; } = new List<Border3D>();
 	public List<TerrainHighlight> Path { get; set; } = new List<TerrainHighlight>();
 
@@ -43,7 +44,7 @@ public partial class TerrainHighlighter : Node3D
 
 	public void PlaceBorder(Vector3 position, Color color, float rotate)
 	{
-		Border3D highlight = TerrainHighlight.Instantiate<Border3D>();
+		Border3D highlight = Border3D.Instantiate<Border3D>();
 		highlight.Color = color;
 		highlight.Direction = rotate;
 		highlight.Position = position;
@@ -58,7 +59,7 @@ public partial class TerrainHighlighter : Node3D
 			RemoveChild(child);
 			child.QueueFree();
 		}
-
+		Path.Clear();
 		Borders.Clear();
 	}
 }
