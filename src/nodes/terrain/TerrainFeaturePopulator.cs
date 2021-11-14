@@ -96,7 +96,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var neighbors = ref locEntity.Get<Neighbors>();
         
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        var elevationOffset = terrainEntity.Get<ElevationOffset>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
@@ -120,9 +120,17 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
+            ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
 
-
+            
             if (elevation.Value != nElevation.Value)
+            {
+                continue;
+            }
+            
+            var elevationOffsetDifference = elevationOffset.Value - nElevationOffset.Value;
+
+            if (Mathf.Abs(elevationOffsetDifference) > 0.5f)
             {
                 continue;
             }
