@@ -8,4 +8,4 @@ script = ExtResource( "1_u8qa3" )
 
 [node name="TurnBell" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( "2_6rauc" )
-volume_db = 6.0
+volume_db = -12.0
