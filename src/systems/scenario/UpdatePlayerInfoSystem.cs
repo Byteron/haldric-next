@@ -29,6 +29,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         var locWithCapturedVillageQuery = world.Query<Village>().End();
         var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
 
+        var unitCount = 0;
         var villageCount = 0;
         var capturedVillageCount = 0;
         var income = 0;
@@ -65,6 +66,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             {
                 ref var level = ref unitEntity.Get<Level>();
                 income -= level.Value;
+                unitCount += 1;
             }
         }
 
@@ -72,16 +74,16 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         {
             if (localPlayer.Side != playerSide.Value)
             {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: - | Villages: - / {villageCount}";
+                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: - | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
             }
             else
             {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Villages: {capturedVillageCount} / {villageCount}";
+                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
             }
         }
         else
         {
-            hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Villages: {capturedVillageCount} / {villageCount}";
+            hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
         }
 
     }
