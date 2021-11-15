@@ -9,6 +9,6 @@ public class UpdateStatsInfoSystem : IEcsSystem
         s += "\nEntities: " + world.GetEntitiesCount();
         s += "\nComponents: " + world.GetComponentsCount();
 
-        world.GetResource<DebugView>().StatsLabel.Text = s;   
+        world.GetResource<DebugView>().StatsLabel.Text = s;
     }
 }

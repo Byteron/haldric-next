@@ -3,7 +3,7 @@ using Bitron.Ecs;
 public partial class CommanderState : GameState
 {
     public CommanderState(EcsWorld world) : base(world)
-    { 
+    {
         AddUpdateSystem(new UpdateStatsInfoSystem());
         AddUpdateSystem(new ExecuteCommandSystem());
         AddUpdateSystem(new UpdateCameraOperatorSystem());

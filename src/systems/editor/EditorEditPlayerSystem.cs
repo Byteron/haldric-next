@@ -14,7 +14,7 @@ public class EditorEditPlayerSystem : IEcsSystem
     }
 
     public void Run(EcsWorld world)
-    {   
+    {
         if (!world.TryGetResource<Map>(out var map))
         {
             return;
@@ -26,7 +26,7 @@ public class EditorEditPlayerSystem : IEcsSystem
         }
 
         var editorView = world.GetResource<EditorView>();
-        
+
         if (editorView.Mode != EditorView.EditorMode.Player)
         {
             return;
@@ -38,7 +38,7 @@ public class EditorEditPlayerSystem : IEcsSystem
         {
             return;
         }
-        
+
         var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
@@ -55,7 +55,7 @@ public class EditorEditPlayerSystem : IEcsSystem
             if (locEntity.Has<IsStartingPositionOfTeam>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
-                
+
                 _parent.RemoveChild(handle.Node);
                 handle.Node.QueueFree();
                 handle.Node = null;

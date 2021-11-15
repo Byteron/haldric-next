@@ -19,7 +19,7 @@ public partial class Scenes : Node
     [Export] public PackedScene HUDView;
 
     [Export] public PackedScene TerrainHighlighter;
-    
+
     [Export] public PackedScene CameraOperator;
 
     [Export] public PackedScene FloatingLabel;
@@ -27,7 +27,7 @@ public partial class Scenes : Node
 
     [Export] public PackedScene Cursor3D;
     [Export] public PackedScene FlagView;
-    
+
     public override void _Ready()
     {
         Instance = this;

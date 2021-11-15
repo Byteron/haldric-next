@@ -33,7 +33,7 @@ public class UnitHoveredEventSystem : IEcsSystem
             if (unitEntity.Has<Attacks>())
             {
                 s += "\nAttacks:";
-                foreach(EcsEntity attackEntity in unitEntity.Get<Attacks>().List)
+                foreach (EcsEntity attackEntity in unitEntity.Get<Attacks>().List)
                 {
                     ref var attackId = ref attackEntity.Get<Id>();
                     ref var damage = ref attackEntity.Get<Damage>();

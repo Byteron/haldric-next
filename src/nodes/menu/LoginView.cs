@@ -21,13 +21,13 @@ public partial class LoginView : Control
 
         _warnLabel = GetNode<Label>("PanelContainer/CenterContainer/VBoxContainer/WarnLabel");
     }
-    
+
     void OnLoginButtonPressed()
     {
         var username = _usernameText.Text;
         var email = _emailText.Text;
         var password = _passwordText.Text;
-        
+
         if (string.IsNullOrEmpty(email))
         {
             _warnLabel.Text = "no email defined!";

@@ -14,10 +14,10 @@ public class UnitDeselectedEventSystem : IEcsSystem
             if (world.HasResource<SelectedLocation>())
             {
                 world.RemoveResource<SelectedLocation>();
-                
+
                 var terrainHighlighter = world.GetResource<TerrainHighlighter>();
                 terrainHighlighter.Clear();
-                
+
                 var hudView = world.GetResource<HUDView>();
                 hudView.UnitLabel.Text = "";
             }

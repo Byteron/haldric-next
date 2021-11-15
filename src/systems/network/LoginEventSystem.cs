@@ -22,8 +22,8 @@ public class LoginEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var query = world.Query<LoginEvent>().End();
-        
-        foreach(var eventId in query)
+
+        foreach (var eventId in query)
         {
             GD.Print("Login Event!");
 
@@ -50,9 +50,9 @@ public class LoginEventSystem : IEcsSystem
                 session = await client.AuthenticateEmailAsync(email, password, username);
             }
 
-            IApiAccount account = await client.GetAccountAsync(session);;
+            IApiAccount account = await client.GetAccountAsync(session); ;
             ISocket socket = Nakama.Socket.From(client);
-            
+
             socket.Connected += () => GD.Print("Connected!");
             socket.Closed += () => GD.Print("Closed!");
             socket.ReceivedError += (e) => GD.Print(e);

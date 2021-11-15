@@ -11,7 +11,7 @@ public struct TerrainTypes
         List = list;
     }
 
-	public static TerrainTypes FromLocEntity(EcsEntity locEntity)
+    public static TerrainTypes FromLocEntity(EcsEntity locEntity)
     {
         var types = new TerrainTypes(new List<TerrainType>());
 
@@ -29,9 +29,9 @@ public struct TerrainTypes
         return types;
     }
 
-	public float GetDefense()
-	{
-		var defense = 0f;
+    public float GetDefense()
+    {
+        var defense = 0f;
 
         foreach (var type in List)
         {
@@ -41,12 +41,12 @@ public struct TerrainTypes
             }
         }
 
-		return defense;
-	}
+        return defense;
+    }
 
-	public int GetMovementCost()
-	{
-		var cost = 0;
+    public int GetMovementCost()
+    {
+        var cost = 0;
 
         foreach (var type in List)
         {
@@ -56,11 +56,11 @@ public struct TerrainTypes
             }
         }
 
-		return cost;
-	}
+        return cost;
+    }
 
-	public override string ToString()
-	{
-		return string.Join(", ", List);
-	}
+    public override string ToString()
+    {
+        return string.Join(", ", List);
+    }
 }

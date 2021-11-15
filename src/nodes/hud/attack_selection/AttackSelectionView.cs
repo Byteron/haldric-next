@@ -11,7 +11,7 @@ public partial class AttackSelectionView : Control
     [Export] PackedScene AttackSelectionOption;
 
     private ButtonGroup _buttonGroup = new ButtonGroup();
-    
+
     private AttackSelectionOption _selectedOption;
 
     private Label _attackerLabel;
@@ -40,8 +40,8 @@ public partial class AttackSelectionView : Control
     {
         _attackerLabel.Text = $"{attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
         _defenderLabel.Text = $"{defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
-        
-        foreach(var attackPair in attackPairs)
+
+        foreach (var attackPair in attackPairs)
         {
             var optionButton = AttackSelectionOption.Instantiate<AttackSelectionOption>();
             optionButton.Connect("pressed", new Callable(this, "OnAttackOptionSelected"), new Godot.Collections.Array() { optionButton });

@@ -26,6 +26,7 @@ namespace Haldric.Wdk
         public override void _Ready()
         {
             UnitView = GetNode<UnitView>("UnitView");
-            Attacks = GetNode<Node>("Attacks");        }
+            Attacks = GetNode<Node>("Attacks");
+        }
     }
 }

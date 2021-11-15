@@ -12,11 +12,11 @@ public partial class CombatCommand : Command
         public TerrainTypes TerrainTypes { get; set; }
         public DamageEvent DamageEvent { get; set; }
         public int DefenderLevel { get; set; }
-        public PackedScene Projectile {get; set;}
+        public PackedScene Projectile { get; set; }
         public bool IsRanged { get; set; }
 
         public AttackData(
-            EcsEntity attackerEntity, 
+            EcsEntity attackerEntity,
             EcsEntity defenderEntity,
             TerrainTypes terrainTypes,
             DamageEvent damageEvent,
@@ -40,7 +40,7 @@ public partial class CombatCommand : Command
 
     private int _attackDistance;
     private ulong _seed;
-    
+
     private EcsEntity _attackerEntity;
     private EcsEntity _defenderEntity;
 
@@ -64,7 +64,7 @@ public partial class CombatCommand : Command
     public override void Execute()
     {
         GD.Seed(_seed);
-        
+
         var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 
@@ -188,7 +188,7 @@ public partial class CombatCommand : Command
         }
 
         GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
-        
+
         if (defense < GD.Randf() + accuracy)
         {
             Main.Instance.World.Spawn().Add(_attackData.DamageEvent);

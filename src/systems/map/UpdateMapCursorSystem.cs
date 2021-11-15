@@ -26,7 +26,7 @@ public class UpdateMapCursorSystem : IEcsSystem
         }
 
         hoveredLocation.HasChanged = false;
-        
+
         ref var coords = ref locEntity.Get<Coords>();
         var height = locEntity.Get<Elevation>().Height;
 

@@ -48,7 +48,7 @@ public partial class LobbyView : Control
         messageView.Message = message;
         messageView.User = username;
         messageView.Time = time;
-        
+
         _messages.AddChild(messageView);
 
         if (_messages.GetChildCount() > 20)

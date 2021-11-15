@@ -15,7 +15,7 @@ public class DespawnMapEventSystem : IEcsSystem
         foreach (var _ in eventQuery)
         {
             var map = world.GetResource<Map>();
-            
+
             foreach (var entityId in chunkQuery)
             {
                 world.DespawnEntity(entityId);
@@ -30,7 +30,7 @@ public class DespawnMapEventSystem : IEcsSystem
             {
                 locEntity.Despawn();
             }
-            
+
             world.RemoveResource<Map>();
             world.RemoveResource<ShaderData>();
             world.RemoveResource<HoveredLocation>();

@@ -5,7 +5,7 @@ public partial class Border3D : Node3D
 {
     public Color Color { get; set; }
     public float Direction { get; set; }
-	
+
     public override void _Ready()
     {
         MeshInstance3D mesh = this.GetChild<MeshInstance3D>(0);

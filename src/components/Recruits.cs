@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 
-public struct Recruits: IEcsAutoReset<Recruits>
+public struct Recruits : IEcsAutoReset<Recruits>
 {
     public List<string> List;
 

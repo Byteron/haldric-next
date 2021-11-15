@@ -9,7 +9,7 @@ public class Path
 
     public Queue<EcsEntity> Checkpoints { get; set; } = new Queue<EcsEntity>();
 
-    
+
     public override string ToString()
     {
         return $"From: {Start.Get<Coords>().Cube()}, To: {Start.Get<Coords>().Cube()}, Checkpoints: {Checkpoints.Count}";

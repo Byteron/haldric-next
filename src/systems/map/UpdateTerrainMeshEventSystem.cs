@@ -52,7 +52,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         foreach (var eventEntityId in eventQuery)
         {
             _shaderData = world.GetResource<ShaderData>();
-            
+
             ref var updateEvent = ref world.Entity(eventEntityId).Get<UpdateTerrainMeshEvent>();
 
             foreach (var chunkEntityId in chunkQuery)
@@ -111,7 +111,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        
+
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
@@ -123,7 +123,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             center + Metrics.GetFirstSolidCorner(direction, plateauArea),
             center + Metrics.GetSecondSolidCorner(direction, plateauArea)
         );
-        
+
         TriangulatePlateau(center, e, index.Value);
 
         if (direction <= (Direction)2)
@@ -139,7 +139,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
-        
+
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
@@ -154,7 +154,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         ref var nCoords = ref nLocEntity.Get<Coords>();
         ref var nElevation = ref nLocEntity.Get<Elevation>();
         ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
-        
+
         var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
         ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
 

@@ -30,7 +30,7 @@ public partial class FactionSelectionState : GameState
         _view.MapName = _mapName;
         _view.LocalPlayerSide = localPlayer.Side;
         _view.PlayerCount = playerDict.Count;
-        
+
         _view.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));
         _view.Connect("ContinueButtonPressed", new Callable(this, nameof(OnContinueButtonPressed)));
         _view.Connect("BackButtonPressed", new Callable(this, nameof(OnBackButtonPressed)));
@@ -81,7 +81,7 @@ public partial class FactionSelectionState : GameState
         var gameStateController = _world.GetResource<GameStateController>();
 
         var playState = new PlayState(_world, _mapName, factions);
-        
+
         gameStateController.ChangeState(playState);
     }
 

@@ -24,7 +24,7 @@ public class UnitFactory
                 .Remove<Advancements>()
                 .Remove<Attacks>()
                 .Remove<NodeHandle<UnitView>>();
-            
+
             _builder.Use(entity);
         }
         else

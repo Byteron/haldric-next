@@ -30,7 +30,7 @@ public partial class MainMenuView : PanelContainer
     }
 
     public void OnQuitButtonPressed()
-    {   
+    {
         EmitSignal(nameof(QuitButtonPressed));
         GetTree().Quit();
     }

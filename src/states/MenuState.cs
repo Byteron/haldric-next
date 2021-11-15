@@ -4,7 +4,7 @@ using Godot;
 public partial class MenuState : GameState
 {
     public MenuState(EcsWorld world) : base(world)
-    { 
+    {
         AddUpdateSystem(new UpdateStatsInfoSystem());
     }
 
@@ -64,7 +64,7 @@ public partial class MenuState : GameState
     }
 
     public void OnQuitButtonPressed()
-    {   
+    {
         GetTree().Quit();
     }
 }

@@ -156,7 +156,7 @@ public class Map
         ref var fromElevation = ref fromLocEntity.Get<Elevation>();
         ref var toElevation = ref toLocEntity.Get<Elevation>();
 
-        var elevationDiff =  fromElevation.Value - toElevation.Value;
+        var elevationDiff = fromElevation.Value - toElevation.Value;
 
         return (int)(Mathf.Max(elevationDiff, 0) * 0.5f);
     }
@@ -174,12 +174,12 @@ public class Map
         var path = new Path();
         path.Start = fromLocEntity;
         path.Destination = toLocEntity;
-        
+
         if (fromCoords.Cube() == toCoords.Cube())
         {
             return path;
         }
-        
+
         fromLocEntity.Get<Distance>().Value = 0;
 
         List<EcsEntity> frontier = new List<EcsEntity>();

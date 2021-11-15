@@ -11,7 +11,7 @@ public partial class ScenarioSelectionView : PanelContainer
     {
         _options = GetNode<OptionButton>("CenterContainer/VBoxContainer/OptionButton");
 
-        foreach(var pair in Data.Instance.Maps)
+        foreach (var pair in Data.Instance.Maps)
         {
             _options.AddItem(pair.Key);
         }

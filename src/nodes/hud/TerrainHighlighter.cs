@@ -5,7 +5,7 @@ public partial class TerrainHighlighter : Node3D
 {
     [Export] public PackedScene TerrainHighlight;
     [Export] public PackedScene Border3D;
-	
+
     public List<Border3D> _borders = new List<Border3D>();
     public List<TerrainHighlight> _path = new List<TerrainHighlight>();
 

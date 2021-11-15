@@ -26,10 +26,10 @@ public class CaptureVillageEventSystem : IEcsSystem
     {
         var query = world.Query<CaptureVillageEvent>().End();
 
-        foreach(var id in query)
+        foreach (var id in query)
         {
             ref var captureEvent = ref world.Entity(id).Get<CaptureVillageEvent>();
-            
+
             var locEntity = captureEvent.LocEntity;
 
             ref var coords = ref locEntity.Get<Coords>();
@@ -41,7 +41,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             if (locEntity.Has<IsCapturedByTeam>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
-                
+
                 _parent.RemoveChild(handle.Node);
                 handle.Node.QueueFree();
                 handle.Node = null;
@@ -53,7 +53,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
             flagView.Color = Data.Instance.TeamColors[captureEvent.Side];
             _parent.AddChild(flagView);
-            
+
             var pos = coords.World();
             pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;

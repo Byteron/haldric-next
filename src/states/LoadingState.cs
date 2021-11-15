@@ -23,7 +23,7 @@ public partial class LoadingState : GameState
     private LoadingStateView _view = null;
 
     public LoadingState(EcsWorld world) : base(world) { }
-    
+
     public override void Enter(GameStateController gameStates)
     {
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
@@ -34,7 +34,7 @@ public partial class LoadingState : GameState
 
         _view = Scenes.Instance.LoadingStateView.Instantiate<LoadingStateView>();
         AddChild(_view);
-        
+
         Loading(gameStates);
     }
 

@@ -17,7 +17,7 @@ public class SelectTargetSystem : IEcsSystem
         }
 
         var defenderLocEntity = hoveredLocation.Entity;
-        
+
         if (!defenderLocEntity.IsAlive())
         {
             return;
@@ -55,16 +55,16 @@ public class SelectTargetSystem : IEcsSystem
             ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
 
             var map = world.GetResource<Map>();
-            
+
             var attackDistance = map.GetEffectiveAttackDistance(attackerCoords, defenderCoords);
             var attackerBonusAttackRange = map.GetBonusAttackRange(attackerCoords, defenderCoords);
             var defenderBonusAttackRange = map.GetBonusAttackRange(defenderCoords, attackerCoords);
 
             var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(attackDistance, attackerBonusAttackRange);
-            
+
             var attackPairs = new Dictionary<EcsEntity, EcsEntity>();
 
-            foreach(var attackerAttackEntity in attackerUsableAttacks)
+            foreach (var attackerAttackEntity in attackerUsableAttacks)
             {
                 var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance, defenderBonusAttackRange);
                 attackPairs.Add(attackerAttackEntity, defenderAttackEntity);
@@ -74,11 +74,11 @@ public class SelectTargetSystem : IEcsSystem
             {
                 return;
             }
-            
+
             var gameStateController = world.GetResource<GameStateController>();
 
             var attackSelectionState = new AttackSelectionState(world);
-            
+
             attackSelectionState.AttackerLocEntity = attackerLocEntity;
             attackSelectionState.DefenderLocEntity = defenderLocEntity;
             attackSelectionState.AttackPairs = attackPairs;

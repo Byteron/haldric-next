@@ -93,7 +93,7 @@ public partial class LobbyState : GameState
 
     private void OnReceivedChannelMessage(IApiChannelMessage message)
     {
-        
+
         switch (message.Code)
         {
             case 0:

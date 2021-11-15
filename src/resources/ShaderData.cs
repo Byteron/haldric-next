@@ -12,7 +12,7 @@ public class ShaderData
     private Material _terrainMaterial;
 
     public ShaderData(int width, int height)
-    {   
+    {
         _terrainMaterial = ResourceLoader.Load<Material>("res://assets/graphics/materials/terrain.tres");
 
         _width = width;
@@ -24,7 +24,7 @@ public class ShaderData
         _texture.CreateFromImage(_image);
 
         _data = new Color[width * height];
-        
+
         _terrainMaterial.Set("shader_param/cell_texture", _texture);
         _terrainMaterial.Set("shader_param/texel_size", new Vector2(1f / width, 1f / height));
 

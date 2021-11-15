@@ -19,9 +19,9 @@ public class MoveUnitSystem : IEcsSystem
 
         var commander = world.GetResource<Commander>();
         var map = world.GetResource<Map>();
-        
+
         var hoveredLocEntity = hoveredLocation.Entity;
-        
+
         if (!hoveredLocEntity.IsAlive() || hoveredLocEntity.Has<HasUnit>())
         {
             return;
@@ -41,12 +41,12 @@ public class MoveUnitSystem : IEcsSystem
 
             var socket = world.GetResource<ISocket>();
             var match = world.GetResource<IMatch>();
-            
+
             var message = new MoveUnitMessage { From = fromCoords, To = toCoords };
             var json = message.ToJson();
-            
+
             world.Spawn().Add(new UnitDeselectedEvent());
-            
+
             socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.MoveUnit, json);
             world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
         }

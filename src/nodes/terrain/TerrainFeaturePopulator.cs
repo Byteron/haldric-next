@@ -61,7 +61,7 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
-        
+
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
@@ -94,7 +94,7 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var plateauArea = ref locEntity.Get<PlateauArea>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
-        
+
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
@@ -121,12 +121,12 @@ public partial class TerrainFeaturePopulator : Node3D
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
             ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
 
-            
+
             if (elevation.Value != nElevation.Value)
             {
                 continue;
             }
-            
+
             var elevationOffsetDifference = elevationOffset.Value - nElevationOffset.Value;
 
             if (Mathf.Abs(elevationOffsetDifference) > 0.5f)
@@ -189,11 +189,11 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var neighbors = ref locEntity.Get<Neighbors>();
-        
+
         var terrainEntity = terrainBase.Entity;
         ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
-        
+
         var center = coords.World();
 
         center.y = elevation.Height + elevationOffset.Value;

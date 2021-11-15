@@ -14,7 +14,7 @@ public class EditorEditTerrainSystem : IEcsSystem
     }
 
     public void Run(EcsWorld world)
-    {   
+    {
         if (!world.TryGetResource<Map>(out var map))
         {
             return;
@@ -26,19 +26,19 @@ public class EditorEditTerrainSystem : IEcsSystem
         }
 
         var editorView = world.GetResource<EditorView>();
-        
+
         if (editorView.Mode != EditorView.EditorMode.Terrain)
         {
             return;
         }
-        
+
         var locEntity = hoveredLocation.Entity;
 
         if (!locEntity.IsAlive())
         {
             return;
         }
-        
+
         var locations = map.Locations;
 
         ref var hoveredCoords = ref locEntity.Get<Coords>();
@@ -74,11 +74,11 @@ public class EditorEditTerrainSystem : IEcsSystem
                 }
             }
 
-            if (!editorView.UseTerrain && ! editorView.UseElevation)
+            if (!editorView.UseTerrain && !editorView.UseElevation)
             {
                 return;
             }
-            
+
             if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
             {
                 SendFeaturesUpdateEvent(world, chunks);

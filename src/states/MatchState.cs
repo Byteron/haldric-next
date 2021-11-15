@@ -48,7 +48,7 @@ public partial class MatchState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _socket.ReceivedMatchmakerMatched -= OnReceivedMatchmakerMatched;
-        
+
         if (_world.HasResource<IMatch>())
         {
             _world.RemoveResource<IMatch>();
@@ -70,9 +70,9 @@ public partial class MatchState : GameState
         localPlayer.Presence = matched.Self.Presence;
 
         var users = new List<string>();
-        
+
         users.Add(localPlayer.Presence.Username);
-        
+
         var playerId = 0;
         foreach (var presence in matched.Users)
         {
@@ -80,7 +80,7 @@ public partial class MatchState : GameState
             {
                 localPlayer.Side = playerId;
             }
-            
+
             playerId += 1;
         }
 

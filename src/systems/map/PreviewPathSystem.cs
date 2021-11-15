@@ -35,7 +35,7 @@ public class PreviewPathSystem : IEcsSystem
 
         var highlighter = world.GetResource<TerrainHighlighter>();
         highlighter.ClearPath();
-        
+
         if (hLocEntity.Has<HasUnit>())
         {
             return;

@@ -11,7 +11,7 @@ public partial class ChatMessageView : HBoxContainer
 
     public override void _Ready()
     {
-        _messageLabel = GetNode<Label>("MessageLabel");   
+        _messageLabel = GetNode<Label>("MessageLabel");
         _timeLabel = GetNode<Label>("TimeLabel");
 
         _messageLabel.Text = $"{User}: {Message}";

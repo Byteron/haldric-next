@@ -38,7 +38,7 @@ public class SelectUnitSystem : IEcsSystem
             {
                 world.Spawn().Add(new UnitDeselectedEvent());
             }
-            
+
             world.Spawn().Add(new UnitSelectedEvent(unitEntity));
         }
     }

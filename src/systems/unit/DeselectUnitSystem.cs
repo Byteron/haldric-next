@@ -11,7 +11,7 @@ public class DeselectUnitSystem : IEcsSystem
         }
 
         var locEntity = hoveredLocation.Entity;
-        
+
         if (!locEntity.IsAlive())
         {
             return;

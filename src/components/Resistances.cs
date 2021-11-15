@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Haldric.Wdk;
 using Bitron.Ecs;
 
-public struct Resistances: IEcsAutoReset<Resistances>
+public struct Resistances : IEcsAutoReset<Resistances>
 {
     public List<DamageType> List { get; set; }
 

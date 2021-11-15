@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Haldric.Wdk;
 using Bitron.Ecs;
 
-public struct Calamities: IEcsAutoReset<Calamities>
+public struct Calamities : IEcsAutoReset<Calamities>
 {
     public List<DamageType> List { get; set; }
 

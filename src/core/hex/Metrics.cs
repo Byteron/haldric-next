@@ -12,7 +12,7 @@ public class Metrics
     public const float KeepOffset = 0.5f;
     public const float DeepWaterOffset = -15f;
     public const float ShallowWaterOffset = -5f;
-    
+
     public const float NoiseScale = 1f;
     public static Image Noise = GD.Load<Texture2D>("res://assets/graphics/images/noise.png").GetImage();
 

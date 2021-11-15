@@ -8,7 +8,7 @@ public struct HasLocation : IEcsAutoReset<HasLocation>
     {
         Entity = entity;
     }
-    
+
     public void AutoReset(ref HasLocation c)
     {
         c.Entity = default;

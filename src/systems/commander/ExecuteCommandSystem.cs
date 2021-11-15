@@ -13,7 +13,7 @@ public class ExecuteCommandSystem : IEcsSystem
         {
             return;
         }
-        
+
         while (!commander.IsEmpty())
         {
             _activeCommand = commander.Dequeue();
@@ -22,7 +22,7 @@ public class ExecuteCommandSystem : IEcsSystem
             {
                 commander.ClearHistory();
             }
-            
+
             _activeCommand.Execute();
 
             if (!_activeCommand.IsDone)

@@ -34,7 +34,7 @@ public class RecruitUnitEventSystem : IEcsSystem
 
         var castleQuery = world.Query<Castle>().End();
         var eventQuery = world.Query<RecruitUnitEvent>().End();
-        
+
         foreach (var eventEntityId in eventQuery)
         {
             var scenario = world.GetResource<Scenario>();
@@ -57,9 +57,9 @@ public class RecruitUnitEventSystem : IEcsSystem
             _parent.AddChild(unitView);
 
             var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
-            
+
             gold.Value -= unitType.Cost;
-            
+
             unitType.QueueFree();
 
             var position = freeCoords.World();

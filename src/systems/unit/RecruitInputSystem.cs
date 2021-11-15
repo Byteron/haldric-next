@@ -16,16 +16,16 @@ public class RecruitInputSystem : IEcsSystem
             {
                 return;
             }
-            
+
             var castleQuery = world.Query<Castle>().End();
-            
+
             bool canRecruit = false;
             EcsEntity castleLocEntity = default;
 
             foreach (var castleLocEntityId in castleQuery)
             {
                 castleLocEntity = world.Entity(castleLocEntityId);
-                
+
                 if (!castleLocEntity.Has<HasUnit>())
                 {
                     continue;
@@ -51,7 +51,7 @@ public class RecruitInputSystem : IEcsSystem
             {
                 return;
             }
-            
+
             EcsEntity freeLocEntity;
 
             ref var castle = ref castleLocEntity.Get<Castle>();
@@ -70,7 +70,7 @@ public class RecruitInputSystem : IEcsSystem
             var gameStateController = world.GetResource<GameStateController>();
 
             var recruitState = new RecruitSelectionState(world, freeLocEntity);
-            
+
             gameStateController.PushState(recruitState);
         }
     }

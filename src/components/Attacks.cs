@@ -17,14 +17,14 @@ public struct Attacks : IEcsAutoReset<Attacks>
 
     public EcsEntity GetAttack(string id)
     {
-        foreach(var attack in List)
+        foreach (var attack in List)
         {
             if (attack.Get<Id>().Value == id)
             {
                 return attack;
             }
         }
-        
+
         return default;
     }
 
@@ -32,7 +32,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
     {
         bool isInMeleeRange = attackRange == 1;
 
-        foreach(var attack in List)
+        foreach (var attack in List)
         {
             if (isInMeleeRange)
             {
@@ -47,7 +47,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
                 {
                     continue;
                 }
-                
+
                 if (attack.Get<Range>().Value + bonusAttackRange >= attackRange)
                 {
                     return attack;
@@ -62,8 +62,8 @@ public struct Attacks : IEcsAutoReset<Attacks>
         List<EcsEntity> list = new List<EcsEntity>();
 
         bool isInMeleeRange = attackDistance == 1;
-        
-        foreach(var attack in List)
+
+        foreach (var attack in List)
         {
             if (isInMeleeRange)
             {
@@ -87,7 +87,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
     {
         var range = 0;
 
-        foreach(var attack in List)
+        foreach (var attack in List)
         {
             var attackRange = attack.Get<Range>().Value;
 

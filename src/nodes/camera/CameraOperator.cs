@@ -5,10 +5,10 @@ public partial class CameraOperator : Node3D
     private float _zoom = 0.5f;
     private float _targetZoom = 0.5f;
 
-    private float[] _rotations = new float[4] {0f, 90f, 180f, -90f};
+    private float[] _rotations = new float[4] { 0f, 90f, 180f, -90f };
     private int _rotationIndex = 0;
     private float _targetRotation = 0f;
-    
+
     [Export] private Vector3 _cameraOffset = Vector3.Up;
     [Export] private float _walkSpeed = 30f;
     [Export] private float _minDistance = 60f;
@@ -51,7 +51,7 @@ public partial class CameraOperator : Node3D
         tween.SetEase(Tween.EaseType.InOut)
             .SetTrans(Tween.TransitionType.Sine)
             .TweenProperty(this, "position", worldPosition, 0.25f);
-        
+
         tween.Play();
     }
 
@@ -80,9 +80,9 @@ public partial class CameraOperator : Node3D
 
     public void UpdatePosition(Vector3 direction)
     {
-        
+
         var transform = Transform;
-        transform.origin = Transform.origin + direction * _walkSpeed * (float) GetProcessDeltaTime();
+        transform.origin = Transform.origin + direction * _walkSpeed * (float)GetProcessDeltaTime();
         transform.origin.x = Mathf.Max(transform.origin.x, MinimumPosition.x);
         transform.origin.z = Mathf.Max(transform.origin.z, MinimumPosition.z);
         transform.origin.x = Mathf.Min(transform.origin.x, MaximumPosition.x);

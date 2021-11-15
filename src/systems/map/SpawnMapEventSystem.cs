@@ -7,7 +7,7 @@ public struct SpawnMapEvent
 {
     public int Width { get; set; }
     public int Height { get; set; }
-    public Dictionary Players {get; set; }
+    public Dictionary Players { get; set; }
     public Dictionary MapData { get; set; }
 
     public SpawnMapEvent(Dictionary mapData)
@@ -59,7 +59,7 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 spawnEvent.MapData = GetMapDataFromDimensions(spawnEvent.Width, spawnEvent.Height);
             }
-            
+
             world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
 
             var terrainHighlighter = Scenes.Instance.TerrainHighlighter.Instantiate<TerrainHighlighter>();
@@ -206,7 +206,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
             locEntity.Add<Distance>();
             locEntity.Add<PathFrom>();
-            
+
             locations.Set(cell, locEntity);
         }
 
@@ -276,7 +276,7 @@ public class SpawnMapEventSystem : IEcsSystem
             for (int i = 0; i < 6; i++)
             {
                 var direction = (Direction)i;
-            
+
                 Vector3 nCell = Hex.GetNeighbor(coords.Cube(), direction);
 
                 if (!locations.Has(nCell))
@@ -382,7 +382,7 @@ public class SpawnMapEventSystem : IEcsSystem
         foreach (var locEntity in map.Locations.Dict.Values)
         {
             ref var coords = ref locEntity.Get<Coords>();
-            
+
             map.PathFinder.AddPoint(coords.GetIndex(map.Grid.Width), coords.Cube(), 1);
         }
 
@@ -390,7 +390,7 @@ public class SpawnMapEventSystem : IEcsSystem
         {
             ref var coords = ref locEntity.Get<Coords>();
             ref var neighbors = ref locEntity.Get<Neighbors>();
-            
+
             foreach (var nLocEntity in neighbors.Array)
             {
                 if (!nLocEntity.IsAlive())

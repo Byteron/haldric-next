@@ -16,7 +16,7 @@ public struct NodeHandle<T> : IEcsAutoReset<NodeHandle<T>> where T : Node
         {
             c.Node.QueueFree();
         }
-        
+
         c.Node = null;
     }
 }

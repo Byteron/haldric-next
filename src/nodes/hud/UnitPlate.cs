@@ -6,13 +6,13 @@ public partial class UnitPlate : Control
     public Vector3 Position { get; set; }
 
     public int MaxHealth { get; set; }
-    public int  Health { get; set; }
+    public int Health { get; set; }
 
     public int MaxMoves { get; set; }
-    public int  Moves { get; set; }
+    public int Moves { get; set; }
 
     public int MaxExperience { get; set; }
-    public int  Experience { get; set; }
+    public int Experience { get; set; }
 
     public Color TeamColor { get; set; }
 
@@ -39,7 +39,7 @@ public partial class UnitPlate : Control
     public override void _Process(float delta)
     {
         var camera = GetViewport().GetCamera3d();
-        
+
         _healthBar.MaxValue = MaxHealth;
         _healthBar.Value = Health;
 
@@ -58,7 +58,7 @@ public partial class UnitPlate : Control
             RectPosition = camera.UnprojectPosition(Position);
         }
 
-        foreach(Node child in _actionContainer.GetChildren())
+        foreach (Node child in _actionContainer.GetChildren())
         {
             _actionContainer.RemoveChild(child);
             child.QueueFree();
@@ -84,7 +84,7 @@ public partial class UnitPlate : Control
 
         _leaderColorRect.Hide();
         _heroColorRect.Hide();
-        
+
         if (IsHero)
         {
             _heroColorRect.Show();

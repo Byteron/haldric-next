@@ -24,7 +24,7 @@ public class UpdateHoveredLocationSystem : IEcsSystem
         {
             world.AddResource(new HoveredLocation());
         }
-        
+
         var result = ShootRay();
 
         if (result.Contains("position"))
@@ -37,7 +37,7 @@ public class UpdateHoveredLocationSystem : IEcsSystem
                 var map = world.GetResource<Map>();
 
                 var locEntity = map.Locations.Get(coords.Cube());
-                
+
                 hoveredLocation.Entity = locEntity;
                 hoveredLocation.HasChanged = true;
 
@@ -58,7 +58,7 @@ public class UpdateHoveredLocationSystem : IEcsSystem
         {
             return new Dictionary();
         }
-        
+
         var from = camera.ProjectRayOrigin(mousePosition);
         var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
 

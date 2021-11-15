@@ -37,12 +37,12 @@ public class SpawnUnitEventSystem : IEcsSystem
         }
 
         var eventQuery = world.Query<SpawnUnitEvent>().End();
-        
+
         foreach (var eventEntityId in eventQuery)
         {
             var hudView = world.GetResource<HUDView>();
             var map = world.GetResource<Map>();
-            
+
             ref var spawnEvent = ref world.Entity(eventEntityId).Get<SpawnUnitEvent>();
 
             var locations = map.Locations;
@@ -69,7 +69,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            
+
             unitEntity.Add(new Side(spawnEvent.Side));
             unitEntity.Add(spawnEvent.Coords);
 
@@ -77,7 +77,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             {
                 unitEntity.Add(new IsLeader());
             }
-            
+
             if (spawnEvent.IsHero)
             {
                 unitEntity.Add(new IsHero());

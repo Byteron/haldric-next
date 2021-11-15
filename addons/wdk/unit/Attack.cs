@@ -10,7 +10,7 @@ namespace Haldric.Wdk
         [Export] public DamageType DamageType = DamageType.Slash;
         [Export] public int Range = 1;
         [Export] public PackedScene Projectile;
-        
+
 
         public override string ToString()
         {

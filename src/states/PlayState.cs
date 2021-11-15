@@ -37,7 +37,7 @@ public partial class PlayState : GameState
         AddUpdateSystem(new UpdateCameraOperatorSystem());
         AddUpdateSystem(new UpdateHoveredUnitSystem());
         AddUpdateSystem(new MoveUnitSystem());
-        
+
         AddEventSystem<FocusCameraEvent>(new FocusCameraEventSystem());
         AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
         AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
@@ -136,50 +136,50 @@ public partial class PlayState : GameState
         switch (operation)
         {
             case NetworkOperation.TurnEnd:
-            {
-                _world.Spawn().Add(new TurnEndEvent());
-                break;
-            }
+                {
+                    _world.Spawn().Add(new TurnEndEvent());
+                    break;
+                }
             case NetworkOperation.MoveUnit:
-            {
-                var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                _world.Spawn().Add(new MoveUnitEvent() { From = message.From.Cube(), To = message.To.Cube() });
-                break;
-            }
+                {
+                    var message = JsonParser.FromJson<MoveUnitMessage>(data);
+                    _world.Spawn().Add(new MoveUnitEvent() { From = message.From.Cube(), To = message.To.Cube() });
+                    break;
+                }
             case NetworkOperation.RecruitUnit:
-            {
-                var map = _world.GetResource<Map>();
-                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
-                var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
-                var locEntity = map.Locations.Get(message.Coords.Cube());
-                _world.Spawn().Add(new RecruitUnitEvent(message.Side, unitType, locEntity));
-                break;
-            }
+                {
+                    var map = _world.GetResource<Map>();
+                    var message = JsonParser.FromJson<RecruitUnitMessage>(data);
+                    var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
+                    var locEntity = map.Locations.Get(message.Coords.Cube());
+                    _world.Spawn().Add(new RecruitUnitEvent(message.Side, unitType, locEntity));
+                    break;
+                }
             case NetworkOperation.AttackUnit:
-            {
-                var map = _world.GetResource<Map>();
-                var commander = _world.GetResource<Commander>();
-                
-                var message = JsonParser.FromJson<AttackUnitMessage>(data);
+                {
+                    var map = _world.GetResource<Map>();
+                    var commander = _world.GetResource<Commander>();
 
-                var attackerLocEntity = map.Locations.Get(message.From.Cube());
-                var defenderLocEntity = map.Locations.Get(message.To.Cube());
+                    var message = JsonParser.FromJson<AttackUnitMessage>(data);
 
-                var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
-                var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
+                    var attackerLocEntity = map.Locations.Get(message.From.Cube());
+                    var defenderLocEntity = map.Locations.Get(message.To.Cube());
 
-                var attackerAttacks = attackerEntity.Get<Attacks>();
-                var defenderAttacks = defenderEntity.Get<Attacks>();
+                    var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
+                    var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-                var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
-                var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
-                
-                var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity, message.Distance);
-                commander.Enqueue(command);
+                    var attackerAttacks = attackerEntity.Get<Attacks>();
+                    var defenderAttacks = defenderEntity.Get<Attacks>();
 
-                gameStateController.PushState(new CommanderState(_world));
-                break;
-            }
+                    var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
+                    var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
+
+                    var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity, message.Distance);
+                    commander.Enqueue(command);
+
+                    gameStateController.PushState(new CommanderState(_world));
+                    break;
+                }
         }
     }
 }

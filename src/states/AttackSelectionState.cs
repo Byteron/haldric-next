@@ -19,7 +19,7 @@ public partial class AttackSelectionState : GameState
     public override void Enter(GameStateController gameStates)
     {
         var hudView = _world.GetResource<HUDView>();
-        
+
         _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
         _view.Connect("AttackSelected", new Callable(this, nameof(OnAttackSelected)));
         _view.Connect("CancelButtonPressed", new Callable(this, nameof(OnCancelButtonPressed)));
@@ -36,7 +36,7 @@ public partial class AttackSelectionState : GameState
     private void OnAttackSelected()
     {
         _world.Spawn().Add(new UnitDeselectedEvent());
-        
+
         var commander = _world.GetResource<Commander>();
 
         var attackerAttackEntity = _view.GetSelectedAttackerAttack();
@@ -44,8 +44,8 @@ public partial class AttackSelectionState : GameState
 
         var socket = _world.GetResource<ISocket>();
         var match = _world.GetResource<IMatch>();
-        
-        var seed = (ulong) (GD.Randi() % 9999);
+
+        var seed = (ulong)(GD.Randi() % 9999);
 
         var message = new AttackUnitMessage
         {
@@ -56,7 +56,7 @@ public partial class AttackSelectionState : GameState
             AttackerAttackId = attackerAttackEntity.Get<Id>().Value,
             DefenderAttackId = defenderAttackEntity.IsAlive() ? defenderAttackEntity.Get<Id>().Value : "",
         };
-        
+
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.AttackUnit, message.ToJson());
 
         commander.Enqueue(new CombatCommand(seed, AttackerLocEntity, attackerAttackEntity, DefenderLocEntity, defenderAttackEntity, AttackDistance));

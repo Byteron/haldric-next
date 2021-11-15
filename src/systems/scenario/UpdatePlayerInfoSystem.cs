@@ -20,9 +20,9 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         {
             return;
         }
-        
+
         var player = scenario.GetCurrentPlayerEntity();
-        
+
         ref var playerSide = ref player.Get<Side>();
         ref var playerGold = ref player.Get<Gold>();
 
@@ -36,7 +36,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         foreach (var locId in locWithCapturedVillageQuery)
         {
             var locEntity = world.Entity(locId);
-            
+
             villageCount += 1;
 
             if (!locEntity.Has<IsCapturedByTeam>())
@@ -49,7 +49,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             if (captured.Value == playerSide.Value)
             {
                 ref var village = ref locEntity.Get<Village>();
-                
+
                 capturedVillageCount += 1;
                 income += village.List.Count;
             }
@@ -63,7 +63,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
             if (unitSide.Value == playerSide.Value)
             {
-                ref var level = ref unitEntity.Get<Level>();   
+                ref var level = ref unitEntity.Get<Level>();
                 income -= level.Value;
             }
         }

@@ -20,7 +20,7 @@ public class SaveMapEventSystem : IEcsSystem
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<SaveMapEvent>().End();
-        
+
         foreach (var eventEntityId in eventQuery)
         {
             var map = world.GetResource<Map>();

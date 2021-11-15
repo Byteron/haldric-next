@@ -7,7 +7,7 @@ public struct Castle : IEcsAutoReset<Castle>
 
     public bool TryGetFreeLoc(out EcsEntity locEntity)
     {
-        foreach(var cLocEntity in List)
+        foreach (var cLocEntity in List)
         {
             if (!cLocEntity.Has<HasUnit>())
             {

@@ -8,7 +8,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
         {
             return;
         }
-        
+
         var hudView = world.GetResource<HUDView>();
 
         var hoveredLocation = world.GetResource<HoveredLocation>();

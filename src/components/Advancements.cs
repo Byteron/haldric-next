@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Haldric.Wdk;
 using Bitron.Ecs;
 
-public struct Advancements: IEcsAutoReset<Advancements>
+public struct Advancements : IEcsAutoReset<Advancements>
 {
     public List<string> List { get; set; }
 

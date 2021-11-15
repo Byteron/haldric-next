@@ -31,7 +31,7 @@ public class MoveUnitEventSystem : IEcsSystem
             {
                 return;
             }
-            
+
             var unitEntity = fromLocEntity.Get<HasUnit>().Entity;
 
             var path = map.FindPath(fromCoords, toCoords, unitEntity.Get<Side>().Value);
@@ -40,7 +40,7 @@ public class MoveUnitEventSystem : IEcsSystem
             {
                 return;
             }
-            
+
             ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
             if (path.Checkpoints.Count > moves.Value)

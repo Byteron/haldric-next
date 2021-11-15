@@ -35,14 +35,14 @@ public class SpawnPlayerEventSystem : IEcsSystem
             ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayerEvent>();
 
             var scenario = world.GetResource<Scenario>();
-            
+
             var faction = Data.Instance.Factions[spawnEvent.Faction];
 
             var playerEntity = world.Spawn()
                 .Add(new Side(spawnEvent.Side))
                 .Add(new Gold(spawnEvent.Gold))
                 .Add(new Recruits(faction.Recruits));
-            
+
             scenario.Players.Add(playerEntity);
 
             world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));

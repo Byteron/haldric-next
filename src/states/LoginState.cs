@@ -16,7 +16,7 @@ public partial class LoginState : GameState
 
         _view.Connect("LoginPressed", new Callable(this, nameof(OnLoginPressed)));
         _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
-        
+
         AddChild(_view);
     }
 

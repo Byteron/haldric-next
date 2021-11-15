@@ -80,7 +80,7 @@ public class DamageEventSystem : IEcsSystem
                     modifier *= Modifiers.Immunity;
                 }
             }
-            
+
             ref var health = ref targetEntity.Get<Attribute<Health>>();
 
             var finalDamage = (int)(damage.Value * modifier);

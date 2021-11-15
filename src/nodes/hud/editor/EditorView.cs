@@ -21,7 +21,7 @@ public partial class EditorView : CanvasLayer
     public EcsEntity TerrainEntity { get { return _selectedTerrain; } }
 
     public Dictionary<Coords, int> Players = new Dictionary<Coords, int>();
-    
+
     EcsEntity _selectedTerrain;
 
     HSlider _brushSizeSlider;
@@ -81,7 +81,7 @@ public partial class EditorView : CanvasLayer
             child.QueueFree();
         }
 
-        foreach(var pair in Players)
+        foreach (var pair in Players)
         {
             Coords coords = pair.Key;
             int id = pair.Value;
@@ -115,13 +115,14 @@ public partial class EditorView : CanvasLayer
 
     private void OnCreateButtonPressed()
     {
-        if (_widthTextEdit.Text.IsValidInteger() && _heightTextEdit.Text.IsValidInteger()){
+        if (_widthTextEdit.Text.IsValidInteger() && _heightTextEdit.Text.IsValidInteger())
+        {
             int width = int.Parse(_widthTextEdit.Text);
             int height = int.Parse(_heightTextEdit.Text);
-            
+
             Main.Instance.World.Spawn().Add(new DespawnMapEvent());
             Main.Instance.World.Spawn().Add(new SpawnMapEvent(width, height));
-        } 
+        }
         else
         {
             GD.PushWarning("Please specify valid map size!");
