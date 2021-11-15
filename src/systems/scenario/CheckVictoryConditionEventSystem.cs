@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
 
 public struct CheckVictoryConditionEvent { }
+
 public class CheckVictoryConditionEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
@@ -17,6 +19,8 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
 
             var query = world.Query<IsLeader>().End();
 
+            var standingFactions = new List<EcsEntity>();
+
             foreach (var playerEntity in scenario.Players)
             {
                 var leaderCount = 0;
@@ -31,11 +35,17 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
                     }
                 }
 
-                if (leaderCount == 0)
+                if (leaderCount > 0)
                 {
-                    GD.Print($"Player {playerEntity.Get<Side>().Value} lost the game!");
-                    world.GetResource<GameStateController>().PopState();
+                    standingFactions.Add(playerEntity);
                 }
+            }
+
+            if (standingFactions.Count == 1)
+            {
+                var winningPlayer = standingFactions[0];
+                GD.Print($"Player {winningPlayer.Get<Side>().Value} won the game!");
+                world.GetResource<GameStateController>().PopState();
             }
         }
     }
