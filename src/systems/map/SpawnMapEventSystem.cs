@@ -273,7 +273,6 @@ public class SpawnMapEventSystem : IEcsSystem
 
             ref var coords = ref locEntity.Get<Coords>();
             ref var neighbors = ref locEntity.Get<Neighbors>();
-
             for (int i = 0; i < 6; i++)
             {
                 var direction = (Direction)i;

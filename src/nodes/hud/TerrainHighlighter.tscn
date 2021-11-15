@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxgr72l6bajwt"]
+[gd_scene load_steps=4 format=3 uid="uid://dxgr72l6bajwt"]
 
 [ext_resource type="Script" path="res://src/nodes/hud/TerrainHighlighter.cs" id="1_6w3qo"]
-[ext_resource type="PackedScene" uid="uid://7w6o06vw64x8" path="res://src/nodes/hud/TerrainHighlight.tscn" id="2_x4dty"]
+[ext_resource type="PackedScene" uid="uid://7w6o06vw64x8" path="res://src/nodes/hud/TerrainHighlight.tscn" id="2_tb3tw"]
+[ext_resource type="PackedScene" uid="uid://c5acx55501wng" path="res://src/nodes/hud/Border3D.tscn" id="3_g4i5g"]
 
 [node name="TerrainHighlighter" type="Node3D"]
 script = ExtResource( "1_6w3qo" )
-TerrainHighlight = ExtResource( "2_x4dty" )
+TerrainHighlight = ExtResource( "2_tb3tw" )
+Border3D = ExtResource( "3_g4i5g" )

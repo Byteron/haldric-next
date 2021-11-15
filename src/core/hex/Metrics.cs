@@ -19,12 +19,12 @@ public class Metrics
     public const float CellPerturbStrength = 1f;
 
     public static readonly Vector3[] corners = {
-        new Vector3(0f, 0f, OuterRadius),
-        new Vector3(InnerRadius, 0f, 0.5f * OuterRadius),
-        new Vector3(InnerRadius, 0f, -0.5f * OuterRadius),
-        new Vector3(0f, 0f, -OuterRadius),
-        new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
         new Vector3(-InnerRadius, 0f, 0.5f * OuterRadius),
+        new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
+        new Vector3(0f, 0f, -OuterRadius),
+        new Vector3(InnerRadius, 0f, -0.5f * OuterRadius),
+        new Vector3(InnerRadius, 0f, 0.5f * OuterRadius),
+        new Vector3(0f, 0f, OuterRadius)
     };
 
     public static Color SampleNoise(Vector3 position)

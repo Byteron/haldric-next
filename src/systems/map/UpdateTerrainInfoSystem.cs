@@ -20,7 +20,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             return;
         }
 
-        ref var coords = ref locEntity.Get<Coords>();
+        ref Coords coords = ref locEntity.Get<Coords>();
 
         ref var elevation = ref locEntity.Get<Elevation>();
         ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();

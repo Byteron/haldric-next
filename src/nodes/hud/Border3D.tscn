@@ -7,6 +7,7 @@
 size = Vector2(10, 10)
 
 [sub_resource type="StandardMaterial3D" id="2"]
+resource_local_to_scene = true
 transparency = 1
 no_depth_test = true
 albedo_texture = ExtResource( "2_ix7q3" )

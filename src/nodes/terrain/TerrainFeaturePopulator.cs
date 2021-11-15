@@ -101,12 +101,11 @@ public partial class TerrainFeaturePopulator : Node3D
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        var rotation = 240;
         for (int i = 0; i < 6; i++)
         {
-            var direction = (Direction)i;
+            Direction direction = (Direction)i;
 
-            rotation += 60;
+            float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -141,7 +140,7 @@ public partial class TerrainFeaturePopulator : Node3D
             {
                 if (terrainGraphic.Variations.Count == 0)
                 {
-                    AddRenderData(terrainGraphic.Mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+                    AddRenderData(terrainGraphic.Mesh, position, new Vector3(0f, rotation, 0f));
                 }
                 else
                 {
@@ -152,10 +151,10 @@ public partial class TerrainFeaturePopulator : Node3D
                     }
 
                     var mesh = terrainGraphic.Variations[index];
-                    AddRenderData(mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+                    AddRenderData(mesh, position, new Vector3(0f, rotation, 0f));
                 }
             }
-            // AddRenderData(Data.Instance.DirectionalDecorations[terrainCode].Mesh, position, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+            // AddRenderData(Data.Instance.DirectionalDecorations[terrainCode].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 
@@ -198,13 +197,11 @@ public partial class TerrainFeaturePopulator : Node3D
         var center = coords.World();
 
         center.y = elevation.Height + elevationOffset.Value;
-
-        var rotation = 240;
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
-
-            rotation += 60;
+            //walls want to rotate the other way it seems?
+            float rotation = Godot.Mathf.Tau - direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -233,7 +230,7 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var wallPosition = center + Metrics.GetEdgeMiddle(direction);
-            AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, wallPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+            AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, wallPosition, new Vector3(0f, rotation, 0f));
         }
     }
 
@@ -252,12 +249,11 @@ public partial class TerrainFeaturePopulator : Node3D
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        var rotation = 240;
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
 
-            rotation += 60;
+            float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -286,8 +282,7 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var towerPosition = center + Metrics.GetFirstCorner(direction);
-
-            AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, towerPosition, new Vector3(0f, Mathf.Deg2Rad(rotation), 0f));
+            AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, towerPosition, new Vector3(0f, rotation, 0f));
         }
     }
 

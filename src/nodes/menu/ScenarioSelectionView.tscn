@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://pdb6u6eqi5q8"]
+[gd_scene load_steps=2 format=3 uid="uid://b5lwr6t8kdfq2"]
 
 [ext_resource type="Script" path="res://src/nodes/menu/ScenarioSelectionView.cs" id="1_27ogb"]
 
