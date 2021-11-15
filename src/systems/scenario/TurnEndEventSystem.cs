@@ -75,11 +75,11 @@ public class TurnEndEventSystem : IEcsSystem
 
             if (scenario.CurrentPlayer == localPlayer.Side)
             {
+                Sfx.Instance.Play("TurnBell");
                 hudView.TurnEndButton.Disabled = false;
             }
             else
             {
-                Sfx.Instance.Play("TurnBell");
                 hudView.TurnEndButton.Disabled = true;
             }
 

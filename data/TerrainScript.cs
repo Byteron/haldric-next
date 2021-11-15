@@ -20,7 +20,7 @@ public class TerrainScript : TerrainLoader
         NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });
 
         NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });
-        NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled });
+        NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled, TerrainType.Fortified });
 
         AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.png");
         AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.png");
