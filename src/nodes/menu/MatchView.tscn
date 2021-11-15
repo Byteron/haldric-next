@@ -3,10 +3,8 @@
 [ext_resource type="Script" path="res://src/nodes/menu/MatchView.cs" id="1_mxban"]
 
 [node name="MatchView" type="Control"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( "1_mxban" )
 __meta__ = {
@@ -23,14 +21,14 @@ __meta__ = {
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
 offset_left = 7.0
 offset_top = 7.0
-offset_right = 1579.0
-offset_bottom = 779.0
+offset_right = 1593.0
+offset_bottom = 793.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
-offset_left = 686.0
-offset_top = 303.0
-offset_right = 886.0
-offset_bottom = 468.0
+offset_left = 693.0
+offset_top = 310.0
+offset_right = 893.0
+offset_bottom = 475.0
 
 [node name="MapLabel" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer"]
 offset_right = 200.0

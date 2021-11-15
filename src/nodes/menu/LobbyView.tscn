@@ -4,10 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://c5wd82oh5v0ta" path="res://src/nodes/hud/chat/ChatMessageView.tscn" id="2_u5131"]
 
 [node name="LobbyView" type="Control"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( "1_4ednk" )
 __meta__ = {
@@ -18,7 +16,6 @@ ChatMessageView = ExtResource( "2_u5131" )
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -26,21 +23,18 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
 offset_left = 7.0
 offset_top = 7.0
-offset_right = 1579.0
-offset_bottom = 779.0
-script = null
+offset_right = 1593.0
+offset_bottom = 793.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
-offset_right = 1368.0
-offset_bottom = 772.0
+offset_right = 1382.0
+offset_bottom = 786.0
 size_flags_horizontal = 3
-script = null
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
-offset_right = 1368.0
-offset_bottom = 728.0
+offset_right = 1382.0
+offset_bottom = 742.0
 size_flags_vertical = 3
-script = null
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
 anchor_right = 1.0
@@ -49,7 +43,6 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_bottom = 5
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -57,66 +50,58 @@ __meta__ = {
 [node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer"]
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 1363.0
-offset_bottom = 723.0
+offset_right = 1377.0
+offset_bottom = 737.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
-offset_top = 732.0
-offset_right = 1368.0
-offset_bottom = 772.0
-script = null
+offset_top = 746.0
+offset_right = 1382.0
+offset_bottom = 786.0
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-offset_right = 1264.0
+offset_right = 1278.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
-script = null
 
 [node name="SendButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-offset_left = 1268.0
-offset_right = 1368.0
+offset_left = 1282.0
+offset_right = 1382.0
 offset_bottom = 40.0
 rect_min_size = Vector2(100, 40)
 text = "Send"
-script = null
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
-offset_left = 1372.0
-offset_right = 1572.0
-offset_bottom = 772.0
-script = null
+offset_left = 1386.0
+offset_right = 1586.0
+offset_bottom = 786.0
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_right = 200.0
-offset_bottom = 728.0
+offset_bottom = 742.0
 rect_min_size = Vector2(200, 0)
 size_flags_vertical = 3
-script = null
 
 [node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2(200, 0)
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BackButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 732.0
+offset_top = 746.0
 offset_right = 200.0
-offset_bottom = 772.0
+offset_bottom = 786.0
 rect_min_size = Vector2(0, 40)
 text = "Back"
-script = null
 
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SendButton" to="." method="OnSendButtonPressed"]
