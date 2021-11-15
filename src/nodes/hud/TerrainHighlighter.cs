@@ -43,10 +43,11 @@ public partial class TerrainHighlighter : Node3D
         _path.Add(highlight);
     }
 
-    public void PlaceBorder(Vector3 position, Color color, float rotate)
+    public void PlaceBorder(Vector3 position, Color color, float rotate, float scaleFactor)
     {
         Border3D highlight = Border3D.Instantiate<Border3D>();
         highlight.Color = color;
+        highlight.ScaleFactor = scaleFactor;
         highlight.Direction = rotate;
         highlight.Position = position;
         AddChild(highlight);

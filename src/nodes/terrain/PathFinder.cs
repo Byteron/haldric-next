@@ -9,6 +9,10 @@ public class Path
 
     public Queue<EcsEntity> Checkpoints { get; set; } = new Queue<EcsEntity>();
 
+    public int GetCost()
+    {
+        return Destination.Get<Distance>().Value;
+    }
 
     public override string ToString()
     {

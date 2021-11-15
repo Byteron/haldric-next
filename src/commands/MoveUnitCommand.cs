@@ -7,13 +7,17 @@ using Haldric.Wdk;
 public partial class MoveUnitCommand : Command
 {
     private Path _path;
+
     private EcsEntity _unitEntity;
+    private EcsEntity _targetLocEntity;
+
     private UnitView _unitView;
+    
     private Tween _tween;
 
     public MoveUnitCommand(Path path)
     {
-        IsRevertable = true;
+        // IsRevertable = true;
         _path = path;
     }
 
@@ -67,41 +71,48 @@ public partial class MoveUnitCommand : Command
 
     public override void Revert()
     {
-        _unitEntity = default;
+        // _unitEntity = default;
+        // _targetLocEntity = default;
 
-        var temp = _path.Start;
-        _path.Start = _path.Destination;
-        _path.Destination = temp;
+        // var temp = _path.Start;
+        // _path.Start = _path.Destination;
+        // _path.Destination = temp;
 
-        _path.Checkpoints = new Queue<EcsEntity>(_path.Checkpoints.Reverse());
-        _path.Checkpoints.Dequeue();
-        _path.Checkpoints.Enqueue(_path.Destination);
+        // _path.Checkpoints = new Queue<EcsEntity>(_path.Checkpoints.Reverse());
+        // _path.Checkpoints.Dequeue();
+        // _path.Checkpoints.Enqueue(_path.Destination);
 
-        IsReverted = true;
-        IsDone = false;
+        // IsReverted = true;
+        // IsDone = false;
     }
 
     private void OnUnitMoveFinished()
     {
         ref var side = ref _unitEntity.Get<Side>();
-
-        if (_path.Destination.Has<Village>())
+        ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
+        
+        if (_targetLocEntity.Has<Village>())
         {
-            if (_path.Destination.Has<IsCapturedByTeam>())
+            if (_targetLocEntity.Has<IsCapturedByTeam>())
             {
-                ref var captured = ref _path.Destination.Get<IsCapturedByTeam>();
+                ref var captured = ref _targetLocEntity.Get<IsCapturedByTeam>();
 
                 if (captured.Value != side.Value)
                 {
-                    _unitEntity.Get<Attribute<Moves>>().Empty();
-                    Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_path.Destination, _unitEntity.Get<Side>().Value));
+                    moves.Empty();
+                    Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
                 }
             }
             else
             {
-                _unitEntity.Get<Attribute<Moves>>().Empty();
-                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_path.Destination, _unitEntity.Get<Side>().Value));
+                moves.Empty();
+                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
             }
+        }
+        
+        if (_targetLocEntity.Has<IsInZoc>())
+        {
+            moves.Empty();
         }
 
         IsDone = true;
@@ -117,22 +128,31 @@ public partial class MoveUnitCommand : Command
         }
         else
         {
-            var locEntity = _path.Checkpoints.ToArray()[index];
+            ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
 
-            var coords = locEntity.Get<Coords>();
+            if (_targetLocEntity.IsAlive() && _targetLocEntity.Has<IsInZoc>())
+            {
+                _tween.Stop();
+                OnUnitMoveFinished();
+                return;
+            }
+            
+            _targetLocEntity = _path.Checkpoints.ToArray()[index];
+            
+            var coords = _targetLocEntity.Get<Coords>();
 
             _unitView.LookAt(coords.World(), Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
 
-            var movementCosts = TerrainTypes.FromLocEntity(locEntity).GetMovementCost();
+            var movementCosts = TerrainTypes.FromLocEntity(_targetLocEntity).GetMovementCost();
 
             if (IsReverted)
             {
-                _unitEntity.Get<Attribute<Moves>>().Increase(movementCosts);
+                moves.Increase(movementCosts);
             }
             else
             {
-                _unitEntity.Get<Attribute<Moves>>().Decrease(movementCosts);
+                moves.Decrease(movementCosts);
             }
 
             index += 1;

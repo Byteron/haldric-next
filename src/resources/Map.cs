@@ -4,6 +4,8 @@ using Godot;
 using Bitron.Ecs;
 using Haldric.Wdk;
 
+public struct IsInZoc { }
+
 public struct Distance
 {
     public int Value { get; set; }
@@ -65,6 +67,36 @@ public class Map
         foreach (var loc in Locations.Dict.Values)
         {
             loc.Get<Distance>().Value = int.MaxValue;
+
+            if (loc.Has<IsInZoc>())
+            {
+                loc.Remove<IsInZoc>();
+            }
+        }
+
+        foreach (var loc in Locations.Dict.Values)
+        {
+            if (!loc.Has<HasUnit>())
+            {
+                continue;
+            }
+
+            var unitEntity = loc.Get<HasUnit>().Entity;
+
+            if (unitEntity.Get<Side>().Value != side)
+            {
+                ref var neighbors = ref loc.Get<Neighbors>();
+
+                foreach (var nLoc in neighbors.Array)
+                {
+                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
+                    {
+                        continue;
+                    }
+
+                    nLoc.Add<IsInZoc>();
+                }
+            }
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
@@ -111,6 +143,11 @@ public class Map
                     {
                         nMovementCost = 99;
                     }
+                }
+
+                if (cLocEntity.Has<IsInZoc>())
+                {
+                    nMovementCost = 99;
                 }
 
                 var distance = cDistance + nMovementCost;
@@ -166,6 +203,36 @@ public class Map
         foreach (var loc in Locations.Dict.Values)
         {
             loc.Get<Distance>().Value = int.MaxValue;
+
+            if (loc.Has<IsInZoc>())
+            {
+                loc.Remove<IsInZoc>();
+            }
+        }
+
+        foreach (var loc in Locations.Dict.Values)
+        {
+            if (!loc.Has<HasUnit>())
+            {
+                continue;
+            }
+
+            var unitEntity = loc.Get<HasUnit>().Entity;
+
+            if (unitEntity.Get<Side>().Value != side)
+            {
+                ref var neighbors = ref loc.Get<Neighbors>();
+
+                foreach (var nLoc in neighbors.Array)
+                {
+                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
+                    {
+                        continue;
+                    }
+
+                    nLoc.Add<IsInZoc>();
+                }
+            }
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
@@ -238,6 +305,11 @@ public class Map
                     {
                         nMovementCost = 99;
                     }
+                }
+
+                if (cLocEntity.Has<IsInZoc>())
+                {
+                    nMovementCost = 99;
                 }
 
                 var distance = cDistance + nMovementCost;

@@ -43,7 +43,7 @@ public class MoveUnitEventSystem : IEcsSystem
 
             ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
-            if (path.Checkpoints.Count > moves.Value)
+            if (path.GetCost() > moves.Value)
             {
                 return;
             }

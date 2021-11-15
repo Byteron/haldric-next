@@ -75,6 +75,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
             Vector3[] cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube(), eventData.Range);
             List<Coords> filteredMoveList = new List<Coords>();
+            // List<Coords> filteredZoCList = new List<Coords>();
 
             foreach (Vector3 cCell in cellsInMoveRange)
             {
@@ -85,6 +86,11 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 }
 
                 var nLocEntity = map.Locations.Dict[cCell];
+
+                // if (nLocEntity.Has<IsInZoc>())
+                // {
+                //     filteredZoCList.Add(nCoords);
+                // }
 
                 if (nLocEntity.Get<Distance>().Value > eventData.Range)
                 {
@@ -109,12 +115,13 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 filteredMoveList.Add(nCoords);
             }
 
-            HighlightBorder(filteredAttackList, maxAttackRange, new Color("774411"), world);
-            HighlightBorder(filteredMoveList, eventData.Range, new Color("111188"), world);
+            HighlightBorder(world, filteredAttackList, maxAttackRange, new Color("774411"), 0.9f);
+            HighlightBorder(world, filteredMoveList, eventData.Range, new Color("111188"));
+            // HighlightBorder(world, filteredZoCList, eventData.Range, new Color("FF2222"), 0.8f);
         }
     }
 
-    private void HighlightBorder(List<Coords> locations, int range, Color color, EcsWorld world, bool debug = false)
+    private void HighlightBorder(EcsWorld world, List<Coords> locations, int range, Color color, float scaleFactor = 1f, bool debug = false)
     {
         var map = world.GetResource<Map>();
         var grid = map.Grid;
@@ -136,7 +143,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 bool inList = locations.Contains(nNeighbor);
                 if (!validCoord || !inRange || !inList)
                 {
-                    terrainHighlighter.PlaceBorder(position, color, direction.Rotation());
+                    terrainHighlighter.PlaceBorder(position, color, direction.Rotation(), scaleFactor);
                 }
             }
         }
