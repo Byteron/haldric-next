@@ -7,12 +7,12 @@
 [node name="Orcish Archer" instance=ExtResource( "1_hoqyh" )]
 Id = "Orcish Archer"
 Cost = 14
-Health = 47
+Health = 32
 Alignment = 2
 
 [node name="Dagger" parent="Attacks" index="0" instance=ExtResource( "2_cjnxs" )]
-Damage = 4
-Strikes = 3
+Damage = 3
+Strikes = 2
 
 [node name="Bow" parent="Attacks" index="1" instance=ExtResource( "2_cjnxs" )]
 Damage = 6

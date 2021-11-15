@@ -7,7 +7,7 @@
 [node name="Orcish Grunt" instance=ExtResource( "1_4hdj6" )]
 Id = "Orcish Grunt"
 Cost = 12
-Health = 54
+Health = 38
 Alignment = 2
 
 [node name="Axe" parent="Attacks" index="0" instance=ExtResource( "2_e5uvw" )]

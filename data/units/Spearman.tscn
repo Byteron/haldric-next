@@ -7,7 +7,7 @@
 [node name="Spearman" instance=ExtResource( "1_wbto5" )]
 Id = "Spearman"
 Cost = 14
-Health = 52
+Health = 36
 Resistances = [1]
 
 [node name="Spear" parent="Attacks" index="0" instance=ExtResource( "2_fqlix" )]
