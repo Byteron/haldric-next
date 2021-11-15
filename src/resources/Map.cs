@@ -108,8 +108,6 @@ public class Map
 
         while (frontier.Count > 0)
         {
-            // await Main.Instance.ToSignal(Main.Instance.GetTree(), "process_frame");
-
             var cLocEntity = frontier[0];
             frontier.RemoveAt(0);
 
@@ -158,12 +156,10 @@ public class Map
                 {
                     nDistance.Value = distance;
                     frontier.Add(nLocEntity);
-                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
                 }
                 else if (distance < nDistance.Value)
                 {
                     nDistance.Value = distance;
-                    // Main.Instance.World.Spawn().Add(new SpawnFloatingLabelEvent(nLocEntity.Get<Coords>().World, distance.ToString(), new Color(1f, 1f, 1f)));
                 }
 
                 frontier.Sort((locA, locB) => locA.Get<Distance>().Value.CompareTo(locB.Get<Distance>().Value));
@@ -171,7 +167,7 @@ public class Map
         }
     }
 
-    public int GetEffectiveAttackDistance(Coords fromCoords, Coords toCoords)
+    public bool IsInMeleeRange(Coords fromCoords, Coords toCoords)
     {
         var fromLocEntity = Locations.Get(fromCoords.Cube());
         var toLocEntity = Locations.Get(toCoords.Cube());
@@ -182,20 +178,17 @@ public class Map
         var distance = Hex.GetDistance(fromCoords.Cube(), toCoords.Cube());
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
-        return (int)(distance + diff * 0.5f);
+        if (distance > 1 || diff > 1)
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    public int GetBonusAttackRange(Coords fromCoords, Coords toCoords)
+    public int GetAttackDistance(Coords fromCoords, Coords toCoords)
     {
-        var fromLocEntity = Locations.Get(fromCoords.Cube());
-        var toLocEntity = Locations.Get(toCoords.Cube());
-
-        ref var fromElevation = ref fromLocEntity.Get<Elevation>();
-        ref var toElevation = ref toLocEntity.Get<Elevation>();
-
-        var elevationDiff = fromElevation.Value - toElevation.Value;
-
-        return (int)(Mathf.Max(elevationDiff, 0) * 0.5f);
+        return Hex.GetDistance(fromCoords.Cube(), toCoords.Cube());
     }
 
     public Path FindPath(Coords fromCoords, Coords toCoords, int side)

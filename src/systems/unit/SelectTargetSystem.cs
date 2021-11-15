@@ -56,17 +56,16 @@ public class SelectTargetSystem : IEcsSystem
 
             var map = world.GetResource<Map>();
 
-            var attackDistance = map.GetEffectiveAttackDistance(attackerCoords, defenderCoords);
-            var attackerBonusAttackRange = map.GetBonusAttackRange(attackerCoords, defenderCoords);
-            var defenderBonusAttackRange = map.GetBonusAttackRange(defenderCoords, attackerCoords);
+            var isInMeleeRange = map.IsInMeleeRange(attackerCoords, defenderCoords);
+            var attackDistance = map.GetAttackDistance(attackerCoords, defenderCoords);
 
-            var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(attackDistance, attackerBonusAttackRange);
+            var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(isInMeleeRange, attackDistance);
 
             var attackPairs = new Dictionary<EcsEntity, EcsEntity>();
 
             foreach (var attackerAttackEntity in attackerUsableAttacks)
             {
-                var defenderAttackEntity = defenderAttacks.GetUsableAttack(attackDistance, defenderBonusAttackRange);
+                var defenderAttackEntity = defenderAttacks.GetUsableAttack(isInMeleeRange, attackDistance);
                 attackPairs.Add(attackerAttackEntity, defenderAttackEntity);
             }
 

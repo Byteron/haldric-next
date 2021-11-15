@@ -50,15 +50,10 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
-                var attackRange = map.GetEffectiveAttackDistance(eventData.Coords, nCoords);
-                var attackerBonusAttackRange = map.GetBonusAttackRange(eventData.Coords, nCoords);
+                var isInMeleeRange = map.IsInMeleeRange(eventData.Coords, nCoords);
+                var attackRange = map.GetAttackDistance(eventData.Coords, nCoords);
 
-                var attack = attacks.GetUsableAttack(attackRange, attackerBonusAttackRange);
-
-                ref var nElevation = ref nLocEntity.Get<Elevation>();
-
-                var position = nCoords.World();
-                position.y = nElevation.Height + 0.1f;
+                var attack = attacks.GetUsableAttack(isInMeleeRange, attackRange);
 
                 var hasUnit = nLocEntity.Has<HasUnit>();
 
@@ -75,7 +70,6 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
             Vector3[] cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube(), eventData.Range);
             List<Coords> filteredMoveList = new List<Coords>();
-            // List<Coords> filteredZoCList = new List<Coords>();
 
             foreach (Vector3 cCell in cellsInMoveRange)
             {
@@ -87,37 +81,23 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 var nLocEntity = map.Locations.Dict[cCell];
 
-                // if (nLocEntity.Has<IsInZoc>())
-                // {
-                //     filteredZoCList.Add(nCoords);
-                // }
-
                 if (nLocEntity.Get<Distance>().Value > eventData.Range)
                 {
                     continue;
                 }
 
-                ref var nElevation = ref nLocEntity.Get<Elevation>();
                 var hasUnit = nLocEntity.Has<HasUnit>();
-
-                if (hasUnit)
-                {
-                    if (nLocEntity.Get<HasUnit>().Entity.Get<Side>().Value == side.Value)
-                    {
-                        continue;
-                    }
-                }
 
                 if (hasUnit)
                 {
                     continue;
                 }
+                
                 filteredMoveList.Add(nCoords);
             }
 
             HighlightBorder(world, filteredAttackList, maxAttackRange, new Color("774411"), 0.9f);
             HighlightBorder(world, filteredMoveList, eventData.Range, new Color("111188"));
-            // HighlightBorder(world, filteredZoCList, eventData.Range, new Color("FF2222"), 0.8f);
         }
     }
 
