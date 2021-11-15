@@ -24,7 +24,7 @@ public partial class RecruitSelectionState : GameState
 
         _side = scenario.CurrentPlayer;
 
-        var hudView = _world.GetResource<HUDView>();
+        var hudView = _world.GetResource<HudView>();
 
         _view = Scenes.Instance.RecruitSelectionView.Instantiate<RecruitSelectionView>();
         _view.Connect("RecruitSelected", new Callable(this, nameof(OnRecruitSelected)));

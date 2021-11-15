@@ -19,12 +19,12 @@ public class SpawnFloatingLabelEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HUDView>())
+        if (!world.HasResource<HudView>())
         {
             return;
         }
 
-        var hudView = world.GetResource<HUDView>();
+        var hudView = world.GetResource<HudView>();
         var query = world.Query<SpawnFloatingLabelEvent>().End();
 
         foreach (var eventEntityId in query)

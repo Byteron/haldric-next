@@ -18,7 +18,7 @@ public class UnitDeselectedEventSystem : IEcsSystem
                 var terrainHighlighter = world.GetResource<TerrainHighlighter>();
                 terrainHighlighter.Clear();
 
-                var hudView = world.GetResource<HUDView>();
+                var hudView = world.GetResource<HudView>();
                 hudView.UnitLabel.Text = "";
             }
         }

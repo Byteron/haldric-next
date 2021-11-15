@@ -73,7 +73,7 @@ public class RecruitUnitEventSystem : IEcsSystem
             unitEntity.Get<Attribute<Moves>>().Empty();
             unitEntity.Get<Attribute<Actions>>().Empty();
 
-            var hudView = world.GetResource<HUDView>();
+            var hudView = world.GetResource<HudView>();
 
             unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
 

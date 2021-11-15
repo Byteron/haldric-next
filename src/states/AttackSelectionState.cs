@@ -18,7 +18,7 @@ public partial class AttackSelectionState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var hudView = _world.GetResource<HUDView>();
+        var hudView = _world.GetResource<HudView>();
 
         _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
         _view.Connect("AttackSelected", new Callable(this, nameof(OnAttackSelected)));

@@ -21,7 +21,7 @@ public class GainExperienceEventSystem : IEcsSystem
 
         foreach (var id in query)
         {
-            var hudView = world.GetResource<HUDView>();
+            var hudView = world.GetResource<HudView>();
 
             ref var gainEvent = ref world.Entity(id).Get<GainExperienceEvent>();
 

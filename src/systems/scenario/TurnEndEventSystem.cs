@@ -70,7 +70,7 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
 
-            var hudView = world.GetResource<HUDView>();
+            var hudView = world.GetResource<HudView>();
             var localPlayer = world.GetResource<LocalPlayer>();
 
             if (scenario.CurrentPlayer == localPlayer.Side)
@@ -79,6 +79,7 @@ public class TurnEndEventSystem : IEcsSystem
             }
             else
             {
+                Sfx.Instance.Play("TurnBell");
                 hudView.TurnEndButton.Disabled = true;
             }
 

@@ -40,7 +40,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
         foreach (var eventEntityId in eventQuery)
         {
-            var hudView = world.GetResource<HUDView>();
+            var hudView = world.GetResource<HudView>();
             var map = world.GetResource<Map>();
 
             ref var spawnEvent = ref world.Entity(eventEntityId).Get<SpawnUnitEvent>();

@@ -1,7 +1,7 @@
 using Godot;
 using Bitron.Ecs;
 
-public partial class HUDView : CanvasLayer
+public partial class HudView : CanvasLayer
 {
     [Signal] public delegate void TurnEndButtonPressed();
 

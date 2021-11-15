@@ -4,12 +4,12 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HoveredLocation>() || !world.HasResource<HUDView>())
+        if (!world.HasResource<HoveredLocation>() || !world.HasResource<HudView>())
         {
             return;
         }
 
-        var hudView = world.GetResource<HUDView>();
+        var hudView = world.GetResource<HudView>();
 
         var hoveredLocation = world.GetResource<HoveredLocation>();
 

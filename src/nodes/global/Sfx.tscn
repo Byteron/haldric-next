@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cimxwoqklm71n"]
+
+[ext_resource type="Script" path="res://src/nodes/global/Sfx.cs" id="1_u8qa3"]
+[ext_resource type="AudioStream" uid="uid://bi12c7a37un87" path="res://assets/audio/sounds/bell.wav" id="2_6rauc"]
+
+[node name="Sfx" type="Node"]
+script = ExtResource( "1_u8qa3" )
+
+[node name="TurnBell" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( "2_6rauc" )
+volume_db = 6.0

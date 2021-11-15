@@ -79,7 +79,7 @@ public partial class PlayState : GameState
         _world.AddResource(new Scenario());
         _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
 
-        var hudView = Scenes.Instance.HUDView.Instantiate<HUDView>();
+        var hudView = Scenes.Instance.HudView.Instantiate<HudView>();
         hudView.Connect("TurnEndButtonPressed", new Callable(this, nameof(OnTurnEndButtonPressed)));
         AddChild(hudView);
 
@@ -98,7 +98,7 @@ public partial class PlayState : GameState
         _world.RemoveResource<Scenario>();
         _world.RemoveResource<Schedule>();
 
-        _world.RemoveResource<HUDView>();
+        _world.RemoveResource<HudView>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 

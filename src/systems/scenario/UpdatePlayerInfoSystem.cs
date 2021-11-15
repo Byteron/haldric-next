@@ -11,7 +11,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             return;
         }
 
-        if (!world.TryGetResource<HUDView>(out var hudView))
+        if (!world.TryGetResource<HudView>(out var hudView))
         {
             return;
         }
