@@ -181,11 +181,12 @@ public partial class CombatCommand : Command
         var defense = _attackData.TerrainTypes.GetDefense();
         var accuracy = 0f;
 
-        if (_attackData.IsRanged)
-        {
-            accuracy -= _attackDistance / 10f;
-            GD.Print("Accuracy: " + accuracy);
-        }
+        // temporarily disabled for default wesnoth defense
+        // if (_attackData.IsRanged)
+        // {
+        //     accuracy -= _attackDistance / 10f;
+        //     GD.Print("Accuracy: " + accuracy);
+        // }
 
         GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
 
