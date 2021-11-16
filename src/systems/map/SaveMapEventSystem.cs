@@ -61,9 +61,9 @@ public class SaveMapEventSystem : IEcsSystem
                     { "Terrain", terrainCodes },
                     { "Elevation", locEntity.Get<Elevation>().Value }
                 };
-                if (locEntity.Has<IsStartingPositionOfTeam>())
+                if (locEntity.Has<IsStartingPositionOfSide>())
                 {
-                    ref var startPos = ref locEntity.Get<IsStartingPositionOfTeam>();
+                    ref var startPos = ref locEntity.Get<IsStartingPositionOfSide>();
                     playersData.Add(cell, startPos.Value);
                 }
 

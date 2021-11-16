@@ -14,7 +14,7 @@ public partial class UnitPlate : Control
     public int MaxExperience { get; set; }
     public int Experience { get; set; }
 
-    public Color TeamColor { get; set; }
+    public Color SideColor { get; set; }
 
     public bool IsLeader;
     public bool IsHero;
@@ -30,7 +30,7 @@ public partial class UnitPlate : Control
     {
         _healthBar = GetNode<TextureProgressBar>("VBoxContainer/HealthProgressBar");
         _xpBar = GetNode<TextureProgressBar>("VBoxContainer/HBoxContainer/VBoxContainer/ExperienceProgressBar");
-        _sideColorRect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/TeamColorRect");
+        _sideColorRect = GetNode<ColorRect>("VBoxContainer/HBoxContainer/SideColorRect");
         _leaderColorRect = GetNode<ColorRect>("VBoxContainer/LeaderColorRect");
         _heroColorRect = GetNode<ColorRect>("VBoxContainer/HeroColorRect");
         _actionContainer = GetNode<Control>("VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer");
@@ -46,7 +46,7 @@ public partial class UnitPlate : Control
         _xpBar.MaxValue = MaxExperience;
         _xpBar.Value = Experience;
 
-        _sideColorRect.Color = TeamColor;
+        _sideColorRect.Color = SideColor;
 
         if (camera.IsPositionBehind(Position))
         {

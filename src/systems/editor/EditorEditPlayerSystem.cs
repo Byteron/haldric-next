@@ -52,7 +52,7 @@ public class EditorEditPlayerSystem : IEcsSystem
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-            if (locEntity.Has<IsStartingPositionOfTeam>())
+            if (locEntity.Has<IsStartingPositionOfSide>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
 
@@ -61,7 +61,7 @@ public class EditorEditPlayerSystem : IEcsSystem
                 handle.Node = null;
 
                 locEntity.Remove<NodeHandle<FlagView>>();
-                locEntity.Remove<IsStartingPositionOfTeam>();
+                locEntity.Remove<IsStartingPositionOfSide>();
                 editorView.RemovePlayer(coords);
             }
             else
@@ -73,7 +73,7 @@ public class EditorEditPlayerSystem : IEcsSystem
                 flagView.Position = pos;
 
                 locEntity.Add(new NodeHandle<FlagView>(flagView));
-                locEntity.Add(new IsStartingPositionOfTeam(editorView.Players.Count));
+                locEntity.Add(new IsStartingPositionOfSide(editorView.Players.Count));
                 editorView.AddPlayer(coords);
             }
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://b67er0nylnvpd"]
+[gd_scene load_steps=2 format=3 uid="uid://dglctrrf6qs2i"]
 
 [ext_resource type="Script" path="res://src/nodes/hud/HudView.cs" id="1_sygsp"]
 
@@ -15,6 +15,7 @@ __meta__ = {
 [node name="TerrainLabel" type="Label" parent="VBoxContainer" groups=["TerrainLabel"]]
 offset_right = 40.0
 offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,9 +53,9 @@ __meta__ = {
 [node name="PlayerLabel" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -125.5
-offset_right = 125.5
-offset_bottom = 23.0
+offset_left = -484.0
+offset_right = 484.0
+offset_bottom = 26.0
 text = "sdfsdf"
 align = 1
 __meta__ = {

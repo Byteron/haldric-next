@@ -37,7 +37,7 @@ public class UpdateUnitPlateSystem : IEcsSystem
 
             unitPlate.Position = view.Position + Vector3.Up * 7.5f;
 
-            unitPlate.TeamColor = Data.Instance.TeamColors[side.Value];
+            unitPlate.SideColor = Data.Instance.SideColors[side.Value];
 
             unitPlate.IsLeader = unitEntity.Has<IsLeader>();
             unitPlate.IsHero = unitEntity.Has<IsHero>();

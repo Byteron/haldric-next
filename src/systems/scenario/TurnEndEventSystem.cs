@@ -12,7 +12,7 @@ public class TurnEndEventSystem : IEcsSystem
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
         var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
-        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedByTeam>().End();
+        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedBySide>().End();
         var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
 
         foreach (var eventEntityId in eventQuery)
@@ -62,7 +62,7 @@ public class TurnEndEventSystem : IEcsSystem
                 var locEntity = world.Entity(locEntityId);
 
                 ref var village = ref locEntity.Get<Village>();
-                ref var side = ref locEntity.Get<IsCapturedByTeam>();
+                ref var side = ref locEntity.Get<IsCapturedBySide>();
 
                 if (scenario.CurrentPlayer == side.Value)
                 {

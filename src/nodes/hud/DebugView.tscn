@@ -6,14 +6,12 @@
 script = ExtResource( "1_1e3l6" )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
 offset_bottom = 40.0
-grow_horizontal = 2
+grow_horizontal = 0
 alignment = 1
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -22,8 +20,7 @@ __meta__ = {
 offset_top = 8.0
 offset_right = 40.0
 offset_bottom = 31.0
-structured_text_bidi_override_options = []
-script = null
+align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

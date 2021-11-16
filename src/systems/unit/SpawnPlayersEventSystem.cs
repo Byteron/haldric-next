@@ -15,11 +15,12 @@ public class SpawnPlayersEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var startingLocQuery = world.Query<IsStartingPositionOfTeam>().End();
+        var startingLocQuery = world.Query<IsStartingPositionOfSide>().End();
         var eventQuery = world.Query<SpawnPlayersEvent>().End();
 
         foreach (var e in eventQuery)
         {
+            var matchPlayers = world.GetResource<MatchPlayers>();
             ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayersEvent>();
 
             foreach (var locEntityId in startingLocQuery)
@@ -27,9 +28,11 @@ public class SpawnPlayersEventSystem : IEcsSystem
                 var locEntity = world.Entity(locEntityId);
 
                 ref var coords = ref locEntity.Get<Coords>();
-                ref var startPos = ref locEntity.Get<IsStartingPositionOfTeam>();
+                ref var startPosSide = ref locEntity.Get<IsStartingPositionOfSide>();
+                
+                var username = matchPlayers.Array[startPosSide.Value].Username;
 
-                world.Spawn().Add(new SpawnPlayerEvent(startPos.Value, coords, spawnEvent.Factions[startPos.Value], 100));
+                world.Spawn().Add(new SpawnPlayerEvent(startPosSide.Value, username, coords, spawnEvent.Factions[startPosSide.Value], 100));
             }
         }
     }

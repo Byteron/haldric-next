@@ -6,11 +6,11 @@ public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
-    public Color[] TeamColors = new Color[]
+    public Color[] SideColors = new Color[]
     {
         new Color("FF0000"),
-        new Color("00FF00"),
         new Color("0000FF"),
+        new Color("00FF00"),
         new Color("FFFF00"),
         new Color("00FFFF"),
         new Color("FF00FF"),

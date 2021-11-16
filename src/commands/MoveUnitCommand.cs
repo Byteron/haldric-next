@@ -93,9 +93,9 @@ public partial class MoveUnitCommand : Command
         
         if (_targetLocEntity.Has<Village>())
         {
-            if (_targetLocEntity.Has<IsCapturedByTeam>())
+            if (_targetLocEntity.Has<IsCapturedBySide>())
             {
-                ref var captured = ref _targetLocEntity.Get<IsCapturedByTeam>();
+                ref var captured = ref _targetLocEntity.Get<IsCapturedBySide>();
 
                 if (captured.Value != side.Value)
                 {

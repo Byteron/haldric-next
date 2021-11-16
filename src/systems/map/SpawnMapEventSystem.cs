@@ -102,7 +102,7 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var side = (int)(float)players[coords.Cube().ToString()];
 
-                locEntity.Add(new IsStartingPositionOfTeam(side));
+                locEntity.Add(new IsStartingPositionOfSide(side));
             }
         }
     }

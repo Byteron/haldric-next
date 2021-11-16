@@ -38,7 +38,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
-            if (locEntity.Has<IsCapturedByTeam>())
+            if (locEntity.Has<IsCapturedBySide>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
 
@@ -47,11 +47,11 @@ public class CaptureVillageEventSystem : IEcsSystem
                 handle.Node = null;
 
                 locEntity.Remove<NodeHandle<FlagView>>();
-                locEntity.Remove<IsCapturedByTeam>();
+                locEntity.Remove<IsCapturedBySide>();
             }
 
             var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
-            flagView.Color = Data.Instance.TeamColors[captureEvent.Side];
+            flagView.Color = Data.Instance.SideColors[captureEvent.Side];
             _parent.AddChild(flagView);
 
             var pos = coords.World();
@@ -59,7 +59,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             flagView.Position = pos;
 
             locEntity.Add(new NodeHandle<FlagView>(flagView));
-            locEntity.Add(new IsCapturedByTeam(captureEvent.Side));
+            locEntity.Add(new IsCapturedBySide(captureEvent.Side));
         }
     }
 }

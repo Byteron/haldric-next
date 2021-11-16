@@ -55,7 +55,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TeamColorRect" type="ColorRect" parent="VBoxContainer/HBoxContainer"]
+[node name="SideColorRect" type="ColorRect" parent="VBoxContainer/HBoxContainer"]
 offset_right = 6.0
 offset_bottom = 6.0
 rect_min_size = Vector2(6, 6)

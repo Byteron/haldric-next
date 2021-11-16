@@ -1,8 +1,8 @@
-public struct IsCapturedByTeam
+public struct IsCapturedBySide
 {
     public int Value { get; set; }
 
-    public IsCapturedByTeam(int value)
+    public IsCapturedBySide(int value)
     {
         Value = value;
     }

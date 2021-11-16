@@ -25,6 +25,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
         ref var playerSide = ref player.Get<Side>();
         ref var playerGold = ref player.Get<Gold>();
+        ref var playerName = ref player.Get<Id>();
 
         var locWithCapturedVillageQuery = world.Query<Village>().End();
         var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
@@ -40,12 +41,12 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
             villageCount += 1;
 
-            if (!locEntity.Has<IsCapturedByTeam>())
+            if (!locEntity.Has<IsCapturedBySide>())
             {
                 continue;
             }
 
-            ref var captured = ref locEntity.Get<IsCapturedByTeam>();
+            ref var captured = ref locEntity.Get<IsCapturedBySide>();
 
             if (captured.Value == playerSide.Value)
             {
@@ -70,21 +71,21 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             }
         }
 
-        if (world.TryGetResource<LocalPlayer>(out var localPlayer))
+        var localPlayer = world.GetResource<LocalPlayer>();
+
+        var turnString = "Turn: " + scenario.Turn;
+        var unitString = "Units: " + unitCount;
+        var villageString = $"Villages: {capturedVillageCount} / {villageCount}";
+        var youString = $"You: ({localPlayer.Side}) {localPlayer.Presence.Username}";
+        var otherString = $"Current: ({playerSide.Value}) {playerName.Value}";
+
+        if (localPlayer.Side != playerSide.Value)
         {
-            if (localPlayer.Side != playerSide.Value)
-            {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: - | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
-            }
-            else
-            {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
-            }
+            hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | Gold: - | {unitString} | {villageString}";
         }
         else
         {
-            hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
+            hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | Gold: {playerGold.Value} | {unitString} | {villageString}";
         }
-
     }
 }
