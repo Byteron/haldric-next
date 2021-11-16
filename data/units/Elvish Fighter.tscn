@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnnpb6sq7qrwo"]
+
+[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_530nh"]
+[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_iot7p"]
+[ext_resource type="PackedScene" uid="uid://xo8g44l4cfda" path="res://assets/graphics/gltf/elf_fighter.gltf" id="3_vudf4"]
+
+[node name="Elvish Fighter" instance=ExtResource( "1_530nh" )]
+Id = "Elvish Fighter"
+Cost = 14
+Health = 33
+Alignment = 1
+Weaknesses = [6]
+Resistances = []
+
+[node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_iot7p" )]
+Damage = 5
+Strikes = 4
+
+[node name="Bow" parent="Attacks" index="1" instance=ExtResource( "2_iot7p" )]
+Damage = 3
+Strikes = 3
+DamageType = 1
+Range = 2
+
+[node name="elf_fighter" parent="UnitView" index="1" instance=ExtResource( "3_vudf4" )]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

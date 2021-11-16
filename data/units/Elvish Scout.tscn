@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvki1ldvf8yeo"]
+
+[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_evjt3"]
+[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_oyg3p"]
+[ext_resource type="PackedScene" uid="uid://88nkkgadq02q" path="res://assets/graphics/gltf/elf_scout.gltf" id="3_bshrn"]
+
+[node name="Elvish Scout" instance=ExtResource( "1_evjt3" )]
+Id = "Elvish Scout"
+Cost = 18
+Health = 32
+Moves = 9
+Experience = 32
+Alignment = 1
+Weaknesses = [6]
+Resistances = []
+
+[node name="Sword" parent="Attacks" index="0" instance=ExtResource( "2_oyg3p" )]
+Damage = 4
+Strikes = 3
+
+[node name="Bow" parent="Attacks" index="1" instance=ExtResource( "2_oyg3p" )]
+Damage = 6
+Strikes = 2
+DamageType = 1
+Range = 2
+
+[node name="elf_scout" parent="UnitView" index="1" instance=ExtResource( "3_bshrn" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

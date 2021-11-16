@@ -50,18 +50,24 @@ public partial class Data : Node
     {
         Factions.Clear();
 
-        var spears = new Faction();
-        spears.Name = "Humans";
-        spears.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
-        spears.Leaders = new List<string>() { "Spearman" };
+        var humans = new Faction();
+        humans.Name = "Humans";
+        humans.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
+        humans.Leaders = new List<string>() { "Spearman" };
 
-        var bows = new Faction();
-        bows.Name = "Orcs";
-        bows.Recruits = new List<string>() { "Orcish Grunt", "Orcish Archer", "Orcish Wolf Rider" };
-        bows.Leaders = new List<string>() { "Orcish Grunt" };
+        var orcs = new Faction();
+        orcs.Name = "Orcs";
+        orcs.Recruits = new List<string>() { "Orcish Grunt", "Orcish Archer", "Orcish Wolf Rider" };
+        orcs.Leaders = new List<string>() { "Orcish Grunt" };
 
-        Factions.Add(spears.Name, spears);
-        Factions.Add(bows.Name, bows);
+        var elves = new Faction();
+        elves.Name = "Elves";
+        elves.Recruits = new List<string>() { "Elvish Fighter", "Elvish Archer", "Elvish Scout" };
+        elves.Leaders = new List<string>() { "Elvish Fighter" };
+
+        Factions.Add(humans.Name, humans);
+        Factions.Add(orcs.Name, orcs);
+        Factions.Add(elves.Name, elves);
     }
 
     public void LoadUnits()
