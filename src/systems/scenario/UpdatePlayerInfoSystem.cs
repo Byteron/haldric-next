@@ -78,14 +78,13 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         var villageString = $"Villages: {capturedVillageCount} / {villageCount}";
         var youString = $"You: ({localPlayer.Side}) {localPlayer.Presence.Username}";
         var otherString = $"Current: ({playerSide.Value}) {playerName.Value}";
+        var goldString = "Gold: - | Income: -";
 
-        if (localPlayer.Side != playerSide.Value)
+        if (localPlayer.Side == playerSide.Value)
         {
-            hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | Gold: - | {unitString} | {villageString}";
+            goldString = $"Gold: {playerGold.Value} | Income: {income}";
         }
-        else
-        {
-            hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | Gold: {playerGold.Value} | {unitString} | {villageString}";
-        }
+
+        hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | {goldString} | {unitString} | {villageString}";
     }
 }
