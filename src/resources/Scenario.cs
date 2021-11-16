@@ -14,9 +14,7 @@ public class Scenario
 
     public void EndTurn()
     {
-        Godot.GD.Print("Previous Player: ", CurrentPlayer);
         CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
-        Godot.GD.Print("New Player: ", CurrentPlayer);
 
         if (CurrentPlayer == 0)
         {

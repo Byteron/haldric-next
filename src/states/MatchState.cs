@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bitron.Ecs;
+using Godot;
 using Godot.Collections;
 using Nakama;
 
@@ -76,7 +77,7 @@ public partial class MatchState : GameState
 
         users.Add(localPlayer.Presence.Username);
 
-        Godot.GD.Print("User: ", localPlayer.Presence.Username);
+        GD.Print("User: ", localPlayer.Presence.Username);
 
         var playerString = "";
         var playerId = 0;
@@ -94,8 +95,8 @@ public partial class MatchState : GameState
             playerId += 1;
         }
 
-        Godot.GD.Print("Side: ", localPlayer.Side);
-        Godot.GD.Print("Players: ", playerString);
+        GD.Print("Side: ", localPlayer.Side);
+        GD.Print("Players: ", playerString);
 
         _world.AddResource(_match);
         _world.AddResource(localPlayer);
