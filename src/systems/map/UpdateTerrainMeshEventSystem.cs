@@ -186,22 +186,22 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
             if (elevation.Value <= nElevation.Value)
             {
-                indices.x = nLocIndex.Value;
-                indices.y = locIndex;
+                indices.x = locIndex;
+                indices.y = nLocIndex.Value;
                 indices.z = nextLocIndex.Value;
                 TriangulateCorner(e1.v5, e2.v5, v6, indices);
             }
             else if (nElevation.Value <= nextElevation.Value)
             {
-                indices.x = nextLocIndex.Value;
-                indices.y = nLocIndex.Value;
+                indices.x = nLocIndex.Value;
+                indices.y = nextLocIndex.Value;
                 indices.z = locIndex;
                 TriangulateCorner(e2.v5, v6, e1.v5, indices);
             }
             else
             {
-                indices.x = locIndex;
-                indices.y = nextLocIndex.Value;
+                indices.x = nextLocIndex.Value;
+                indices.y = locIndex;
                 indices.z = nLocIndex.Value;
                 TriangulateCorner(v6, e1.v5, e2.v5, indices);
             }
@@ -210,7 +210,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
 
     private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
     {
-        _terrainMesh.AddTrianglePerturbed(right, bottom, left);
+        _terrainMesh.AddTrianglePerturbed(bottom, left, right);
         _terrainMesh.AddTriangleCellData(indices, ColorRed, ColorGreen, ColorBlue);
     }
 
