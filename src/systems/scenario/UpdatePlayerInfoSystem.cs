@@ -74,16 +74,16 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         {
             if (localPlayer.Side != playerSide.Value)
             {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: - | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
+                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: - | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
             }
             else
             {
-                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
+                hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
             }
         }
         else
         {
-            hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
+            hudView.PlayerLabel.Text = $"Turn: {scenario.Turn} | You: {localPlayer.Side} | Current Player: {playerSide.Value} | Gold: {playerGold.Value} ({income}) | Units: {unitCount} | Villages: {capturedVillageCount} / {villageCount}";
         }
 
     }

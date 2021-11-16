@@ -67,16 +67,26 @@ public partial class MatchState : GameState
         _match = await _socket.JoinMatchAsync(matched);
 
         var localPlayer = new LocalPlayer();
+        var matchPlayers = new MatchPlayers();
+        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
+
         localPlayer.Presence = matched.Self.Presence;
 
         var users = new List<string>();
 
         users.Add(localPlayer.Presence.Username);
 
+        Godot.GD.Print("User: ", localPlayer.Presence.Username);
+
+        var playerString = "";
         var playerId = 0;
-        foreach (var presence in matched.Users)
+        foreach (var user in matched.Users)
         {
-            if (matched.Self.Presence.UserId == presence.Presence.UserId)
+            matchPlayers.Array[playerId] = user.Presence;
+
+            playerString += user.Presence.Username + " ";
+
+            if (matched.Self.Presence.UserId == user.Presence.UserId)
             {
                 localPlayer.Side = playerId;
             }
@@ -84,11 +94,12 @@ public partial class MatchState : GameState
             playerId += 1;
         }
 
-        var matchPlayers = new MatchPlayers();
-        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
+        Godot.GD.Print("Side: ", localPlayer.Side);
+        Godot.GD.Print("Players: ", playerString);
 
-        _world.AddResource(localPlayer);
         _world.AddResource(_match);
+        _world.AddResource(localPlayer);
+        _world.AddResource(matchPlayers);
 
         _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
     }

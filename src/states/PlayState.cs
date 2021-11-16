@@ -73,10 +73,12 @@ public partial class PlayState : GameState
         _socket.ReceivedMatchState += OnReceivedMatchState;
 
         _match = _world.GetResource<IMatch>();
+        var matchPlayers = _world.GetResource<MatchPlayers>();
 
         _world.AddResource(new Commander());
 
-        _world.AddResource(new Scenario());
+        _world.AddResource(new Scenario(matchPlayers.Array.Length));
+        
         _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
 
         var hudView = Scenes.Instance.HudView.Instantiate<HudView>();

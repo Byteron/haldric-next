@@ -43,7 +43,7 @@ public class SpawnPlayerEventSystem : IEcsSystem
                 .Add(new Gold(spawnEvent.Gold))
                 .Add(new Recruits(faction.Recruits));
 
-            scenario.Players.Add(playerEntity);
+            scenario.Players[spawnEvent.Side] = playerEntity;
 
             world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
         }
