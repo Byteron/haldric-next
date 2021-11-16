@@ -82,6 +82,13 @@ public partial class TerrainFeaturePopulator : Node3D
                     _randomIndicies.Add(position, index);
                 }
 
+                if (terrainGraphic.Variations.Count <= index)
+                {
+                    _randomIndicies.Remove(position);
+                    index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                    _randomIndicies.Add(position, index);
+                }
+
                 var mesh = terrainGraphic.Variations[index];
                 AddRenderData(mesh, position, Vector3.Zero);
             }
@@ -146,6 +153,13 @@ public partial class TerrainFeaturePopulator : Node3D
                 {
                     if (!_randomIndicies.TryGetValue(position, out var index))
                     {
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        _randomIndicies.Add(position, index);
+                    }
+
+                    if (terrainGraphic.Variations.Count <= index)
+                    {
+                        _randomIndicies.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
                         _randomIndicies.Add(position, index);
                     }
