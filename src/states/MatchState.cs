@@ -7,13 +7,14 @@ using Nakama;
 
 public partial class MatchState : GameState
 {
-    private MatchView _view;
-    private string _mapName;
-    private int _playerCount;
+    private MatchView _view = null;
+    private string _mapName = "";
+    private int _playerCount = 0;
+    private int _playersReadied = 0;
 
-    private IMatchmakerTicket _ticket;
-    private ISocket _socket;
-    private IMatch _match;
+    private IMatchmakerTicket _ticket = null;
+    private ISocket _socket = null;
+    private IMatch _match = null;
 
     public MatchState(EcsWorld world, string mapName) : base(world)
     {
