@@ -3,9 +3,7 @@ using Bitron.Ecs;
 
 public partial class Main : Node3D
 {
-    public static Main Instance { get; private set; }
-
-    private GameStateController _gameController = new GameStateController();
+    public static Main Instance { get; private set; };
 
     public WorldEnvironment Environment { get; private set; }
     public DirectionalLight3D Light { get; private set; }
@@ -16,10 +14,11 @@ public partial class Main : Node3D
     {
         Instance = this;
 
-        _gameController.Name = "GameStateController";
-        AddChild(_gameController);
+        var gameStateController = new GameStateController();
+        gameStateController.Name = "GameStateController";
+        AddChild(gameStateController);
 
-        World.AddResource(_gameController);
+        World.AddResource(gameStateController);
         World.AddResource(GetTree());
 
         World.AddResource(new ServerSettings
@@ -40,7 +39,7 @@ public partial class Main : Node3D
         Environment = GetNode<WorldEnvironment>("WorldEnvironment");
         Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
 
-        _gameController.PushState(new ApplicationState(World));
+        gameStateController.PushState(new ApplicationState(World));
     }
 
     public override void _ExitTree()
