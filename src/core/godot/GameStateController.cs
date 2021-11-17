@@ -39,19 +39,21 @@ public partial class GameStateController : Node3D
 
     public void PushState(GameState newState)
     {
-        if (_states.Count > 0)
-        {
-            var currentState = _states.Peek();
-            currentState.Pause(this);
-        }
-
-        newState.Name = newState.GetType().ToString();
-        _states.Push(newState);
-        AddChild(newState);
-        newState.Enter(this);
+        CallDeferred(nameof(PushStateDeferred), newState);
     }
 
     public void PopState()
+    {
+        CallDeferred(nameof(PopStateDeferred));
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        PopState();
+        PushState(newState);
+    }
+
+    private void PopStateDeferred()
     {
         if (_states.Count == 0)
         {
@@ -71,9 +73,17 @@ public partial class GameStateController : Node3D
         }
     }
 
-    public void ChangeState(GameState newState)
+    private void PushStateDeferred(GameState newState)
     {
-        PopState();
-        PushState(newState);
+        if (_states.Count > 0)
+        {
+            var currentState = _states.Peek();
+            currentState.Pause(this);
+        }
+
+        newState.Name = newState.GetType().ToString();
+        _states.Push(newState);
+        AddChild(newState);
+        newState.Enter(this);
     }
 }
