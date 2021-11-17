@@ -1,11 +1,12 @@
-using System.Collections.Generic;
 using Bitron.Ecs;
 
 public class Scenario
 {
-    public int Turn { get; set; } = 0;
+    public int Round { get; set; } = 0;
     public int CurrentPlayer { get; set; } = -1;
     public EcsEntity[] Players { get; set; }
+
+    private int _round = -1;
 
     public Scenario(int playerCount)
     {
@@ -18,12 +19,23 @@ public class Scenario
 
         if (CurrentPlayer == 0)
         {
-            Turn += 1;
+            Round += 1;
         }
     }
 
     public EcsEntity GetCurrentPlayerEntity()
     {
         return Players[CurrentPlayer];
+    }
+
+    public bool HasRoundChanged()
+    {
+        if (Round != _round)
+        {
+            _round = Round;
+            return true;
+        }
+
+        return false;
     }
 }

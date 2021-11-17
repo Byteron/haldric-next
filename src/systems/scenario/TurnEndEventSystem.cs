@@ -1,13 +1,10 @@
 using Bitron.Ecs;
 using Godot;
-using Haldric.Wdk;
 
 public struct TurnEndEvent { }
 
 public class TurnEndEventSystem : IEcsSystem
 {
-    private int _turn = 0;
-
     public void Run(EcsWorld world)
     {
         var eventQuery = world.Query<TurnEndEvent>().End();
@@ -21,11 +18,9 @@ public class TurnEndEventSystem : IEcsSystem
 
             scenario.EndTurn();
 
-            if (_turn != scenario.Turn)
+            if (scenario.HasRoundChanged())
             {
-                _turn = scenario.Turn;
-
-                ChangeDaytime(world);
+                world.Spawn().Add(new ChangeDaytimeEvent());
             }
 
             var player = scenario.GetCurrentPlayerEntity();
@@ -109,30 +104,5 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
         }
-    }
-
-    private static void ChangeDaytime(EcsWorld world)
-    {
-        var schedule = world.GetResource<Schedule>();
-
-        schedule.Next();
-
-        var daytime = schedule.GetCurrentDaytime();
-
-        var tween = Main.Instance.GetTree().CreateTween();
-
-        tween.SetTrans(Tween.TransitionType.Sine);
-        tween.SetEase(Tween.EaseType.InOut);
-
-        tween.Parallel().TweenProperty(Main.Instance.Light, "rotation", new Vector3(Mathf.Deg2Rad(daytime.Angle), 0, 0), 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Light, "light_color", daytime.LightColor, 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Light, "light_energy", daytime.LightIntensity, 2.5f);
-
-        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyIntensity, 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyColor, 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyColor, 2.5f);
-        tween.Parallel().TweenProperty(Main.Instance.Environment.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.SkyColor, 2.5f);
-
-        tween.Play();
     }
 }
