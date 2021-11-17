@@ -21,6 +21,8 @@ public class ChangeDaytimeEventSystem : IEcsSystem
 
             var daytime = schedule.GetCurrentDaytime();
 
+            GD.Print("Daytime: ", daytime.Name);
+            
             var tween = Main.Instance.GetTree().CreateTween();
 
             tween.SetTrans(Tween.TransitionType.Sine);
