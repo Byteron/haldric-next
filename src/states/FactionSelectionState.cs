@@ -56,6 +56,11 @@ public partial class FactionSelectionState : GameState
         _view.QueueFree();
     }
 
+    public override void _Process(float delta)
+    {
+        CheckAndContinue();
+    }
+
     public void CheckAndContinue()
     {
         if (_playerCount == _playersReadied)
@@ -87,7 +92,6 @@ public partial class FactionSelectionState : GameState
             case NetworkOperation.PlayerReadied:
                 {
                     _playersReadied += 1;
-                    CheckAndContinue();
                     break;
                 }
         }
@@ -117,7 +121,6 @@ public partial class FactionSelectionState : GameState
         var message = new PlayerReadied();
 
         _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
-        CheckAndContinue();
     }
 
     private void OnBackButtonPressed()
