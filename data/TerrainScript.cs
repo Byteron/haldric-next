@@ -11,6 +11,8 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sm", new List<TerrainType>() { TerrainType.Rough }, -0.4f);		// sand mud
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);		// sand beach
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });		// mountains simple
+		NewBase("Gll", new List<TerrainType>() {TerrainType.Flat });		//grass leaf litter
+
 
 		NewShallowWater("Ws", new List<TerrainType>() { TerrainType.ShallowWaters });		// shallow water
 		NewDeepWater("Wo", new List<TerrainType>() { TerrainType.DeepWaters });		// deep water
@@ -27,6 +29,11 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.png");
 		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.png");
 		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass_roughness.png");
+
+//      Grass leaf litter
+		AddTerrainTexture("Gll", "assets/graphics/images/leaf_litter_basecolor.png");
+		AddTerrainNormalTexture("Gll", "assets/graphics/images/leaf_litter_normal.png");
+		AddTerrainRoughnessTexture("Gll", "assets/graphics/images/leaf_litter_roughness.png");
 
 //		Sand desert
 		AddTerrainTexture("Sd", "assets/graphics/images/sand_dunes_basecolor.png");
