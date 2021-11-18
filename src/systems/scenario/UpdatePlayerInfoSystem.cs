@@ -73,7 +73,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
         var localPlayer = world.GetResource<LocalPlayer>();
 
-        var turnString = "Turn: " + scenario.Turn;
+        var roundString = "Round: " + scenario.Round;
         var unitString = "Units: " + unitCount;
         var villageString = $"Villages: {capturedVillageCount} / {villageCount}";
         var youString = $"You: ({localPlayer.Side}) {localPlayer.Presence.Username}";
@@ -85,6 +85,6 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             goldString = $"Gold: {playerGold.Value} | Income: {income}";
         }
 
-        hudView.PlayerLabel.Text = $"{youString} | {turnString} | {otherString} | {goldString} | {unitString} | {villageString}";
+        hudView.PlayerLabel.Text = $"{youString} | {roundString} | {otherString} | {goldString} | {unitString} | {villageString}";
     }
 }

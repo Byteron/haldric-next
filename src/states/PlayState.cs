@@ -62,6 +62,7 @@ public partial class PlayState : GameState
         AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem(this));
         AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
         AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
+        AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
         AddEventSystem<CheckVictoryConditionEvent>(new CheckVictoryConditionEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());

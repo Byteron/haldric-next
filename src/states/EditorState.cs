@@ -1,4 +1,5 @@
 using Bitron.Ecs;
+using Haldric.Wdk;
 
 public partial class EditorState : GameState
 {
@@ -22,6 +23,7 @@ public partial class EditorState : GameState
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
+        AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
 
         AddDestroySystem(new DespawnCameraOperatorSystem());
     }
@@ -35,13 +37,17 @@ public partial class EditorState : GameState
 
         _world.AddResource(editorView);
 
+        _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
+
         _world.Spawn().Add(new SpawnMapEvent(40, 40));
+        _world.Spawn().Add(new ChangeDaytimeEvent());
     }
 
     public override void Exit(GameStateController gameStates)
     {
         _world.RemoveResource<Commander>();
         _world.RemoveResource<EditorView>();
+        _world.RemoveResource<Schedule>();
         _world.Spawn().Add(new DespawnMapEvent());
     }
 
@@ -50,6 +56,11 @@ public partial class EditorState : GameState
         if (e.IsActionPressed("ui_cancel"))
         {
             gameStates.PopState();
+        }
+
+        if (e.IsActionPressed("ui_accept"))
+        {
+            _world.Spawn().Add(new ChangeDaytimeEvent());
         }
     }
 }
