@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dn8gmhek53gox" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
 [ext_resource type="PackedScene" path="res://src/nodes/hud/attack_selection/AttackSelectionView.tscn" id="4_v3bgl"]
 [ext_resource type="PackedScene" uid="uid://cx34w4jqo13n6" path="res://src/nodes/menu/FactionSelectionView.tscn" id="5_h0hoj"]
-[ext_resource type="PackedScene" path="res://src/nodes/hud/HudView.tscn" id="5_ljnc1"]
+[ext_resource type="PackedScene" uid="uid://dglctrrf6qs2i" path="res://src/nodes/hud/HudView.tscn" id="5_ljnc1"]
 [ext_resource type="PackedScene" uid="uid://bgkk5yo3e3hly" path="res://src/nodes/menu/LobbyView.tscn" id="5_oh3a3"]
 [ext_resource type="PackedScene" uid="uid://dmyvms7guc7jr" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
 [ext_resource type="PackedScene" uid="uid://dlpi2a0xlug5b" path="res://src/nodes/hud/reruitment/RecruitSelectionView.tscn" id="5_v23ql"]
