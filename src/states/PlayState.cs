@@ -7,6 +7,11 @@ using Nakama.TinyJson;
 
 public partial class PlayState : GameState
 {
+    private class MarshallableState
+    {
+        public IMatchState State { get; set; }
+    }
+
     private string _mapName;
     private Dictionary<int, string> _factions;
     private ISocket _socket;
@@ -123,11 +128,12 @@ public partial class PlayState : GameState
 
     private void OnReceivedMatchState(IMatchState state)
     {
-        ProcessMatchStateChance(state);
+        CallDeferred(nameof(ProcessMatchStateChance), new MarshallableState { State = state });
     }
 
-    private void ProcessMatchStateChance(IMatchState state)
+    private void ProcessMatchStateChance(MarshallableState marshallableState)
     {
+        var state = marshallableState.State;
         var gameStateController = _world.GetResource<GameStateController>();
 
         var enc = System.Text.Encoding.UTF8;
