@@ -2,6 +2,7 @@ using System;
 
 public enum NetworkOperation
 {
+    PlayerReadied,
     FactionSelected,
     TurnEnd,
     MoveUnit,
@@ -16,6 +17,8 @@ public struct FactionSelectedMessage
 }
 
 public struct TurnEndMessage { }
+
+public struct PlayerReadied { }
 
 public struct MoveUnitMessage
 {

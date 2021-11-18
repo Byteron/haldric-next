@@ -1,13 +1,10 @@
 using Godot;
 using Godot.Collections;
-using Bitron.Ecs;
-using Nakama;
-using Nakama.TinyJson;
 
 public partial class FactionSelectionView : PanelContainer
 {
     [Signal] public delegate void FactionSelected(int side, int index);
-    [Signal] public delegate void ContinueButtonPressed(Dictionary<int, string> factions);
+    [Signal] public delegate void ContinueButtonPressed();
     [Signal] public delegate void BackButtonPressed();
 
     [Export] PackedScene PlayerOption;
@@ -19,11 +16,15 @@ public partial class FactionSelectionView : PanelContainer
     private Dictionary<int, string> _factions = new Dictionary<int, string>();
     Dictionary<int, PlayerOption> _options = new Dictionary<int, PlayerOption>();
 
-    VBoxContainer _container;
+    VBoxContainer _container = null;
+    Button _continueButton = null;
+    Button _backButton = null;
 
     public override void _Ready()
     {
         _container = GetNode<VBoxContainer>("CenterContainer/VBoxContainer/VBoxContainer");
+        _continueButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/ContinueButton");
+        _backButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/BackButton");
 
         for (int i = 0; i < PlayerCount; i++)
         {
@@ -41,6 +42,18 @@ public partial class FactionSelectionView : PanelContainer
         _options[side].Select(index);
     }
 
+    public Dictionary<int, string> GetFactions()
+    {
+        _factions.Clear();
+
+        foreach (PlayerOption option in _container.GetChildren())
+        {
+            _factions.Add(option.Side, option.Faction);
+        }
+
+        return _factions;
+    }
+
     private void OnFactionSelected(int side, int index)
     {
         EmitSignal(nameof(FactionSelected), side, index);
@@ -48,12 +61,9 @@ public partial class FactionSelectionView : PanelContainer
 
     private void OnContinueButtonPressed()
     {
-        foreach (PlayerOption option in _container.GetChildren())
-        {
-            _factions.Add(option.Side, option.Faction);
-        }
-
-        EmitSignal(nameof(ContinueButtonPressed), _factions);
+        _continueButton.Disabled = true;
+        _backButton.Disabled = true;
+        EmitSignal(nameof(ContinueButtonPressed));
     }
 
     private void OnBackButtonPressed()

@@ -6,10 +6,16 @@ using Nakama.TinyJson;
 
 public partial class FactionSelectionState : GameState
 {
-    private FactionSelectionView _view;
+    private FactionSelectionView _view = null;
 
-    private string _mapName;
-    private Dictionary _mapDict;
+    public int _playerCount = 0;
+    public int _playersReadied = 0;
+
+    private string _mapName = "";
+    private Dictionary _mapDict = null;
+
+    private ISocket _socket = null;
+    private IMatch _match = null;
 
     public FactionSelectionState(EcsWorld world, string mapName) : base(world)
     {
@@ -19,10 +25,15 @@ public partial class FactionSelectionState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var socket = _world.GetResource<ISocket>();
-        var localPlayer = _world.GetResource<LocalPlayer>();
+        _socket = _world.GetResource<ISocket>();
+        _match = _world.GetResource<IMatch>();
 
-        socket.ReceivedMatchState += OnMatchStateReceived;
+        var localPlayer = _world.GetResource<LocalPlayer>();
+        var matchPlayers = _world.GetResource<MatchPlayers>();
+
+        _playerCount = matchPlayers.Array.Length;
+
+        _socket.ReceivedMatchState += OnMatchStateReceived;
 
         _view = Scenes.Instance.FactionSelectionView.Instantiate<FactionSelectionView>();
 
@@ -40,10 +51,26 @@ public partial class FactionSelectionState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
-        var socket = _world.GetResource<ISocket>();
-        socket.ReceivedMatchState -= OnMatchStateReceived;
+        _socket.ReceivedMatchState -= OnMatchStateReceived;
 
         _view.QueueFree();
+    }
+
+    public override void _Process(float delta)
+    {
+        CheckAndContinue();
+    }
+
+    public void CheckAndContinue()
+    {
+        if (_playerCount == _playersReadied)
+        {
+            var gameStateController = _world.GetResource<GameStateController>();
+
+            var playState = new PlayState(_world, _mapName, _view.GetFactions());
+
+            gameStateController.ChangeState(playState);
+        }
     }
 
     private void OnMatchStateReceived(IMatchState state)
@@ -52,18 +79,27 @@ public partial class FactionSelectionState : GameState
         var data = (string)enc.GetString(state.State);
         var operation = (NetworkOperation)state.OpCode;
 
+        GD.Print($"Network Operation: {operation.ToString()}\nJSON: {data}");
+
         switch (operation)
         {
             case NetworkOperation.FactionSelected:
-                var message = JsonParser.FromJson<FactionSelectedMessage>(data);
-                _view.Select(message.Side, message.Index);
-                break;
+                {
+                    var message = JsonParser.FromJson<FactionSelectedMessage>(data);
+                    _view.Select(message.Side, message.Index);
+                    break;
+                }
+            case NetworkOperation.PlayerReadied:
+                {
+                    _playersReadied += 1;
+                    break;
+                }
         }
     }
 
     private void OnFactionSelected(int side, int index)
     {
-        var matchId = _world.GetResource<IMatch>().Id;
+        var matchId = _match.Id;
         var opCode = (int)NetworkOperation.FactionSelected;
 
         var message = new FactionSelectedMessage()
@@ -72,17 +108,19 @@ public partial class FactionSelectionState : GameState
             Index = index,
         };
 
-        var socket = _world.GetResource<ISocket>();
-        socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
-    private void OnContinueButtonPressed(Dictionary<int, string> factions)
+    private void OnContinueButtonPressed()
     {
-        var gameStateController = _world.GetResource<GameStateController>();
+        _playersReadied += 1;
 
-        var playState = new PlayState(_world, _mapName, factions);
+        var matchId = _match.Id;
+        var opCode = (int)NetworkOperation.PlayerReadied;
 
-        gameStateController.ChangeState(playState);
+        var message = new PlayerReadied();
+
+        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
     private void OnBackButtonPressed()

@@ -5,13 +5,15 @@ public class UpdateMapCursorSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HoveredLocation>())
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        var hoveredLocation = world.GetResource<HoveredLocation>();
-        var cursor = world.GetResource<Cursor3D>();
+        if (!world.TryGetResource<Cursor3D>(out var cursor))
+        {
+            return;
+        }
 
         var locEntity = hoveredLocation.Entity;
 
