@@ -80,6 +80,8 @@ public class TerrainScript : TerrainLoader
 		// AddKeepPlateauGraphic("Ch", "assets/graphics/models/castle_plateau.tres", new Godot.Vector3(0f, 0.05f, 0f));
 		AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
+		
+		AddCliffGraphic("Gg", "assets/graphics/models/cliff.tres");
 
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");

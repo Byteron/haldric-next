@@ -110,6 +110,11 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
             _terrainFeaturePopulator.AddWalls(locEntity);
         }
 
+        if (Data.Instance.Cliffs.ContainsKey(terrainCode.Value))
+        {
+            _terrainFeaturePopulator.AddCliffs(locEntity);
+        }
+
         if (Data.Instance.KeepPlateaus.ContainsKey(terrainCode.Value))
         {
             _terrainFeaturePopulator.AddKeepPlateau(locEntity, terrainCode.Value);

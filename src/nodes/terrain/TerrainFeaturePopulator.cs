@@ -248,6 +248,50 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
+    public void AddCliffs(EcsEntity locEntity)
+    {
+        ref var coords = ref locEntity.Get<Coords>();
+        ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
+        ref var elevation = ref locEntity.Get<Elevation>();
+        ref var neighbors = ref locEntity.Get<Neighbors>();
+
+        var terrainEntity = terrainBase.Entity;
+        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
+        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+
+        var center = coords.World();
+
+        center.y = elevation.Height + elevationOffset.Value;
+        for (int i = 0; i < 6; i++)
+        {
+            var direction = (Direction)i;
+            //walls want to rotate the other way it seems?
+            float rotation = Godot.Mathf.Tau - direction.Rotation();
+
+            if (!neighbors.Has(direction))
+            {
+                continue;
+            }
+
+            var nLocEntity = neighbors.Get(direction);
+
+            ref var nElevation = ref nLocEntity.Get<Elevation>();
+            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nTerrainEntity = nTerrainBase.Entity;
+            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
+
+            var elevationDiff = elevation.Value - nElevation.Value;
+            
+            if (elevationDiff < 2)
+            {
+                continue;
+            }
+
+            var cliffPosition = center + Metrics.GetEdgeMiddle(direction);
+            AddRenderData(Data.Instance.Cliffs[terrainCode.Value].Mesh, cliffPosition, new Vector3(0f, rotation, 0f));
+        }
+    }
+
     public void AddTowers(EcsEntity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
