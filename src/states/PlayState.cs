@@ -7,7 +7,7 @@ using Nakama.TinyJson;
 
 public partial class PlayState : GameState
 {
-    private class MarshallableState
+    private partial class MarshallableState : Resource
     {
         public IMatchState State { get; set; }
     }
