@@ -89,6 +89,14 @@ public class TerrainScript : TerrainLoader
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 		
 		AddCliffGraphic("Gg", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Gll", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Ms", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Rd", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Sd", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Sm", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Sb", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Ch", "assets/graphics/models/cliff.tres");
+		AddCliffGraphic("Kh", "assets/graphics/models/cliff.tres");
 
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");
