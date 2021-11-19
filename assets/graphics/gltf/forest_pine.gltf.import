@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d257njitki5do"
+uid="uid://ckitq6phf8qwx"
 path="res://.godot/imported/forest_pine.gltf-47a61ed7dcd15a806a7d36a8f364f0fc.scn"
 
 [deps]
@@ -19,7 +19,7 @@ nodes/root_scale=1.0
 meshes/ensure_tangents=true
 meshes/generate_lods=false
 meshes/create_shadow_meshes=true
-meshes/light_baking=1
+meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=false
 animation/import=false
