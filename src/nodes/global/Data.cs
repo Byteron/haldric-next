@@ -35,7 +35,8 @@ public partial class Data : Node
     public Dictionary<string, Texture2D> TerrainTextures { get; set; } = new Dictionary<string, Texture2D>();
     public Dictionary<string, Texture2D> TerrainNormalTextures { get; set; } = new Dictionary<string, Texture2D>();
     public Dictionary<string, Texture2D> TerrainRoughnessTextures { get; set; } = new Dictionary<string, Texture2D>();
-
+    public Dictionary<string, string> DefaultOverlayBaseTerrains = new Dictionary<string, string>();
+    
     public Dictionary<string, int> TextureArrayIds { get; set; } = new Dictionary<string, int>();
 
     public Texture2DArray TextureArray { get; private set; } = new Texture2DArray();
@@ -122,6 +123,7 @@ public partial class Data : Node
         TerrainTextures = terrainScript.TerrainTextures;
         TerrainNormalTextures = terrainScript.TerrainNormalTextures;
         TerrainRoughnessTextures = terrainScript.TerrainRoughnessTextures;
+        DefaultOverlayBaseTerrains = terrainScript.DefaultOverlayBaseTerrains;
 
         CreateTextureArrayIds();
 

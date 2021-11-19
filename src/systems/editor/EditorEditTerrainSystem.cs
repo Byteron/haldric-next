@@ -104,7 +104,23 @@ public class EditorEditTerrainSystem : IEcsSystem
                     locEntity.Add<HasOverlayTerrain>();
                 }
 
-                locEntity.Get<HasOverlayTerrain>().Entity = editorView.TerrainEntity;
+                if (Input.IsActionPressed("editor_no_base"))
+                {
+                    locEntity.Get<HasOverlayTerrain>().Entity = editorView.TerrainEntity;
+                }
+                else
+                {
+                    var code = editorView.TerrainEntity.Get<TerrainCode>().Value;
+
+                    if (Data.Instance.DefaultOverlayBaseTerrains.ContainsKey(code))
+                    {
+                        var baseCode = Data.Instance.DefaultOverlayBaseTerrains[code];
+                        var baseTerrainEntity = Data.Instance.Terrains[baseCode];
+                        locEntity.Get<HasBaseTerrain>().Entity = baseTerrainEntity;
+                    }
+
+                    locEntity.Get<HasOverlayTerrain>().Entity = editorView.TerrainEntity;
+                }
             }
             else
             {

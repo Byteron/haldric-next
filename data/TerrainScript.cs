@@ -25,6 +25,8 @@ public class TerrainScript : TerrainLoader
 		NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });		// village human
 		NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled, TerrainType.Fortified });		// village hall human
 
+		MapBaseToOverlay("Ff", "Gll");
+		
 //      Grass  
 		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.png");
 		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.png");

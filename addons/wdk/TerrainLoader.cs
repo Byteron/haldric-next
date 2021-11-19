@@ -16,6 +16,7 @@ namespace Haldric.Wdk
         public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
         public Dictionary<string, Texture2D> TerrainNormalTextures = new Dictionary<string, Texture2D>();
         public Dictionary<string, Texture2D> TerrainRoughnessTextures = new Dictionary<string, Texture2D>();
+        public Dictionary<string, string> DefaultOverlayBaseTerrains = new Dictionary<string, string>();
 
         private TerrainDictBuilder _terrainBuilder = new TerrainDictBuilder();
 
@@ -69,6 +70,11 @@ namespace Haldric.Wdk
         {
             var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
             TerrainDicts.Add(code, terrain);
+        }
+
+        public void MapBaseToOverlay(string overlayCode, string baseCode)
+        {
+            DefaultOverlayBaseTerrains.Add(overlayCode, baseCode);
         }
 
         public void AddTerrainTexture(string code, string path)
