@@ -125,6 +125,10 @@ public partial class FactionSelectionState : GameState
 
     private void OnBackButtonPressed()
     {
+        _world.RemoveResource<IMatch>();
+        _world.RemoveResource<LocalPlayer>();
+        _world.RemoveResource<MatchPlayers>();
+        
         _world.GetResource<GameStateController>().PopState();
     }
 }

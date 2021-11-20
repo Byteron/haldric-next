@@ -110,6 +110,8 @@ offset_top = 606.0
 offset_right = 200.0
 offset_bottom = 646.0
 rect_min_size = Vector2(0, 40)
+align = 1
+valign = 1
 
 [node name="MapOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_top = 650.0
