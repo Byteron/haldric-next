@@ -43,6 +43,16 @@ public partial class LobbyView : Control
         _infoLabel.Text = text;
     }
 
+    public void DisableJoinButton()
+    {
+        _joinButton.Disabled = true;
+    }
+
+    public void EnableJoinButton()
+    {
+        _joinButton.Disabled = false;
+    }
+
     public void UpdateUsers(string username, List<IUserPresence> users)
     {
         foreach (Node child in _userListContainer.GetChildren())

@@ -58,6 +58,7 @@ public partial class LobbyState : GameState
     public override void Continue(GameStateController gameStates)
     {
         _view.Show();
+        _view.EnableJoinButton();
         _view.UpdateInfo("");
     }
 
@@ -68,6 +69,8 @@ public partial class LobbyState : GameState
 
     public override void Exit(GameStateController gameStates)
     {
+        OnCancelButtonPressed();
+
         _socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
         _socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
         _socket.ReceivedMatchmakerMatched -= OnReceivedMatchmakerMatched;
@@ -159,6 +162,7 @@ public partial class LobbyState : GameState
             return;
         }
 
+        _view.DisableJoinButton();
         JoinMatchmaking();
     }
 
@@ -177,6 +181,8 @@ public partial class LobbyState : GameState
             _match = null;
             _view.UpdateInfo("Closed Match");
         }
+
+        _view.EnableJoinButton();
     }
 
     private void OnScenarioSelected(string mapName)
