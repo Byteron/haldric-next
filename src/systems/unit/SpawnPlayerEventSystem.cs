@@ -1,13 +1,6 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 
-public class Faction
-{
-    public string Name;
-    public List<string> Recruits;
-    public List<string> Leaders;
-}
-
 public struct SpawnPlayerEvent
 {
     public string Id;

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dktmic0fhn5ld"]
+
+[ext_resource type="Script" path="res://addons/wdk/faction/FactionData.cs" id="1_1al7n"]
+
+[resource]
+script = ExtResource( "1_1al7n" )
+Name = "Humans"
+Recruits = ["Spearman", "Bowman", "Cavalryman"]
+Leaders = ["Spearman"]

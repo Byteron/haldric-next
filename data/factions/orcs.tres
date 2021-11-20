@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dsyhpllfm2mek"]
+
+[ext_resource type="Script" path="res://addons/wdk/faction/FactionData.cs" id="1_fjmbq"]
+
+[resource]
+script = ExtResource( "1_fjmbq" )
+Name = "Orcs"
+Recruits = ["Orcish Grunt", "Orcish Archer", "Orcish Wolf Rider"]
+Leaders = ["Orcish Grunt"]

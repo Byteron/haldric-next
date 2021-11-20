@@ -20,7 +20,7 @@ public partial class Data : Node
 
     public Dictionary<string, PackedScene> Schedules { get; set; } = new Dictionary<string, PackedScene>();
     public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
-    public Dictionary<string, Faction> Factions { get; set; } = new Dictionary<string, Faction>();
+    public Dictionary<string, FactionData> Factions { get; set; } = new Dictionary<string, FactionData>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains { get; set; } = new Dictionary<string, EcsEntity>();
     public Dictionary<string, Godot.Collections.Dictionary> Maps { get; set; } = new Dictionary<string, Godot.Collections.Dictionary>();
@@ -52,24 +52,11 @@ public partial class Data : Node
     {
         Factions.Clear();
 
-        var humans = new Faction();
-        humans.Name = "Humans";
-        humans.Recruits = new List<string>() { "Cavalryman", "Spearman", "Bowman" };
-        humans.Leaders = new List<string>() { "Spearman" };
-
-        var orcs = new Faction();
-        orcs.Name = "Orcs";
-        orcs.Recruits = new List<string>() { "Orcish Grunt", "Orcish Archer", "Orcish Wolf Rider" };
-        orcs.Leaders = new List<string>() { "Orcish Grunt" };
-
-        var elves = new Faction();
-        elves.Name = "Elves";
-        elves.Recruits = new List<string>() { "Elvish Fighter", "Elvish Archer", "Elvish Scout" };
-        elves.Leaders = new List<string>() { "Elvish Fighter" };
-
-        Factions.Add(humans.Name, humans);
-        Factions.Add(orcs.Name, orcs);
-        Factions.Add(elves.Name, elves);
+        foreach (var data in Loader.LoadDir("res://data/factions", new List<string>() { "tres" }))
+        {
+            var faction = (FactionData)data.Data;
+            Factions.Add(faction.Name, faction);
+        }
     }
 
     public void LoadUnits()
