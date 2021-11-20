@@ -25,20 +25,9 @@ offset_top = 307.0
 offset_right = 843.0
 offset_bottom = 479.0
 
-[node name="TestButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="LobbyButton" type="Button" parent="CenterContainer/VBoxContainer"]
 offset_right = 100.0
 offset_bottom = 40.0
-rect_min_size = Vector2(100, 40)
-theme_override_font_sizes/font_size = 16
-text = "TEST"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LobbyButton" type="Button" parent="CenterContainer/VBoxContainer"]
-offset_top = 44.0
-offset_right = 100.0
-offset_bottom = 84.0
 rect_min_size = Vector2(100, 40)
 theme_override_font_sizes/font_size = 16
 text = "LOBBY"
@@ -47,12 +36,23 @@ __meta__ = {
 }
 
 [node name="EditorButton" type="Button" parent="CenterContainer/VBoxContainer"]
+offset_top = 44.0
+offset_right = 100.0
+offset_bottom = 84.0
+rect_min_size = Vector2(100, 40)
+theme_override_font_sizes/font_size = 16
+text = "EDITOR"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TestButton" type="Button" parent="CenterContainer/VBoxContainer"]
 offset_top = 88.0
 offset_right = 100.0
 offset_bottom = 128.0
 rect_min_size = Vector2(100, 40)
 theme_override_font_sizes/font_size = 16
-text = "EDITOR"
+text = "TEST"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -67,7 +67,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/LobbyButton" to="." method="OnLobbyButtonPressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/EditorButton" to="." method="OnEditorButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="OnQuitButtonPressed"]
