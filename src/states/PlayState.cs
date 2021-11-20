@@ -102,6 +102,10 @@ public partial class PlayState : GameState
     {
         _socket.ReceivedMatchState -= OnReceivedMatchState;
 
+        _world.RemoveResource<IMatch>();
+        _world.RemoveResource<LocalPlayer>();
+        _world.RemoveResource<MatchPlayers>();
+        
         _world.RemoveResource<Commander>();
         _world.RemoveResource<Scenario>();
         _world.RemoveResource<Schedule>();
