@@ -27,7 +27,7 @@ public partial class PlayState : GameState
         AddInputSystem(new SelectUnitSystem());
         AddInputSystem(new SelectTargetSystem());
         AddInputSystem(new DeselectUnitSystem());
-        // AddInputSystem(new UndoCommandSystem());
+        
         AddInputSystem(new RecruitInputSystem());
         AddInputSystem(new NextUnitInputSystem());
         AddInputSystem(new SuspendUnitInputSystem());
@@ -101,6 +101,7 @@ public partial class PlayState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _socket.ReceivedMatchState -= OnReceivedMatchState;
+        _socket.LeaveMatchAsync(_match);
 
         _world.RemoveResource<IMatch>();
         _world.RemoveResource<LocalPlayer>();
@@ -132,6 +133,7 @@ public partial class PlayState : GameState
 
     private void OnReceivedMatchState(IMatchState state)
     {
+        GD.Print("Reseived Match State");
         CallDeferred(nameof(ProcessMatchStateChance), new MarshallableState { State = state });
     }
 

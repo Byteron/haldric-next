@@ -58,7 +58,6 @@ public partial class LobbyState : GameState
     public override void Continue(GameStateController gameStates)
     {
         _view.Show();
-        OnCancelButtonPressed();
         _view.UpdateInfo("");
     }
 
