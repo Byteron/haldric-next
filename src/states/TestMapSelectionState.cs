@@ -1,11 +1,11 @@
 using Bitron.Ecs;
 using Godot;
 
-public partial class ScenarioSelectionState : GameState
+public partial class TestMapSelectionState : GameState
 {
     private ScenarioSelectionView _view;
 
-    public ScenarioSelectionState(EcsWorld world) : base(world) { }
+    public TestMapSelectionState(EcsWorld world) : base(world) { }
 
     public override void Enter(GameStateController gameStates)
     {
@@ -20,7 +20,7 @@ public partial class ScenarioSelectionState : GameState
     public void OnContinuePressed(string mapName)
     {
         var gameStateController = _world.GetResource<GameStateController>();
-        gameStateController.ChangeState(new MatchState(_world, mapName));
+        gameStateController.ChangeState(new TestMapState(_world, mapName));
     }
 
     public void OnCancelPressed()

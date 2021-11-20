@@ -5,7 +5,10 @@ using Nakama;
 public partial class LobbyView : Control
 {
     [Signal] public delegate void MessageSubmitted(string message);
+    [Signal] public delegate void ScenarioSelected(string mapName);
+    [Signal] public delegate void JoinButtonPressed();
     [Signal] public delegate void BackButtonPressed();
+    [Signal] public delegate void CancelButtonPressed();
 
     [Export] private PackedScene ChatMessageView;
 
@@ -13,11 +16,31 @@ public partial class LobbyView : Control
     private VBoxContainer _messages;
     private LineEdit _input;
 
+    private OptionButton _scenarioOptions;
+    private Button _joinButton;
+    private Label _infoLabel;
+
     public override void _Ready()
     {
-        _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer2/Panel/UserList");
+        _userListContainer = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer2/Panel/VBoxContainer/UserList");
         _messages = GetNode<VBoxContainer>("PanelContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/Messages");
         _input = GetNode<LineEdit>("PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit");
+
+        _joinButton = GetNode<Button>("PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/JoinButton");
+        _infoLabel = GetNode<Label>("PanelContainer/HBoxContainer/VBoxContainer2/Label");
+        _scenarioOptions = GetNode<OptionButton>("PanelContainer/HBoxContainer/VBoxContainer2/MapOptionButton");
+
+        foreach (var mapName in Data.Instance.Maps.Keys)
+        {
+            _scenarioOptions.AddItem(mapName);
+        }
+
+        _scenarioOptions.Select(0);
+    }
+
+    public void UpdateInfo(string text)
+    {
+        _infoLabel.Text = text;
     }
 
     public void UpdateUsers(string username, List<IUserPresence> users)
@@ -57,6 +80,21 @@ public partial class LobbyView : Control
             _messages.RemoveChild(child);
             child.QueueFree();
         }
+    }
+
+    private void OnJoinButtonPressed()
+    {
+        EmitSignal(nameof(JoinButtonPressed));
+    }
+
+    private void OnCancelButtonPressed()
+    {
+        EmitSignal(nameof(CancelButtonPressed));
+    }
+
+    private void OnMapOptionButtonItemSelected(int index)
+    {
+        EmitSignal(nameof(ScenarioSelected), _scenarioOptions.GetItemText(index));
     }
 
     private void OnLineEditTextSubmitted(string text)

@@ -84,17 +84,67 @@ offset_bottom = 786.0
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_right = 200.0
-offset_bottom = 742.0
+offset_bottom = 602.0
 rect_min_size = Vector2(200, 0)
 size_flags_vertical = 3
 
-[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2(200, 0)
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel/VBoxContainer"]
+offset_right = 200.0
+offset_bottom = 602.0
+rect_min_size = Vector2(200, 0)
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 606.0
+offset_right = 200.0
+offset_bottom = 646.0
+rect_min_size = Vector2(0, 40)
+
+[node name="MapOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 650.0
+offset_right = 200.0
+offset_bottom = 690.0
+rect_min_size = Vector2(0, 40)
+text = "Scenario"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 694.0
+offset_right = 200.0
+offset_bottom = 734.0
+
+[node name="JoinButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+offset_right = 98.0
+offset_bottom = 40.0
+rect_min_size = Vector2(0, 40)
+size_flags_horizontal = 3
+text = "Join"
+
+[node name="CancelButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+offset_left = 102.0
+offset_right = 200.0
+offset_bottom = 40.0
+rect_min_size = Vector2(0, 40)
+size_flags_horizontal = 3
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 738.0
+offset_right = 200.0
+offset_bottom = 742.0
 
 [node name="BackButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_top = 746.0
@@ -105,4 +155,7 @@ text = "Back"
 
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SendButton" to="." method="OnSendButtonPressed"]
+[connection signal="item_selected" from="PanelContainer/HBoxContainer/VBoxContainer2/MapOptionButton" to="." method="OnMapOptionButtonItemSelected"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/JoinButton" to="." method="OnJoinButtonPressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/BackButton" to="." method="OnBackButtonPressed"]

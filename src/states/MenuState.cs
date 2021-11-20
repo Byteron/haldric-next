@@ -12,11 +12,10 @@ public partial class MenuState : GameState
     {
         var menuView = Scenes.Instance.MainMenuView.Instantiate<MainMenuView>();
 
-        menuView.Connect("PlayButtonPressed", new Callable(this, nameof(OnPlayButtonPressed)));
-        menuView.Connect("LobbyButtonPressed", new Callable(this, nameof(OnLobbyButtonPressed)));
-        menuView.Connect("MatchButtonPressed", new Callable(this, nameof(OnMatchButtonPressed)));
-        menuView.Connect("EditorButtonPressed", new Callable(this, nameof(OnEditorButtonPressed)));
-        menuView.Connect("QuitButtonPressed", new Callable(this, nameof(OnQuitButtonPressed)));
+        menuView.Connect(nameof(MainMenuView.LobbyButtonPressed), new Callable(this, nameof(OnLobbyButtonPressed)));
+        menuView.Connect(nameof(MainMenuView.TestButtonPressed), new Callable(this, nameof(OnTestButtonPressed)));
+        menuView.Connect(nameof(MainMenuView.EditorButtonPressed), new Callable(this, nameof(OnEditorButtonPressed)));
+        menuView.Connect(nameof(MainMenuView.QuitButtonPressed), new Callable(this, nameof(OnQuitButtonPressed)));
 
         AddChild(menuView);
 
@@ -43,19 +42,14 @@ public partial class MenuState : GameState
         _world.RemoveResource<DebugView>();
     }
 
-    private void OnPlayButtonPressed()
-    {
-        _world.GetResource<GameStateController>().PushState(new ScenarioSelectionState(_world));
-    }
-
     private void OnLobbyButtonPressed()
     {
-        _world.GetResource<GameStateController>().PushState(new LobbyState(_world));
+        _world.GetResource<GameStateController>().PushState(new LoginState(_world));
     }
 
-    private void OnMatchButtonPressed()
+    private void OnTestButtonPressed()
     {
-        _world.GetResource<GameStateController>().PushState(new ScenarioSelectionState(_world));
+        _world.GetResource<GameStateController>().PushState(new TestMapSelectionState(_world));
     }
 
     private void OnEditorButtonPressed()
