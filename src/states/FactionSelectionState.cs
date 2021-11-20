@@ -42,9 +42,9 @@ public partial class FactionSelectionState : GameState
         _view.LocalPlayerSide = localPlayer.Side;
         _view.PlayerCount = playerDict.Count;
 
-        _view.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));
-        _view.Connect("ContinueButtonPressed", new Callable(this, nameof(OnContinueButtonPressed)));
-        _view.Connect("BackButtonPressed", new Callable(this, nameof(OnBackButtonPressed)));
+        _view.Connect(nameof(FactionSelectionView.FactionSelected), new Callable(this, nameof(OnFactionSelected)));
+        _view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));
+        _view.Connect(nameof(FactionSelectionView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
 
         AddChild(_view);
     }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Bitron.Ecs;
+using Godot;
 
 public struct SpawnPlayerEvent
 {
@@ -31,7 +33,17 @@ public class SpawnPlayerEventSystem : IEcsSystem
 
             var scenario = world.GetResource<Scenario>();
 
-            var faction = Data.Instance.Factions[spawnEvent.Faction];
+            FactionData faction;
+            
+            if (spawnEvent.Faction == "Random")
+            {
+                var factionName = Data.Instance.Factions.Keys.ToArray()[GD.Randi() % Data.Instance.Factions.Count];
+                faction = Data.Instance.Factions[factionName];
+            }
+            else
+            {
+                faction = Data.Instance.Factions[spawnEvent.Faction];
+            }
 
             var playerEntity = world.Spawn()
                 .Add(new Id(spawnEvent.Id))

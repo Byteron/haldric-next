@@ -24,6 +24,8 @@ public partial class PlayerOption : HBoxContainer
 
         _label.Text = $"Player {Side} ";
 
+        _options.AddItem("Random");
+        
         foreach (var faction in Data.Instance.Factions)
         {
             _options.AddItem(faction.Key);
