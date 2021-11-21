@@ -17,10 +17,13 @@ public partial class AttackSelectionView : Control
     private Label _attackerLabel;
     private Label _defenderLabel;
 
+    private Button _acceptButton;
+
     private VBoxContainer _container;
 
     public override void _Ready()
     {
+        _acceptButton = GetNode<Button>("PanelContainer/VBoxContainer/Buttons/AcceptButton");
         _container = GetNode<VBoxContainer>("PanelContainer/VBoxContainer/OptionButtons");
         _attackerLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/AttackerLabel");
         _defenderLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/DefenderLabel");
@@ -73,6 +76,7 @@ public partial class AttackSelectionView : Control
 
     private void OnAcceptButtonPressed()
     {
+        _acceptButton.Disabled = true;
         EmitSignal(nameof(AttackSelected));
     }
 

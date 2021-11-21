@@ -96,6 +96,7 @@ public partial class RecruitSelectionView : Control
 
     private void OnAcceptButtonPressed()
     {
+        _acceptButton.Disabled = true;
         EmitSignal(nameof(RecruitSelected), _selectedOption.UnitType.Name);
     }
 
