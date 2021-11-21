@@ -12,7 +12,7 @@ public partial class TurnPanel : Control
         EndTurnButton = GetNode<Button>("EndTurnButton");
     }
 
-    private void OnTurnEndButtonPressed()
+    private void OnEndTurnButtonPressed()
     {
         EmitSignal(nameof(EndTurnButtonPressed));
     }
