@@ -45,6 +45,13 @@ public class RecruitUnitEventSystem : IEcsSystem
             ref var recruitEvent = ref world.Entity(eventEntityId).Get<RecruitUnitEvent>();
 
             var locEntity = recruitEvent.LocEntity;
+
+            if (locEntity.Has<HasUnit>())
+            {
+                GD.PrintErr("Location already has a unit! Not recruiting: " + recruitEvent.UnitType.Name);
+                continue;
+            }
+
             var freeCoords = locEntity.Get<Coords>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
