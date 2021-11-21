@@ -82,16 +82,28 @@ public partial class PlayState : GameState
         var matchPlayers = _world.GetResource<MatchPlayers>();
 
         _world.AddResource(new Commander());
-
         _world.AddResource(new Scenario(matchPlayers.Array.Length));
-        
         _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
 
-        var hudView = Scenes.Instance.HudView.Instantiate<HudView>();
-        hudView.Connect("TurnEndButtonPressed", new Callable(this, nameof(OnTurnEndButtonPressed)));
-        AddChild(hudView);
+        var canvas = _world.GetResource<Canvas>();
+        var canvasLayer = canvas.GetCanvasLayer(1);
 
-        _world.AddResource(hudView);
+        var turnPanel = Scenes.Instance.TurnPanel.Instantiate<TurnPanel>();
+        turnPanel.Connect(nameof(TurnPanel.EndTurnButtonPressed), new Callable(this, nameof(OnTurnEndButtonPressed)));
+        canvasLayer.AddChild(turnPanel);
+        _world.AddResource(turnPanel);
+
+        var sidePanel = Scenes.Instance.SidePanel.Instantiate<SidePanel>();
+        canvasLayer.AddChild(sidePanel);
+        _world.AddResource(sidePanel);
+
+        var unitPanel = Scenes.Instance.UnitPanel.Instantiate<UnitPanel>();
+        canvasLayer.AddChild(unitPanel);
+        _world.AddResource(unitPanel);
+
+        var terrainPanel = Scenes.Instance.TerrainPanel.Instantiate<TerrainPanel>();
+        canvasLayer.AddChild(terrainPanel);
+        _world.AddResource(terrainPanel);
 
         _world.Spawn().Add(new LoadMapEvent(_mapName));
         _world.Spawn().Add(new SpawnPlayersEvent(_factions));
@@ -111,7 +123,22 @@ public partial class PlayState : GameState
         _world.RemoveResource<Scenario>();
         _world.RemoveResource<Schedule>();
 
-        _world.RemoveResource<HudView>();
+        var sidePanel = _world.GetResource<SidePanel>();
+        sidePanel.QueueFree();
+        _world.RemoveResource<SidePanel>();
+
+        var terrainPanel = _world.GetResource<TerrainPanel>();
+        terrainPanel.QueueFree();
+        _world.RemoveResource<TerrainPanel>();
+
+        var unitPanel = _world.GetResource<UnitPanel>();
+        unitPanel.QueueFree();
+        _world.RemoveResource<UnitPanel>();
+
+        var turnPanel = _world.GetResource<TurnPanel>();
+        turnPanel.QueueFree();
+        _world.RemoveResource<TurnPanel>();
+
         _world.Spawn().Add(new DespawnMapEvent());
     }
 

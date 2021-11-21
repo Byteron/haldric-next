@@ -14,12 +14,25 @@ public partial class Main : Node3D
     {
         Instance = this;
 
+        Environment = GetNode<WorldEnvironment>("WorldEnvironment");
+        Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
+
+        Inititalize();
+    }
+
+    public void Inititalize()
+    {
+        World.AddResource(GetTree());
+
         var gameStateController = new GameStateController();
         gameStateController.Name = "GameStateController";
         AddChild(gameStateController);
-
         World.AddResource(gameStateController);
-        World.AddResource(GetTree());
+
+        var canvas = new Canvas();
+        canvas.Name = "Canvas";
+        AddChild(canvas);
+        World.AddResource(canvas);
 
         World.AddResource(new ServerSettings
         {
@@ -35,9 +48,6 @@ public partial class Main : Node3D
             Persistence = true,
             Hidden = false,
         });
-
-        Environment = GetNode<WorldEnvironment>("WorldEnvironment");
-        Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
 
         gameStateController.PushState(new ApplicationState(World));
     }

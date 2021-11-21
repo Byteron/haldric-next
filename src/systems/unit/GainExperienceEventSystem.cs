@@ -21,8 +21,6 @@ public class GainExperienceEventSystem : IEcsSystem
 
         foreach (var id in query)
         {
-            var hudView = world.GetResource<HudView>();
-
             ref var gainEvent = ref world.Entity(id).Get<GainExperienceEvent>();
 
             var entity = gainEvent.Entity;
@@ -33,7 +31,8 @@ public class GainExperienceEventSystem : IEcsSystem
             experience.Increase(amount);
 
             ref var coords = ref entity.Get<Coords>();
-            hudView.SpawnFloatingLabel(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f));
+
+            world.Spawn().Add(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f)));
 
             if (experience.IsFull())
             {

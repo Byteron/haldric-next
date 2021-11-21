@@ -19,18 +19,16 @@ public class SpawnFloatingLabelEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HudView>())
-        {
-            return;
-        }
+        var canvas = world.GetResource<Canvas>();
+        var canvasLayer = canvas.GetCanvasLayer(1);
 
-        var hudView = world.GetResource<HudView>();
         var query = world.Query<SpawnFloatingLabelEvent>().End();
 
         foreach (var eventEntityId in query)
         {
             var spawnEvent = world.Entity(eventEntityId).Get<SpawnFloatingLabelEvent>();
-            hudView.SpawnFloatingLabel(spawnEvent.Position, spawnEvent.Text, spawnEvent.Color);
+            var floatingLabel = FloatingLabel.Instantiate(spawnEvent.Position, spawnEvent.Text, spawnEvent.Color);
+            canvasLayer.AddChild(floatingLabel);
         }
     }
 }

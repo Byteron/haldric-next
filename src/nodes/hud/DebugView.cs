@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class DebugView : CanvasLayer
+public partial class DebugView : Control
 {
     public Label StatsLabel { get; set; }
 

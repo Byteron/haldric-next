@@ -73,9 +73,14 @@ public class RecruitUnitEventSystem : IEcsSystem
             unitEntity.Get<Attribute<Moves>>().Empty();
             unitEntity.Get<Attribute<Actions>>().Empty();
 
-            var hudView = world.GetResource<HudView>();
+            var canvas = world.GetResource<Canvas>();
+            var canvasLayer = canvas.GetCanvasLayer(0);
 
-            unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
+            var unitPlate = UnitPlate.Instantiate();
+            
+            canvasLayer.AddChild(unitPlate);
+
+            unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
 
             recruitEvent.LocEntity.Add(new HasUnit(unitEntity));
         }

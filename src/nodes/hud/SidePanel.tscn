@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0uy8nii8p2w4"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/SidePanel.cs" id="1_xqi1i"]
+
+[node name="SidePanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( "1_xqi1i" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -31.0
+offset_right = 31.0
+offset_bottom = 40.0
+grow_horizontal = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 55.0
+offset_bottom = 33.0
+text = "sdfsdf"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

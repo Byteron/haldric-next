@@ -11,7 +11,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             return;
         }
 
-        if (!world.TryGetResource<HudView>(out var hudView))
+        if (!world.TryGetResource<SidePanel>(out var sidePanel))
         {
             return;
         }
@@ -85,6 +85,6 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             goldString = $"Gold: {playerGold.Value} | Income: {income}";
         }
 
-        hudView.PlayerLabel.Text = $"{youString} | {roundString} | {otherString} | {goldString} | {unitString} | {villageString}";
+        sidePanel.UpdateInfo($"{youString} | {roundString} | {otherString} | {goldString} | {unitString} | {villageString}");
     }
 }
