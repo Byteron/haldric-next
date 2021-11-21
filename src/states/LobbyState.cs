@@ -76,6 +76,10 @@ public partial class LobbyState : GameState
         _socket.ReceivedMatchmakerMatched -= OnReceivedMatchmakerMatched;
 
         _socket.LeaveChatAsync(_channel);
+        _socket.CloseAsync();
+        _world.RemoveResource<ISocket>();
+        _world.RemoveResource<ISession>();
+        _world.RemoveResource<IApiAccount>();
 
         _view.QueueFree();
     }
