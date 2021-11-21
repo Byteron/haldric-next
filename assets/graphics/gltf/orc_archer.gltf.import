@@ -31,6 +31,7 @@ _subresources={
 "save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "",
+"settings/loop_mode": 0,
 "settings/loops": true
 }
 }
