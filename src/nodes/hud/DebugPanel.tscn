@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://cesuscgx4kibh"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/DebugPanel.cs" id="1_oooda"]
+
+[node name="DebugPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( "1_oooda" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatsLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_top = -23.0
+offset_right = 13.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

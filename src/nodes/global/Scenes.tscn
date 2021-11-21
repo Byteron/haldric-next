@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dfmr3sa4hmpd4"]
+[gd_scene load_steps=22 format=3 uid="uid://codklrf2clp01"]
 
 [ext_resource type="Script" path="res://src/nodes/global/Scenes.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://5ylnwotv7ruq" path="res://src/nodes/hud/editor/EditorView.tscn" id="2"]
@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cq72yhdtb8v7c" path="res://src/nodes/menu/MainMenuView.tscn" id="3_wqxn1"]
 [ext_resource type="PackedScene" uid="uid://cii280r8q1acs" path="res://src/nodes/menu/LoginView.tscn" id="4_8ipd3"]
 [ext_resource type="PackedScene" uid="uid://v3pjno5grfrw" path="res://src/nodes/menu/LoadingStateView.tscn" id="4_e3bw0"]
-[ext_resource type="PackedScene" uid="uid://dn8gmhek53gox" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
+[ext_resource type="PackedScene" uid="uid://cesuscgx4kibh" path="res://src/nodes/hud/DebugPanel.tscn" id="4_gx4dp"]
 [ext_resource type="PackedScene" path="res://src/nodes/hud/attack_selection/AttackSelectionView.tscn" id="4_v3bgl"]
 [ext_resource type="PackedScene" uid="uid://cx34w4jqo13n6" path="res://src/nodes/menu/FactionSelectionView.tscn" id="5_h0hoj"]
 [ext_resource type="PackedScene" uid="uid://bgkk5yo3e3hly" path="res://src/nodes/menu/LobbyView.tscn" id="5_oh3a3"]

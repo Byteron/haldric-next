@@ -22,7 +22,7 @@ public partial class MenuState : GameState
         AddChild(menuView);
 
         var canvasLayer = canvas.GetCanvasLayer(10);
-        var debugView = Scenes.Instance.DebugView.Instantiate<DebugView>();
+        var debugView = Scenes.Instance.DebugView.Instantiate<DebugPanel>();
         canvasLayer.AddChild(debugView);
 
         _world.AddResource(menuView);
@@ -42,7 +42,7 @@ public partial class MenuState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _world.RemoveResource<MainMenuView>();
-        _world.RemoveResource<DebugView>();
+        _world.RemoveResource<DebugPanel>();
     }
 
     private void OnLobbyButtonPressed()

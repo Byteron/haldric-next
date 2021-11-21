@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class DebugView : Control
+public partial class DebugPanel : Control
 {
     public Label StatsLabel { get; set; }
 
@@ -9,13 +9,13 @@ public partial class DebugView : Control
     {
         if (e.IsActionPressed("debug"))
         {
-            StatsLabel.Visible = !StatsLabel.Visible;
+            Visible = !Visible;
         }
     }
 
     public override void _Ready()
     {
-        StatsLabel = GetNode<Label>("VBoxContainer/StatsLabel");
-        StatsLabel.Visible = false;
+        StatsLabel = GetNode<Label>("StatsLabel");
+        Visible = false;
     }
 }
