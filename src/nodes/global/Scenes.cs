@@ -15,8 +15,12 @@ public partial class Scenes : Node
     [Export] public PackedScene RecruitSelectionView;
     [Export] public PackedScene LoadingStateView;
     [Export] public PackedScene DebugView;
-    [Export] public PackedScene HudView;
 
+    [Export] public PackedScene SidePanel;
+    [Export] public PackedScene TerrainPanel;
+    [Export] public PackedScene TurnPanel;
+    [Export] public PackedScene UnitPanel;
+    
     [Export] public PackedScene TerrainHighlighter;
 
     [Export] public PackedScene CameraOperator;

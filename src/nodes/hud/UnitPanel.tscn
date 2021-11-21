@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxrhxhvwuecuy"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/UnitPanel.cs" id="1_1h55y"]
+
+[node name="UnitPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( "1_1h55y" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -92.0
+offset_right = 110.0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer"]
+offset_left = 7.0
+offset_top = 34.0
+offset_right = 103.0
+offset_bottom = 57.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

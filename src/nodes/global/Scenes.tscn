@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dfmr3sa4hmpd4"]
+[gd_scene load_steps=22 format=3 uid="uid://dfmr3sa4hmpd4"]
 
 [ext_resource type="Script" path="res://src/nodes/global/Scenes.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://5ylnwotv7ruq" path="res://src/nodes/hud/editor/EditorView.tscn" id="2"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://dn8gmhek53gox" path="res://src/nodes/hud/DebugView.tscn" id="4_gx4dp"]
 [ext_resource type="PackedScene" path="res://src/nodes/hud/attack_selection/AttackSelectionView.tscn" id="4_v3bgl"]
 [ext_resource type="PackedScene" uid="uid://cx34w4jqo13n6" path="res://src/nodes/menu/FactionSelectionView.tscn" id="5_h0hoj"]
-[ext_resource type="PackedScene" uid="uid://dglctrrf6qs2i" path="res://src/nodes/hud/HudView.tscn" id="5_ljnc1"]
 [ext_resource type="PackedScene" uid="uid://bgkk5yo3e3hly" path="res://src/nodes/menu/LobbyView.tscn" id="5_oh3a3"]
 [ext_resource type="PackedScene" uid="uid://dmyvms7guc7jr" path="res://src/nodes/camera/CameraOperator.tscn" id="5_ssdct"]
 [ext_resource type="PackedScene" uid="uid://dlpi2a0xlug5b" path="res://src/nodes/hud/reruitment/RecruitSelectionView.tscn" id="5_v23ql"]
@@ -18,6 +17,10 @@
 [ext_resource type="PackedScene" uid="uid://doifba6dcwgky" path="res://src/nodes/hud/FloatingLabel.tscn" id="9_liy6q"]
 [ext_resource type="PackedScene" uid="uid://d06xn7gquqoud" path="res://src/nodes/hud/UnitPlate.tscn" id="10_rm84j"]
 [ext_resource type="PackedScene" uid="uid://drjqa6cwkr064" path="res://src/nodes/props/FlagView.tscn" id="11_rmuwb"]
+[ext_resource type="PackedScene" uid="uid://b0uy8nii8p2w4" path="res://src/nodes/hud/SidePanel.tscn" id="12_aqmga"]
+[ext_resource type="PackedScene" uid="uid://biima4884fj4i" path="res://src/nodes/hud/TerrainPanel.tscn" id="13_weh4l"]
+[ext_resource type="PackedScene" uid="uid://dkqwntybuxung" path="res://src/nodes/hud/TurnPanel.tscn" id="14_2r1k4"]
+[ext_resource type="PackedScene" uid="uid://bxrhxhvwuecuy" path="res://src/nodes/hud/UnitPanel.tscn" id="15_ubvy6"]
 
 [node name="Scenes" type="Node"]
 script = ExtResource( "1" )
@@ -31,7 +34,10 @@ ScenarioSelectionView = ExtResource( "6_y4d76" )
 RecruitSelectionView = ExtResource( "5_v23ql" )
 LoadingStateView = ExtResource( "4_e3bw0" )
 DebugView = ExtResource( "4_gx4dp" )
-HudView = ExtResource( "5_ljnc1" )
+SidePanel = ExtResource( "12_aqmga" )
+TerrainPanel = ExtResource( "13_weh4l" )
+TurnPanel = ExtResource( "14_2r1k4" )
+UnitPanel = ExtResource( "15_ubvy6" )
 TerrainHighlighter = ExtResource( "7_smnkw" )
 CameraOperator = ExtResource( "5_ssdct" )
 FloatingLabel = ExtResource( "9_liy6q" )

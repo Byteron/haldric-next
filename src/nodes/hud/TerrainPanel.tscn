@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://biima4884fj4i"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/TerrainPanel.cs" id="1_bce8t"]
+
+[node name="TerrainPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( "1_bce8t" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_right = 14.0
+offset_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 8.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}

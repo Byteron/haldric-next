@@ -18,12 +18,13 @@ public partial class AttackSelectionState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var hudView = _world.GetResource<HudView>();
+        var canvas = _world.GetResource<Canvas>();
+        var canvasLayer = canvas.GetCanvasLayer(5);
 
         _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
         _view.Connect("AttackSelected", new Callable(this, nameof(OnAttackSelected)));
         _view.Connect("CancelButtonPressed", new Callable(this, nameof(OnCancelButtonPressed)));
-        hudView.AddChild(_view);
+        canvasLayer.AddChild(_view);
 
         _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);
     }

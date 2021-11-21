@@ -15,7 +15,6 @@ public class TurnEndEventSystem : IEcsSystem
         foreach (var eventEntityId in eventQuery)
         {
             var scenario = world.GetResource<Scenario>();
-
             scenario.EndTurn();
 
             if (scenario.HasRoundChanged())
@@ -65,17 +64,17 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
 
-            var hudView = world.GetResource<HudView>();
+            var turnPanel = world.GetResource<TurnPanel>();
             var localPlayer = world.GetResource<LocalPlayer>();
 
             if (scenario.CurrentPlayer == localPlayer.Side)
             {
                 Sfx.Instance.Play("TurnBell");
-                hudView.TurnEndButton.Disabled = false;
+                turnPanel.EndTurnButton.Disabled = false;
             }
             else
             {
-                hudView.TurnEndButton.Disabled = true;
+                turnPanel.EndTurnButton.Disabled = true;
             }
 
             foreach (var locEntityId in locWithUnitQuery)
@@ -100,7 +99,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                     health.Increase(diff);
 
-                    hudView.SpawnFloatingLabel(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f));
+                    world.Spawn().Add(new SpawnFloatingLabelEvent(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f)));
                 }
             }
         }

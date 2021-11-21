@@ -20,7 +20,7 @@ public class AdvanceEventSystem : IEcsSystem
 
         foreach (var id in query)
         {
-            var hudView = world.GetResource<HudView>();
+            var unitPanel = world.GetResource<UnitPanel>();
 
             ref var advanceEvent = ref world.Entity(id).Get<AdvanceEvent>();
 
@@ -70,7 +70,7 @@ public class AdvanceEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            hudView.SpawnFloatingLabel(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f));
+            world.Spawn().Add(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f)));
         }
     }
 }

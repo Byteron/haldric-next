@@ -40,7 +40,6 @@ public class SpawnUnitEventSystem : IEcsSystem
 
         foreach (var eventEntityId in eventQuery)
         {
-            var hudView = world.GetResource<HudView>();
             var map = world.GetResource<Map>();
 
             ref var spawnEvent = ref world.Entity(eventEntityId).Get<SpawnUnitEvent>();
@@ -59,7 +58,6 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
-
             var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
 
             unitType.QueueFree();
@@ -68,7 +66,6 @@ public class SpawnUnitEventSystem : IEcsSystem
             position.y = elevation.Height + elevationOffset.Value;
 
             unitView.Position = position;
-
 
             unitEntity.Add(new Side(spawnEvent.Side));
             unitEntity.Add(spawnEvent.Coords);
@@ -83,8 +80,14 @@ public class SpawnUnitEventSystem : IEcsSystem
                 unitEntity.Add(new IsHero());
             }
 
+            var canvas = world.GetResource<Canvas>();
+            var canvasLayer = canvas.GetCanvasLayer(0);
 
-            unitEntity.Add(new NodeHandle<UnitPlate>(hudView.CreateUnitPlate()));
+            var unitPlate = UnitPlate.Instantiate();
+
+            canvasLayer.AddChild(unitPlate);
+
+            unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
 
             locEntity.Add(new HasUnit(unitEntity));
         }

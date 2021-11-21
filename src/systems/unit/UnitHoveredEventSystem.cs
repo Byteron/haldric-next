@@ -42,8 +42,8 @@ public class UnitHoveredEventSystem : IEcsSystem
                 }
             }
 
-            var hudView = world.GetResource<HudView>();
-            hudView.UnitLabel.Text = s;
+            var unitPanel = world.GetResource<UnitPanel>();
+            unitPanel.UpdateInfo(s);
         }
     }
 }

@@ -4,14 +4,15 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        if (!world.HasResource<HoveredLocation>() || !world.HasResource<HudView>())
+        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        var hudView = world.GetResource<HudView>();
-
-        var hoveredLocation = world.GetResource<HoveredLocation>();
+        if (!world.TryGetResource<TerrainPanel>(out var terrainPanel))
+        {
+            return;
+        }
 
         var locEntity = hoveredLocation.Entity;
 
@@ -57,6 +58,6 @@ public class UpdateTerrainInfoSystem : IEcsSystem
             text += "\nVillage: " + village.List.Count;
         }
 
-        hudView.TerrainLabel.Text = text;
+        terrainPanel.UpdateInfo(text);
     }
 }

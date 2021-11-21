@@ -4,6 +4,15 @@ using Bitron.Ecs;
 
 public partial class FloatingLabel : Control
 {
+    public static FloatingLabel Instantiate(Vector3 position, string text, Color color)
+    {
+        var label = Scenes.Instance.FloatingLabel.Instantiate<FloatingLabel>();
+        label.Position = position;
+        label.Text = text;
+        label.Color = color;
+        return label;
+    }
+    
     public Vector3 Position { get; set; }
     public Color Color { get; set; }
     public string Text { get; set; }

@@ -23,7 +23,6 @@ offset_top = -5.5
 offset_right = 20.0
 offset_bottom = 5.5
 theme_override_constants/separation = 1
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -40,7 +39,6 @@ texture_progress = ExtResource( "2_g5i0q" )
 tint_under = Color(0, 0, 0, 1)
 tint_progress = Color(1, 0, 0, 1)
 nine_patch_stretch = true
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,7 +48,6 @@ offset_top = 5.0
 offset_right = 40.0
 offset_bottom = 11.0
 theme_override_constants/separation = 1
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -59,7 +56,6 @@ __meta__ = {
 offset_right = 6.0
 offset_bottom = 6.0
 rect_min_size = Vector2(6, 6)
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -70,7 +66,6 @@ offset_right = 40.0
 offset_bottom = 6.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 1
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -81,55 +76,47 @@ offset_bottom = 3.0
 rect_min_size = Vector2(0, 3)
 size_flags_horizontal = 3
 theme_override_constants/separation = 1
-script = null
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_right = 3.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect2" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 4.0
 offset_right = 8.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect3" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 9.0
 offset_right = 13.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect4" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 14.0
 offset_right = 18.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect5" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 19.0
 offset_right = 23.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect6" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 24.0
 offset_right = 28.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ColorRect7" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 29.0
 offset_right = 33.0
 offset_bottom = 3.0
 size_flags_horizontal = 3
-script = null
 
 [node name="ExperienceProgressBar" type="TextureProgressBar" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 offset_top = 4.0
@@ -142,7 +129,6 @@ texture_progress = ExtResource( "2_g5i0q" )
 tint_under = Color(0, 0, 0, 1)
 tint_progress = Color(0.541176, 0.933333, 1, 1)
 nine_patch_stretch = true
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -153,7 +139,6 @@ offset_right = 40.0
 offset_bottom = 15.0
 rect_min_size = Vector2(0, 3)
 color = Color(1, 0.784314, 0.301961, 1)
-script = null
 
 [node name="HeroColorRect" type="ColorRect" parent="VBoxContainer"]
 offset_top = 16.0
@@ -161,4 +146,3 @@ offset_right = 40.0
 offset_bottom = 19.0
 rect_min_size = Vector2(0, 3)
 color = Color(0.905882, 0.960784, 0.941176, 1)
-script = null
