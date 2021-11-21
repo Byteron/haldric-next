@@ -153,6 +153,7 @@ offset_top = 746.0
 offset_right = 200.0
 offset_bottom = 786.0
 rect_min_size = Vector2(0, 40)
+theme_override_font_sizes/font_size = 16
 text = "Back"
 
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
