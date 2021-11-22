@@ -78,6 +78,13 @@ public partial class GameStateController : Node3D
         if (_states.Count > 0)
         {
             var currentState = _states.Peek();
+
+            if (currentState.GetType() == newState.GetType())
+            {
+                GD.PrintErr($"{currentState.GetType().ToString()} already at the top of the stack!");
+                return;
+            }
+            
             currentState.Pause(this);
         }
 
