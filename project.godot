@@ -30,7 +30,8 @@ window/size/width=1600
 window/size/height=800
 window/size/resizable=false
 window/dpi/allow_hidpi=true
-window/vsync/use_vsync=true
+window/vsync/vsync_mode=0
+window/vsync/use_vsync=false
 
 [editor]
 
@@ -153,10 +154,7 @@ debugger_agent/wait_timeout=5000
 
 [rendering]
 
-shadows/directional_shadow/size=8192
-camera/depth_of_field/depth_of_field_bokeh_quality=3
-environment/ssao/quality=4
-anti_aliasing/quality/screen_space_aa=1
-anti_aliasing/quality/use_debanding=true
+shadows/directional_shadow/soft_shadow_quality=2
+shadows/shadows/soft_shadow_quality=2
 global_illumination/gi_probes/anisotropic=true
 environment/default_environment="res://default_env.tres"
