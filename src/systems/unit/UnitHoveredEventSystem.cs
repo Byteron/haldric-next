@@ -1,5 +1,8 @@
 using Godot;
 using Bitron.Ecs;
+using System.Collections.Generic;
+using System.Linq;
+using Haldric.Wdk;
 
 public struct UnitHoveredEvent
 {
@@ -40,6 +43,31 @@ public class UnitHoveredEventSystem : IEcsSystem
                     ref var range = ref attackEntity.Get<Range>();
                     s += string.Format("\n{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
                 }
+            }
+
+            var weaknesses = unitEntity.Get<Weaknesses>();
+            var resistances = unitEntity.Get<Resistances>();
+            var calamities = unitEntity.Get<Calamities>();
+            var immunities = unitEntity.Get<Immunities>();
+
+            if (weaknesses.List.Count > 0)
+            {
+                s += "\nWeak To: " + string.Join(", ", weaknesses.List);
+            }
+
+            if (resistances.List.Count > 0)
+            {
+                s += "\nResistant To: " + string.Join(", ", resistances.List);
+            }
+
+            if (calamities.List.Count > 0)
+            {
+                s += "\nVery Weak To: " + string.Join(", ", calamities.List);
+            }
+
+            if (immunities.List.Count > 0)
+            {
+                s += "\nImmune To: " + string.Join(", ", immunities.List);
             }
 
             var unitPanel = world.GetResource<UnitPanel>();
