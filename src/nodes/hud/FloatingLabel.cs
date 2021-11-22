@@ -38,6 +38,12 @@ public partial class FloatingLabel : Control
     {
         var camera = GetViewport().GetCamera3d();
 
+        if (camera == null)
+        {
+            QueueFree();
+            return;
+        }
+        
         if (camera.IsPositionBehind(Position))
         {
             Hide();
