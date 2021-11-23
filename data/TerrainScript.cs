@@ -91,13 +91,13 @@ public class TerrainScript : TerrainLoader
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
 		
 		// Cliff models for terrain with unwalkable elevation difference
-		AddCliffGraphic("Gg", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_grass.res");
-		AddCliffGraphic("Gll", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddCliffGraphic("Gg", "assets/graphics/models/Cliff_grass_granit_01.tres", "assets/graphics/materials/cliff_granit_01_grass.res");
+		AddCliffGraphic("Gll", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
 		AddCliffGraphic("Ms", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
-		AddCliffGraphic("Rd", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
-		AddCliffGraphic("Sd", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
-		AddCliffGraphic("Sm", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
-		AddCliffGraphic("Sb", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
+		AddCliffGraphic("Rd", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddCliffGraphic("Sd", "assets/graphics/models/Cliff_sand_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
+		AddCliffGraphic("Sm", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddCliffGraphic("Sb", "assets/graphics/models/Cliff_sand_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
 		AddCliffGraphic("Ch", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 		AddCliffGraphic("Kh", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 
