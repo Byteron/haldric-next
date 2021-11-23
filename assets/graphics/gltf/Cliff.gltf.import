@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cfcrfj47nyfyr"
+uid="uid://df5mxxet7rbg4"
 path="res://.godot/imported/Cliff.gltf-6c30613886d2c59a18373d1c6f5fa158.scn"
 
 [deps]
@@ -27,9 +27,9 @@ animation/fps=15
 import_script/path=""
 _subresources={
 "meshes": {
-"Cliff_placeholder_01": {
+"Cliff_granit_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/cliff.tres"
+"save_to_file/path": "res://assets/graphics/models/Cliff_granit_01.tres"
 }
 }
 }
