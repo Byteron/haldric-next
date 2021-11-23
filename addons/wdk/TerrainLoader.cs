@@ -162,9 +162,15 @@ namespace Haldric.Wdk
             WallSegments.Add(code, graphic);
         }
 
-        public void AddCliffGraphic(string code, string path)
+        public void AddCliffGraphic(string code, string path, string material_path = "")
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+            if (!string.IsNullOrEmpty(material_path))
+            {
+                graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+            }
+
             Cliffs.Add(code, graphic);
         }
 
