@@ -9,6 +9,7 @@ public class UnitBuilder
     public UnitBuilder Create()
     {
         _entity = Main.Instance.World.Spawn();
+        _entity.Add<Mobility>();
         return this;
     }
 

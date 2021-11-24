@@ -44,13 +44,20 @@ public struct TerrainTypes
         return defense;
     }
 
-    public int GetMovementCost()
+    public int GetMovementCost(Mobility mobility)
     {
         var cost = 0;
 
         foreach (var type in List)
         {
-            if (Modifiers.MovementCosts[type] > cost)
+            if (mobility.Dict.ContainsKey(type))
+            {
+                if (mobility.Dict[type] > cost)
+                {
+                    cost = mobility.Dict[type];
+                }
+            }
+            else if (Modifiers.MovementCosts[type] > cost)
             {
                 cost = Modifiers.MovementCosts[type];
             }

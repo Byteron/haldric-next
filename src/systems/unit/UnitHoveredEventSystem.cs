@@ -45,6 +45,21 @@ public class UnitHoveredEventSystem : IEcsSystem
                 }
             }
 
+            var mobility = unitEntity.Get<Mobility>();
+
+            if (mobility.Dict.Count > 0)
+            {
+                s += "\nMobility: ";
+            }
+
+            foreach (var item in mobility.Dict)
+            {
+                var terrainType = item.Key;
+                var cost = item.Value;
+
+                s += terrainType.ToString() + ": " + cost;
+            }
+
             var weaknesses = unitEntity.Get<Weaknesses>();
             var resistances = unitEntity.Get<Resistances>();
             var calamities = unitEntity.Get<Calamities>();

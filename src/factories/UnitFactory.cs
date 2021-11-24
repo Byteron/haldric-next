@@ -23,6 +23,7 @@ public class UnitFactory
                 .Remove<Immunities>()
                 .Remove<Advancements>()
                 .Remove<Attacks>()
+                .Remove<Mobility>()
                 .Remove<NodeHandle<UnitView>>();
 
             _builder.Use(entity);
@@ -59,6 +60,13 @@ public class UnitFactory
             _builder.WithAttack(attackEntity);
         }
 
-        return _builder.Build();
+        var unitEntity = _builder.Build();
+
+        foreach (Trait trait in unitType.Traits.GetChildren())
+        {
+            trait.Apply(unitEntity);
+        }
+
+        return unitEntity;
     }
 }

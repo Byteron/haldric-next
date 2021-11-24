@@ -100,6 +100,15 @@ public class Map
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
+        
+        Mobility mobility = new Mobility();
+        mobility.Dict = new Dictionary<TerrainType, int>();
+
+        if (fromLocEntity.Has<HasUnit>())
+        {
+            var unitEntity = fromLocEntity.Get<HasUnit>().Entity;
+            mobility = unitEntity.Get<Mobility>();
+        }
 
         fromLocEntity.Get<Distance>().Value = 0;
 
@@ -131,7 +140,7 @@ public class Map
                     continue;
                 }
 
-                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost(mobility);
 
                 if (cLocEntity.Has<HasUnit>() && cCoords.Cube() != fromCoords.Cube())
                 {
@@ -242,6 +251,15 @@ public class Map
 
         fromLocEntity.Get<Distance>().Value = 0;
 
+        Mobility mobility = new Mobility();
+        mobility.Dict = new Dictionary<TerrainType, int>();
+
+        if (fromLocEntity.Has<HasUnit>())
+        {
+            var unitEntity = fromLocEntity.Get<HasUnit>().Entity;
+            mobility = unitEntity.Get<Mobility>();
+        }
+
         List<EcsEntity> frontier = new List<EcsEntity>();
         frontier.Add(fromLocEntity);
 
@@ -288,7 +306,7 @@ public class Map
                     continue;
                 }
 
-                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost();
+                var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost(mobility);
 
                 if (cLocEntity.Has<HasUnit>() && cCoords.Cube() != fromCoords.Cube())
                 {
