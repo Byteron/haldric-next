@@ -21,11 +21,13 @@ namespace Haldric.Wdk
         [Export] public List<string> Advancements;
 
         public UnitView UnitView;
+        public Node Traits;
         public Node Attacks;
 
         public override void _Ready()
         {
             UnitView = GetNode<UnitView>("UnitView");
+            Traits = GetNode<Node>("Traits");
             Attacks = GetNode<Node>("Attacks");
         }
     }

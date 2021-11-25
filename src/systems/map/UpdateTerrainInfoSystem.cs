@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
+using Haldric.Wdk;
 
 public class UpdateTerrainInfoSystem : IEcsSystem
 {
@@ -16,9 +18,22 @@ public class UpdateTerrainInfoSystem : IEcsSystem
 
         var locEntity = hoveredLocation.Entity;
 
+        
         if (!locEntity.IsAlive())
         {
             return;
+        }
+
+        Mobility mobility = new Mobility();
+        mobility.Dict = new Dictionary<TerrainType, int>();
+
+        if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        {
+            if (selectedLocation.Entity.Has<HasUnit>())
+            {
+                var unitEntity = selectedLocation.Entity.Get<HasUnit>().Entity;
+                mobility = unitEntity.Get<Mobility>();
+            }
         }
 
         ref Coords coords = ref locEntity.Get<Coords>();
@@ -42,7 +57,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
         text += $"\nTerrain: {baseTerrainCode.Value}{overlayTerrainCode}";
         text += $"\nTypes: {terrainTypes}";
         text += $"\nDefense: {(int)(100 * terrainTypes.GetDefense())}%";
-        text += $"\nCost: {terrainTypes.GetMovementCost()}";
+        text += $"\nCost: {terrainTypes.GetMovementCost(mobility)}";
 
         if (locEntity.Has<Castle>())
         {

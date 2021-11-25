@@ -129,6 +129,7 @@ public partial class MoveUnitCommand : Command
         else
         {
             ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
+            ref var mobility = ref _unitEntity.Get<Mobility>();
 
             if (_targetLocEntity.IsAlive() && _targetLocEntity.Has<IsInZoc>())
             {
@@ -144,7 +145,7 @@ public partial class MoveUnitCommand : Command
             _unitView.LookAt(coords.World(), Vector3.Up);
             _unitView.Rotation = new Vector3(0f, _unitView.Rotation.y, 0f);
 
-            var movementCosts = TerrainTypes.FromLocEntity(_targetLocEntity).GetMovementCost();
+            var movementCosts = TerrainTypes.FromLocEntity(_targetLocEntity).GetMovementCost(mobility);
 
             if (IsReverted)
             {
