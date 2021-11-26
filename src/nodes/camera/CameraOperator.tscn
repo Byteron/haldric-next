@@ -3,22 +3,18 @@
 [ext_resource type="Script" path="res://src/nodes/camera/CameraOperator.cs" id="1"]
 
 [sub_resource type="Curve" id="1"]
-_data = [Vector2(0, 0.209091), 0.0, 2.00121, 0, 0, Vector2(0.5, 0.627273), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.71067, 1.65714, 0, 0]
+_data = [Vector2(0, 0.690909), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.19853, 1.65714, 0, 0]
 
 [node name="CameraOperator" type="Node3D"]
 script = ExtResource( "1" )
-_walkSpeed = 72.0
-_minDistance = 15.0
-_maxDistance = 80.0
+_walkSpeed = 60.0
+_minDistance = 25.0
 _zoomCurve = SubResource( "1" )
 
 [node name="HorizontalGimbal" type="Node3D" parent="."]
-script = null
 
 [node name="VerticalGimbal" type="Node3D" parent="HorizontalGimbal"]
-script = null
 
 [node name="Camera" type="Camera3D" parent="HorizontalGimbal/VerticalGimbal"]
 current = true
 fov = 70.0
-script = null
