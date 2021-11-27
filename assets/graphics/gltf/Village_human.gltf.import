@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cxmsnff3r7yq8"
-path="res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"
+uid="uid://bffxj5ushwocs"
+path="res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"
 
 [deps]
 
-source_file="res://assets/graphics/gltf/Village_human.gltf"
-dest_files=["res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"]
+source_file="res://assets/graphics/gltf/village_human.gltf"
+dest_files=["res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"]
 
 [params]
 
@@ -18,88 +18,90 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
 meshes/generate_lods=false
-meshes/create_shadow_meshes=false
-meshes/light_baking=0
+meshes/create_shadow_meshes=true
+meshes/light_baking=2
 meshes/lightmap_texel_size=0.1
-skins/use_named_skins=false
-animation/import=false
+skins/use_named_skins=true
+animation/import=true
 animation/fps=15
 import_script/path=""
 _subresources={
-"materials": {
-"Village_base": {
-"use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_base.res"
-},
-"Village_human_basefloor_01": {
-"use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_basefloor_01.res"
-},
-"Village_human_hall_01": {
-"use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_hall_01.res"
-},
-"Village_human_houses_01": {
-"use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_houses_01.res"
-},
-"Village_human_props_01": {
-"use_external/enabled": true,
-"use_external/path": "res://assets/graphics/materials/Village_human_props_01.res"
-}
-},
 "meshes": {
-"Village_human_base_01": {
+"village_human_base_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_base_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_base_01.tres"
 },
-"Village_human_center_01": {
+"village_human_center_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_center_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_center_01.tres"
 },
-"Village_human_center_02": {
+"village_human_center_02": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_center_02.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_center_02.tres"
 },
-"Village_human_center_03": {
+"village_human_center_03": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_center_03.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_center_03.tres"
 },
-"Village_human_hall_base_01": {
+"village_human_center_04": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_hall_base_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_center_04.tres"
 },
-"Village_human_hall_center_01": {
+"village_human_hall_base_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_hall_center_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_base_01.tres"
 },
-"Village_human_hall_outer_01": {
+"village_human_hall_center_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_center_01.tres"
 },
-"Village_human_hall_outer_02": {
+"village_human_hall_outer_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_02.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_01.tres"
 },
-"Village_human_hall_outer_03": {
+"village_human_hall_outer_02": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_03.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_02.tres"
 },
-"Village_human_outer_01": {
+"village_human_hall_outer_03": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_outer_01.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_03.tres"
 },
-"Village_human_outer_02": {
+"village_human_hall_outer_04": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_outer_02.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_04.tres"
 },
-"Village_human_outer_03": {
+"village_human_hall_outer_05": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_outer_03.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_05.tres"
 },
-"Village_human_outer_04": {
+"village_human_hall_outer_06": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/Village_human_outer_04.tres"
+"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_06.tres"
+},
+"village_human_outer_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_01.tres"
+},
+"village_human_outer_02": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_02.tres"
+},
+"village_human_outer_03": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_03.tres"
+},
+"village_human_outer_04": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_04.tres"
+},
+"village_human_outer_05": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_05.tres"
+},
+"village_human_outer_06": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/village_human_outer_06.tres"
 }
 }
 }
