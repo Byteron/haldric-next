@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bffxj5ushwocs"
-path="res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"
+uid="uid://fbp0muskckwl"
+path="res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"
 
 [deps]
 
-source_file="res://assets/graphics/gltf/Village_human.gltf"
-dest_files=["res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"]
+source_file="res://assets/graphics/gltf/village_human.gltf"
+dest_files=["res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"]
 
 [params]
 
@@ -26,6 +26,32 @@ animation/import=true
 animation/fps=15
 import_script/path=""
 _subresources={
+"materials": {
+"village_base": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_base.res"
+},
+"village_human_dirt": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_human_dirt.res"
+},
+"village_human_hall_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_human_hall_01.res"
+},
+"village_human_hall_wall_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_human_hall_wall_01.res"
+},
+"village_human_houses_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_human_houses_01.res"
+},
+"village_human_props_outer_01": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/village_human_props_outer_01.res"
+}
+},
 "meshes": {
 "village_human_base_01": {
 "save_to_file/enabled": true,
