@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bffxj5ushwocs"
-path="res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"
+path="res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"
 
 [deps]
 
-source_file="res://assets/graphics/gltf/village_human.gltf"
-dest_files=["res://.godot/imported/village_human.gltf-9cbe1510ef60a05b332a844930abb749.scn"]
+source_file="res://assets/graphics/gltf/Village_human.gltf"
+dest_files=["res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"]
 
 [params]
 
