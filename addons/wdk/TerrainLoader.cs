@@ -30,18 +30,6 @@ namespace Haldric.Wdk
             TerrainDicts.Add(code, terrain);
         }
 
-        public void NewShallowWater(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.ShallowWaterOffset).Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
-        public void NewDeepWater(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.DeepWaterOffset).Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
         public void NewCastle(string code, List<TerrainType> types)
         {
             var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
