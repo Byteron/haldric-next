@@ -112,7 +112,7 @@ public partial class TerrainFeaturePopulator : Node3D
         {
             Direction direction = (Direction)i;
 
-            float rotation = direction.Rotation();
+            float rotation = Godot.Mathf.Tau - direction.Rotation();
 
             if (!neighbors.Has(direction))
             {

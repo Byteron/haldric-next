@@ -5,11 +5,11 @@ public static class DirectionExtentions
 {
     private static float[] _rotations = new float[] {
         Godot.Mathf.Pi,
-        4 * Godot.Mathf.Pi/3,
-        5 * Godot.Mathf.Pi/3,
+        4 * Godot.Mathf.Pi / 3,
+        5 * Godot.Mathf.Pi / 3,
         0,
-        Godot.Mathf.Pi/3,
-        2 * Godot.Mathf.Pi/3
+        Godot.Mathf.Pi / 3,
+        2 * Godot.Mathf.Pi / 3
     };
 
     public static float Rotation(this Direction direction)
