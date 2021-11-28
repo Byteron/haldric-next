@@ -101,6 +101,7 @@ public class TerrainScript : TerrainLoader
 		AddCliffGraphic("Ch", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 		AddCliffGraphic("Kh", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 
+		// Forest props
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");
 
@@ -108,20 +109,30 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_03.tres", "outer");
 
+		//Village props
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_01.tres", "center");
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_02.tres", "center");
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_03.tres", "center");
+		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_04.tres", "center");
 
 		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_01.tres", "outer");
 		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_03.tres", "outer");
 		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_04.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_06.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
 
 		AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_base_01.tres");
 		AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_center_01.tres");
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_01.tres", "outer");
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_04.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_06.tres", "outer");
 
 		AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Wo", "assets/graphics/models/water.tres");
