@@ -112,7 +112,7 @@ public partial class TerrainFeaturePopulator : Node3D
         {
             Direction direction = (Direction)i;
 
-            float rotation = Godot.Mathf.Tau - direction.Rotation();
+            float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -215,7 +215,7 @@ public partial class TerrainFeaturePopulator : Node3D
         {
             var direction = (Direction)i;
             //walls want to rotate the other way it seems?
-            float rotation = Godot.Mathf.Tau - direction.Rotation();
+            float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -266,7 +266,7 @@ public partial class TerrainFeaturePopulator : Node3D
         {
             var direction = (Direction)i;
             //walls want to rotate the other way it seems?
-            float rotation = Godot.Mathf.Tau - direction.Rotation();
+            float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
             {
