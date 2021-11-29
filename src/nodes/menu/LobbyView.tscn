@@ -130,6 +130,7 @@ offset_right = 98.0
 offset_bottom = 40.0
 rect_min_size = Vector2(0, 40)
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text = "Join"
 
 [node name="CancelButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]

@@ -37,7 +37,9 @@ public partial class EditorState : GameState
 
         _world.AddResource(editorView);
 
-        _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
+        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
+        AddChild(schedule);
+        _world.AddResource(schedule);
 
         _world.Spawn().Add(new SpawnMapEvent(40, 40));
         _world.Spawn().Add(new ChangeDaytimeEvent());

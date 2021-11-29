@@ -1,36 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://chxc2sy7xliwq"]
+[gd_scene load_steps=2 format=3 uid="uid://chxc2sy7xliwq"]
 
 [ext_resource type="Script" path="res://src/Main.cs" id="1_ciigu"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_adh88"]
-sky_top_color = Color(0.568627, 0.698039, 0.807843, 1)
-sky_horizon_color = Color(0.672549, 0.704902, 0.734314, 1)
-ground_bottom_color = Color(0.121569, 0.121569, 0.129412, 1)
-ground_horizon_color = Color(0.672549, 0.704902, 0.734314, 1)
-
-[sub_resource type="Sky" id="Sky_8yla0"]
-sky_material = SubResource( "ProceduralSkyMaterial_adh88" )
-
-[sub_resource type="Environment" id="Environment_satgj"]
-background_mode = 2
-sky = SubResource( "Sky_8yla0" )
-tonemap_mode = 3
-sdfgi_use_occlusion = true
-sdfgi_read_sky_light = true
-volumetric_fog_density = 0.001
-volumetric_fog_length = 1000.0
-
 [node name="Main" type="Node3D"]
 script = ExtResource( "1_ciigu" )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( "Environment_satgj" )
-
-[node name="LightContainer" type="Node3D" parent="."]
-transform = Transform3D(0.5, 0.5, 0.707107, -0.707107, 0.707107, 0, -0.5, -0.5, 0.707107, 0, 0, 0)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="LightContainer"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
-shadow_enabled = true
-directional_shadow_mode = 0
-directional_shadow_blend_splits = true

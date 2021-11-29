@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://di8brbt3hxbxh"]
+
+[ext_resource type="Script" path="res://addons/wdk/scenario/Schedule.cs" id="1_86m31"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rjtho"]
+
+[sub_resource type="Sky" id="Sky_p3p4s"]
+sky_material = SubResource( "ProceduralSkyMaterial_rjtho" )
+
+[sub_resource type="Environment" id="Environment_eg5mb"]
+background_mode = 2
+sky = SubResource( "Sky_p3p4s" )
+
+[node name="Schedule" type="Node"]
+script = ExtResource( "1_86m31" )
+
+[node name="Daytimes" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( "Environment_eg5mb" )
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="LightContainer" type="Node3D" parent="Pivot"]

@@ -83,7 +83,10 @@ public partial class PlayState : GameState
 
         _world.AddResource(new Commander());
         _world.AddResource(new Scenario(matchPlayers.Array.Length));
-        _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
+
+        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
+        AddChild(schedule);
+        _world.AddResource(schedule);
 
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);

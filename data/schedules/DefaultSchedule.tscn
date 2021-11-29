@@ -1,31 +1,29 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbfpyrftokqnw"]
 
-[ext_resource type="Script" path="res://addons/wdk/scenario/Schedule.cs" id="1_hcuj0"]
+[ext_resource type="PackedScene" uid="uid://di8brbt3hxbxh" path="res://addons/wdk/scenario/Schedule.tscn" id="1_s78rg"]
 [ext_resource type="Script" path="res://addons/wdk/scenario/Daytime.cs" id="2_4es4v"]
 
-[node name="DefaultSchedule" type="Node"]
-script = ExtResource( "1_hcuj0" )
+[node name="DefaultSchedule" instance=ExtResource( "1_s78rg" )]
 
-[node name="Dawn" type="Node" parent="."]
+[node name="Dawn" type="Node" parent="Daytimes" index="0"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
 LightColor = Color(1, 0.709804, 0, 1)
 LightIntensity = 0.6
 SkyColor = Color(0.66, 0.6, 1, 1)
 SkyIntensity = 0.8
 Bonuses = [3]
 
-[node name="Morning" type="Node" parent="."]
+[node name="Morning" type="Node" parent="Daytimes" index="1"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
+Angle = 60.0
 SkyColor = Color(0.8, 1, 0.926667, 1)
 SkyIntensity = 0.5
 Bonuses = [0]
 Maluses = [2]
 
-[node name="Afternoon" type="Node" parent="."]
+[node name="Afternoon" type="Node" parent="Daytimes" index="2"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
+Angle = 120.0
 LightColor = Color(1, 0.933333, 0.6, 1)
 LightIntensity = 0.8
 SkyColor = Color(0.576471, 0.823529, 1, 1)
@@ -33,18 +31,18 @@ SkyIntensity = 0.5
 Bonuses = [0]
 Maluses = [2]
 
-[node name="Dusk" type="Node" parent="."]
+[node name="Dusk" type="Node" parent="Daytimes" index="3"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
+Angle = 180.0
 LightColor = Color(1, 0.591667, 0.3, 1)
 LightIntensity = 0.6
 SkyColor = Color(0.811765, 0.878431, 1, 1)
 SkyIntensity = 0.3
 Bonuses = [3]
 
-[node name="FirstWatch" type="Node" parent="."]
+[node name="FirstWatch" type="Node" parent="Daytimes" index="4"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
+Angle = 240.0
 LightColor = Color(0.25, 0.454167, 0.5, 1)
 LightIntensity = 0.4
 SkyColor = Color(0.4, 0.533333, 0.8, 1)
@@ -52,12 +50,19 @@ SkyIntensity = 0.8
 Bonuses = [2]
 Maluses = [0]
 
-[node name="SecondWatch" type="Node" parent="."]
+[node name="SecondWatch" type="Node" parent="Daytimes" index="5"]
 script = ExtResource( "2_4es4v" )
-Angle = -60.0
+Angle = 300.0
 LightColor = Color(0.25, 0.454167, 0.5, 1)
 LightIntensity = 0.4
 SkyColor = Color(0.4, 0.533333, 0.8, 1)
 SkyIntensity = 0.8
 Bonuses = [2]
 Maluses = [0]
+
+[node name="Pivot" parent="." index="2"]
+transform = Transform3D(0, -5.96046e-08, -1, -0.707107, -0.707107, 5.96046e-08, -0.707107, 0.707107, 0, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Pivot/LightContainer" index="0"]
+shadow_enabled = true
+directional_shadow_mode = 0

@@ -4,18 +4,12 @@ using Bitron.Ecs;
 public partial class Main : Node3D
 {
     public static Main Instance { get; private set; }
-
-    public WorldEnvironment Environment { get; private set; }
-    public DirectionalLight3D Light { get; private set; }
-
+    
     public EcsWorld World { get; private set; } = new EcsWorld();
 
     public override void _Ready()
     {
         Instance = this;
-
-        Environment = GetNode<WorldEnvironment>("WorldEnvironment");
-        Light = GetNode<DirectionalLight3D>("LightContainer/DirectionalLight3D");
 
         Inititalize();
     }

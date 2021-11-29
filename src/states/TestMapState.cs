@@ -30,7 +30,9 @@ public partial class TestMapState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        _world.AddResource(Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>());
+        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
+        AddChild(schedule);
+        _world.AddResource(schedule);
 
         _world.Spawn().Add(new LoadMapEvent(_mapName));
     }
