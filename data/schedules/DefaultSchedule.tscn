@@ -8,76 +8,132 @@
 
 [node name="Dawn" type="Node" parent="Daytimes" index="0"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.4, 0.653333, 0.8, 1)
+SkyHorizonColor = Color(1, 0.780392, 0.607843, 1)
+SkyCurve = 0.732043
+SkyEnergy = 0.5
 Bonuses = [3]
 
 [node name="Sun" type="Node" parent="Daytimes/Dawn" index="0"]
 script = ExtResource( "3_67x7x" )
-LightEnergy = 0.8
+Angle = 30.0
+LightColor = Color(1, 0.513726, 0, 1)
+LightEnergy = 1.2
+ShadowColor = Color(0, 0, 0.180392, 1)
+ShadowBlur = 2.0
 
 [node name="Moon" type="Node" parent="Daytimes/Dawn" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 200.0
+LightEnergy = 0.0
 
 [node name="Morning" type="Node" parent="Daytimes" index="1"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.411765, 0.862745, 1, 1)
+SkyHorizonColor = Color(0.666667, 0.94902, 1, 1)
+SkyCurve = 0.554785
+SkyEnergy = 0.8
 Bonuses = [0]
 Maluses = [2]
 
 [node name="Sun" type="Node" parent="Daytimes/Morning" index="0"]
 script = ExtResource( "3_67x7x" )
 Angle = 60.0
+LightColor = Color(0.996667, 1, 0.9, 1)
+LightEnergy = 1.4
+ShadowColor = Color(0, 0.0823529, 0.054902, 1)
 
 [node name="Moon" type="Node" parent="Daytimes/Morning" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 200.0
+LightEnergy = 0.0
 
 [node name="Afternoon" type="Node" parent="Daytimes" index="2"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.207843, 0.611765, 1, 1)
+SkyHorizonColor = Color(0.513726, 0.823529, 1, 1)
+SkyCurve = 0.574349
+SkyEnergy = 0.8
 Bonuses = [0]
 Maluses = [2]
 
 [node name="Sun" type="Node" parent="Daytimes/Afternoon" index="0"]
 script = ExtResource( "3_67x7x" )
 Angle = 120.0
+LightColor = Color(1, 0.921569, 0.541176, 1)
+LightEnergy = 1.6
+ShadowColor = Color(0, 0, 0.0823529, 1)
 
 [node name="Moon" type="Node" parent="Daytimes/Afternoon" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 200.0
+LightEnergy = 0.0
 
 [node name="Dusk" type="Node" parent="Daytimes" index="3"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.48, 0.597333, 0.8, 1)
+SkyHorizonColor = Color(1, 0.686275, 0.85098, 1)
+SkyCurve = 0.267943
+SkyEnergy = 0.4
 Bonuses = [3]
 
 [node name="Sun" type="Node" parent="Daytimes/Dusk" index="0"]
 script = ExtResource( "3_67x7x" )
-Angle = 180.0
-LightEnergy = 0.8
+Angle = 160.0
+LightColor = Color(1, 0.56, 0.567333, 1)
+LightEnergy = 0.6
+ShadowBlur = 2.0
 
 [node name="Moon" type="Node" parent="Daytimes/Dusk" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 200.0
+LightEnergy = 0.0
 
 [node name="FirstWatch" type="Node" parent="Daytimes" index="4"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.054, 0.2484, 0.54, 1)
+SkyHorizonColor = Color(0.258824, 0.501961, 0.94902, 1)
+SkyCurve = 1.51572
+SkyEnergy = 0.8
 Bonuses = [2]
 Maluses = [0]
 
 [node name="Sun" type="Node" parent="Daytimes/FirstWatch" index="0"]
 script = ExtResource( "3_67x7x" )
 Angle = 240.0
+LightEnergy = 0.0
 Shadows = false
 
 [node name="Moon" type="Node" parent="Daytimes/FirstWatch" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 60.0
+LightColor = Color(0.282353, 0.698039, 1, 1)
+LightEnergy = 0.3
+ShadowColor = Color(0, 0.207843, 0.32549, 1)
+ShadowBlur = 5.0
 
 [node name="SecondWatch" type="Node" parent="Daytimes" index="5"]
 script = ExtResource( "2_4es4v" )
+SkyTopColor = Color(0.054, 0.2484, 0.54, 1)
+SkyHorizonColor = Color(0.258824, 0.501961, 0.94902, 1)
+SkyCurve = 1.51572
+SkyEnergy = 0.8
 Bonuses = [2]
 Maluses = [0]
 
 [node name="Sun" type="Node" parent="Daytimes/SecondWatch" index="0"]
 script = ExtResource( "3_67x7x" )
 Angle = 300.0
+LightEnergy = 0.0
 Shadows = false
 
 [node name="Moon" type="Node" parent="Daytimes/SecondWatch" index="1"]
 script = ExtResource( "3_67x7x" )
+Angle = 120.0
+LightColor = Color(0.282353, 0.698039, 1, 1)
+LightEnergy = 0.3
+ShadowColor = Color(0, 0.207843, 0.32549, 1)
+ShadowBlur = 5.0
 
 [node name="Pivot" parent="." index="2"]
 transform = Transform3D(0, -5.96046e-08, -1, -0.707107, -0.707107, 5.96046e-08, -0.707107, 0.707107, 0, 0, 0, 0)
