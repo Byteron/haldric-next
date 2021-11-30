@@ -5,15 +5,31 @@ namespace Haldric.Wdk
 {
     public partial class Daytime : Node
     {
-        [Export] public float Angle = 0f;
-        [Export] public Color LightColor = new Color("FFFFFF");
-        [Export] public float LightIntensity = 1f;
-
-        [Export] public Color SkyColor = new Color("FFFFFF");
-        [Export] public float SkyIntensity = 1f;
+        [Export] public Color SkyTopColor = new Color("FFFFFF");
+        [Export] public Color SkyHorizonColor = new Color("FFFFFF");
+        [Export(PropertyHint.ExpEasing)] public float SkyCurve = 1f;
+        [Export(PropertyHint.Range, "0,100")] public float SkyEnergy = 1f;
 
         [Export] public List<Alignment> Bonuses;
         [Export] public List<Alignment> Maluses;
+
+        private List<DaytimeLightConfig> _lightConfigs = new List<DaytimeLightConfig>();
+
+        public override void _Ready()
+        {
+            foreach (Node node in GetChildren())
+            {
+                if (node is DaytimeLightConfig config)
+                {
+                    _lightConfigs.Add(config);
+                }
+            }
+        }
+
+        public List<DaytimeLightConfig> GetLightConfigs()
+        {
+            return _lightConfigs;
+        }
 
         public float GetDamageModifier(Alignment alignment)
         {
