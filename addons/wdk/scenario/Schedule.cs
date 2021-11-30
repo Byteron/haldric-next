@@ -66,10 +66,15 @@ namespace Haldric.Wdk
                 lightTween.SetTrans(Tween.TransitionType.Sine);
                 lightTween.SetEase(Tween.EaseType.InOut);
 
+                GD.Print(light.Rotation.x);
+                var currentAngle = Mathf.Rad2Deg(light.Rotation.x);
                 var angle = config.Angle;
-                if (angle == 0)
+
+                GD.Print($"Angle: {angle} Current Angle: {currentAngle}");
+                if (angle < currentAngle)
                 {
-                    angle = 360;
+                    angle += 360;
+                    GD.Print($"Setting Angle: {angle}");
                 }
 
                 lightTween.Parallel().TweenProperty(light, "rotation", new Vector3(Mathf.Deg2Rad(angle), 0, 0), 2.5f);
@@ -80,10 +85,7 @@ namespace Haldric.Wdk
                 lightTween.Parallel().TweenProperty(light, "shadow_color", config.ShadowColor, 2.5f);
                 lightTween.Parallel().TweenProperty(light, "shadow_blur", config.ShadowBlur, 2.5f);
 
-                if (angle == 360)
-                {
-                    lightTween.Connect(nameof(lightTween.Finished), new Callable(this, nameof(ResetLight)), new Array() { i });
-                }
+                lightTween.Connect("finished", new Callable(this, nameof(SetLightAngle)), new Array() { i, config.Angle });
 
                 lightTween.Play();
             }
@@ -91,9 +93,10 @@ namespace Haldric.Wdk
             tween.Play();
         }
 
-        private void ResetLight(int index)
+        private void SetLightAngle(int index, int angle)
         {
-            _lights[index].Rotation = new Vector3(0, 0, 0);
+            GD.Print("Resetting Angle: ", angle);
+            _lights[index].Rotation = new Vector3(Mathf.Deg2Rad(angle), 0, 0);
         }
     }
 }
