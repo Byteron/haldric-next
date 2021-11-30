@@ -35,6 +35,7 @@ public partial class TestMapState : GameState
         _world.AddResource(schedule);
 
         _world.Spawn().Add(new LoadMapEvent(_mapName));
+        _world.Spawn().Add(new ChangeDaytimeEvent());
     }
 
     public override void Exit(GameStateController gameStates)
