@@ -61,8 +61,8 @@ public partial class GameStateController : Node3D
         }
 
         var currentState = _states.Pop();
-        currentState.Exit(this);
         currentState.RunEventSystems();
+        currentState.Exit(this);
         RemoveChild(currentState);
         currentState.QueueFree();
 
