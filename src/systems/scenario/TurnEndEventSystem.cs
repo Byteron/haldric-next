@@ -32,7 +32,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                 ref var side = ref unitEntity.Get<Side>();
 
-                if (side.Value == scenario.CurrentPlayer)
+                if (side.Value == scenario.Side)
                 {
                     ref var actions = ref unitEntity.Get<Attribute<Actions>>();
                     ref var moves = ref unitEntity.Get<Attribute<Moves>>();
@@ -58,7 +58,7 @@ public class TurnEndEventSystem : IEcsSystem
                 ref var village = ref locEntity.Get<Village>();
                 ref var side = ref locEntity.Get<IsCapturedBySide>();
 
-                if (scenario.CurrentPlayer == side.Value)
+                if (scenario.Side == side.Value)
                 {
                     gold.Value += village.List.Count;
                 }
@@ -67,7 +67,7 @@ public class TurnEndEventSystem : IEcsSystem
             var turnPanel = world.GetResource<TurnPanel>();
             var localPlayer = world.GetResource<LocalPlayer>();
 
-            if (scenario.CurrentPlayer == localPlayer.Side)
+            if (scenario.Side == localPlayer.Side)
             {
                 Sfx.Instance.Play("TurnBell");
                 turnPanel.EndTurnButton.Disabled = false;
@@ -93,7 +93,7 @@ public class TurnEndEventSystem : IEcsSystem
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
                 ref var side = ref unitEntity.Get<Side>();
 
-                if (canHeal && side.Value == scenario.CurrentPlayer && !health.IsFull())
+                if (canHeal && side.Value == scenario.Side && !health.IsFull())
                 {
                     var diff = Mathf.Min(health.GetDifference(), 8);
 

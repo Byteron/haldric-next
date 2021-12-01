@@ -1,37 +1,21 @@
 using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 using Bitron.Ecs;
 
 public struct SpawnMapEvent
 {
-    public int Width { get; set; }
-    public int Height { get; set; }
-    public Dictionary Players { get; set; }
-    public Dictionary MapData { get; set; }
+    public MapData MapData { get; set; }
 
-    public SpawnMapEvent(Dictionary mapData)
+    public SpawnMapEvent(MapData mapData)
     {
         MapData = mapData;
-        Width = (int)(float)mapData["Width"];
-        Height = (int)(float)mapData["Height"];
-
-        if (mapData.Contains("Players"))
-        {
-            Players = (Dictionary)mapData["Players"];
-        }
-        else
-        {
-            Players = null;
-        }
     }
 
     public SpawnMapEvent(int width, int height)
     {
-        Width = width;
-        Height = height;
-        MapData = null;
-        Players = null;
+        MapData = new MapData();
+        MapData.Width = width;
+        MapData.Height = height;
     }
 }
 
@@ -50,24 +34,24 @@ public class SpawnMapEventSystem : IEcsSystem
         _world = world;
 
         var query = world.Query<SpawnMapEvent>().End();
-
         foreach (var eventEntity in query)
         {
             var spawnEvent = world.Entity(eventEntity).Get<SpawnMapEvent>();
+            var mapData = spawnEvent.MapData;
 
-            if (spawnEvent.MapData == null)
+            if (mapData.Locations.Count == 0)
             {
-                spawnEvent.MapData = GetMapDataFromDimensions(spawnEvent.Width, spawnEvent.Height);
+                mapData = GetMapDataFromDimensions(mapData.Width, mapData.Height);
             }
 
-            world.AddResource(new ShaderData(spawnEvent.Width, spawnEvent.Height));
+            world.AddResource(new ShaderData(mapData.Width, mapData.Height));
 
             var terrainHighlighter = Scenes.Instance.TerrainHighlighter.Instantiate<TerrainHighlighter>();
             _parent.AddChild(terrainHighlighter);
             world.AddResource(terrainHighlighter);
 
-            Dictionary players = spawnEvent.Players;
-            Map map = CreateMapFromMapData(spawnEvent.MapData);
+            var players = mapData.Players;
+            Map map = CreateMapFromMapData(mapData);
 
             world.AddResource(map);
 
@@ -87,23 +71,11 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private void InitializePlayers(Locations locations, Dictionary players)
+    private void InitializePlayers(Locations locations, List<MapDataPlayer> players)
     {
-        if (players == null)
+        foreach (var player in players)
         {
-            return;
-        }
-
-        foreach (var locEntity in locations.Values)
-        {
-            ref var coords = ref locEntity.Get<Coords>();
-
-            if (players.Contains(coords.Cube().ToString()))
-            {
-                var side = (int)(float)players[coords.Cube().ToString()];
-
-                locEntity.Add(new IsStartingPositionOfSide(side));
-            }
+            locations.Dict[player.Coords.Cube()].Add(new IsStartingPositionOfSide(player.Side));
         }
     }
 
@@ -115,15 +87,11 @@ public class SpawnMapEventSystem : IEcsSystem
         _world.AddResource(cursorView);
     }
 
-    private Dictionary GetMapDataFromDimensions(int width, int height)
+    private MapData GetMapDataFromDimensions(int width, int height)
     {
-        var dict = new Dictionary
-        {
-            { "Width", width },
-            { "Height", height }
-        };
-
-        var locsDict = new Dictionary();
+        var mapData = new MapData();
+        mapData.Width = width;
+        mapData.Height = height;
 
         for (int z = 0; z < height; z++)
         {
@@ -131,65 +99,40 @@ public class SpawnMapEventSystem : IEcsSystem
             {
                 var coords = Coords.FromOffset(x, z);
 
-                var locDict = new Dictionary
-                {
-                    { "Terrain", new List<string>() { "Gg" } },
-                    { "Elevation", 0 },
-                    { "ElevationOffset", 0 }
-                };
+                var locData = new MapDataLocation();
+                locData.Coords = coords;
+                locData.Terrain = new List<string>() { "Gg" };
+                locData.Elevation = 0;
 
-                if (locsDict.Contains(coords.Cube()))
-                {
-                    locsDict[coords.Cube()] = locDict;
-                }
-                else
-                {
-                    locsDict.Add(coords.Cube(), locDict);
-                }
+                mapData.Locations.Add(locData);
             }
         }
 
-        dict.Add("Locations", locsDict);
-
-        var json = new JSON();
-        var jsonString = json.Stringify(dict);
-        if (json.Parse(jsonString) != Error.Ok)
-        {
-            GD.PushError("JSON could not be parsed");
-        }
-
-        dict = json.GetData() as Dictionary;
-
-        return dict;
+        return mapData;
     }
 
-    private Map CreateMapFromMapData(Dictionary mapData)
+    private Map CreateMapFromMapData(MapData mapData)
     {
-        var width = System.Convert.ToInt32(mapData["Width"]);
-        var height = System.Convert.ToInt32(mapData["Height"]);
+        var width = mapData.Width;
+        var height = mapData.Height;
 
         var map = new Map(width, height, 4);
 
         var locations = map.Locations;
 
-        var locationsData = (Dictionary)mapData["Locations"];
-
-        foreach (var cellString in locationsData.Keys)
+        foreach (var locData in mapData.Locations)
         {
-            Vector3 cell = (Vector3)GD.Str2Var("Vector3" + cellString);
             var locEntity = _world.Spawn();
 
-            var coords = Coords.FromCube(cell);
+            var coords = locData.Coords;
 
             locEntity.Add(new Index((int)coords.Offset().z * width + (int)coords.Offset().x));
             locEntity.Add(coords);
 
             locEntity.Add(new PlateauArea(0.75f));
 
-            var locationData = (Dictionary)locationsData[cellString];
-
-            var terrainCodes = (Godot.Collections.Array)locationData["Terrain"];
-            var elevation = System.Convert.ToInt32(locationData["Elevation"]);
+            var terrainCodes = locData.Terrain;
+            var elevation = locData.Elevation;
             var elevationOffset = 0;
 
             var baseTerrainEntity = Data.Instance.Terrains[(string)terrainCodes[0]];
@@ -207,7 +150,7 @@ public class SpawnMapEventSystem : IEcsSystem
             locEntity.Add<Distance>();
             locEntity.Add<PathFrom>();
 
-            locations.Set(cell, locEntity);
+            locations.Set(coords.Cube(), locEntity);
         }
 
         return map;

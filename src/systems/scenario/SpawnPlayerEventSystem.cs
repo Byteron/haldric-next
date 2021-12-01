@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Bitron.Ecs;
 using Godot;
@@ -49,6 +48,7 @@ public class SpawnPlayerEventSystem : IEcsSystem
                 .Add(new Id(spawnEvent.Id))
                 .Add(new Side(spawnEvent.Side))
                 .Add(new Gold(spawnEvent.Gold))
+                .Add(new Faction(faction.Name))
                 .Add(new Recruits(faction.Recruits));
 
             scenario.Players[spawnEvent.Side] = playerEntity;

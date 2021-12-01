@@ -16,7 +16,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             return;
         }
 
-        if (scenario.CurrentPlayer == -1)
+        if (scenario.Side == -1)
         {
             return;
         }

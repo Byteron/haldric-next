@@ -3,7 +3,7 @@ using Bitron.Ecs;
 public class Scenario
 {
     public int Round { get; set; } = 0;
-    public int CurrentPlayer { get; set; } = -1;
+    public int Side { get; set; } = -1;
     public EcsEntity[] Players { get; set; }
 
     private int _round = -1;
@@ -15,9 +15,9 @@ public class Scenario
 
     public void EndTurn()
     {
-        CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
+        Side = (Side + 1) % Players.Length;
 
-        if (CurrentPlayer == 0)
+        if (Side == 0)
         {
             Round += 1;
         }
@@ -25,7 +25,7 @@ public class Scenario
 
     public EcsEntity GetCurrentPlayerEntity()
     {
-        return Players[CurrentPlayer];
+        return Players[Side];
     }
 
     public bool HasRoundChanged()

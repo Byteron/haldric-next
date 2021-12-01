@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Nakama.TinyJson;
 
 public struct FileData
 {
@@ -10,6 +11,24 @@ public struct FileData
 
 public static class Loader
 {
+    public static T LoadJson<T>(string path) where T: class
+    {
+        var file = new File();
+        GD.Print(path);
+
+        if (file.Open(path, File.ModeFlags.Read) != Error.Ok)
+        {
+            GD.PushError("error reading file");
+            return null;
+        }
+
+        var jsonString = file.GetAsText();
+
+        file.Close();
+
+        return JsonParser.FromJson<T>(jsonString);
+    }
+
     public static List<FileData> LoadDir(string path, List<string> extentions, bool loadResource = true)
     {
         return LoadDirectoryData(path, new List<FileData>(), extentions, loadResource);

@@ -22,7 +22,7 @@ public partial class RecruitSelectionState : GameState
         var scenario = _world.GetResource<Scenario>();
         var player = scenario.GetCurrentPlayerEntity();
 
-        _side = scenario.CurrentPlayer;
+        _side = scenario.Side;
 
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(2);

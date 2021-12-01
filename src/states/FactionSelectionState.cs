@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 using Bitron.Ecs;
 using Nakama;
 using Nakama.TinyJson;
@@ -12,7 +11,7 @@ public partial class FactionSelectionState : GameState
     public int _playersReadied = 0;
 
     private string _mapName = "";
-    private Dictionary _mapDict = null;
+    private MapData _mapData = null;
 
     private ISocket _socket = null;
     private IMatch _match = null;
@@ -20,7 +19,7 @@ public partial class FactionSelectionState : GameState
     public FactionSelectionState(EcsWorld world, string mapName) : base(world)
     {
         _mapName = mapName;
-        _mapDict = Data.Instance.Maps[mapName];
+        _mapData = Data.Instance.Maps[mapName];
     }
 
     public override void Enter(GameStateController gameStates)
@@ -37,10 +36,10 @@ public partial class FactionSelectionState : GameState
 
         _view = Scenes.Instance.FactionSelectionView.Instantiate<FactionSelectionView>();
 
-        var playerDict = (Dictionary)_mapDict["Players"];
+        var playerList = _mapData.Players;
         _view.MapName = _mapName;
         _view.LocalPlayerSide = localPlayer.Side;
-        _view.PlayerCount = playerDict.Count;
+        _view.PlayerCount = playerList.Count;
 
         _view.Connect(nameof(FactionSelectionView.FactionSelected), new Callable(this, nameof(OnFactionSelected)));
         _view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));

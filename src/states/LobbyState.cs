@@ -191,10 +191,10 @@ public partial class LobbyState : GameState
 
     private void OnScenarioSelected(string mapName)
     {
-        var mapDict = Data.Instance.Maps[mapName];
-        var playerDict = (Godot.Collections.Dictionary)mapDict["Players"];
+        var mapData = Data.Instance.Maps[mapName];
+        var playerList = mapData.Players;
         _mapName = mapName;
-        _playerCount = playerDict.Count;
+        _playerCount = playerList.Count;
     }
 
     private void OnReceivedChannelPresence(IChannelPresenceEvent presenceEvent)

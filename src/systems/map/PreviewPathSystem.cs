@@ -44,7 +44,7 @@ public class PreviewPathSystem : IEcsSystem
         var map = world.GetResource<Map>();
         var scenario = world.GetResource<Scenario>();
 
-        Path path = map.FindPath(sLocEntity.Get<Coords>(), hLocEntity.Get<Coords>(), scenario.CurrentPlayer);
+        Path path = map.FindPath(sLocEntity.Get<Coords>(), hLocEntity.Get<Coords>(), scenario.Side);
         highlighter.ShowPath(path);
 
     }

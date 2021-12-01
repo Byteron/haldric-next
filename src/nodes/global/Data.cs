@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using Bitron.Ecs;
+using Nakama.TinyJson;
 
 public partial class Data : Node
 {
@@ -23,7 +24,7 @@ public partial class Data : Node
     public Dictionary<string, FactionData> Factions { get; set; } = new Dictionary<string, FactionData>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
     public Dictionary<string, EcsEntity> Terrains { get; set; } = new Dictionary<string, EcsEntity>();
-    public Dictionary<string, Godot.Collections.Dictionary> Maps { get; set; } = new Dictionary<string, Godot.Collections.Dictionary>();
+    public Dictionary<string, MapData> Maps { get; set; } = new Dictionary<string, MapData>();
 
     public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
     public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
@@ -125,26 +126,9 @@ public partial class Data : Node
 
         foreach (var data in Loader.LoadDir("res://data/maps", new List<string>() { "json" }, false))
         {
-            var dict = LoadJsonFromFile(data.Path);
-            Maps.Add(data.Id, dict);
+            var mapData = Loader.LoadJson<MapData>(data.Path);
+            Maps.Add(data.Id, mapData);
         }
-    }
-
-    private Godot.Collections.Dictionary LoadJsonFromFile(string path)
-    {
-        var file = new File();
-
-        if (!(file.Open(path, File.ModeFlags.Read) == Error.Ok))
-        {
-            GD.PushError("error reading file");
-            return new Godot.Collections.Dictionary();
-        }
-
-        var jsonString = file.GetAsText();
-
-        var json = new JSON();
-        json.Parse(jsonString);
-        return json.GetData() as Godot.Collections.Dictionary;
     }
 
     public void CreateTextureArrayIds()
