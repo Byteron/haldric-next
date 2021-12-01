@@ -22,6 +22,7 @@ public partial class EditorState : GameState
         AddEventSystem<SaveMapEvent>(new SaveMapEventSystem());
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
+        AddEventSystem<SpawnScheduleEvent>(new SpawnScheduleEventSystem(this));
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
 
@@ -37,10 +38,7 @@ public partial class EditorState : GameState
 
         _world.AddResource(editorView);
 
-        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
-        AddChild(schedule);
-        _world.AddResource(schedule);
-
+        _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
         _world.Spawn().Add(new SpawnMapEvent(40, 40));
         _world.Spawn().Add(new ChangeDaytimeEvent());
     }

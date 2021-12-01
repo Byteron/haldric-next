@@ -49,6 +49,7 @@ public partial class PlayState : GameState
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
+        AddEventSystem<SpawnScheduleEvent>(new SpawnScheduleEventSystem(this));
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<SpawnPlayersEvent>(new SpawnPlayersEventSystem());
         AddEventSystem<SpawnPlayerEvent>(new SpawnPlayerEventSystem());
@@ -84,10 +85,6 @@ public partial class PlayState : GameState
         _world.AddResource(new Commander());
         _world.AddResource(new Scenario(matchPlayers.Array.Length));
 
-        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
-        AddChild(schedule);
-        _world.AddResource(schedule);
-
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
 
@@ -108,6 +105,7 @@ public partial class PlayState : GameState
         canvasLayer.AddChild(terrainPanel);
         _world.AddResource(terrainPanel);
 
+        _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
         _world.Spawn().Add(new LoadMapEvent(_mapName));
         _world.Spawn().Add(new SpawnPlayersEvent(_factions));
         _world.Spawn().Add(new TurnEndEvent());

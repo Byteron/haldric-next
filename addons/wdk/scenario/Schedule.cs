@@ -33,9 +33,20 @@ namespace Haldric.Wdk
             TweenVisuals();
         }
 
+        public void Set(int index)
+        {
+            _current = index;
+            SetVisuals();
+        }
+
         public Daytime GetCurrentDaytime()
         {
             return _daytimes.GetChild<Daytime>(_current);
+        }
+
+        public int GetCurrentDaytimeIndex()
+        {
+            return _current;
         }
 
         private void TweenVisuals()
@@ -91,6 +102,32 @@ namespace Haldric.Wdk
             }
 
             tween.Play();
+        }
+
+        private void SetVisuals()
+        {
+            var daytime = GetCurrentDaytime();
+            var configs = daytime.GetLightConfigs();
+
+            GD.Print("Daytime: ", daytime.Name);
+
+            _env.Environment.Sky.SkyMaterial.Set("sky_energy", daytime.SkyEnergy);
+            _env.Environment.Sky.SkyMaterial.Set("sky_curve", daytime.SkyCurve);
+            _env.Environment.Sky.SkyMaterial.Set("sky_top_color", daytime.SkyTopColor);
+            _env.Environment.Sky.SkyMaterial.Set("sky_horizon_color", daytime.SkyHorizonColor);
+
+            for (int i = 0; i < _lights.Count; i++)
+            {
+                var light = _lights[i];
+                var config = configs[i];
+
+                light.Rotation = new Vector3(Mathf.Deg2Rad(config.Angle), 0, 0);
+                light.LightColor = config.LightColor;
+                light.LightEnergy = config.LightEnergy;
+                light.ShadowEnabled = config.Shadows;
+                light.ShadowColor = config.ShadowColor;
+                light.ShadowBlur = config.ShadowBlur;
+            }
         }
 
         private void SetLightAngle(int index, int angle)

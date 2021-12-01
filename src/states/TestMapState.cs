@@ -22,6 +22,7 @@ public partial class TestMapState : GameState
         AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
         AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
         AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
+        AddEventSystem<SpawnScheduleEvent>(new SpawnScheduleEventSystem(this));
         AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
         AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
 
@@ -30,10 +31,7 @@ public partial class TestMapState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        var schedule = Data.Instance.Schedules["DefaultSchedule"].Instantiate<Schedule>();
-        AddChild(schedule);
-        _world.AddResource(schedule);
-
+        _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
         _world.Spawn().Add(new LoadMapEvent(_mapName));
         _world.Spawn().Add(new ChangeDaytimeEvent());
     }
