@@ -22,17 +22,19 @@ public class TurnEndEventSystem : IEcsSystem
                 world.Spawn().Add(new ChangeDaytimeEvent());
             }
 
-            var player = scenario.GetCurrentPlayerEntity();
+            var sideEntity = scenario.GetCurrentSideEntity();
 
-            ref var gold = ref player.Get<Gold>();
+            ref var gold = ref sideEntity.Get<Gold>();
+            ref var side = ref sideEntity.Get<Side>();
+            ref var playerId = ref sideEntity.Get<PlayerId>();
 
             foreach (var unitEntityId in unitQuery)
             {
                 var unitEntity = world.Entity(unitEntityId);
 
-                ref var side = ref unitEntity.Get<Side>();
+                ref var unitSide = ref unitEntity.Get<Side>();
 
-                if (side.Value == scenario.Side)
+                if (side.Value == unitSide.Value)
                 {
                     ref var actions = ref unitEntity.Get<Attribute<Actions>>();
                     ref var moves = ref unitEntity.Get<Attribute<Moves>>();
@@ -56,9 +58,9 @@ public class TurnEndEventSystem : IEcsSystem
                 var locEntity = world.Entity(locEntityId);
 
                 ref var village = ref locEntity.Get<Village>();
-                ref var side = ref locEntity.Get<IsCapturedBySide>();
+                ref var villageSide = ref locEntity.Get<IsCapturedBySide>();
 
-                if (scenario.Side == side.Value)
+                if (side.Value == villageSide.Value)
                 {
                     gold.Value += village.List.Count;
                 }
@@ -67,7 +69,7 @@ public class TurnEndEventSystem : IEcsSystem
             var turnPanel = world.GetResource<TurnPanel>();
             var localPlayer = world.GetResource<LocalPlayer>();
 
-            if (scenario.Side == localPlayer.Side)
+            if (playerId.Value == localPlayer.Id)
             {
                 Sfx.Instance.Play("TurnBell");
                 turnPanel.EndTurnButton.Disabled = false;
@@ -91,9 +93,9 @@ public class TurnEndEventSystem : IEcsSystem
                 var unitEntity = locEntity.Get<HasUnit>().Entity;
 
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
-                ref var side = ref unitEntity.Get<Side>();
+                ref var unitSide = ref unitEntity.Get<Side>();
 
-                if (canHeal && side.Value == scenario.Side && !health.IsFull())
+                if (canHeal && unitSide.Value == side.Value && !health.IsFull())
                 {
                     var diff = Mathf.Min(health.GetDifference(), 8);
 

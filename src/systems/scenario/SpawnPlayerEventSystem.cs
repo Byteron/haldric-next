@@ -4,15 +4,15 @@ using Godot;
 
 public struct SpawnPlayerEvent
 {
-    public string Id;
+    public int PlayerId;
     public int Side;
     public Coords Coords;
     public string Faction;
     public int Gold;
 
-    public SpawnPlayerEvent(int side, string id, Coords coords, string faction, int gold)
+    public SpawnPlayerEvent(int playerId, int side, Coords coords, string faction, int gold)
     {
-        Id = id;
+        PlayerId = playerId;
         Side = side;
         Coords = coords;
         Faction = faction;
@@ -31,9 +31,12 @@ public class SpawnPlayerEventSystem : IEcsSystem
             ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayerEvent>();
 
             var scenario = world.GetResource<Scenario>();
+            var matchPlayers = world.GetResource<MatchPlayers>();
+
+            var username = matchPlayers.Array[spawnEvent.PlayerId].Username;
 
             FactionData faction;
-            
+
             if (spawnEvent.Faction == "Random")
             {
                 var factionName = Data.Instance.Factions.Keys.ToArray()[GD.Randi() % Data.Instance.Factions.Count];
@@ -43,15 +46,18 @@ public class SpawnPlayerEventSystem : IEcsSystem
             {
                 faction = Data.Instance.Factions[spawnEvent.Faction];
             }
+            
+            GD.Print($"Spawning Player -  Id: {spawnEvent.PlayerId} | Name: {username} | Side: {spawnEvent.Side}");
 
-            var playerEntity = world.Spawn()
-                .Add(new Id(spawnEvent.Id))
+            var sideEntity = world.Spawn()
+                .Add(new PlayerId(spawnEvent.PlayerId))
+                .Add(new Name(username))
                 .Add(new Side(spawnEvent.Side))
                 .Add(new Gold(spawnEvent.Gold))
                 .Add(new Faction(faction.Name))
                 .Add(new Recruits(faction.Recruits));
 
-            scenario.Players[spawnEvent.Side] = playerEntity;
+            scenario.Sides.Add(spawnEvent.Side, sideEntity);
 
             world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
         }

@@ -20,7 +20,7 @@ public partial class RecruitSelectionState : GameState
     public override void Enter(GameStateController gameStates)
     {
         var scenario = _world.GetResource<Scenario>();
-        var player = scenario.GetCurrentPlayerEntity();
+        var sideEntity = scenario.GetCurrentSideEntity();
 
         _side = scenario.Side;
 
@@ -32,7 +32,7 @@ public partial class RecruitSelectionState : GameState
         _view.Connect(nameof(RecruitSelectionView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
         canvasLayer.AddChild(_view);
 
-        _view.UpdateInfo(_freeLocEntity, player, player.Get<Recruits>().List);
+        _view.UpdateInfo(_freeLocEntity, sideEntity, sideEntity.Get<Recruits>().List);
     }
 
     public override void Exit(GameStateController gameStates)

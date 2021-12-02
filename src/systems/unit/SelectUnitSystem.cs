@@ -22,14 +22,18 @@ public class SelectUnitSystem : IEcsSystem
             var scenario = world.GetResource<Scenario>();
             var localPlayer = world.GetResource<LocalPlayer>();
 
-            if (scenario.Side != localPlayer.Side)
+            var sideEntity = scenario.GetCurrentSideEntity();
+            var playerId = sideEntity.Get<PlayerId>();
+            var side = sideEntity.Get<Side>();
+
+            if (playerId.Value != localPlayer.Id)
             {
                 return;
             }
 
             var unitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
 
-            if (unitEntity.Get<Side>().Value != scenario.Side)
+            if (unitEntity.Get<Side>().Value != side.Value)
             {
                 return;
             }

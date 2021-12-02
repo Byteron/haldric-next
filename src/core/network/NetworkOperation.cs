@@ -3,17 +3,31 @@ using System;
 public enum NetworkOperation
 {
     PlayerReadied,
-    FactionSelected,
+    FactionChanged,
+    PlayerChanged,
+    GoldChanged,
     TurnEnd,
     MoveUnit,
     RecruitUnit,
     AttackUnit,
 }
 
-public struct FactionSelectedMessage
+public struct FactionChangedMessage
 {
     public int Side { get; set; }
     public int Index { get; set; }
+}
+
+public struct PlayerChangedMessage
+{
+    public int Side { get; set; }
+    public int Index { get; set; }
+}
+
+public struct GoldChangedMessage
+{
+    public int Side { get; set; }
+    public int Value { get; set; }
 }
 
 public struct TurnEndMessage { }

@@ -9,10 +9,11 @@ public class RecruitInputSystem : IEcsSystem
         {
             var scenario = world.GetResource<Scenario>();
             var localPlayer = world.GetResource<LocalPlayer>();
-            var player = scenario.GetCurrentPlayerEntity();
-            var side = player.Get<Side>();
+            var sideEntity = scenario.GetCurrentSideEntity();
+            var side = sideEntity.Get<Side>();
+            var playerId = sideEntity.Get<PlayerId>();
 
-            if (localPlayer.Side != side.Value)
+            if (localPlayer.Id != playerId.Value)
             {
                 return;
             }

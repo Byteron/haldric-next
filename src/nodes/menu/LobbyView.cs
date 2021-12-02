@@ -36,6 +36,7 @@ public partial class LobbyView : Control
         }
 
         _scenarioOptions.Select(0);
+        OnMapOptionButtonItemSelected(0);
     }
 
     public void UpdateInfo(string text)

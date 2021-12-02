@@ -11,15 +11,12 @@ public class NextUnitInputSystem : IEcsSystem
             var map = world.GetResource<Map>();
             var scenario = world.GetResource<Scenario>();
             var localPlayer = world.GetResource<LocalPlayer>();
-            var player = scenario.GetCurrentPlayerEntity();
-            ref var playerSide = ref player.Get<Side>();
 
-            if (playerSide.Value == -1)
-            {
-                return;
-            }
+            var sideEntity = scenario.GetCurrentSideEntity();
+            ref var side = ref sideEntity.Get<Side>();
+            ref var playerId = ref sideEntity.Get<PlayerId>();
 
-            if (playerSide.Value != localPlayer.Side)
+            if (playerId.Value != localPlayer.Id)
             {
                 return;
             }
@@ -28,10 +25,10 @@ public class NextUnitInputSystem : IEcsSystem
             {
                 var unitEntity = world.Entity(unitId);
 
-                ref var side = ref unitEntity.Get<Side>();
+                ref var unitSide = ref unitEntity.Get<Side>();
                 ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
-                if (side.Value == playerSide.Value && !moves.IsEmpty())
+                if (unitSide.Value == side.Value && !moves.IsEmpty())
                 {
                     ref var coords = ref unitEntity.Get<Coords>();
 
