@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmq71hr7i8yac"]
+
+[ext_resource type="Script" path="res://src/nodes/hud/chat/MatchListing.cs" id="1_kokcm"]
+
+[node name="MatchListing" type="Button"]
+offset_right = 1378.0
+offset_bottom = 60.0
+rect_min_size = Vector2(0, 60)
+script = ExtResource( "1_kokcm" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1374.0
+offset_bottom = 56.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+offset_top = 13.0
+offset_right = 58.0
+offset_bottom = 39.0
+text = "Game 1"
+
+[node name="Space" type="Control" parent="MarginContainer/HBoxContainer"]
+offset_left = 62.0
+offset_right = 1334.0
+offset_bottom = 52.0
+size_flags_horizontal = 3
+
+[node name="PlayersLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+offset_left = 1338.0
+offset_top = 13.0
+offset_right = 1370.0
+offset_bottom = 39.0
+text = "1 / 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}

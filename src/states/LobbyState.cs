@@ -18,11 +18,15 @@ public partial class LobbyState : GameState
 
     string _username;
 
+    private ISession _session;
     private ISocket _socket;
+    private Client _client;
     private IChannel _channel;
 
     private IMatch _match;
     private IMatchmakerTicket _ticket;
+
+    string _selectedMatchId = "";
 
     private List<IUserPresence> _users = new List<IUserPresence>();
 
@@ -35,31 +39,46 @@ public partial class LobbyState : GameState
     {
         _view = Scenes.Instantiate<LobbyView>();
 
+        _view.Connect(nameof(LobbyView.MatchSelected), new Callable(this, nameof(OnMatchSelected)));
         _view.Connect(nameof(LobbyView.MessageSubmitted), new Callable(this, nameof(OnMessageSubmitted)));
+        _view.Connect(nameof(LobbyView.RefreshButtonPressed), new Callable(this, nameof(OnRefreshButtonPressed)));
+        _view.Connect(nameof(LobbyView.JoinButtonPressed), new Callable(this, nameof(OnJoinButtonPressed)));
         _view.Connect(nameof(LobbyView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
         _view.Connect(nameof(LobbyView.ScenarioSelected), new Callable(this, nameof(OnScenarioSelected)));
-        _view.Connect(nameof(LobbyView.JoinButtonPressed), new Callable(this, nameof(OnJoinButtonPressed)));
+        _view.Connect(nameof(LobbyView.CreateButtonPressed), new Callable(this, nameof(OnCreateButtonPressed)));
+        _view.Connect(nameof(LobbyView.QueueButtonPressed), new Callable(this, nameof(OnQueueButtonPressed)));
         _view.Connect(nameof(LobbyView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
 
         AddChild(_view);
 
+        _session = _world.GetResource<ISession>();
         _socket = _world.GetResource<ISocket>();
         _socket.ReceivedChannelMessage += OnReceivedChannelMessage;
         _socket.ReceivedChannelPresence += OnReceivedChannelPresence;
         _socket.ReceivedMatchmakerMatched += OnReceivedMatchmakerMatched;
+
+        _client = _world.GetResource<Client>();
 
         var account = _world.GetResource<IApiAccount>();
         _username = account.User.Username;
 
         var settings = _world.GetResource<LobbySettings>();
         EnterChat(settings.RoomName, ChannelType.Room, settings.Persistence, settings.Hidden);
+
+        ListMatches();
+    }
+
+    private async void ListMatches()
+    {
+        var matches = await _client.ListMatchesAsync(_session, 0, 9, 20, false, null, null);
+        _view.UpdateMatchList(matches);
     }
 
     public override void Continue(GameStateController gameStates)
     {
         _view.Show();
         _view.EnableJoinButton();
-        _view.UpdateInfo("");
+        _view.UpdateInfoLabel("");
     }
 
     public override void Pause(GameStateController gameStates)
@@ -91,45 +110,17 @@ public partial class LobbyState : GameState
         _view.UpdateUsers(_username, _users);
     }
 
+    private async void CreateMatch()
+    {
+        _match = await _socket.CreateMatchAsync();
+        _world.AddResource(_match);
+        _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
+    }
+
     private async void CreateMatchWith(IMatchmakerMatched matched)
     {
         _match = await _socket.JoinMatchAsync(matched);
-
-        var localPlayer = new LocalPlayer();
-        var matchPlayers = new MatchPlayers();
-        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
-
-        localPlayer.Presence = matched.Self.Presence;
-
-        var users = new List<string>();
-
-        users.Add(localPlayer.Presence.Username);
-
-        GD.Print("User: ", localPlayer.Presence.Username);
-
-        var playerString = "";
-        var playerId = 0;
-        foreach (var user in matched.Users)
-        {
-            matchPlayers.Array[playerId] = user.Presence;
-
-            playerString += user.Presence.Username + " ";
-
-            if (matched.Self.Presence.UserId == user.Presence.UserId)
-            {
-                localPlayer.Id = playerId;
-            }
-
-            playerId += 1;
-        }
-
-        GD.Print("Side: ", localPlayer.Id);
-        GD.Print("Players: ", playerString);
-
         _world.AddResource(_match);
-        _world.AddResource(localPlayer);
-        _world.AddResource(matchPlayers);
-
         _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
     }
 
@@ -145,7 +136,24 @@ public partial class LobbyState : GameState
         var maxCount = _playerCount;
 
         _ticket = await _socket.AddMatchmakerAsync(query, minCount, maxCount);
-        _view.UpdateInfo("Looking for Match...");
+        _view.UpdateInfoLabel("Looking for Match...");
+    }
+
+    private void OnMatchSelected(string matchId)
+    {
+        _selectedMatchId = matchId;
+    }
+
+    private async void OnJoinButtonPressed()
+    {
+        _match = await _socket.JoinMatchAsync(_selectedMatchId);
+        _world.AddResource(_match);
+        _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
+    }
+
+    private void OnRefreshButtonPressed()
+    {
+        ListMatches();
     }
 
     private async void OnMessageSubmitted(string message)
@@ -159,14 +167,19 @@ public partial class LobbyState : GameState
         _world.GetResource<GameStateController>().PopState();
     }
 
-    private void OnJoinButtonPressed()
+    private void OnCreateButtonPressed()
+    {
+        CreateMatch();
+    }
+
+    private void OnQueueButtonPressed()
     {
         if (string.IsNullOrEmpty(_mapName))
         {
             return;
         }
 
-        _view.DisableJoinButton();
+        _view.DisableQueueButton();
         JoinMatchmaking();
     }
 
@@ -176,14 +189,14 @@ public partial class LobbyState : GameState
         {
             _socket.RemoveMatchmakerAsync(_ticket);
             _ticket = null;
-            _view.UpdateInfo("Left Matchmaking");
+            _view.UpdateInfoLabel("Left Matchmaking");
         }
 
         if (_match != null)
         {
             _socket.LeaveMatchAsync(_match);
             _match = null;
-            _view.UpdateInfo("Closed Match");
+            _view.UpdateInfoLabel("Closed Match");
         }
 
         _view.EnableJoinButton();

@@ -14,6 +14,7 @@ public partial class FactionSelectionView : PanelContainer
 
     public int LocalPlayerId { get; set; }
     public List<string> Players { get; set; }
+    public int PlayerCount { get; set; }
     public string MapName { get; set; }
 
     Dictionary<int, PlayerOption> _options = new Dictionary<int, PlayerOption>();
@@ -28,7 +29,7 @@ public partial class FactionSelectionView : PanelContainer
         _continueButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/ContinueButton");
         _backButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/BackButton");
 
-        for (int side = 0; side < Players.Count; side++)
+        for (int side = 0; side < PlayerCount; side++)
         {
             var option = _playerOption.Instantiate<PlayerOption>();
             option.Connect(nameof(PlayerOption.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
@@ -37,6 +38,16 @@ public partial class FactionSelectionView : PanelContainer
             _container.AddChild(option);
             option.UpdateInfo(LocalPlayerId, side, 100, Data.Instance.Factions.Keys.ToList(), Players);
             _options.Add(side, option);
+        }
+    }
+
+    public void UpdatePlayers(List<string> players)
+    {
+        Players = players;
+
+        foreach (PlayerOption option in _container.GetChildren())
+        {
+            option.UpdatePlayers(players);
         }
     }
 

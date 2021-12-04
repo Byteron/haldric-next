@@ -3,6 +3,7 @@ using Bitron.Ecs;
 using Nakama;
 using Nakama.TinyJson;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class FactionSelectionState : GameState
 {
@@ -17,6 +18,11 @@ public partial class FactionSelectionState : GameState
     private ISocket _socket = null;
     private IMatch _match = null;
 
+    private LocalPlayer _localPlayer = null;
+    private MatchPlayers _matchPlayers = null;
+
+    private Dictionary<string, int> _players = new Dictionary<string, int>();
+
     public FactionSelectionState(EcsWorld world, string mapName) : base(world)
     {
         _mapName = mapName;
@@ -28,26 +34,53 @@ public partial class FactionSelectionState : GameState
         _socket = _world.GetResource<ISocket>();
         _match = _world.GetResource<IMatch>();
 
-        var localPlayer = _world.GetResource<LocalPlayer>();
-        var matchPlayers = _world.GetResource<MatchPlayers>();
+        // GD.Print(_match.Self.Username);
+        // GD.Print(_match.Presences.ToList().Count);
 
-        _playerCount = matchPlayers.Array.Length;
+        // foreach (var presence in _match.Presences)
+        // {
+        //     GD.Print(presence.Username);
+        // }
+
+        _localPlayer = new LocalPlayer();
+        _matchPlayers = new MatchPlayers();
+
+        _localPlayer.Presence = _match.Self;
+        _matchPlayers.Array = new IUserPresence[_mapData.Players.Count];
+        _matchPlayers.Array[0] = _match.Self;
+
+        // var playerString = "";
+        // var playerId = 0;
+        // foreach (var user in matched.Users)
+        // {
+        //     matchPlayers.Array[playerId] = user.Presence;
+
+        //     playerString += user.Presence.Username + " ";
+
+        //     if (matched.Self.Presence.UserId == user.Presence.UserId)
+        //     {
+        //         localPlayer.Id = playerId;
+        //     }
+
+        //     playerId += 1;
+        // }
+
+        _world.AddResource(_localPlayer);
+        _world.AddResource(_matchPlayers);
+
+        _players[_match.Self.Username] = 0;
+        _playerCount = _matchPlayers.Array.Length;
 
         _socket.ReceivedMatchState += OnMatchStateReceived;
+        _socket.ReceivedMatchPresence += OnReceivedMatchPresence;
 
         _view = Scenes.Instantiate<FactionSelectionView>();
 
         _view.MapName = _mapName;
-        _view.LocalPlayerId = localPlayer.Id;
+        _view.LocalPlayerId = _localPlayer.Id;
 
-        var players = new List<string>();
-
-        foreach(var presence in matchPlayers.Array)
-        {
-            players.Add(presence.Username);
-        }
-
-        _view.Players = players;
+        _view.PlayerCount = _playerCount;
+        _view.Players = _players.Keys.ToList();
 
         _view.Connect(nameof(FactionSelectionView.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
         _view.Connect(nameof(FactionSelectionView.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
@@ -61,7 +94,7 @@ public partial class FactionSelectionState : GameState
     public override void Exit(GameStateController gameStates)
     {
         _socket.ReceivedMatchState -= OnMatchStateReceived;
-
+        _socket.ReceivedMatchPresence -= OnReceivedMatchPresence;
         _view.QueueFree();
     }
 
@@ -116,6 +149,31 @@ public partial class FactionSelectionState : GameState
                     break;
                 }
         }
+    }
+
+    private void OnReceivedMatchPresence(IMatchPresenceEvent presenceEvent)
+    {
+        foreach (var joined in presenceEvent.Joins)
+        {
+            _players.Add(joined.Username, _players.Count);
+            GD.Print($"Player Joined: {joined.Username}");
+        }
+
+        foreach (var left in presenceEvent.Leaves)
+        {
+            _players.Remove(left.Username);
+            GD.Print($"Player Left: {left.Username}");
+        }
+
+        var keys = _players.Keys.ToArray();
+        _players.Clear();
+
+        foreach (var key in keys)
+        {
+            _players.Add(key, _players.Count);
+        }
+
+        _view.UpdatePlayers(_players.Keys.ToList());
     }
 
     private void OnFactionChanged(int side, int index)
@@ -177,7 +235,7 @@ public partial class FactionSelectionState : GameState
         _world.RemoveResource<IMatch>();
         _world.RemoveResource<LocalPlayer>();
         _world.RemoveResource<MatchPlayers>();
-        
+
         _world.GetResource<GameStateController>().PopState();
     }
 }

@@ -72,6 +72,16 @@ public partial class PlayerOption : HBoxContainer
         _sideLabel.Text = $"Side: {side}";
     }
 
+    public void UpdatePlayers(List<string> players)
+    {
+        _playerOptions.Clear();
+        
+        foreach (var player in players)
+        {
+            _playerOptions.AddItem(player);
+        }
+    }
+
     public void ChangePlayer(int index)
     {
         _playerOptions.Select(index);
