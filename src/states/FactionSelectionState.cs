@@ -2,6 +2,7 @@ using Godot;
 using Bitron.Ecs;
 using Nakama;
 using Nakama.TinyJson;
+using System.Collections.Generic;
 
 public partial class FactionSelectionState : GameState
 {
@@ -36,12 +37,21 @@ public partial class FactionSelectionState : GameState
 
         _view = Scenes.Instance.FactionSelectionView.Instantiate<FactionSelectionView>();
 
-        var playerList = _mapData.Players;
         _view.MapName = _mapName;
-        _view.LocalPlayerSide = localPlayer.Side;
-        _view.PlayerCount = playerList.Count;
+        _view.LocalPlayerId = localPlayer.Id;
 
-        _view.Connect(nameof(FactionSelectionView.FactionSelected), new Callable(this, nameof(OnFactionSelected)));
+        var players = new List<string>();
+
+        foreach(var presence in matchPlayers.Array)
+        {
+            players.Add(presence.Username);
+        }
+
+        _view.Players = players;
+
+        _view.Connect(nameof(FactionSelectionView.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
+        _view.Connect(nameof(FactionSelectionView.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
+        _view.Connect(nameof(FactionSelectionView.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
         _view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));
         _view.Connect(nameof(FactionSelectionView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
 
@@ -66,7 +76,7 @@ public partial class FactionSelectionState : GameState
         {
             var gameStateController = _world.GetResource<GameStateController>();
 
-            var playState = new PlayState(_world, _mapName, _view.GetFactions());
+            var playState = new PlayState(_world, _mapName, _view.GetFactions(), _view.GetPlayers(), _view.GetPlayerGolds());
 
             gameStateController.ChangeState(playState);
         }
@@ -82,10 +92,22 @@ public partial class FactionSelectionState : GameState
 
         switch (operation)
         {
-            case NetworkOperation.FactionSelected:
+            case NetworkOperation.FactionChanged:
                 {
-                    var message = JsonParser.FromJson<FactionSelectedMessage>(data);
-                    _view.Select(message.Side, message.Index);
+                    var message = JsonParser.FromJson<FactionChangedMessage>(data);
+                    _view.ChangeFaction(message.Side, message.Index);
+                    break;
+                }
+            case NetworkOperation.PlayerChanged:
+                {
+                    var message = JsonParser.FromJson<PlayerChangedMessage>(data);
+                    _view.ChangePlayer(message.Side, message.Index);
+                    break;
+                }
+            case NetworkOperation.GoldChanged:
+                {
+                    var message = JsonParser.FromJson<GoldChangedMessage>(data);
+                    _view.ChangeGold(message.Side, message.Value);
                     break;
                 }
             case NetworkOperation.PlayerReadied:
@@ -96,15 +118,43 @@ public partial class FactionSelectionState : GameState
         }
     }
 
-    private void OnFactionSelected(int side, int index)
+    private void OnFactionChanged(int side, int index)
     {
         var matchId = _match.Id;
-        var opCode = (int)NetworkOperation.FactionSelected;
+        var opCode = (int)NetworkOperation.FactionChanged;
 
-        var message = new FactionSelectedMessage()
+        var message = new FactionChangedMessage()
         {
             Side = side,
             Index = index,
+        };
+
+        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+    }
+
+    private void OnPlayerChanged(int side, int index)
+    {
+        var matchId = _match.Id;
+        var opCode = (int)NetworkOperation.PlayerChanged;
+
+        var message = new PlayerChangedMessage()
+        {
+            Side = side,
+            Index = index,
+        };
+
+        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+    }
+
+    private void OnGoldChanged(int side, int value)
+    {
+        var matchId = _match.Id;
+        var opCode = (int)NetworkOperation.GoldChanged;
+
+        var message = new GoldChangedMessage()
+        {
+            Side = side,
+            Value = value,
         };
 
         _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());

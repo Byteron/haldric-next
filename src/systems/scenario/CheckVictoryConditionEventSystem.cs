@@ -21,7 +21,7 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
 
             var standingFactions = new List<EcsEntity>();
 
-            foreach (var playerEntity in scenario.Players)
+            foreach (var sideEntity in scenario.Sides.Values)
             {
                 var leaderCount = 0;
 
@@ -29,7 +29,7 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
                 {
                     var unitEntity = world.Entity(unitId);
 
-                    if (unitEntity.Has<IsLeader>() && unitEntity.Get<Side>().Value == playerEntity.Get<Side>().Value)
+                    if (unitEntity.Has<IsLeader>() && unitEntity.Get<Side>().Value == sideEntity.Get<Side>().Value)
                     {
                         leaderCount += 1;
                     }
@@ -37,7 +37,7 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
 
                 if (leaderCount > 0)
                 {
-                    standingFactions.Add(playerEntity);
+                    standingFactions.Add(sideEntity);
                 }
             }
 

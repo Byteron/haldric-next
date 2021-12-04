@@ -1,6 +1,4 @@
-using System.Linq;
 using Bitron.Ecs;
-using Nakama;
 
 public class UpdatePlayerInfoSystem : IEcsSystem
 {
@@ -21,11 +19,12 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             return;
         }
 
-        var player = scenario.GetCurrentPlayerEntity();
+        var sideEntity = scenario.GetCurrentSideEntity();
 
-        ref var playerSide = ref player.Get<Side>();
-        ref var playerGold = ref player.Get<Gold>();
-        ref var playerName = ref player.Get<Id>();
+        ref var side = ref sideEntity.Get<Side>();
+        ref var playerId = ref sideEntity.Get<PlayerId>();
+        ref var gold = ref sideEntity.Get<Gold>();
+        ref var name = ref sideEntity.Get<Name>();
 
         var locWithCapturedVillageQuery = world.Query<Village>().End();
         var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
@@ -48,7 +47,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
             ref var captured = ref locEntity.Get<IsCapturedBySide>();
 
-            if (captured.Value == playerSide.Value)
+            if (captured.Value == side.Value)
             {
                 ref var village = ref locEntity.Get<Village>();
 
@@ -63,7 +62,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
             ref var unitSide = ref unitEntity.Get<Side>();
 
-            if (unitSide.Value == playerSide.Value)
+            if (unitSide.Value == side.Value)
             {
                 ref var level = ref unitEntity.Get<Level>();
                 income -= level.Value;
@@ -76,13 +75,13 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         var roundString = "Round: " + scenario.Round;
         var unitString = "Units: " + unitCount;
         var villageString = $"Villages: {capturedVillageCount} / {villageCount}";
-        var youString = $"You: ({localPlayer.Side}) {localPlayer.Presence.Username}";
-        var otherString = $"Current: ({playerSide.Value}) {playerName.Value}";
+        var youString = $"You: {localPlayer.Presence.Username}";
+        var otherString = $"Current: ({side.Value}) {name.Value}";
         var goldString = "Gold: - | Income: -";
 
-        if (localPlayer.Side == playerSide.Value)
+        if (localPlayer.Id == playerId.Value)
         {
-            goldString = $"Gold: {playerGold.Value} | Income: {income}";
+            goldString = $"Gold: {gold.Value} | Income: {income}";
         }
 
         sidePanel.UpdateInfo($"{youString} | {roundString} | {otherString} | {goldString} | {unitString} | {villageString}");

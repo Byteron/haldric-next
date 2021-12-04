@@ -27,10 +27,10 @@ public partial class RecruitSelectionView : Control
         _unitLabel = GetNode<Label>("PanelContainer/VBoxContainer/HBoxContainer/UnitLabel");
     }
 
-    public void UpdateInfo(EcsEntity locEntity, EcsEntity player, List<string> unitTypeIds)
+    public void UpdateInfo(EcsEntity locEntity, EcsEntity sideEntity, List<string> unitTypeIds)
     {
-        var side = player.Get<Side>().Value;
-        var gold = player.Get<Gold>().Value;
+        var side = sideEntity.Get<Side>().Value;
+        var gold = sideEntity.Get<Gold>().Value;
 
         foreach (var unitTypeId in unitTypeIds)
         {

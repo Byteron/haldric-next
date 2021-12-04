@@ -1,19 +1,21 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
-using Godot.Collections;
 
 public partial class FactionSelectionView : PanelContainer
 {
-    [Signal] public delegate void FactionSelected(int side, int index);
+    [Signal] public delegate void FactionChanged(int side, int index);
+    [Signal] public delegate void PlayerChanged(int side, int index);
+    [Signal] public delegate void GoldChanged(int side, int value);
     [Signal] public delegate void ContinueButtonPressed();
     [Signal] public delegate void BackButtonPressed();
 
-    [Export] PackedScene PlayerOption;
+    [Export] private PackedScene _playerOption;
 
-    public int LocalPlayerSide { get; set; }
-    public int PlayerCount { get; set; }
+    public int LocalPlayerId { get; set; }
+    public List<string> Players { get; set; }
     public string MapName { get; set; }
 
-    private Dictionary<int, string> _factions = new Dictionary<int, string>();
     Dictionary<int, PlayerOption> _options = new Dictionary<int, PlayerOption>();
 
     VBoxContainer _container = null;
@@ -26,37 +28,82 @@ public partial class FactionSelectionView : PanelContainer
         _continueButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/ContinueButton");
         _backButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/BackButton");
 
-        for (int i = 0; i < PlayerCount; i++)
+        for (int side = 0; side < Players.Count; side++)
         {
-            var option = PlayerOption.Instantiate<PlayerOption>();
-            option.Connect("FactionSelected", new Callable(this, nameof(OnFactionSelected)));
-            option.Side = i;
-            option.LocalPlayerId = LocalPlayerSide;
+            var option = _playerOption.Instantiate<PlayerOption>();
+            option.Connect(nameof(PlayerOption.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
+            option.Connect(nameof(PlayerOption.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
+            option.Connect(nameof(PlayerOption.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
             _container.AddChild(option);
-            _options.Add(i, option);
+            option.UpdateInfo(LocalPlayerId, side, 100, Data.Instance.Factions.Keys.ToList(), Players);
+            _options.Add(side, option);
         }
     }
 
-    public void Select(int side, int index)
+    public void ChangeFaction(int side, int index)
     {
-        _options[side].Select(index);
+        _options[side].ChangeFaction(index);
+    }
+
+    public void ChangePlayer(int side, int index)
+    {
+        _options[side].ChangePlayer(index);
+    }
+
+    public void ChangeGold(int side, int value)
+    {
+        _options[side].ChangeGold(value);
     }
 
     public Dictionary<int, string> GetFactions()
     {
-        _factions.Clear();
+        var factions = new Dictionary<int, string>();
 
         foreach (PlayerOption option in _container.GetChildren())
         {
-            _factions.Add(option.Side, option.Faction);
+            factions.Add(option.Side, option.Faction);
         }
 
-        return _factions;
+        return factions;
     }
 
-    private void OnFactionSelected(int side, int index)
+    public Dictionary<int, int> GetPlayers()
     {
-        EmitSignal(nameof(FactionSelected), side, index);
+        var players = new Dictionary<int, int>();
+
+        foreach (PlayerOption option in _container.GetChildren())
+        {
+            players.Add(option.Side, option.PlayerId);
+        }
+
+        return players;
+    }
+
+    public Dictionary<int, int> GetPlayerGolds()
+    {
+        var golds = new Dictionary<int, int>();
+
+        foreach (PlayerOption option in _container.GetChildren())
+        {
+            golds.Add(option.Side, option.Gold);
+        }
+
+        return golds;
+    }
+
+    private void OnFactionChanged(int side, int index)
+    {
+        EmitSignal(nameof(FactionChanged), side, index);
+    }
+
+    private void OnPlayerChanged(int side, int index)
+    {
+        EmitSignal(nameof(PlayerChanged), side, index);
+    }
+
+    private void OnGoldChanged(int side, int value)
+    {
+        EmitSignal(nameof(GoldChanged), side, value);
     }
 
     private void OnContinueButtonPressed()

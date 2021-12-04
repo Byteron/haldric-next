@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Bitron.Ecs;
 using Godot;
-using Godot.Collections;
 using Haldric.Wdk;
 using Nakama;
 using Nakama.TinyJson;
@@ -14,13 +14,19 @@ public partial class PlayState : GameState
 
     private string _mapName;
     private Dictionary<int, string> _factions;
+    private Dictionary<int, int> _players;
+    private Dictionary<int, int> _playerGolds;
+
     private ISocket _socket;
     private IMatch _match;
 
-    public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions) : base(world)
+    public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions, Dictionary<int, int> players, Dictionary<int, int> playerGolds) : base(world)
     {
         _mapName = mapName;
+
         _factions = factions;
+        _players = players;
+        _playerGolds = playerGolds;
 
         AddInitSystem(new SpawnCameraOperatorSystem(this));
 
@@ -83,7 +89,7 @@ public partial class PlayState : GameState
         var matchPlayers = _world.GetResource<MatchPlayers>();
 
         _world.AddResource(new Commander());
-        _world.AddResource(new Scenario(matchPlayers.Array.Length));
+        _world.AddResource(new Scenario());
 
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
@@ -107,7 +113,7 @@ public partial class PlayState : GameState
 
         _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
         _world.Spawn().Add(new LoadMapEvent(_mapName));
-        _world.Spawn().Add(new SpawnPlayersEvent(_factions));
+        _world.Spawn().Add(new SpawnPlayersEvent(_factions, _players, _playerGolds));
         _world.Spawn().Add(new TurnEndEvent());
     }
 

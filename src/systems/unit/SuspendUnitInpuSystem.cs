@@ -13,17 +13,18 @@ public class SuspendUnitInputSystem : IEcsSystem
             }
 
             var scenario = world.GetResource<Scenario>();
-            var player = scenario.GetCurrentPlayerEntity();
-            ref var playerSide = ref player.Get<Side>();
+            var sideEntity = scenario.GetCurrentSideEntity();
+            ref var side = ref sideEntity.Get<Side>();
+            ref var playerId = ref sideEntity.Get<PlayerId>();
 
-            if (playerSide.Value == -1)
+            if (side.Value == -1)
             {
                 return;
             }
 
             var localPlayer = world.GetResource<LocalPlayer>();
 
-            if (playerSide.Value != localPlayer.Side)
+            if (playerId.Value != localPlayer.Id)
             {
                 return;
             }
@@ -32,7 +33,7 @@ public class SuspendUnitInputSystem : IEcsSystem
 
             ref var unitSide = ref unitEntity.Get<Side>();
 
-            if (unitSide.Value == playerSide.Value)
+            if (unitSide.Value == side.Value)
             {
                 if (unitEntity.Has<Suspended>())
                 {

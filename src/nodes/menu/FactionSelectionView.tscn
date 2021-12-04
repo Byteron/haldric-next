@@ -10,7 +10,7 @@ script = ExtResource( "1_870ed" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-PlayerOption = ExtResource( "2_bor52" )
+_playerOption = ExtResource( "2_bor52" )
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_left = 7.0
@@ -34,6 +34,7 @@ offset_right = 204.0
 offset_top = 4.0
 offset_right = 204.0
 offset_bottom = 54.0
+alignment = 1
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 offset_right = 100.0

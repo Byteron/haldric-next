@@ -117,13 +117,13 @@ public partial class LobbyState : GameState
 
             if (matched.Self.Presence.UserId == user.Presence.UserId)
             {
-                localPlayer.Side = playerId;
+                localPlayer.Id = playerId;
             }
 
             playerId += 1;
         }
 
-        GD.Print("Side: ", localPlayer.Side);
+        GD.Print("Side: ", localPlayer.Id);
         GD.Print("Players: ", playerString);
 
         _world.AddResource(_match);

@@ -38,9 +38,9 @@ public class RecruitUnitEventSystem : IEcsSystem
         foreach (var eventEntityId in eventQuery)
         {
             var scenario = world.GetResource<Scenario>();
-            var player = scenario.GetCurrentPlayerEntity();
+            var sideEntity = scenario.GetCurrentSideEntity();
 
-            ref var gold = ref player.Get<Gold>();
+            ref var gold = ref sideEntity.Get<Gold>();
 
             ref var recruitEvent = ref world.Entity(eventEntityId).Get<RecruitUnitEvent>();
 
