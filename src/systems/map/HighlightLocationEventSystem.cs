@@ -123,7 +123,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 bool inList = locations.Contains(nNeighbor);
                 if (!validCoord || !inRange || !inList)
                 {
-                    terrainHighlighter.PlaceBorder(position, color, direction.Rotation(), scaleFactor);
+                    terrainHighlighter.PlaceBorder(position, color, Mathf.Tau - direction.Rotation(), scaleFactor);
                 }
             }
         }
