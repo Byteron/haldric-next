@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 using Bitron.Ecs;
 using Nakama.TinyJson;
 
@@ -53,6 +54,13 @@ public partial class Data : Node
     {
         Factions.Clear();
 
+        var testFaction = new FactionData();
+        testFaction.Name = "Test";
+        testFaction.Recruits = Units.Keys.ToList();
+        testFaction.Leaders = Units.Keys.ToList();
+
+        Factions.Add(testFaction.Name, testFaction);
+        
         foreach (var data in Loader.LoadDir("res://data/factions", new List<string>() { "tres" }))
         {
             var faction = (FactionData)data.Data;
