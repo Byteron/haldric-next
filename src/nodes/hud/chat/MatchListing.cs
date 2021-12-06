@@ -9,7 +9,7 @@ public partial class MatchListing : Button
     public override void _Ready()
     {
         _nameLabel = GetNode<Label>("MarginContainer/HBoxContainer/NameLabel");    
-        _playersLabel = GetNode<Label>("MarginContainer/HBoxContainer/PlayersLabel");    
+        _playersLabel = GetNode<Label>("MarginContainer/HBoxContainer/PlayersLabel");
     }
 
     public void UpdateInfo(string name, int players)
