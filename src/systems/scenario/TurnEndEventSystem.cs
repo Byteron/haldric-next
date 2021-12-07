@@ -65,18 +65,20 @@ public class TurnEndEventSystem : IEcsSystem
                     gold.Value += village.List.Count;
                 }
             }
-
-            var turnPanel = world.GetResource<TurnPanel>();
-            var localPlayer = world.GetResource<LocalPlayer>();
-
-            if (playerId.Value == localPlayer.Id)
+            
+            if (world.TryGetResource<TurnPanel>(out var turnPanel))
             {
-                Sfx.Instance.Play("TurnBell");
-                turnPanel.EndTurnButton.Disabled = false;
-            }
-            else
-            {
-                turnPanel.EndTurnButton.Disabled = true;
+                var localPlayer = world.GetResource<LocalPlayer>();
+
+                if (playerId.Value == localPlayer.Id)
+                {
+                    Sfx.Instance.Play("TurnBell");
+                    turnPanel.EndTurnButton.Disabled = false;
+                }
+                else
+                {
+                    turnPanel.EndTurnButton.Disabled = true;
+                }
             }
 
             foreach (var locEntityId in locWithUnitQuery)

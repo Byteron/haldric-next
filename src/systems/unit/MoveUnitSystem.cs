@@ -39,16 +39,23 @@ public class MoveUnitSystem : IEcsSystem
             ref var fromCoords = ref selectedLocEntity.Get<Coords>();
             ref var toCoords = ref hoveredLocEntity.Get<Coords>();
 
-            var socket = world.GetResource<ISocket>();
-            var match = world.GetResource<IMatch>();
+            world.Spawn().Add(new UnitDeselectedEvent());
+            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
+
+            if (!world.TryGetResource<ISocket>(out var socket))
+            {
+                return;
+            }
+
+            if (!world.TryGetResource<IMatch>(out var match))
+            {
+                return;
+            }
 
             var message = new MoveUnitMessage { From = fromCoords, To = toCoords };
             var json = message.ToJson();
 
-            world.Spawn().Add(new UnitDeselectedEvent());
-
             socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.MoveUnit, json);
-            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
         }
     }
 }

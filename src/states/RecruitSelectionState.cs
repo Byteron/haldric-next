@@ -45,19 +45,26 @@ public partial class RecruitSelectionState : GameState
     {
         var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
-        var socket = _world.GetResource<ISocket>();
-        var match = _world.GetResource<IMatch>();
         var coords = _freeLocEntity.Get<Coords>();
-        var message = new RecruitUnitMessage { Side = _side, UnitTypeId = unitTypeId, Coords = coords };
-
-        socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.RecruitUnit, message.ToJson());
-
 
         var recruitEvent = new RecruitUnitEvent(_side, unitType, _freeLocEntity);
         _world.Spawn().Add(recruitEvent);
 
         var gameStateController = _world.GetResource<GameStateController>();
         gameStateController.PopState();
+
+        if (!_world.TryGetResource<ISocket>(out var socket))
+        {
+            return;
+        }
+
+        if (!_world.TryGetResource<IMatch>(out var match))
+        {
+            return;
+        }
+        
+        var message = new RecruitUnitMessage { Side = _side, UnitTypeId = unitTypeId, Coords = coords };
+        socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.RecruitUnit, message.ToJson());
     }
 
     private void OnCancelButtonPressed()

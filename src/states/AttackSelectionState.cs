@@ -43,10 +43,22 @@ public partial class AttackSelectionState : GameState
         var attackerAttackEntity = _view.GetSelectedAttackerAttack();
         var defenderAttackEntity = _view.GetSelectedDefenderAttack();
 
-        var socket = _world.GetResource<ISocket>();
-        var match = _world.GetResource<IMatch>();
-
         var seed = (ulong)(GD.Randi() % 9999);
+
+        commander.Enqueue(new CombatCommand(seed, AttackerLocEntity, attackerAttackEntity, DefenderLocEntity, defenderAttackEntity, AttackDistance));
+
+        var gameStateController = _world.GetResource<GameStateController>();
+        gameStateController.ChangeState(new CommanderState(_world));
+
+        if (!_world.TryGetResource<ISocket>(out var socket))
+        {
+            return;
+        }
+
+        if (!_world.TryGetResource<IMatch>(out var match))
+        {
+            return;
+        }
 
         var message = new AttackUnitMessage
         {
@@ -59,11 +71,6 @@ public partial class AttackSelectionState : GameState
         };
 
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.AttackUnit, message.ToJson());
-
-        commander.Enqueue(new CombatCommand(seed, AttackerLocEntity, attackerAttackEntity, DefenderLocEntity, defenderAttackEntity, AttackDistance));
-
-        var gameStateController = _world.GetResource<GameStateController>();
-        gameStateController.ChangeState(new CommanderState(_world));
     }
 
     private void OnCancelButtonPressed()

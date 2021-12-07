@@ -92,7 +92,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 {
                     continue;
                 }
-                
+
                 filteredMoveList.Add(nCoords);
             }
 
@@ -119,8 +119,12 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 Vector3 cNeighbor = Neighbors[i];
                 Coords nNeighbor = Coords.FromCube(cNeighbor);
                 bool validCoord = grid.IsCoordsInGrid(nNeighbor);
-                bool inRange = map.Locations.Dict[cNeighbor].Get<Distance>().Value <= range;
                 bool inList = locations.Contains(nNeighbor);
+                bool inRange = false;
+                if (validCoord)
+                {
+                    inRange = map.Locations.Dict[cNeighbor].Get<Distance>().Value <= range;
+                }
                 if (!validCoord || !inRange || !inList)
                 {
                     terrainHighlighter.PlaceBorder(position, color, Mathf.Tau - direction.Rotation(), scaleFactor);

@@ -31,9 +31,13 @@ public class SpawnPlayerEventSystem : IEcsSystem
             ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayerEvent>();
 
             var scenario = world.GetResource<Scenario>();
-            var matchPlayers = world.GetResource<MatchPlayers>();
 
-            var username = matchPlayers.Array[spawnEvent.PlayerId].Username;
+            var username = "Username";
+
+            if (world.TryGetResource<MatchPlayers>(out var matchPlayers))
+            {
+                username = matchPlayers.Array[spawnEvent.PlayerId].Username;
+            }
 
             FactionData faction;
 
