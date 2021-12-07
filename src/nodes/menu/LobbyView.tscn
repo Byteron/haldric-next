@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgkk5yo3e3hly"]
+[gd_scene load_steps=4 format=3 uid="uid://bgkk5yo3e3hly"]
 
 [ext_resource type="Script" path="res://src/nodes/menu/LobbyView.cs" id="1_4ednk"]
 [ext_resource type="PackedScene" uid="uid://c5wd82oh5v0ta" path="res://src/nodes/hud/chat/ChatMessageView.tscn" id="2_u5131"]
+[ext_resource type="PackedScene" uid="uid://cmq71hr7i8yac" path="res://src/nodes/hud/chat/MatchListing.tscn" id="3_umppn"]
 
 [node name="LobbyView" type="Control"]
 anchor_right = 1.0
@@ -12,6 +13,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 ChatMessageView = ExtResource( "2_u5131" )
+MatchListing = ExtResource( "3_umppn" )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
@@ -31,7 +33,34 @@ offset_right = 1382.0
 offset_bottom = 786.0
 size_flags_horizontal = 3
 
+[node name="Panel2" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
+offset_right = 1382.0
+offset_bottom = 369.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_bottom = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MatchList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel2/MarginContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 1380.0
+offset_bottom = 367.0
+theme_override_constants/separation = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
+offset_top = 373.0
 offset_right = 1382.0
 offset_bottom = 742.0
 size_flags_vertical = 3
@@ -51,7 +80,7 @@ __meta__ = {
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 1377.0
-offset_bottom = 737.0
+offset_bottom = 364.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
@@ -82,56 +111,50 @@ offset_left = 1386.0
 offset_right = 1586.0
 offset_bottom = 786.0
 
-[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_right = 200.0
-offset_bottom = 602.0
-rect_min_size = Vector2(200, 0)
-size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel/VBoxContainer"]
+[node name="CreateButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 4.0
 offset_right = 200.0
-offset_bottom = 602.0
-rect_min_size = Vector2(200, 0)
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 606.0
-offset_right = 200.0
-offset_bottom = 646.0
+offset_bottom = 44.0
 rect_min_size = Vector2(0, 40)
-align = 1
-valign = 1
+text = "Create"
+
+[node name="JoinButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 48.0
+offset_right = 200.0
+offset_bottom = 88.0
+rect_min_size = Vector2(0, 40)
+text = "Join"
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 92.0
+offset_right = 200.0
+offset_bottom = 96.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MapOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 650.0
+offset_top = 100.0
 offset_right = 200.0
-offset_bottom = 690.0
+offset_bottom = 140.0
 rect_min_size = Vector2(0, 40)
 text = "Scenario"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 694.0
+offset_top = 144.0
 offset_right = 200.0
-offset_bottom = 734.0
+offset_bottom = 184.0
 
-[node name="JoinButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="QueueButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 offset_right = 98.0
 offset_bottom = 40.0
 rect_min_size = Vector2(0, 40)
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
-text = "Join"
+text = "Queue"
 
 [node name="CancelButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 offset_left = 102.0
@@ -145,9 +168,41 @@ __meta__ = {
 }
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 738.0
+offset_top = 188.0
+offset_right = 200.0
+offset_bottom = 192.0
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 196.0
+offset_right = 200.0
+offset_bottom = 236.0
+rect_min_size = Vector2(0, 40)
+align = 1
+valign = 1
+
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 240.0
 offset_right = 200.0
 offset_bottom = 742.0
+rect_min_size = Vector2(200, 0)
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel/VBoxContainer"]
+offset_right = 200.0
+offset_bottom = 502.0
+rect_min_size = Vector2(200, 0)
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BackButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_top = 746.0
@@ -160,6 +215,6 @@ text = "Back"
 [connection signal="text_submitted" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/LineEdit" to="." method="OnLineEditTextSubmitted"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/SendButton" to="." method="OnSendButtonPressed"]
 [connection signal="item_selected" from="PanelContainer/HBoxContainer/VBoxContainer2/MapOptionButton" to="." method="OnMapOptionButtonItemSelected"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/JoinButton" to="." method="OnJoinButtonPressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/QueueButton" to="." method="OnQueueButtonPressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/VBoxContainer2/BackButton" to="." method="OnBackButtonPressed"]
