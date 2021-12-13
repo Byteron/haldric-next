@@ -10,10 +10,13 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sd", new List<TerrainType>() { TerrainType.Rough });       // sand desert
 		NewBase("Sm", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand mud
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
-		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
-		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
 		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       //grass leaf litter
+
+		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
+		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
+
+		NewBase("Xx", new List<TerrainType>() { TerrainType.DeepWaters }, -15);		// chasm
 
 		NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });     // forest
 
@@ -79,6 +82,11 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Wo", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Wo", "assets/graphics/images/mud_normal.png");
 		AddTerrainRoughnessTexture("Wo", "assets/graphics/images/mud_roughness.png");
+		
+		//		Chasm - uses the same mud texture as water for a placeholder. Should be replaced eventually
+		AddTerrainTexture("Xx", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Xx", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Xx", "assets/graphics/images/mud_roughness.png");
 
 		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
 		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
@@ -134,5 +142,6 @@ public class TerrainScript : TerrainLoader
 
 		AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Wo", "assets/graphics/models/water.tres");
+		AddWaterGraphic("Xx", "assets/graphics/models/chasm.tres");
 	}
 }
