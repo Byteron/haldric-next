@@ -16,7 +16,7 @@ public class TerrainScript : TerrainLoader
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
 
-		NewBase("Xx", new List<TerrainType>() { TerrainType.DeepWaters }, -15);		// chasm
+		NewBase("Xx", new List<TerrainType>() { TerrainType.Unwalkable }, -15);		// chasm
 
 		NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });     // forest
 
