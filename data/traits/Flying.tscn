@@ -1,9 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjvl21ge6evnk"]
 
-[ext_resource type="Script" path="res://addons/wdk/unit/MobilityTrait.cs" id="1_558gj"]
+[ext_resource type="Script" path="res://addons/wdk/unit/FlyingTrait.cs" id="1_t22ai"]
 
 [node name="Flying" type="Node"]
-script = ExtResource( "1_558gj" )
+script = ExtResource( "1_t22ai" )
 Id = "Flying"
-Description = "Unit can pass unwalkable terrain"
-TerrainType = 10
+Description = "Can fly over all but Impassable terrain."
