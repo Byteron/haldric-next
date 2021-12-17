@@ -149,11 +149,11 @@ public partial class CombatCommand : Command
         {
             attackPos = (attackerView.Position + defenderView.Position) / 2;
             _tween.TweenProperty(attackerView, "position", attackPos, 0.2f);
-            _tween.TweenCallback(new Callable(this, "OnStrike"));
+            _tween.TweenCallback(new Callable(this, nameof(OnStrike)));
         }
 
         _tween.TweenProperty(attackerView, "position", attackerView.Position, 0.2f);
-        _tween.TweenCallback(new Callable(this, "OnStrikeFinished"));
+        _tween.TweenCallback(new Callable(this, nameof(OnStrikeFinished)));
 
         _tween.Play();
     }
@@ -174,23 +174,16 @@ public partial class CombatCommand : Command
         tween.TweenProperty(projectile, "position", defenderView.Position + Vector3.Up * 5f, 0.2f);
 
         tween.TweenCallback(new Callable(projectile, "queue_free"));
-        tween.TweenCallback(new Callable(this, "OnStrike"));
+        tween.TweenCallback(new Callable(this, nameof(OnStrike)));
     }
+
     private void OnStrike()
     {
         var defense = _attackData.TerrainTypes.GetDefense();
-        var accuracy = 0f;
-
-        // temporarily disabled for default wesnoth defense
-        // if (_attackData.IsRanged)
-        // {
-        //     accuracy -= _attackDistance / 10f;
-        //     GD.Print("Accuracy: " + accuracy);
-        // }
 
         GD.Print($"OnStrike! Types: {_attackData.TerrainTypes.ToString()}, Defense: {defense}");
 
-        if (defense < GD.Randf() + accuracy)
+        if (defense < GD.Randf())
         {
             Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
         }

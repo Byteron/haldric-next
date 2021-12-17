@@ -97,6 +97,7 @@ public class DamageEventSystem : IEcsSystem
 
             if (health.IsEmpty())
             {
+                GD.Print("Death Event Spawned");
                 world.Spawn().Add(new DeathEvent(targetEntity));
             }
         }

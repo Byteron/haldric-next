@@ -41,11 +41,6 @@ public class CaptureVillageEventSystem : IEcsSystem
             if (locEntity.Has<IsCapturedBySide>())
             {
                 var handle = locEntity.Get<NodeHandle<FlagView>>();
-
-                _parent.RemoveChild(handle.Node);
-                handle.Node.QueueFree();
-                handle.Node = null;
-
                 locEntity.Remove<NodeHandle<FlagView>>();
                 locEntity.Remove<IsCapturedBySide>();
             }
