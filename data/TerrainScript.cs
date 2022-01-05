@@ -11,12 +11,13 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sm", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand mud
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
-		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       //grass leaf litter
+		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       // grass leaf litter
 
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
 
 		NewBase("Xx", new List<TerrainType>() { TerrainType.Unwalkable }, -15);		// chasm
+		NewBase("Xu", new List<TerrainType>() { TerrainType.Impassable });	// impassable void
 
 		NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });     // forest
 
@@ -87,6 +88,11 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Xx", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Xx", "assets/graphics/images/mud_normal.png");
 		AddTerrainRoughnessTexture("Xx", "assets/graphics/images/mud_roughness.png");
+		
+		//		Void - uses a placeholder black texture until some shader magic can make it pitch black
+		AddTerrainTexture("Xu", "assets/graphics/images/black_1024.jpg");
+		AddTerrainNormalTexture("Xu", "assets/graphics/images/normal_1024.jpg");
+		AddTerrainRoughnessTexture("Xu", "assets/graphics/images/white_1024.jpg");
 
 		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
 		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
