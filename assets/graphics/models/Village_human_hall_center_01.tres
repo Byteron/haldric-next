@@ -1,6 +1,7 @@
-[gd_resource type="ArrayMesh" load_steps=3 format=3 uid="uid://bfuev2hscns4w"]
+[gd_resource type="ArrayMesh" load_steps=3 format=3]
 
-[ext_resource type="Material" uid="uid://d0qo77iqrhvya" path="res://assets/graphics/materials/village_human_hall_01.res" id="1_r6dua"]
+[ext_resource type="Material" path="res://assets/graphics/materials/village_human_hall_01.res" id="1_r6dua"]
+
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_e2pb6"]
 _surfaces = [{

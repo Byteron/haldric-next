@@ -31,7 +31,7 @@ vec4 get_cell_data(vec3 uvw, int index)
 	uv.y = (row + 0.5) * texel_size.y;
 	
 	vec4 data = texture(cell_texture, uv);
-	data.a *= 255f;
+	data.a *= 255.0;
 	return data;
 }
 
@@ -72,12 +72,12 @@ void vertex()
 	visibility.y = cell1.r;
 	visibility.z = cell2.r;
 	
-	visibility = mix(vec3(0.25), vec3(1f), visibility);
+	visibility = mix(vec3(0.25), vec3(1.0), visibility);
 }
 
 void fragment()
 {
-	vec2 pos = ((CAMERA_MATRIX) * vec4(VERTEX, 1f)).xz;
+	vec2 pos = ((CAMERA_MATRIX) * vec4(VERTEX, 1.0)).xz;
 	
 	vec4 c = get_terrain_color(COLOR, pos, 0) + get_terrain_color(COLOR, pos, 1) + get_terrain_color(COLOR, pos, 2);
 	vec4 n = get_terrain_normal(pos, 0) + get_terrain_normal(pos, 1) + get_terrain_normal(pos, 2);

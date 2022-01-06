@@ -57,12 +57,12 @@ public partial class PlayerOption : HBoxContainer
             _playerOptions.AddItem(player);
         }
 
-        if (_factionOptions.GetItemCount() > 0)
+        if (_factionOptions.ItemCount > 0)
         {
             _factionOptions.Select(0);
         }
 
-        if (_playerOptions.GetItemCount() > 0)
+        if (_playerOptions.ItemCount > 0)
         {
             _playerOptions.Select(side);
         }

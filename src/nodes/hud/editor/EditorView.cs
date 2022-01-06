@@ -89,8 +89,8 @@ public partial class EditorView : CanvasLayer
             var label = new Label();
             label.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
             label.RectMinSize = new Vector2(0, 50);
-            label.Align = Label.AlignEnum.Center;
-            label.Valign = Label.VAlign.Center;
+            label.VerticalAlignment = VerticalAlignment.Center;
+            label.HorizontalAlignment = HorizontalAlignment.Center;
             label.Text = $"Player: {id}, Position: {coords.Offset().x}, {coords.Offset().z}";
 
             _playerContainer.AddChild(label);

@@ -44,7 +44,7 @@ public static class Loader
             return directoryData;
         }
 
-        if (!(directory.ListDirBegin(true, true) == Error.Ok))
+        if (!(directory.ListDirBegin() == Error.Ok))
         {
             GD.PushWarning("Loader: failed to load " + path + ", return [] (list_dir_begin)");
             return directoryData;

@@ -16,7 +16,7 @@ public partial class ScenarioSelectionView : PanelContainer
             _options.AddItem(pair.Key);
         }
 
-        if (_options.GetItemCount() > 0)
+        if (_options.ItemCount > 0)
         {
             _options.Select(0);
         }
