@@ -243,8 +243,8 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            var wallPosition = center + Metrics.GetEdgeMiddle(direction);
-            AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, wallPosition, new Vector3(0f, rotation, 0f));
+            var position = center + Metrics.GetEdgeMiddle(direction);
+            AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 
@@ -292,8 +292,33 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            var cliffPosition = center + Metrics.GetEdgeMiddle(direction);
-            AddRenderData(Data.Instance.OuterCliffs[terrainCode.Value].Mesh, cliffPosition, new Vector3(0f, rotation, 0f));
+            var position = center + Metrics.GetEdgeMiddle(direction);
+
+            foreach (var terrainGraphic in Data.Instance.OuterCliffs[terrainCode.Value].Values)
+            {
+                if (terrainGraphic.Variations.Count == 0)
+                {
+                    AddRenderData(terrainGraphic.Mesh, position, new Vector3(0f, rotation, 0f));
+                }
+                else
+                {
+                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    {
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        _randomIndicies.Add(position, index);
+                    }
+
+                    if (terrainGraphic.Variations.Count <= index)
+                    {
+                        _randomIndicies.Remove(position);
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        _randomIndicies.Add(position, index);
+                    }
+
+                    var mesh = terrainGraphic.Variations[index];
+                    AddRenderData(mesh, position, new Vector3(0f, rotation, 0f));
+                }
+            }
         }
     }
 
@@ -338,8 +363,33 @@ public partial class TerrainFeaturePopulator : Node3D
 
             center.y = nElevation.Height + nElevationOffset.Value;
             
-            var cliffPosition = center + Metrics.GetEdgeMiddle(direction);
-            AddRenderData(Data.Instance.InnerCliffs[terrainCode.Value].Mesh, cliffPosition, new Vector3(0f, rotation, 0f));
+            var position = center + Metrics.GetEdgeMiddle(direction);
+            
+            foreach (var terrainGraphic in Data.Instance.InnerCliffs[terrainCode.Value].Values)
+            {
+                if (terrainGraphic.Variations.Count == 0)
+                {
+                    AddRenderData(terrainGraphic.Mesh, position, new Vector3(0f, rotation, 0f));
+                }
+                else
+                {
+                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    {
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        _randomIndicies.Add(position, index);
+                    }
+
+                    if (terrainGraphic.Variations.Count <= index)
+                    {
+                        _randomIndicies.Remove(position);
+                        index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
+                        _randomIndicies.Add(position, index);
+                    }
+
+                    var mesh = terrainGraphic.Variations[index];
+                    AddRenderData(mesh, position, new Vector3(0f, rotation, 0f));
+                }
+            }
         }
     }
 
@@ -390,8 +440,8 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
-            var towerPosition = center + Metrics.GetFirstCorner(direction);
-            AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, towerPosition, new Vector3(0f, rotation, 0f));
+            var position = center + Metrics.GetFirstCorner(direction);
+            AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 

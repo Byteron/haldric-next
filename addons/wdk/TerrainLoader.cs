@@ -10,8 +10,8 @@ namespace Haldric.Wdk
         public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
         public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, TerrainGraphic> OuterCliffs = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, TerrainGraphic> InnerCliffs = new Dictionary<string, TerrainGraphic>();
+        public Dictionary<string, Dictionary<string, TerrainGraphic>> OuterCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
+        public Dictionary<string, Dictionary<string, TerrainGraphic>> InnerCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
         public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
@@ -151,28 +151,112 @@ namespace Haldric.Wdk
             WallSegments.Add(code, graphic);
         }
 
-        public void AddOuterCliffGraphic(string code, string path, string material_path = "")
-        {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        // public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
+        // {
+        //     var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
 
-            if (!string.IsNullOrEmpty(material_path))
+        //     if (!string.IsNullOrEmpty(material_path))
+        //     {
+        //         graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+        //     }
+
+        //     OuterCliffs.Add(code, graphic);
+        // }
+
+        public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
+        {
+            if (!OuterCliffs.ContainsKey(code))
             {
-                graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                OuterCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
             }
 
-            OuterCliffs.Add(code, graphic);
+            var dict = OuterCliffs[code];
+
+            if (string.IsNullOrEmpty(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                if (!string.IsNullOrEmpty(material_path))
+                {
+                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                }
+
+                dict.Add(path, graphic);
+            }
+            else
+            {
+                if (!dict.ContainsKey(name))
+                {
+                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                    if (!string.IsNullOrEmpty(material_path))
+                    {
+                        graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                    }
+
+                    dict.Add(name, graphic);
+                }
+                else
+                {
+                    var graphic = dict[name];
+                    var mesh = LoadAsset<Mesh>(path);
+                    
+                    if (!string.IsNullOrEmpty(material_path))
+                    {
+                        mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                    }
+                    
+                    graphic.AddVariation(mesh);
+                }
+            }
         }
 
-        public void AddInnerCliffGraphic(string code, string path, string material_path = "")
+        public void AddInnerCliffGraphic(string code, string path, string material_path = "", string name = "")
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-            if (!string.IsNullOrEmpty(material_path))
+            if (!InnerCliffs.ContainsKey(code))
             {
-                graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                InnerCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
             }
 
-            InnerCliffs.Add(code, graphic);
+            var dict = InnerCliffs[code];
+
+            if (string.IsNullOrEmpty(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                if (!string.IsNullOrEmpty(material_path))
+                {
+                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                }
+
+                dict.Add(path, graphic);
+            }
+            else
+            {
+                if (!dict.ContainsKey(name))
+                {
+                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                    if (!string.IsNullOrEmpty(material_path))
+                    {
+                        graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                    }
+
+                    dict.Add(name, graphic);
+                }
+                else
+                {
+                    var graphic = dict[name];
+                    var mesh = LoadAsset<Mesh>(path);
+                    
+                    if (!string.IsNullOrEmpty(material_path))
+                    {
+                        mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+                    }
+                    
+                    graphic.AddVariation(mesh);
+                }
+            }
         }
 
         public void AddWallTowerGraphic(string code, string path)
