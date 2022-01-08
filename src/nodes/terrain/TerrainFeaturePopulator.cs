@@ -260,12 +260,12 @@ public partial class TerrainFeaturePopulator : Node3D
         ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
-
         center.y = elevation.Height + elevationOffset.Value;
+
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
-            //walls want to rotate the other way it seems?
+            // cliffs want to rotate the other way it seems?
             float rotation = direction.Rotation();
 
             if (!neighbors.Has(direction))
@@ -284,7 +284,7 @@ public partial class TerrainFeaturePopulator : Node3D
             {
                 continue;
             }
-            
+
             var elevationDiff = elevation.Value - nElevation.Value;
             
             if (elevationDiff < 2)
@@ -310,12 +310,11 @@ public partial class TerrainFeaturePopulator : Node3D
 
         var center = coords.World();
 
-        center.y = elevation.Height + elevationOffset.Value;
         for (int i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
-            //walls want to rotate the other way it seems?
-            float rotation = direction.Rotation();
+            // cliffs want to rotate the other way it seems?
+            float rotation = direction.Opposite().Rotation();
 
             if (!neighbors.Has(direction))
             {
@@ -323,11 +322,12 @@ public partial class TerrainFeaturePopulator : Node3D
             }
 
             var nLocEntity = neighbors.Get(direction);
-
+            ref var nCoords = ref nLocEntity.Get<Coords>();
             ref var nElevation = ref nLocEntity.Get<Elevation>();
             ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
             ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
+            ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
 
             var elevationDiff = nElevation.Value - elevation.Value;
             
@@ -336,6 +336,8 @@ public partial class TerrainFeaturePopulator : Node3D
                 continue;
             }
 
+            center.y = nElevation.Height + nElevationOffset.Value;
+            
             var cliffPosition = center + Metrics.GetEdgeMiddle(direction);
             AddRenderData(Data.Instance.InnerCliffs[terrainCode.Value].Mesh, cliffPosition, new Vector3(0f, rotation, 0f));
         }
