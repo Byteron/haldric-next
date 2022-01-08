@@ -32,7 +32,8 @@ public partial class Data : Node
     public Dictionary<string, TerrainGraphic> WaterGraphics { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallSegments { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> WallTowers { get; set; } = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> Cliffs { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> OuterCliffs { get; set; } = new Dictionary<string, TerrainGraphic>();
+    public Dictionary<string, TerrainGraphic> InnerCliffs { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, TerrainGraphic> KeepPlateaus { get; set; } = new Dictionary<string, TerrainGraphic>();
     public Dictionary<string, Texture2D> TerrainTextures { get; set; } = new Dictionary<string, Texture2D>();
     public Dictionary<string, Texture2D> TerrainNormalTextures { get; set; } = new Dictionary<string, Texture2D>();
@@ -114,7 +115,8 @@ public partial class Data : Node
         WaterGraphics = terrainScript.WaterGraphics;
         WallSegments = terrainScript.WallSegments;
         WallTowers = terrainScript.WallTowers;
-        Cliffs = terrainScript.Cliffs;
+        OuterCliffs = terrainScript.OuterCliffs;
+        InnerCliffs = terrainScript.InnerCliffs;
         KeepPlateaus = terrainScript.KeepPlateaus;
         TerrainTextures = terrainScript.TerrainTextures;
         TerrainNormalTextures = terrainScript.TerrainNormalTextures;

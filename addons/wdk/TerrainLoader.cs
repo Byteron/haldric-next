@@ -10,7 +10,8 @@ namespace Haldric.Wdk
         public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
         public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, TerrainGraphic> Cliffs = new Dictionary<string, TerrainGraphic>();
+        public Dictionary<string, TerrainGraphic> OuterCliffs = new Dictionary<string, TerrainGraphic>();
+        public Dictionary<string, TerrainGraphic> InnerCliffs = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
         public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
@@ -150,7 +151,7 @@ namespace Haldric.Wdk
             WallSegments.Add(code, graphic);
         }
 
-        public void AddCliffGraphic(string code, string path, string material_path = "")
+        public void AddOuterCliffGraphic(string code, string path, string material_path = "")
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
 
@@ -159,7 +160,7 @@ namespace Haldric.Wdk
                 graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
             }
 
-            Cliffs.Add(code, graphic);
+            OuterCliffs.Add(code, graphic);
         }
 
         public void AddWallTowerGraphic(string code, string path)

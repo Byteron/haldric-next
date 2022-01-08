@@ -110,9 +110,14 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
             _terrainFeaturePopulator.AddWalls(locEntity);
         }
 
-        if (Data.Instance.Cliffs.ContainsKey(terrainCode.Value))
+        if (Data.Instance.OuterCliffs.ContainsKey(terrainCode.Value))
         {
-            _terrainFeaturePopulator.AddCliffs(locEntity);
+            _terrainFeaturePopulator.AddOuterCliffs(locEntity);
+        }
+
+        if (Data.Instance.InnerCliffs.ContainsKey(terrainCode.Value))
+        {
+            _terrainFeaturePopulator.AddInnerCliffs(locEntity);
         }
 
         if (Data.Instance.KeepPlateaus.ContainsKey(terrainCode.Value))
