@@ -12,6 +12,7 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
 		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       // grass leaf litter
+		NewBase("Us", new List<TerrainType>() { TerrainType.Flat });        // underground cave 
 
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
@@ -53,6 +54,11 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Sm", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Sm", "assets/graphics/images/mud_normal.png");
 		AddTerrainRoughnessTexture("Sm", "assets/graphics/images/mud_roughness.png");
+
+		//		Underground
+		AddTerrainTexture("Us", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Us", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Us", "assets/graphics/images/mud_roughness.png");
 
 		//		Mountains simple
 		AddTerrainTexture("Ms", "assets/graphics/images/stone_basecolor.png");
@@ -112,6 +118,13 @@ public class TerrainScript : TerrainLoader
 		AddOuterCliffGraphic("Sb", "assets/graphics/models/Cliff_sand_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
 		AddOuterCliffGraphic("Ch", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 		AddOuterCliffGraphic("Kh", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+		AddOuterCliffGraphic("Xu", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+
+		// Cave wall models for underground tunnels
+		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_1.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_2.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
 
 		// Forest props
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
@@ -121,7 +134,7 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_03.tres", "outer");
 
-		//Village props
+		// Village props
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_01.tres", "center");
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_02.tres", "center");
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_03.tres", "center");
@@ -146,6 +159,7 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_06.tres", "outer");
 
+		// Water
 		AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Wo", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Xx", "assets/graphics/models/chasm.tres");
