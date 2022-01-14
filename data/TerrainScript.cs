@@ -16,6 +16,7 @@ public class TerrainScript : TerrainLoader
 
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
+		NewBase("Wu", new List<TerrainType>() { TerrainType.DeepWaters }, -5);     // underground water
 
 		NewBase("Xx", new List<TerrainType>() { TerrainType.Unwalkable }, -15);		// chasm
 		NewBase("Xu", new List<TerrainType>() { TerrainType.Impassable });	// impassable void
@@ -89,7 +90,12 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Wo", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Wo", "assets/graphics/images/mud_normal.png");
 		AddTerrainRoughnessTexture("Wo", "assets/graphics/images/mud_roughness.png");
-		
+
+		//		Water underground
+		AddTerrainTexture("Wu", "assets/graphics/images/mud_basecolor.png");
+		AddTerrainNormalTexture("Wu", "assets/graphics/images/mud_normal.png");
+		AddTerrainRoughnessTexture("Wu", "assets/graphics/images/mud_roughness.png");
+
 		//		Chasm - uses the same mud texture as water for a placeholder. Should be replaced eventually
 		AddTerrainTexture("Xx", "assets/graphics/images/mud_basecolor.png");
 		AddTerrainNormalTexture("Xx", "assets/graphics/images/mud_normal.png");
@@ -126,6 +132,12 @@ public class TerrainScript : TerrainLoader
 		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
 		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
 
+		// Cave wall models for underground water
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_1.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_2.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+
 		// Forest props
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");
@@ -159,9 +171,10 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
 		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_06.tres", "outer");
 
-		// Water
+		// Water and other terrain that uses a similar plane+shader setup
 		AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Wo", "assets/graphics/models/water.tres");
+		AddWaterGraphic("Wu", "assets/graphics/models/water.tres");
 		AddWaterGraphic("Xx", "assets/graphics/models/chasm.tres");
 	}
 }
