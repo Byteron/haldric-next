@@ -12,7 +12,7 @@ public partial class LoginState : GameState
     {
         AddEventSystem<LoginEvent>(new LoginEventSystem());
 
-        _view = Scenes.Instance.LoginView.Instantiate<LoginView>();
+        _view = Scenes.Instantiate<LoginView>();
 
         _view.Connect("LoginPressed", new Callable(this, nameof(OnLoginPressed)));
         _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));

@@ -6,7 +6,7 @@ public partial class FloatingLabel : Control
 {
     public static FloatingLabel Instantiate(Vector3 position, string text, Color color)
     {
-        var label = Scenes.Instance.FloatingLabel.Instantiate<FloatingLabel>();
+        var label = Scenes.Instantiate<FloatingLabel>();
         label.Position = position;
         label.Text = text;
         label.Color = color;

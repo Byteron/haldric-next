@@ -30,7 +30,6 @@ settings/fps/force_fps=60
 window/size/width=1600
 window/size/height=800
 window/size/resizable=false
-window/dpi/allow_hidpi=true
 window/vsync/vsync_mode=0
 window/vsync/use_vsync=false
 

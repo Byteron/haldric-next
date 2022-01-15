@@ -9,7 +9,7 @@ public partial class TestMapSelectionState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        _view = Scenes.Instance.ScenarioSelectionView.Instantiate<ScenarioSelectionView>();
+        _view = Scenes.Instantiate<ScenarioSelectionView>();
 
         _view.Connect("ContinuePressed", new Callable(this, nameof(OnContinuePressed)));
         _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));

@@ -45,7 +45,7 @@ public class CaptureVillageEventSystem : IEcsSystem
                 locEntity.Remove<IsCapturedBySide>();
             }
 
-            var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
+            var flagView = Scenes.Instantiate<FlagView>();
             flagView.Color = Data.Instance.SideColors[captureEvent.Side];
             _parent.AddChild(flagView);
 

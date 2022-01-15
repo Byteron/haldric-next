@@ -5,7 +5,7 @@ public partial class UnitPlate : Control
 {
     public static UnitPlate Instantiate()
     {
-        return Scenes.Instance.UnitPlate.Instantiate<UnitPlate>();
+        return Scenes.Instantiate<UnitPlate>();
     }
 
     public Vector3 Position { get; set; }

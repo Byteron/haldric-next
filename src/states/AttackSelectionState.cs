@@ -21,7 +21,7 @@ public partial class AttackSelectionState : GameState
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(5);
 
-        _view = Scenes.Instance.AttackSelectionView.Instantiate<AttackSelectionView>();
+        _view = Scenes.Instantiate<AttackSelectionView>();
         _view.Connect("AttackSelected", new Callable(this, nameof(OnAttackSelected)));
         _view.Connect("CancelButtonPressed", new Callable(this, nameof(OnCancelButtonPressed)));
         canvasLayer.AddChild(_view);

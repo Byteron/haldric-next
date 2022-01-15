@@ -65,16 +65,16 @@ public partial class TestMapState : GameState
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
 
-        var turnPanel = Scenes.Instance.TurnPanel.Instantiate<TurnPanel>();
+        var turnPanel = Scenes.Instantiate<TurnPanel>();
         turnPanel.Connect(nameof(TurnPanel.EndTurnButtonPressed), new Callable(this, nameof(OnTurnEndButtonPressed)));
         canvasLayer.AddChild(turnPanel);
         _world.AddResource(turnPanel);
         
-        var unitPanel = Scenes.Instance.UnitPanel.Instantiate<UnitPanel>();
+        var unitPanel = Scenes.Instantiate<UnitPanel>();
         canvasLayer.AddChild(unitPanel);
         _world.AddResource(unitPanel);
 
-        var terrainPanel = Scenes.Instance.TerrainPanel.Instantiate<TerrainPanel>();
+        var terrainPanel = Scenes.Instantiate<TerrainPanel>();
         canvasLayer.AddChild(terrainPanel);
         _world.AddResource(terrainPanel);
 

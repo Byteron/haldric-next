@@ -46,7 +46,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
             world.AddResource(new ShaderData(mapData.Width, mapData.Height));
 
-            var terrainHighlighter = Scenes.Instance.TerrainHighlighter.Instantiate<TerrainHighlighter>();
+            var terrainHighlighter = Scenes.Instantiate<TerrainHighlighter>();
             _parent.AddChild(terrainHighlighter);
             world.AddResource(terrainHighlighter);
 
@@ -81,7 +81,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
     private void InitializeHover()
     {
-        var cursorView = Scenes.Instance.Cursor3D.Instantiate<Cursor3D>();
+        var cursorView = Scenes.Instantiate<Cursor3D>();
         _parent.AddChild(cursorView);
 
         _world.AddResource(cursorView);

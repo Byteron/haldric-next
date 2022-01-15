@@ -35,7 +35,7 @@ public partial class FactionSelectionState : GameState
 
         _socket.ReceivedMatchState += OnMatchStateReceived;
 
-        _view = Scenes.Instance.FactionSelectionView.Instantiate<FactionSelectionView>();
+        _view = Scenes.Instantiate<FactionSelectionView>();
 
         _view.MapName = _mapName;
         _view.LocalPlayerId = localPlayer.Id;

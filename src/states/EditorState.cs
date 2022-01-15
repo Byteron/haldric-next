@@ -33,7 +33,7 @@ public partial class EditorState : GameState
     {
         _world.AddResource(new Commander());
 
-        var editorView = Scenes.Instance.EditorView.Instantiate<EditorView>();
+        var editorView = Scenes.Instantiate<EditorView>();
         AddChild(editorView);
 
         _world.AddResource(editorView);

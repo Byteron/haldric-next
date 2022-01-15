@@ -33,7 +33,7 @@ public partial class LobbyState : GameState
 
     public override void Enter(GameStateController gameStates)
     {
-        _view = Scenes.Instance.LobbyView.Instantiate<LobbyView>();
+        _view = Scenes.Instantiate<LobbyView>();
 
         _view.Connect(nameof(LobbyView.MessageSubmitted), new Callable(this, nameof(OnMessageSubmitted)));
         _view.Connect(nameof(LobbyView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));

@@ -27,7 +27,7 @@ public partial class RecruitSelectionState : GameState
         var canvas = _world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(2);
 
-        _view = Scenes.Instance.RecruitSelectionView.Instantiate<RecruitSelectionView>();
+        _view = Scenes.Instantiate<RecruitSelectionView>();
         _view.Connect(nameof(RecruitSelectionView.RecruitSelected), new Callable(this, nameof(OnRecruitSelected)));
         _view.Connect(nameof(RecruitSelectionView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
         canvasLayer.AddChild(_view);

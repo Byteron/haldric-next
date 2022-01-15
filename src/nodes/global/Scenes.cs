@@ -1,38 +1,42 @@
 using Godot;
-using System;
 
 public partial class Scenes : Node
 {
-    public static Scenes Instance { get; private set; }
+    static Scenes Instance { get; set; }
 
-    [Export] public PackedScene EditorView;
-    [Export] public PackedScene MainMenuView;
-    [Export] public PackedScene LoginView;
-    [Export] public PackedScene LobbyView;
-    [Export] public PackedScene AttackSelectionView;
-    [Export] public PackedScene FactionSelectionView;
-    [Export] public PackedScene ScenarioSelectionView;
-    [Export] public PackedScene RecruitSelectionView;
-    [Export] public PackedScene LoadingStateView;
-    [Export] public PackedScene DebugView;
+    [Export] PackedScene EditorView;
+    [Export] PackedScene MainMenuView;
+    [Export] PackedScene LoginView;
+    [Export] PackedScene LobbyView;
+    [Export] PackedScene AttackSelectionView;
+    [Export] PackedScene FactionSelectionView;
+    [Export] PackedScene ScenarioSelectionView;
+    [Export] PackedScene RecruitSelectionView;
+    [Export] PackedScene LoadingStateView;
 
-    [Export] public PackedScene SidePanel;
-    [Export] public PackedScene TerrainPanel;
-    [Export] public PackedScene TurnPanel;
-    [Export] public PackedScene UnitPanel;
+    [Export] PackedScene DebugPanel;
+
+    [Export] PackedScene SidePanel;
+    [Export] PackedScene TerrainPanel;
+    [Export] PackedScene TurnPanel;
+    [Export] PackedScene UnitPanel;
     
-    [Export] public PackedScene TerrainHighlighter;
+    [Export] PackedScene TerrainHighlighter;
 
-    [Export] public PackedScene CameraOperator;
+    [Export] PackedScene CameraOperator;
 
-    [Export] public PackedScene FloatingLabel;
-    [Export] public PackedScene UnitPlate;
+    [Export] PackedScene FloatingLabel;
+    [Export] PackedScene UnitPlate;
 
-    [Export] public PackedScene Cursor3D;
-    [Export] public PackedScene FlagView;
+    [Export] PackedScene Cursor3D;
+    [Export] PackedScene FlagView;
 
     public override void _Ready()
     {
         Instance = this;
+    }
+
+    public static T Instantiate<T>() where T: Node {
+        return (Instance.Get(typeof(T).ToString()) as PackedScene).Instantiate<T>();
     }
 }

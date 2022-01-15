@@ -66,7 +66,7 @@ public class EditorEditPlayerSystem : IEcsSystem
             }
             else
             {
-                var flagView = Scenes.Instance.FlagView.Instantiate<FlagView>();
+                var flagView = Scenes.Instantiate<FlagView>();
                 _parent.AddChild(flagView);
                 var pos = coords.World();
                 pos.y = elevation.Height + elevationOffset.Value;

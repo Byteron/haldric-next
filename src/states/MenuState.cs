@@ -12,7 +12,7 @@ public partial class MenuState : GameState
     {
         var canvas = _world.GetResource<Canvas>();
 
-        var menuView = Scenes.Instance.MainMenuView.Instantiate<MainMenuView>();
+        var menuView = Scenes.Instantiate<MainMenuView>();
 
         menuView.Connect(nameof(MainMenuView.LobbyButtonPressed), new Callable(this, nameof(OnLobbyButtonPressed)));
         menuView.Connect(nameof(MainMenuView.TestButtonPressed), new Callable(this, nameof(OnTestButtonPressed)));
@@ -22,7 +22,7 @@ public partial class MenuState : GameState
         AddChild(menuView);
 
         var canvasLayer = canvas.GetCanvasLayer(10);
-        var debugView = Scenes.Instance.DebugView.Instantiate<DebugPanel>();
+        var debugView = Scenes.Instantiate<DebugPanel>();
         canvasLayer.AddChild(debugView);
 
         _world.AddResource(menuView);
