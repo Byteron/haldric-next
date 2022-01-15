@@ -69,6 +69,12 @@ public class TerrainBuilder
         return this;
     }
 
+    public TerrainBuilder WithNoLighting()
+    {
+        _terrainEntity.Add<NoLighting>();
+        return this;
+    }
+
     public EcsEntity Build()
     {
         return _terrainEntity;

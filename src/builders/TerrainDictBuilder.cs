@@ -9,7 +9,7 @@ public class TerrainDictBuilder
     {
         _terrainDict = new Dictionary<string, object>
         {
-            ["BaseTerrain"] = true
+            [nameof(IsBaseTerrain)] = true
         };
         return this;
     }
@@ -17,56 +17,62 @@ public class TerrainDictBuilder
     {
         _terrainDict = new Dictionary<string, object>
         {
-            ["OverlayTerrain"] = true
+            [nameof(IsOverlayTerrain)] = true
         };
         return this;
     }
 
     public TerrainDictBuilder WithCode(string code)
     {
-        _terrainDict["TerrainCode"] = code;
+        _terrainDict[nameof(TerrainCode)] = code;
         return this;
     }
 
     public TerrainDictBuilder WithTypes(List<TerrainType> types)
     {
-        _terrainDict["TerrainTypes"] = types;
+        _terrainDict[nameof(TerrainTypes)] = types;
         return this;
     }
 
     public TerrainDictBuilder WithElevationOffset(float elevationOffset)
     {
-        _terrainDict["ElevationOffset"] = elevationOffset;
+        _terrainDict[nameof(ElevationOffset)] = elevationOffset;
         return this;
     }
 
     public TerrainDictBuilder WithRecruitFrom()
     {
-        _terrainDict["RecruitFrom"] = true;
+        _terrainDict[nameof(CanRecruitFrom)] = true;
         return this;
     }
 
     public TerrainDictBuilder WithRecruitTo()
     {
-        _terrainDict["RecruitTo"] = true;
+        _terrainDict[nameof(CanRecruitTo)] = true;
         return this;
     }
 
     public TerrainDictBuilder WithGivesIncome()
     {
-        _terrainDict["GivesIncome"] = true;
+        _terrainDict[nameof(GivesIncome)] = true;
         return this;
     }
 
     public TerrainDictBuilder WithIsCapturable()
     {
-        _terrainDict["IsCapturable"] = true;
+        _terrainDict[nameof(IsCapturable)] = true;
         return this;
     }
 
     public TerrainDictBuilder WithHeals()
     {
-        _terrainDict["Heals"] = true;
+        _terrainDict[nameof(Heals)] = true;
+        return this;
+    }
+
+    public TerrainDictBuilder NoLighting()
+    {
+        _terrainDict[nameof(NoLighting)] = true;
         return this;
     }
 

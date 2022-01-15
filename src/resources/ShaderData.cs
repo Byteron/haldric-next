@@ -29,12 +29,33 @@ public class ShaderData
         _terrainMaterial.Set("shader_param/texel_size", new Vector2(1f / width, 1f / height));
 
         ResetVisibility(true);
+        ResetLighting(true);
     }
 
     public void UpdateTerrain(int x, int z, int terrainTypeIndex)
     {
         int index = z * _width + x;
         _data[index].a8 = terrainTypeIndex;
+    }
+
+    public void UpdateLighting(int x, int z, bool isLit)
+    {
+        int index = z * _width + x;
+
+        if (index >= _data.Length || index < 0)
+        {
+            return;
+        }
+
+        _data[index].b8 = isLit ? 255 : 0;
+    }
+
+    public void ResetLighting(bool isLit)
+    {
+        for (int i = 0; i < _data.Length; i++)
+        {
+            _data[i].b8 = isLit ? 255 : 0;
+        }
     }
 
     public void UpdateVisibility(int x, int z, bool isVisible)

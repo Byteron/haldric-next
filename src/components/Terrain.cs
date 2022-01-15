@@ -8,3 +8,5 @@ public struct IsCapturable { }
 public struct GivesIncome { }
 
 public struct Heals { }
+
+public struct NoLighting { }

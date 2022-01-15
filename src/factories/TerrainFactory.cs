@@ -8,54 +8,59 @@ public class TerrainFactory
 
     public static EcsEntity CreateFromDict(Dictionary<string, object> dict)
     {
-        if (dict.ContainsKey("BaseTerrain"))
+        if (dict.ContainsKey(nameof(IsBaseTerrain)))
         {
             _builder.CreateBase();
         }
 
-        if (dict.ContainsKey("OverlayTerrain"))
+        if (dict.ContainsKey(nameof(IsOverlayTerrain)))
         {
             _builder.CreateOverlay();
         }
 
-        if (dict.ContainsKey("TerrainCode"))
+        if (dict.ContainsKey(nameof(TerrainCode)))
         {
-            _builder.WithCode((string)dict["TerrainCode"]);
+            _builder.WithCode((string)dict[nameof(TerrainCode)]);
         }
 
-        if (dict.ContainsKey("TerrainTypes"))
+        if (dict.ContainsKey(nameof(TerrainTypes)))
         {
-            _builder.WithTypes((List<TerrainType>)dict["TerrainTypes"]);
+            _builder.WithTypes((List<TerrainType>)dict[nameof(TerrainTypes)]);
         }
 
-        if (dict.ContainsKey("ElevationOffset"))
+        if (dict.ContainsKey(nameof(ElevationOffset)))
         {
-            _builder.WithElevationOffset((float)dict["ElevationOffset"]);
+            _builder.WithElevationOffset((float)dict[nameof(ElevationOffset)]);
         }
 
-        if (dict.ContainsKey("RecruitFrom"))
+        if (dict.ContainsKey(nameof(CanRecruitFrom)))
         {
             _builder.WithRecruitFrom();
         }
 
-        if (dict.ContainsKey("RecruitTo"))
+        if (dict.ContainsKey(nameof(CanRecruitTo)))
         {
             _builder.WithRecruitTo();
         }
 
-        if (dict.ContainsKey("GivesIncome"))
+        if (dict.ContainsKey(nameof(GivesIncome)))
         {
             _builder.WithGivesIncome();
         }
 
-        if (dict.ContainsKey("IsCapturable"))
+        if (dict.ContainsKey(nameof(IsCapturable)))
         {
             _builder.WithIsCapturable();
         }
 
-        if (dict.ContainsKey("Heals"))
+        if (dict.ContainsKey(nameof(Heals)))
         {
             _builder.WithHeals();
+        }
+
+        if (dict.ContainsKey(nameof(NoLighting)))
+        {
+            _builder.WithNoLighting();
         }
 
         return _builder.Build();

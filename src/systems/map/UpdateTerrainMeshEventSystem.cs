@@ -91,7 +91,15 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
             ref var coords = ref locEntity.Get<Coords>();
             ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
 
-            _shaderData.UpdateTerrain((int)coords.Offset().x, (int)coords.Offset().z, baseTerrain.Entity.Get<TerrainTypeIndex>().Value);
+            int x = (int)coords.Offset().x;
+            int z = (int)coords.Offset().z;
+
+            _shaderData.UpdateTerrain(x, z, baseTerrain.Entity.Get<TerrainTypeIndex>().Value);
+
+            if (baseTerrain.Entity.Has<NoLighting>())
+            {
+                _shaderData.UpdateLighting(x, z, false);
+            }
         }
 
         _terrainMesh.Apply();
