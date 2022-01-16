@@ -57,9 +57,9 @@ public class TerrainScript : TerrainLoader
 		AddTerrainRoughnessTexture("Sm", "assets/graphics/images/mud_roughness.png");
 
 		//		Underground
-		AddTerrainTexture("Us", "assets/graphics/images/mud_basecolor.png");
-		AddTerrainNormalTexture("Us", "assets/graphics/images/mud_normal.png");
-		AddTerrainRoughnessTexture("Us", "assets/graphics/images/mud_roughness.png");
+		AddTerrainTexture("Us", "assets/graphics/images/cave_ground_basecolor.jpg");
+		AddTerrainNormalTexture("Us", "assets/graphics/images/cave_ground_normal.jpg");
+		AddTerrainRoughnessTexture("Us", "assets/graphics/images/cave_ground_roughness.jpg");
 
 		//		Mountains simple
 		AddTerrainTexture("Ms", "assets/graphics/images/stone_basecolor.png");
