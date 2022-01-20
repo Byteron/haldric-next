@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://fbp0muskckwl"
+uid="uid://c0spbufpamnml"
 path="res://.godot/imported/Village_human.gltf-34d46a3afbc564a7c95f143d20e3863c.scn"
 
 [deps]
@@ -26,6 +26,14 @@ animation/import=true
 animation/fps=15
 import_script/path=""
 _subresources={
+"animations": {
+"Idle": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 0
+}
+},
 "materials": {
 "village_base": {
 "use_external/enabled": true,
@@ -53,81 +61,81 @@ _subresources={
 }
 },
 "meshes": {
-"village_human_base_01": {
+"Village_human_base_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_base_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_base_01.tres"
 },
-"village_human_center_01": {
+"Village_human_center_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_center_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_center_01.tres"
 },
-"village_human_center_02": {
+"Village_human_center_02": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_center_02.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_center_02.tres"
 },
-"village_human_center_03": {
+"Village_human_center_03": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_center_03.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_center_03.tres"
 },
-"village_human_center_04": {
+"Village_human_center_04": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_center_04.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_center_04.tres"
 },
-"village_human_hall_base_01": {
+"Village_human_hall_base_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_base_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_base_01.tres"
 },
-"village_human_hall_center_01": {
+"Village_human_hall_center_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_center_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_center_01.tres"
 },
-"village_human_hall_outer_01": {
+"Village_human_hall_outer_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_01.tres"
 },
-"village_human_hall_outer_02": {
+"Village_human_hall_outer_02": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_02.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_02.tres"
 },
-"village_human_hall_outer_03": {
+"Village_human_hall_outer_03": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_03.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_03.tres"
 },
-"village_human_hall_outer_04": {
+"Village_human_hall_outer_04": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_04.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_04.tres"
 },
-"village_human_hall_outer_05": {
+"Village_human_hall_outer_05": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_05.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_05.tres"
 },
-"village_human_hall_outer_06": {
+"Village_human_hall_outer_06": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_hall_outer_06.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_hall_outer_06.tres"
 },
-"village_human_outer_01": {
+"Village_human_outer_01": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_01.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_01.tres"
 },
-"village_human_outer_02": {
+"Village_human_outer_02": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_02.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_02.tres"
 },
-"village_human_outer_03": {
+"Village_human_outer_03": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_03.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_03.tres"
 },
-"village_human_outer_04": {
+"Village_human_outer_04": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_04.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_04.tres"
 },
-"village_human_outer_05": {
+"Village_human_outer_05": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_05.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_05.tres"
 },
-"village_human_outer_06": {
+"Village_human_outer_06": {
 "save_to_file/enabled": true,
-"save_to_file/path": "res://assets/graphics/models/village_human_outer_06.tres"
+"save_to_file/path": "res://assets/graphics/models/Village_human_outer_06.tres"
 }
 }
 }

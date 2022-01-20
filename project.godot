@@ -27,10 +27,10 @@ settings/fps/force_fps=60
 
 [display]
 
-window/size/width=1600
-window/size/height=800
 window/size/resizable=false
 window/vsync/vsync_mode=0
+window/size/width=1600
+window/size/height=800
 window/vsync/use_vsync=false
 
 [editor]
@@ -40,8 +40,7 @@ export/convert_text_resources_to_binary=true
 [importer_defaults]
 
 scene={
-"_subresources": {
-},
+"_subresources": {},
 "animation/fps": 15,
 "animation/import": true,
 "import_script/path": "",
