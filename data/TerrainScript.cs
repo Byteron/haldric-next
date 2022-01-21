@@ -12,7 +12,7 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
 		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       // grass leaf litter
-		NewBase("Us", new List<TerrainType>() { TerrainType.Flat });        // underground cave 
+		NewBase("Us", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground cave 
 
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
@@ -32,9 +32,9 @@ public class TerrainScript : TerrainLoader
 		MapBaseToOverlay("Ff", "Gll");
 
 		//      Grass  
-		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.png");
-		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.png");
-		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass_roughness.png");
+		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.jpg");
+		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.jpg");
+		AddTerrainRoughnessTexture("Gg", "assets/graphics/images/grass_roughness.jpg");
 
 		//      Grass leaf litter
 		AddTerrainTexture("Gll", "assets/graphics/images/leaf_litter_basecolor.png");
