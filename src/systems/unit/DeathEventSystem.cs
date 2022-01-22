@@ -31,7 +31,7 @@ public class DeathEventSystem : IEcsSystem
             deathEvent.Entity.Despawn();
         }
 
-        if (query.GetEntitiesCount() > 0)
+        if (query.GetEntityCount() > 0)
         {
             world.Spawn().Add(new CheckVictoryConditionEvent());
         }
