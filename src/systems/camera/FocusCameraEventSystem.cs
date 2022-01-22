@@ -1,5 +1,4 @@
 using Bitron.Ecs;
-using Godot;
 
 public struct FocusCameraEvent
 {
@@ -15,19 +14,14 @@ public class FocusCameraEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<FocusCameraEvent>().End();
-
-        foreach (var eventId in eventQuery)
+        if (!world.TryGetResource<CameraOperator>(out var cameraOperator))
         {
-            if (!world.TryGetResource<CameraOperator>(out var cameraOperator))
-            {
-                return;
-            }
-
-            var eventEntity = world.Entity(eventId);
-            ref var focusEvent = ref eventEntity.Get<FocusCameraEvent>();
-
-            cameraOperator.Focus(focusEvent.Coords.World());
+            return;
         }
+
+        world.ForEach((ref FocusCameraEvent focusEvent) =>
+        {
+            cameraOperator.Focus(focusEvent.Coords.World());
+        });
     }
 }

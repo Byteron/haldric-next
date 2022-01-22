@@ -36,13 +36,9 @@ public class SpawnUnitEventSystem : IEcsSystem
             return;
         }
 
-        var eventQuery = world.Query<SpawnUnitEvent>().End();
-
-        foreach (var eventEntityId in eventQuery)
+        world.ForEach((ref SpawnUnitEvent spawnEvent) =>
         {
             var map = world.GetResource<Map>();
-
-            ref var spawnEvent = ref world.Entity(eventEntityId).Get<SpawnUnitEvent>();
 
             var locations = map.Locations;
 
@@ -90,6 +86,6 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
 
             locEntity.Add(new HasUnit(unitEntity));
-        }
+        });
     }
 }

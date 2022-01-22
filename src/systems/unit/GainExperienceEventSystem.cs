@@ -17,12 +17,8 @@ public class GainExperienceEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<GainExperienceEvent>().End();
-
-        foreach (var id in query)
+        world.ForEach((ref GainExperienceEvent gainEvent) =>
         {
-            ref var gainEvent = ref world.Entity(id).Get<GainExperienceEvent>();
-
             var entity = gainEvent.Entity;
             var amount = gainEvent.Amount;
 
@@ -39,6 +35,6 @@ public class GainExperienceEventSystem : IEcsSystem
                 world.Spawn().Add(new AdvanceEvent(entity));
                 experience.Empty();
             }
-        }
+        });
     }
 }

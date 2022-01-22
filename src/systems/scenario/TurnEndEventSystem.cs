@@ -7,12 +7,7 @@ public class TurnEndEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<TurnEndEvent>().End();
-        var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
-        var locsWithCapturedVillagesQuery = world.Query<Village>().Inc<IsCapturedBySide>().End();
-        var locWithUnitQuery = world.Query<HasBaseTerrain>().Inc<HasUnit>().End();
-
-        foreach (var eventEntityId in eventQuery)
+        world.ForEach((ref TurnEndEvent e) =>
         {
             var scenario = world.GetResource<Scenario>();
             scenario.EndTurn();
@@ -24,21 +19,14 @@ public class TurnEndEventSystem : IEcsSystem
 
             var sideEntity = scenario.GetCurrentSideEntity();
 
-            ref var gold = ref sideEntity.Get<Gold>();
-            ref var side = ref sideEntity.Get<Side>();
+            var gold = sideEntity.Get<Gold>().Value;
+            var side = sideEntity.Get<Side>();
             ref var playerId = ref sideEntity.Get<PlayerId>();
 
-            foreach (var unitEntityId in unitQuery)
+            world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref Attribute<Actions> actions, ref Attribute<Moves> moves, ref Level level) =>
             {
-                var unitEntity = world.Entity(unitEntityId);
-
-                ref var unitSide = ref unitEntity.Get<Side>();
-
                 if (side.Value == unitSide.Value)
                 {
-                    ref var actions = ref unitEntity.Get<Attribute<Actions>>();
-                    ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-
                     actions.Restore();
                     moves.Restore();
 
@@ -47,25 +35,18 @@ public class TurnEndEventSystem : IEcsSystem
                         unitEntity.Remove<Suspended>();
                     }
 
-                    ref var level = ref unitEntity.Get<Level>();
-
-                    gold.Value -= level.Value;
+                    gold -= level.Value;
                 }
-            }
+            });
 
-            foreach (var locEntityId in locsWithCapturedVillagesQuery)
+            world.ForEach((ref Village village, ref IsCapturedBySide villageSide) =>
             {
-                var locEntity = world.Entity(locEntityId);
-
-                ref var village = ref locEntity.Get<Village>();
-                ref var villageSide = ref locEntity.Get<IsCapturedBySide>();
-
                 if (side.Value == villageSide.Value)
                 {
-                    gold.Value += village.List.Count;
+                    gold += village.List.Count;
                 }
-            }
-            
+            });
+
             if (world.TryGetResource<TurnPanel>(out var turnPanel))
             {
                 var localPlayer = world.GetResource<LocalPlayer>();
@@ -81,18 +62,17 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
 
-            foreach (var locEntityId in locWithUnitQuery)
+            world.ForEach((EcsEntity locEntity, ref HasBaseTerrain baseTerrain, ref HasUnit hasUnit) =>
             {
-                var locEntity = world.Entity(locEntityId);
 
-                var canHeal = locEntity.Get<HasBaseTerrain>().Entity.Has<Heals>();
+                var canHeal = baseTerrain.Entity.Has<Heals>();
 
                 if (locEntity.Has<HasOverlayTerrain>())
                 {
                     canHeal = canHeal || locEntity.Get<HasOverlayTerrain>().Entity.Has<Heals>();
                 }
 
-                var unitEntity = locEntity.Get<HasUnit>().Entity;
+                var unitEntity = hasUnit.Entity;
 
                 ref var health = ref unitEntity.Get<Attribute<Health>>();
                 ref var unitSide = ref unitEntity.Get<Side>();
@@ -105,7 +85,9 @@ public class TurnEndEventSystem : IEcsSystem
 
                     world.Spawn().Add(new SpawnFloatingLabelEvent(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f)));
                 }
-            }
-        }
+            });
+
+            sideEntity.Get<Gold>().Value = gold;
+        });
     }
 }

@@ -22,13 +22,10 @@ public class SpawnFloatingLabelEventSystem : IEcsSystem
         var canvas = world.GetResource<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
 
-        var query = world.Query<SpawnFloatingLabelEvent>().End();
-
-        foreach (var eventEntityId in query)
+        world.ForEach((ref SpawnFloatingLabelEvent spawnEvent) => 
         {
-            var spawnEvent = world.Entity(eventEntityId).Get<SpawnFloatingLabelEvent>();
             var floatingLabel = FloatingLabel.Instantiate(spawnEvent.Position, spawnEvent.Text, spawnEvent.Color);
             canvasLayer.AddChild(floatingLabel);
-        }
+        });
     }
 }

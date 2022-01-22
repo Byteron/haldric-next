@@ -18,11 +18,9 @@ public class UnitHoveredEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<UnitHoveredEvent>().End();
-
-        foreach (var eventEntityId in query)
+        world.ForEach((ref UnitHoveredEvent e) =>
         {
-            var unitEntity = world.Entity(eventEntityId).Get<UnitHoveredEvent>().UnitEntity;
+            var unitEntity = e.UnitEntity;
 
             var id = unitEntity.Get<Id>().Value;
             var l = unitEntity.Get<Level>().Value;
@@ -87,6 +85,6 @@ public class UnitHoveredEventSystem : IEcsSystem
 
             var unitPanel = world.GetResource<UnitPanel>();
             unitPanel.UpdateInfo(s);
-        }
+        });
     }
 }

@@ -44,13 +44,13 @@ public partial class UnitPlate : Control
     public override void _Process(float delta)
     {
         var camera = GetViewport().GetCamera3d();
-        
+
         if (camera == null)
         {
             QueueFree();
             return;
         }
-        
+
         _healthBar.MaxValue = MaxHealth;
         _healthBar.Value = Health;
 

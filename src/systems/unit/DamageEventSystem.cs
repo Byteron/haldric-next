@@ -26,14 +26,10 @@ public class DamageEventSystem : IEcsSystem
             return;
         }
 
-        var query = world.Query<DamageEvent>().End();
-
         var daytime = schedule.GetCurrentDaytime();
 
-        foreach (var eventEntityId in query)
+        world.ForEach((ref DamageEvent damageEvent) =>
         {
-            ref var damageEvent = ref world.Entity(eventEntityId).Get<DamageEvent>();
-
             var damagerEntity = damageEvent.DamagerEntity;
             var targetEntity = damageEvent.TargetEntity;
 
@@ -100,6 +96,6 @@ public class DamageEventSystem : IEcsSystem
                 GD.Print("Death Event Spawned");
                 world.Spawn().Add(new DeathEvent(targetEntity));
             }
-        }
+        });
     }
 }

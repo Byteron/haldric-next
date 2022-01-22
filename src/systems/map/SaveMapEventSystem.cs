@@ -19,14 +19,9 @@ public class SaveMapEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<SaveMapEvent>().End();
-
-        foreach (var eventEntityId in eventQuery)
+        world.ForEach((ref SaveMapEvent e) =>
         {
-            ref var saveMapEvent = ref world.Entity(eventEntityId).Get<SaveMapEvent>();
-
             var map = world.GetResource<Map>();
-            var locations = map.Locations;
             var grid = map.Grid;
 
             var mapData = new MapData();
@@ -34,11 +29,23 @@ public class SaveMapEventSystem : IEcsSystem
             mapData.Width = grid.Width;
             mapData.Height = grid.Height;
 
-            foreach (var locEntity in locations.Dict.Values)
+            world.ForEach((EcsEntity locEntity, ref Coords coords, ref Elevation elevation, ref HasBaseTerrain baseTerrain, ref Location loc) =>
             {
-                var coords = locEntity.Get<Coords>();
+                var locData = new MapDataLocation();
+                locData.Coords = coords;
+                locData.Elevation = elevation.Value;
 
-                var locData = MapDataLocation.FromLocEntity(locEntity);
+                ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
+
+                locData.Terrain.Add(baseTerrainCode.Value);
+
+                if (locEntity.Has<HasOverlayTerrain>())
+                {
+                    ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
+                    ref var overlayTerrainCode = ref overlayTerrain.Entity.Get<TerrainCode>();
+
+                    locData.Terrain.Add(overlayTerrainCode.Value);
+                }
 
                 if (locEntity.Has<IsStartingPositionOfSide>())
                 {
@@ -49,10 +56,10 @@ public class SaveMapEventSystem : IEcsSystem
                 }
 
                 mapData.Locations.Add(locData);
-            }
+            });
 
-            SaveToFile(saveMapEvent.Name, mapData);
-        }
+            SaveToFile(e.Name, mapData);
+        });
     }
 
     private void SaveToFile(string name, MapData mapData)

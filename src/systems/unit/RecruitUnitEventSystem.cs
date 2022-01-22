@@ -32,26 +32,21 @@ public class RecruitUnitEventSystem : IEcsSystem
             return;
         }
 
-        var castleQuery = world.Query<Castle>().End();
-        var eventQuery = world.Query<RecruitUnitEvent>().End();
-
-        foreach (var eventEntityId in eventQuery)
+        world.ForEach((ref RecruitUnitEvent recruitEvent) =>
         {
             var scenario = world.GetResource<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
 
             ref var gold = ref sideEntity.Get<Gold>();
 
-            ref var recruitEvent = ref world.Entity(eventEntityId).Get<RecruitUnitEvent>();
-
             var locEntity = recruitEvent.LocEntity;
 
             if (locEntity.Has<HasUnit>())
             {
                 GD.PrintErr("Location already has a unit! Not recruiting: " + recruitEvent.UnitType.Name);
-                continue;
+                return;
             }
-
+            
             var freeCoords = locEntity.Get<Coords>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
@@ -90,6 +85,6 @@ public class RecruitUnitEventSystem : IEcsSystem
             unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
 
             recruitEvent.LocEntity.Add(new HasUnit(unitEntity));
-        }
+        });
     }
 }
