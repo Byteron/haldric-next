@@ -27,11 +27,13 @@ settings/fps/force_fps=60
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/size/resizable=false
 window/vsync/vsync_mode=0
-window/size/width=1600
-window/size/height=800
 window/vsync/use_vsync=false
+window/size/width=1920
+window/size/height=1080
 
 [editor]
 
