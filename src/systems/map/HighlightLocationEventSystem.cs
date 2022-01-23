@@ -18,16 +18,12 @@ public class HighlightLocationsEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<HighlightLocationEvent>().End();
-
-        foreach (var eventEntityId in query)
+        world.ForEach((ref HighlightLocationEvent highlightEvent) =>
         {
             var map = world.GetResource<Map>();
             var grid = map.Grid;
 
-            var eventData = world.Entity(eventEntityId).Get<HighlightLocationEvent>();
-
-            var locEntity = map.Locations.Get(eventData.Coords.Cube());
+            var locEntity = map.Locations.Get(highlightEvent.Coords.Cube());
             ref var unit = ref locEntity.Get<HasUnit>();
             var unitEntity = unit.Entity;
             ref var side = ref unitEntity.Get<Side>();
@@ -37,7 +33,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
             terrainHighlighter.Clear();
 
             var maxAttackRange = attacks.GetMaxAttackRange();
-            var cellsInAttackRange = Hex.GetCellsInRange(eventData.Coords.Cube(), maxAttackRange);
+            var cellsInAttackRange = Hex.GetCellsInRange(highlightEvent.Coords.Cube(), maxAttackRange);
 
             List<Coords> filteredAttackList = new List<Coords>();
             foreach (var cCell in cellsInAttackRange)
@@ -50,8 +46,8 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
-                var isInMeleeRange = map.IsInMeleeRange(eventData.Coords, nCoords);
-                var attackRange = map.GetAttackDistance(eventData.Coords, nCoords);
+                var isInMeleeRange = map.IsInMeleeRange(highlightEvent.Coords, nCoords);
+                var attackRange = map.GetAttackDistance(highlightEvent.Coords, nCoords);
 
                 var attack = attacks.GetUsableAttack(isInMeleeRange, attackRange);
 
@@ -68,7 +64,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 }
             }
 
-            Vector3[] cellsInMoveRange = Hex.GetCellsInRange(eventData.Coords.Cube(), eventData.Range);
+            Vector3[] cellsInMoveRange = Hex.GetCellsInRange(highlightEvent.Coords.Cube(), highlightEvent.Range);
             List<Coords> filteredMoveList = new List<Coords>();
 
             foreach (Vector3 cCell in cellsInMoveRange)
@@ -81,7 +77,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 var nLocEntity = map.Locations.Dict[cCell];
 
-                if (nLocEntity.Get<Distance>().Value > eventData.Range)
+                if (nLocEntity.Get<Distance>().Value > highlightEvent.Range)
                 {
                     continue;
                 }
@@ -97,8 +93,8 @@ public class HighlightLocationsEventSystem : IEcsSystem
             }
 
             HighlightBorder(world, filteredAttackList, maxAttackRange, new Color("774411"), 0.9f);
-            HighlightBorder(world, filteredMoveList, eventData.Range, new Color("111188"));
-        }
+            HighlightBorder(world, filteredMoveList, highlightEvent.Range, new Color("111188"));
+        });
     }
 
     private void HighlightBorder(EcsWorld world, List<Coords> locations, int range, Color color, float scaleFactor = 1f, bool debug = false)

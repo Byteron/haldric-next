@@ -16,14 +16,13 @@ public class AdvanceEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<AdvanceEvent>().End();
-
-        foreach (var id in query)
+        if (!world.TryGetResource<UnitPanel>(out var unitPanel))
         {
-            var unitPanel = world.GetResource<UnitPanel>();
+            return;
+        }
 
-            ref var advanceEvent = ref world.Entity(id).Get<AdvanceEvent>();
-
+        world.ForEach((ref AdvanceEvent advanceEvent) =>
+        {
             var unitEntity = advanceEvent.Entity;
 
             ref var health = ref unitEntity.Get<Attribute<Health>>();
@@ -41,7 +40,7 @@ public class AdvanceEventSystem : IEcsSystem
 
             if (advancements.List.Count == 0)
             {
-                continue;
+                return;
             }
 
             var unitTypeId = advancements.List[0];
@@ -71,6 +70,6 @@ public class AdvanceEventSystem : IEcsSystem
             unitView.Position = position;
 
             world.Spawn().Add(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f)));
-        }
+        });
     }
 }

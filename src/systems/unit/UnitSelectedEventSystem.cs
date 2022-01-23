@@ -15,13 +15,10 @@ public class UnitSelectedEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<UnitSelectedEvent>().End();
-
-        foreach (var eventEntityId in query)
-        {
+        world.ForEach((ref UnitSelectedEvent e) => {
             var map = world.GetResource<Map>();
 
-            var unitEntity = world.Entity(eventEntityId).Get<UnitSelectedEvent>().Unit;
+            var unitEntity = e.Unit;
 
             var coords = unitEntity.Get<Coords>();
             var moves = unitEntity.Get<Attribute<Moves>>();
@@ -40,6 +37,6 @@ public class UnitSelectedEventSystem : IEcsSystem
             map.UpdateDistances(coords, unitEntity.Get<Side>().Value);
 
             world.Spawn().Add(new HighlightLocationEvent(coords, moves.Value));
-        }
+        });
     }
 }

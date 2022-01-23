@@ -17,15 +17,10 @@ public class LoadMapEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<LoadMapEvent>().End();
-
-        foreach (var eventEntityId in eventQuery)
+        world.ForEach((ref LoadMapEvent e) =>
         {
-            var loadEvent = world.Entity(eventEntityId).Get<LoadMapEvent>();
-
-            var mapData = Loader.LoadJson<MapData>(Path + loadEvent.Name + ".json");
-
+            var mapData = Loader.LoadJson<MapData>(Path + e.Name + ".json");
             world.Spawn().Add(new SpawnMapEvent(mapData));
-        }
+        });
     }
 }

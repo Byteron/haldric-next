@@ -19,29 +19,24 @@ public class SpawnPlayersEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var startingLocQuery = world.Query<IsStartingPositionOfSide>().End();
-        var eventQuery = world.Query<SpawnPlayersEvent>().End();
-
-        foreach (var e in eventQuery)
+        world.ForEach((ref SpawnPlayersEvent spawnEvent) =>
         {
+            var players = spawnEvent.Players;
+            var golds = spawnEvent.Golds;
+            var factions = spawnEvent.Factions;
+
             var matchPlayers = world.GetResource<MatchPlayers>();
-            ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayersEvent>();
 
-            foreach (var locEntityId in startingLocQuery)
+            world.ForEach((EcsEntity locEntity, ref Coords coords, ref IsStartingPositionOfSide startPosSide) =>
             {
-                var locEntity = world.Entity(locEntityId);
-
-                ref var coords = ref locEntity.Get<Coords>();
-                ref var startPosSide = ref locEntity.Get<IsStartingPositionOfSide>();
-                
                 var side = startPosSide.Value;
-                
-                var username = matchPlayers.Array[side].Username;
-                var playerId = spawnEvent.Players[side];
-                var gold = spawnEvent.Golds[side];
 
-                world.Spawn().Add(new SpawnPlayerEvent(playerId, side, coords, spawnEvent.Factions[side], gold));
-            }
-        }
+                var username = matchPlayers.Array[side].Username;
+                var playerId = players[side];
+                var gold = golds[side];
+
+                world.Spawn().Add(new SpawnPlayerEvent(playerId, side, coords, factions[side], gold));
+            });
+        });
     }
 }

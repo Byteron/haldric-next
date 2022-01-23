@@ -24,12 +24,8 @@ public class SpawnPlayerEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<SpawnPlayerEvent>().End();
-
-        foreach (var e in eventQuery)
+        world.ForEach((ref SpawnPlayerEvent spawnEvent) =>
         {
-            ref var spawnEvent = ref world.Entity(e).Get<SpawnPlayerEvent>();
-
             var scenario = world.GetResource<Scenario>();
 
             var username = "Username";
@@ -50,7 +46,7 @@ public class SpawnPlayerEventSystem : IEcsSystem
             {
                 faction = Data.Instance.Factions[spawnEvent.Faction];
             }
-            
+
             GD.Print($"Spawning Player -  Id: {spawnEvent.PlayerId} | Name: {username} | Side: {spawnEvent.Side}");
 
             var sideEntity = world.Spawn()
@@ -64,6 +60,6 @@ public class SpawnPlayerEventSystem : IEcsSystem
             scenario.Sides.Add(spawnEvent.Side, sideEntity);
 
             world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
-        }
+        });
     }
 }

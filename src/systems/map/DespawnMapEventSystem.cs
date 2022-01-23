@@ -8,28 +8,22 @@ public class DespawnMapEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<DespawnMapEvent>().End();
-        var chunkQuery = world.Query<Locations>().End();
-        var unitQuery = world.Query<NodeHandle<UnitView>>().End();
-
-        foreach (var _ in eventQuery)
+        world.ForEach((ref DespawnMapEvent e) =>
         {
-            var map = world.GetResource<Map>();
-
-            foreach (var entityId in chunkQuery)
+            world.ForEach((EcsEntity entity, ref Locations locs) =>
             {
-                world.DespawnEntity(entityId);
-            }
+                entity.Despawn();
+            });
 
-            foreach (var entityId in unitQuery)
+            world.ForEach((EcsEntity entity, ref Location loc) =>
             {
-                world.DespawnEntity(entityId);
-            }
+                entity.Despawn();
+            });
 
-            foreach (var locEntity in map.Locations.Values)
+            world.ForEach((EcsEntity entity, ref Attribute<Health> health) =>
             {
-                locEntity.Despawn();
-            }
+                entity.Despawn();
+            });
 
             world.RemoveResource<Map>();
             world.RemoveResource<ShaderData>();
@@ -45,6 +39,6 @@ public class DespawnMapEventSystem : IEcsSystem
             {
                 world.RemoveResource<SelectedLocation>();
             }
-        }
+        });
     }
 }

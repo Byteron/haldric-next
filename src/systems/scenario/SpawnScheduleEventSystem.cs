@@ -25,19 +25,14 @@ public class SpawnScheduleEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var query = world.Query<SpawnScheduleEvent>().End();
-
-        foreach (var eventId in query)
+        world.ForEach((ref SpawnScheduleEvent spawnEvent) =>
         {
-            var eventEntity = world.Entity(eventId);
-            ref var spawnEvent = ref eventEntity.Get<SpawnScheduleEvent>();
-
             var schedule = Data.Instance.Schedules[spawnEvent.Id].Instantiate<Schedule>();
             _parent.AddChild(schedule);
 
             schedule.Set(spawnEvent.Index);
 
             world.AddResource(schedule);
-        }
+        });
     }
 }

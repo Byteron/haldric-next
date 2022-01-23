@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Godot;
 using Bitron.Ecs;
 
+public struct Location { }
+
 public struct SpawnMapEvent
 {
     public MapData MapData { get; set; }
@@ -122,10 +124,11 @@ public class SpawnMapEventSystem : IEcsSystem
 
         foreach (var locData in mapData.Locations)
         {
-            var locEntity = _world.Spawn();
-
             var coords = locData.Coords;
 
+            var locEntity = _world.Spawn();
+
+            locEntity.Add<Location>();
             locEntity.Add(new Index((int)coords.Offset().z * width + (int)coords.Offset().x));
             locEntity.Add(coords);
 

@@ -21,18 +21,11 @@ public class LoginEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<LoginEvent>().End();
-
-        foreach (var eventId in query)
+        world.ForEach((ref LoginEvent e) =>
         {
-            GD.Print("Login Event!");
-
-            var eventEntity = world.Entity(eventId);
-            ref var loginEvent = ref eventEntity.Get<LoginEvent>();
-
             var client = world.GetResource<Client>();
-            Login(world, client, loginEvent.Username, loginEvent.Email, loginEvent.Password);
-        }
+            Login(world, client, e.Username, e.Email, e.Password);
+        });
     }
 
     private async void Login(EcsWorld world, Client client, string username, string email, string password)

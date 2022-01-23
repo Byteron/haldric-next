@@ -8,16 +8,12 @@ public class ChangeDaytimeEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<ChangeDaytimeEvent>().End();
 
         if (!world.TryGetResource<Schedule>(out var schedule))
         {
             return;
         }
 
-        foreach (var eventId in query)
-        {
-            schedule.Next();         
-        }
+        world.ForEach((ref ChangeDaytimeEvent e) => { schedule.Next(); });
     }
 }

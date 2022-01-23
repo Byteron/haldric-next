@@ -11,15 +11,11 @@ public class MoveUnitEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<MoveUnitEvent>().End();
-
-        foreach (var eventId in query)
+        world.ForEach((ref MoveUnitEvent moveEvent) =>
         {
             var map = world.GetResource<Map>();
             var commander = world.GetResource<Commander>();
 
-            var eventEntity = world.Entity(eventId);
-            ref var moveEvent = ref eventEntity.Get<MoveUnitEvent>();
 
             var fromLocEntity = map.Locations.Get(moveEvent.From);
             var toLocEntity = map.Locations.Get(moveEvent.To);
@@ -50,6 +46,6 @@ public class MoveUnitEventSystem : IEcsSystem
 
             commander.Enqueue(new MoveUnitCommand(path));
             world.GetResource<GameStateController>().PushState(new CommanderState(world));
-        }
+        });
     }
 }

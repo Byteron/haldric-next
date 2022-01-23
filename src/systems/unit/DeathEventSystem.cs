@@ -14,13 +14,11 @@ public class DeathEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<DeathEvent>().End();
+        bool checkVictory = false;
 
-        foreach (var eventEntityId in query)
+        world.ForEach((ref DeathEvent deathEvent) =>
         {
             var map = world.GetResource<Map>();
-
-            ref var deathEvent = ref world.Entity(eventEntityId).Get<DeathEvent>();
 
             ref var coords = ref deathEvent.Entity.Get<Coords>();
 
@@ -29,9 +27,11 @@ public class DeathEventSystem : IEcsSystem
             locEntity.Remove<HasUnit>();
 
             deathEvent.Entity.Despawn();
-        }
 
-        if (query.GetEntityCount() > 0)
+            checkVictory = true;
+        });
+
+        if (checkVictory)
         {
             world.Spawn().Add(new CheckVictoryConditionEvent());
         }

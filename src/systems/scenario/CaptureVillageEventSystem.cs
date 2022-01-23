@@ -24,12 +24,8 @@ public class CaptureVillageEventSystem : IEcsSystem
 
     public void Run(EcsWorld world)
     {
-        var query = world.Query<CaptureVillageEvent>().End();
-
-        foreach (var id in query)
+        world.ForEach((ref CaptureVillageEvent captureEvent) =>
         {
-            ref var captureEvent = ref world.Entity(id).Get<CaptureVillageEvent>();
-
             var locEntity = captureEvent.LocEntity;
 
             ref var coords = ref locEntity.Get<Coords>();
@@ -55,6 +51,6 @@ public class CaptureVillageEventSystem : IEcsSystem
 
             locEntity.Add(new NodeHandle<FlagView>(flagView));
             locEntity.Add(new IsCapturedBySide(captureEvent.Side));
-        }
+        });
     }
 }

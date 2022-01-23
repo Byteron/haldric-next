@@ -8,45 +8,40 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var eventQuery = world.Query<CheckVictoryConditionEvent>().End();
-
-        foreach (var e in eventQuery)
+        world.ForEach((ref CheckVictoryConditionEvent _e) =>
         {
             if (!world.TryGetResource<Scenario>(out var scenario))
             {
                 return;
             }
 
-            var query = world.Query<IsLeader>().End();
-
-            var standingFactions = new List<EcsEntity>();
+            var aliveFactions = new List<EcsEntity>();
 
             foreach (var sideEntity in scenario.Sides.Values)
             {
                 var leaderCount = 0;
+                var playerSide = sideEntity.Get<Side>().Value;
 
-                foreach (var unitId in query)
+                world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref IsLeader isLeader) =>
                 {
-                    var unitEntity = world.Entity(unitId);
-
-                    if (unitEntity.Has<IsLeader>() && unitEntity.Get<Side>().Value == sideEntity.Get<Side>().Value)
+                    if (unitSide.Value == playerSide)
                     {
                         leaderCount += 1;
                     }
-                }
+                });
 
                 if (leaderCount > 0)
                 {
-                    standingFactions.Add(sideEntity);
+                    aliveFactions.Add(sideEntity);
                 }
             }
 
-            if (standingFactions.Count == 1)
+            if (aliveFactions.Count == 1)
             {
-                var winningPlayer = standingFactions[0];
+                var winningPlayer = aliveFactions[0];
                 GD.Print($"Player {winningPlayer.Get<Side>().Value} won the game!");
                 world.GetResource<GameStateController>().PopState();
             }
-        }
+        });
     }
 }

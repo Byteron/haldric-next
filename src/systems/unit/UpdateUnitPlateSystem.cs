@@ -6,41 +6,30 @@ public class UpdateUnitPlateSystem : IEcsSystem
 {
     public void Run(EcsWorld world)
     {
-        var query = world.Query<NodeHandle<UnitView>>()
-            .Inc<Attribute<Health>>()
-            .Inc<Attribute<Moves>>()
-            .Inc<Attribute<Experience>>()
-            .Inc<NodeHandle<UnitPlate>>()
-            .Inc<Side>()
-            .End();
-
-        foreach (var entityId in query)
+        world.ForEach((
+            EcsEntity entity,
+            ref Side side,
+            ref Attribute<Health> health,
+            ref Attribute<Moves> moves,
+            ref Attribute<Experience> experience,
+            ref NodeHandle<UnitView> view,
+            ref NodeHandle<UnitPlate> plate) =>
         {
-            var unitEntity = world.Entity(entityId);
+            plate.Node.MaxHealth = health.Max;
+            plate.Node.Health = health.Value;
 
-            ref var health = ref unitEntity.Get<Attribute<Health>>();
-            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-            ref var experience = ref unitEntity.Get<Attribute<Experience>>();
-            ref var side = ref unitEntity.Get<Side>();
+            plate.Node.MaxMoves = moves.Max;
+            plate.Node.Moves = moves.Value;
 
-            var view = unitEntity.Get<NodeHandle<UnitView>>().Node;
-            var unitPlate = unitEntity.Get<NodeHandle<UnitPlate>>().Node;
+            plate.Node.MaxExperience = experience.Max;
+            plate.Node.Experience = experience.Value;
 
-            unitPlate.MaxHealth = health.Max;
-            unitPlate.Health = health.Value;
+            plate.Node.Position = view.Node.Position + Vector3.Up * 7.5f;
 
-            unitPlate.MaxMoves = moves.Max;
-            unitPlate.Moves = moves.Value;
+            plate.Node.SideColor = Data.Instance.SideColors[side.Value];
 
-            unitPlate.MaxExperience = experience.Max;
-            unitPlate.Experience = experience.Value;
-
-            unitPlate.Position = view.Position + Vector3.Up * 7.5f;
-
-            unitPlate.SideColor = Data.Instance.SideColors[side.Value];
-
-            unitPlate.IsLeader = unitEntity.Has<IsLeader>();
-            unitPlate.IsHero = unitEntity.Has<IsHero>();
-        }
+            plate.Node.IsLeader = entity.Has<IsLeader>();
+            plate.Node.IsHero = entity.Has<IsHero>();
+        });
     }
 }

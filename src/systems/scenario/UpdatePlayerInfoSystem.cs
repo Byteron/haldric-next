@@ -21,54 +21,38 @@ public class UpdatePlayerInfoSystem : IEcsSystem
 
         var sideEntity = scenario.GetCurrentSideEntity();
 
-        ref var side = ref sideEntity.Get<Side>();
+        var side = sideEntity.Get<Side>().Value;
         ref var playerId = ref sideEntity.Get<PlayerId>();
         ref var gold = ref sideEntity.Get<Gold>();
         ref var name = ref sideEntity.Get<Name>();
-
-        var locWithCapturedVillageQuery = world.Query<Village>().End();
-        var unitQuery = world.Query<Side>().Inc<Attribute<Actions>>().Inc<Level>().End();
 
         var unitCount = 0;
         var villageCount = 0;
         var capturedVillageCount = 0;
         var income = 0;
 
-        foreach (var locId in locWithCapturedVillageQuery)
+        world.ForEach((EcsEntity locEntity, ref Village village) =>
         {
-            var locEntity = world.Entity(locId);
-
             villageCount += 1;
+        });
 
-            if (!locEntity.Has<IsCapturedBySide>())
+        world.ForEach((EcsEntity locEntity, ref Village village, ref IsCapturedBySide captured) =>
+        {
+            if (captured.Value == side)
             {
-                continue;
-            }
-
-            ref var captured = ref locEntity.Get<IsCapturedBySide>();
-
-            if (captured.Value == side.Value)
-            {
-                ref var village = ref locEntity.Get<Village>();
-
                 capturedVillageCount += 1;
                 income += village.List.Count;
             }
-        }
+        });
 
-        foreach (var unitEntityId in unitQuery)
+        world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref Level level, ref Attribute<Health> health) =>
         {
-            var unitEntity = world.Entity(unitEntityId);
-
-            ref var unitSide = ref unitEntity.Get<Side>();
-
-            if (unitSide.Value == side.Value)
+            if (unitSide.Value == side)
             {
-                ref var level = ref unitEntity.Get<Level>();
                 income -= level.Value;
                 unitCount += 1;
             }
-        }
+        });
 
         var localPlayer = world.GetResource<LocalPlayer>();
 
@@ -76,7 +60,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         var unitString = "Units: " + unitCount;
         var villageString = $"Villages: {capturedVillageCount} / {villageCount}";
         var youString = $"You: {localPlayer.Presence.Username}";
-        var otherString = $"Current: ({side.Value}) {name.Value}";
+        var otherString = $"Current: ({side}) {name.Value}";
         var goldString = "Gold: - | Income: -";
 
         if (localPlayer.Id == playerId.Value)
