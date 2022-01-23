@@ -79,7 +79,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             var canvas = world.GetResource<Canvas>();
             var canvasLayer = canvas.GetCanvasLayer(0);
 
-            var unitPlate = UnitPlate.Instantiate();
+            var unitPlate = Scenes.Instantiate<UnitPlate>();
 
             canvasLayer.AddChild(unitPlate);
 

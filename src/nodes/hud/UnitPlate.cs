@@ -1,13 +1,7 @@
 using Godot;
-using System;
 
 public partial class UnitPlate : Control
 {
-    public static UnitPlate Instantiate()
-    {
-        return Scenes.Instantiate<UnitPlate>();
-    }
-
     public Vector3 Position { get; set; }
 
     public int MaxHealth { get; set; }
