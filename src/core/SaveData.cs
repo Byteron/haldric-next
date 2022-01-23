@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Bitron.Ecs;
 
-public class PlayerSaveData
+public class SideSaveData
 {
     public int Side = 0;
     public int Gold = 0;
@@ -56,7 +56,7 @@ public class ScenarioSaveData
     public int Side = 0;
     public string Schedule = "";
     public int DaytimeIndex = 0;
-    public List<PlayerSaveData> Players = new List<PlayerSaveData>();
+    public List<SideSaveData> Sides = new List<SideSaveData>();
     public List<UnitSaveData> Units = new List<UnitSaveData>();
     public MapData MapData = null;
 }

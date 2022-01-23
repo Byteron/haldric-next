@@ -32,20 +32,18 @@ public class LoadScenarioEventSystem : IEcsSystem
             world.Spawn().Add(new SpawnScheduleEvent(saveData.Schedule, saveData.DaytimeIndex));
             world.Spawn().Add(new SpawnMapEvent(saveData.MapData));
 
-            foreach (var playerData in saveData.Players)
+            foreach (var sideData in saveData.Sides)
             {
-                var username = matchPlayers.Array[playerData.Side].Username;
-
                 foreach (var startLocId in startLocQuery)
                 {
                     var startLocEntity = world.Entity(startLocId);
 
-                    if (startLocEntity.Get<IsStartingPositionOfSide>().Value != playerData.Side)
+                    if (startLocEntity.Get<IsStartingPositionOfSide>().Value != sideData.Side)
                     {
                         continue;
                     }
 
-                    world.Spawn().Add(new SpawnPlayerEvent(playerData.Side, username, startLocEntity.Get<Coords>(), playerData.Faction, playerData.Gold));
+                    world.Spawn().Add(new SpawnPlayerEvent(sideData.Side, startLocEntity.Get<Coords>(), sideData.Faction, sideData.Gold));
                     break;
                 }
             }

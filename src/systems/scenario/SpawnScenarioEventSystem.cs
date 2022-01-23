@@ -5,7 +5,7 @@ public struct SpawnScenarioEvent
 {
     public int Round;
     public int Side;
-    public List<EcsEntity> Players;
+    public Dictionary<int, EcsEntity> Sides;
 }
 
 public class SpawnScenarioEventSystem : IEcsSystem
@@ -20,10 +20,10 @@ public class SpawnScenarioEventSystem : IEcsSystem
 
             ref var spawnEvent = ref eventEntity.Get<SpawnScenarioEvent>();
 
-            var scenario = new Scenario(spawnEvent.Players.Count);
+            var scenario = new Scenario();
             scenario.Round = spawnEvent.Round;
             scenario.Side = spawnEvent.Side;
-            scenario.Players = spawnEvent.Players.ToArray();
+            scenario.Sides = spawnEvent.Sides;
 
             world.AddResource(scenario);
         }

@@ -48,25 +48,28 @@ public class SaveScenarioEventSystem : IEcsSystem
                 saveGame.Units.Add(unitData);
             }
 
-            foreach (var playerEntity in scenario.Players)
+            foreach (var entry in scenario.Sides)
             {
-                var playerData = new PlayerSaveData();
-                playerData.Side = playerEntity.Get<Side>().Value;
-                playerData.Gold = playerEntity.Get<Gold>().Value;
-                playerData.Faction = playerEntity.Get<Faction>().Value;
+                var sideId = entry.Key;
+                var sideEntity = entry.Value;
+
+                var sideData = new SideSaveData();
+                sideData.Side = sideEntity.Get<Side>().Value;
+                sideData.Gold = sideEntity.Get<Gold>().Value;
+                sideData.Faction = sideEntity.Get<Faction>().Value;
                 
                 foreach (var locId in villageQuery)
                 {
                     var locEntity = world.Entity(locId);
                     var vSide = locEntity.Get<IsCapturedBySide>().Value;
 
-                    if (playerData.Side == vSide)
+                    if (sideData.Side == vSide)
                     {
-                        playerData.Villages.Add(locEntity.Get<Coords>());
+                        sideData.Villages.Add(locEntity.Get<Coords>());
                     }
                 }
 
-                saveGame.Players.Add(playerData);
+                saveGame.Sides.Add(sideData);
             }
 
             var mapData = new MapData();
