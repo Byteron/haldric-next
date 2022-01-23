@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using Godot;
 
-public partial class GameStateController : Node3D
+public partial class GameStateController : Node
 {
-    [Signal] public delegate void PostProcessFrame();
-    [Signal] public delegate void PreProcessFrame();
 
     Stack<GameState> _states = new Stack<GameState>();
 
@@ -22,8 +20,6 @@ public partial class GameStateController : Node3D
 
     public override void _Process(float delta)
     {
-        EmitSignal(nameof(PreProcessFrame));
-
         if (_states.Count == 0)
         {
             return;
@@ -33,8 +29,6 @@ public partial class GameStateController : Node3D
         currentState.RunUpdateSystems();
         currentState.RunEventSystems();
         currentState.Update(this, delta);
-
-        EmitSignal(nameof(PostProcessFrame));
     }
 
     public void PushState(GameState newState)
@@ -49,8 +43,7 @@ public partial class GameStateController : Node3D
 
     public void ChangeState(GameState newState)
     {
-        PopState();
-        PushState(newState);
+        CallDeferred(nameof(ChangeStateDeferred), newState);
     }
 
     private void PopStateDeferred()
@@ -84,8 +77,25 @@ public partial class GameStateController : Node3D
                 GD.PrintErr($"{currentState.GetType().ToString()} already at the top of the stack!");
                 return;
             }
-            
+
             currentState.Pause(this);
+        }
+
+        newState.Name = newState.GetType().ToString();
+        _states.Push(newState);
+        AddChild(newState);
+        newState.Enter(this);
+    }
+
+    private void ChangeStateDeferred(GameState newState)
+    {
+        if (_states.Count > 0)
+        {
+            var currentState = _states.Pop();
+            currentState.RunEventSystems();
+            currentState.Exit(this);
+            RemoveChild(currentState);
+            currentState.QueueFree();
         }
 
         newState.Name = newState.GetType().ToString();

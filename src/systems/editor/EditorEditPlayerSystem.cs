@@ -76,7 +76,6 @@ public class EditorEditPlayerSystem : IEcsSystem
                 locEntity.Add(new IsStartingPositionOfSide(editorView.Players.Count));
                 editorView.AddPlayer(coords);
             }
-
         }
     }
 }
