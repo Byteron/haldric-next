@@ -27,13 +27,13 @@ settings/fps/force_fps=60
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/resizable=false
-window/vsync/vsync_mode=0
-window/vsync/use_vsync=false
 window/size/width=1920
 window/size/height=1080
+window/size/resizable=false
+window/size/fullscreen=true
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/vsync/use_vsync=true
 
 [editor]
 
@@ -42,7 +42,8 @@ export/convert_text_resources_to_binary=true
 [importer_defaults]
 
 scene={
-"_subresources": {},
+"_subresources": {
+},
 "animation/fps": 15,
 "animation/import": true,
 "import_script/path": "",
