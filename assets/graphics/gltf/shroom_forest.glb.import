@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://f32o63iilus7"
+uid="uid://baa84fw4atl2w"
 path="res://.godot/imported/shroom_forest.glb-df43d271cd0ad63a8918d870e787aca4.scn"
 
 [deps]
@@ -26,6 +26,12 @@ animation/import=true
 animation/fps=15
 import_script/path=""
 _subresources={
+"materials": {
+"Shroom Mat": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/shroom_forest.res"
+}
+},
 "meshes": {
 "shroom_forest_RetopoFlow002": {
 "save_to_file/enabled": true,
