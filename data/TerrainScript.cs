@@ -22,6 +22,8 @@ public class TerrainScript : TerrainLoader
 		NewBase("Xu", new List<TerrainType>() { TerrainType.Impassable });	// impassable void
 
 		NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });     // forest
+		
+		NewOverlay("Tt", new List<TerrainType>() { TerrainType.Forested });     // Toadstool Forest
 
 		NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });       // keep human
 		NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });     // castle human
@@ -145,6 +147,14 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_01.tres", "outer");
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("Ff", "assets/graphics/models/forest_pine_outer_03.tres", "outer");
+		
+		// Toadstool Forest props
+		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_01.tres", "center");
+		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_02.tres", "center");
+
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_02.tres", "outer");
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_03.tres", "outer");
 
 		// Village props
 		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_01.tres", "center");

@@ -1,0 +1,57 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://baa84fw4atl2w"
+path="res://.godot/imported/shroom_forest.glb-df43d271cd0ad63a8918d870e787aca4.scn"
+
+[deps]
+
+source_file="res://assets/graphics/gltf/shroom_forest.glb"
+dest_files=["res://.godot/imported/shroom_forest.glb-df43d271cd0ad63a8918d870e787aca4.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=false
+meshes/create_shadow_meshes=true
+meshes/light_baking=2
+meshes/lightmap_texel_size=0.1
+skins/use_named_skins=true
+animation/import=true
+animation/fps=15
+import_script/path=""
+_subresources={
+"materials": {
+"Shroom Mat": {
+"use_external/enabled": true,
+"use_external/path": "res://assets/graphics/materials/shroom_forest.res"
+}
+},
+"meshes": {
+"shroom_forest_RetopoFlow002": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_center_01.tres"
+},
+"shroom_forest_RetopoFlow004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_center_02.tres"
+},
+"shroom_forest_RetopoFlow005": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_01.tres"
+},
+"shroom_forest_RetopoFlow007": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_02.tres"
+},
+"shroom_forest_RetopoFlow008": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_03.tres"
+}
+}
+}
