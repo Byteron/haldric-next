@@ -12,7 +12,8 @@ public class TerrainScript : TerrainLoader
 		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
 		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
 		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       // grass leaf litter
-		NewBase("Us", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground cave 
+		NewBase("Us", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground cave
+		NewBase("Uu", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground impassable 
 
 		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
 		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
@@ -62,6 +63,11 @@ public class TerrainScript : TerrainLoader
 		AddTerrainTexture("Us", "assets/graphics/images/cave_ground_basecolor.jpg");
 		AddTerrainNormalTexture("Us", "assets/graphics/images/cave_ground_normal.jpg");
 		AddTerrainRoughnessTexture("Us", "assets/graphics/images/cave_ground_roughness.jpg");
+
+		//		Underground impassable
+		AddTerrainTexture("Uu", "assets/graphics/images/cave_ground_basecolor.jpg");
+		AddTerrainNormalTexture("Uu", "assets/graphics/images/cave_ground_normal.jpg");
+		AddTerrainRoughnessTexture("Uu", "assets/graphics/images/cave_ground_roughness.jpg");
 
 		//		Mountains simple
 		AddTerrainTexture("Ms", "assets/graphics/images/stone_basecolor.png");
@@ -140,6 +146,30 @@ public class TerrainScript : TerrainLoader
 		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
 		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
 
+		// Cave props
+		AddDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_L_01.tres", "center");
+		AddDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_L_02.tres", "center");
+		AddDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_L_03.tres", "center");
+		AddDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_L_04.tres", "center");
+
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_02.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_04.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_06.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_07.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_08.tres", "outer");
+
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_02.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_04.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_06.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_07.tres", "outer");
+		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_08.tres", "outer");
+		
 		// Forest props
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_01.tres", "center");
 		AddDecorationGraphic("Ff", "assets/graphics/models/forest_pine_center_02.tres", "center");
