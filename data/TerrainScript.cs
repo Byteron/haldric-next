@@ -135,16 +135,21 @@ public class TerrainScript : TerrainLoader
 		AddOuterCliffGraphic("Xu", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 
 		// Cave wall models for underground tunnels
-		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_1.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_2.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Us", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/cave_wall_1.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/cave_wall_2.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/cave_wall_3.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Us", "assets/graphics/models/cave_wall_4.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+
+		AddInnerCliffGraphic("Uu", "assets/graphics/models/cave_wall_1.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Uu", "assets/graphics/models/cave_wall_2.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Uu", "assets/graphics/models/cave_wall_3.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Uu", "assets/graphics/models/cave_wall_4.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
 
 		// Cave wall models for underground water
-		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_1.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_2.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_3.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
-		AddInnerCliffGraphic("Wu", "assets/graphics/models/Cave_Wall_4.tres", "assets/graphics/materials/CaveWall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/cave_wall_1.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/cave_wall_2.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/cave_wall_3.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
+		AddInnerCliffGraphic("Wu", "assets/graphics/models/cave_wall_4.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
 
 		// Cave props
 		AddDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_L_01.tres", "center");
