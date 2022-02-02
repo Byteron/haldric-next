@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cprn4lwijyxlx"
+uid="uid://cae83ukodfa3f"
 path="res://.godot/imported/cave_props.gltf-f88b077943d6d11ccab81d0ec6087327.scn"
 
 [deps]
@@ -84,6 +84,10 @@ _subresources={
 "cave_props_stalagmites_L_04": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/cave_props_stalagmites_L_04.tres"
+},
+"cave_props_stalagmites_M_01": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/cave_props_stalagmites_M_01.tres"
 }
 }
 }

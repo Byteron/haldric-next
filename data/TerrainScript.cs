@@ -165,6 +165,7 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_06.tres", "outer");
 		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_07.tres", "outer");
 		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_08.tres", "outer");
+		AddDirectionalDecorationGraphic("Uu", "assets/graphics/models/cave_props_stalagmites_M_01.tres", "outer");
 
 		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_01.tres", "outer");
 		AddDirectionalDecorationGraphic("Us", "assets/graphics/models/cave_props_stalagmites_02.tres", "outer");
