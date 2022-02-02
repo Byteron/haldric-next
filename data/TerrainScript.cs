@@ -123,16 +123,16 @@ public class TerrainScript : TerrainLoader
 		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_human_tower_01.tres");
 
 		// Cliff models for terrain with unwalkable elevation difference
-		AddOuterCliffGraphic("Gg", "assets/graphics/models/Cliff_grass_granit_01.tres", "assets/graphics/materials/cliff_granit_01_grass.res");
-		AddOuterCliffGraphic("Gll", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
-		AddOuterCliffGraphic("Ms", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
-		AddOuterCliffGraphic("Rd", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
-		AddOuterCliffGraphic("Sd", "assets/graphics/models/Cliff_sand_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
-		AddOuterCliffGraphic("Sm", "assets/graphics/models/Cliff_dirt_granit_01.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
-		AddOuterCliffGraphic("Sb", "assets/graphics/models/Cliff_sand_granit_01.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
-		AddOuterCliffGraphic("Ch", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
-		AddOuterCliffGraphic("Kh", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
-		AddOuterCliffGraphic("Xu", "assets/graphics/models/Cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+		AddOuterCliffGraphic("Gg", "assets/graphics/models/cliff_granit_01_grass.tres", "assets/graphics/materials/cliff_granit_01_grass.res");
+		AddOuterCliffGraphic("Gll", "assets/graphics/models/cliff_granit_01_dirt.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddOuterCliffGraphic("Ms", "assets/graphics/models/cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+		AddOuterCliffGraphic("Rd", "assets/graphics/models/cliff_granit_01_dirt.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddOuterCliffGraphic("Sd", "assets/graphics/models/cliff_granit_01_sand.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
+		AddOuterCliffGraphic("Sm", "assets/graphics/models/cliff_granit_01_dirt.tres", "assets/graphics/materials/cliff_granit_01_dirt.res");
+		AddOuterCliffGraphic("Sb", "assets/graphics/models/cliff_granit_01_sand.tres", "assets/graphics/materials/cliff_granit_01_sand.res");
+		AddOuterCliffGraphic("Ch", "assets/graphics/models/cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+		AddOuterCliffGraphic("Kh", "assets/graphics/models/cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
+		AddOuterCliffGraphic("Xu", "assets/graphics/models/cliff_granit_01.tres", "assets/graphics/materials/cliff_granit_01.res");
 
 		// Cave wall models for underground tunnels
 		AddInnerCliffGraphic("Us", "assets/graphics/models/cave_wall_1.tres", "assets/graphics/materials/cave_wall_01.res", "Natural");
