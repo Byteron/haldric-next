@@ -114,13 +114,13 @@ public class TerrainScript : TerrainLoader
 		AddTerrainNormalTexture("Xu", "assets/graphics/images/normal_1024.jpg");
 		AddTerrainRoughnessTexture("Xu", "assets/graphics/images/white_1024.jpg");
 
-		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f));
-		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_wall.tres");
-		AddWallTowerGraphic("Kh", "assets/graphics/models/keep_tower.tres");
+		// AddKeepPlateauGraphic("Kh", "assets/graphics/models/keep_plateau.tres", new Godot.Vector3(0f, 1.5f, 0f)); // WARNING : PLATEAU MESH REMOVED
+		AddWallSegmentGraphic("Kh", "assets/graphics/models/keep_human_wall_01.tres");
+		AddWallTowerGraphic("Kh", "assets/graphics/models/keep_human_tower_01.tres");
 
-		// AddKeepPlateauGraphic("Ch", "assets/graphics/models/castle_plateau.tres", new Godot.Vector3(0f, 0.05f, 0f));
-		AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_wall.tres");
-		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_tower.tres");
+		// AddKeepPlateauGraphic("Ch", "assets/graphics/models/castle_plateau.tres", new Godot.Vector3(0f, 0.05f, 0f)); // WARNING : PLATEAU MESH REMOVED
+		AddWallSegmentGraphic("Ch", "assets/graphics/models/castle_human_wall_01.tres");
+		AddWallTowerGraphic("Ch", "assets/graphics/models/castle_human_tower_01.tres");
 
 		// Cliff models for terrain with unwalkable elevation difference
 		AddOuterCliffGraphic("Gg", "assets/graphics/models/Cliff_grass_granit_01.tres", "assets/graphics/materials/cliff_granit_01_grass.res");
