@@ -193,29 +193,29 @@ public class TerrainScript : TerrainLoader
 		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_03.tres", "outer");
 
 		// Village props
-		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_01.tres", "center");
-		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_02.tres", "center");
-		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_03.tres", "center");
-		AddDecorationGraphic("Vh", "assets/graphics/models/Village_human_center_04.tres", "center");
+		AddDecorationGraphic("Vh", "assets/graphics/models/village_human_center_01.tres", "center");
+		AddDecorationGraphic("Vh", "assets/graphics/models/village_human_center_02.tres", "center");
+		AddDecorationGraphic("Vh", "assets/graphics/models/village_human_center_03.tres", "center");
+		AddDecorationGraphic("Vh", "assets/graphics/models/village_human_center_04.tres", "center");
 
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_01.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_02.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_03.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_04.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_05.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_outer_06.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_01.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_03.tres", "outer");
-		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_02.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_04.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_outer_06.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_hall_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_hall_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Vh", "assets/graphics/models/village_human_hall_outer_05.tres", "outer");
 
-		AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_base_01.tres");
-		AddDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_center_01.tres");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_01.tres", "outer");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_02.tres", "outer");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_03.tres", "outer");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_04.tres", "outer");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_05.tres", "outer");
-		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/Village_human_hall_outer_06.tres", "outer");
+		AddDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_base_01.tres");
+		AddDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_center_01.tres");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_01.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_02.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_04.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("VHh", "assets/graphics/models/village_human_hall_outer_06.tres", "outer");
 
 		// Water and other terrain that uses a similar plane+shader setup
 		AddWaterGraphic("Ws", "assets/graphics/models/water.tres");
