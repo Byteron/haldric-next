@@ -187,10 +187,15 @@ public class TerrainScript : TerrainLoader
 		// Toadstool Forest props
 		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_01.tres", "center");
 		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_02.tres", "center");
+		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_03.tres", "center");
+		AddDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_center_04.tres", "center");
 
 		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_01.tres", "outer");
 		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_02.tres", "outer");
 		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_03.tres", "outer");
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_04.tres", "outer");
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_05.tres", "outer");
+		AddDirectionalDecorationGraphic("Tt", "assets/graphics/models/shroom_forest_outer_06.tres", "outer");
 
 		// Village props
 		AddDecorationGraphic("Vh", "assets/graphics/models/village_human_center_01.tres", "center");

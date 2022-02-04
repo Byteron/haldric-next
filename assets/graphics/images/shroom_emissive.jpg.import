@@ -2,9 +2,9 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://pdre71den2tp"
-path.s3tc="res://.godot/imported/shroom_emissive.png-4caefec14d4fa329834f5eab1449d48c.s3tc.stex"
-path.etc2="res://.godot/imported/shroom_emissive.png-4caefec14d4fa329834f5eab1449d48c.etc2.stex"
+uid="uid://frygb7ytys5w"
+path.s3tc="res://.godot/imported/shroom_emissive.jpg-ea3778e86e82cc9cbbc6a274a4771d7a.s3tc.stex"
+path.etc2="res://.godot/imported/shroom_emissive.jpg-ea3778e86e82cc9cbbc6a274a4771d7a.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/shroom_emissive.png"
-dest_files=["res://.godot/imported/shroom_emissive.png-4caefec14d4fa329834f5eab1449d48c.s3tc.stex", "res://.godot/imported/shroom_emissive.png-4caefec14d4fa329834f5eab1449d48c.etc2.stex"]
+source_file="res://assets/graphics/images/shroom_emissive.jpg"
+dest_files=["res://.godot/imported/shroom_emissive.jpg-ea3778e86e82cc9cbbc6a274a4771d7a.s3tc.stex", "res://.godot/imported/shroom_emissive.jpg-ea3778e86e82cc9cbbc6a274a4771d7a.etc2.stex"]
 
 [params]
 
