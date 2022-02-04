@@ -2,9 +2,9 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://b1jd84w6ddi7v"
-path.s3tc="res://.godot/imported/shroom_base_color.png-5b1598ccbf4a2fe18b5a8ffec5c36226.s3tc.stex"
-path.etc2="res://.godot/imported/shroom_base_color.png-5b1598ccbf4a2fe18b5a8ffec5c36226.etc2.stex"
+uid="uid://ry7prapte6hd"
+path.s3tc="res://.godot/imported/shroom_base_color.jpg-f4d29addeecce5439ca5cf1746602323.s3tc.stex"
+path.etc2="res://.godot/imported/shroom_base_color.jpg-f4d29addeecce5439ca5cf1746602323.etc2.stex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/graphics/images/shroom_base_color.png"
-dest_files=["res://.godot/imported/shroom_base_color.png-5b1598ccbf4a2fe18b5a8ffec5c36226.s3tc.stex", "res://.godot/imported/shroom_base_color.png-5b1598ccbf4a2fe18b5a8ffec5c36226.etc2.stex"]
+source_file="res://assets/graphics/images/shroom_base_color.jpg"
+dest_files=["res://.godot/imported/shroom_base_color.jpg-f4d29addeecce5439ca5cf1746602323.s3tc.stex", "res://.godot/imported/shroom_base_color.jpg-f4d29addeecce5439ca5cf1746602323.etc2.stex"]
 
 [params]
 

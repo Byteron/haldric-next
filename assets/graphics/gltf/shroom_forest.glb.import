@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://baa84fw4atl2w"
+uid="uid://ba6rb7m46osl5"
 path="res://.godot/imported/shroom_forest.glb-df43d271cd0ad63a8918d870e787aca4.scn"
 
 [deps]
@@ -33,25 +33,45 @@ _subresources={
 }
 },
 "meshes": {
-"shroom_forest_RetopoFlow002": {
+"shroom_forest_center_01": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/shroom_forest_center_01.tres"
 },
-"shroom_forest_RetopoFlow004": {
+"shroom_forest_center_02": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/shroom_forest_center_02.tres"
 },
-"shroom_forest_RetopoFlow005": {
+"shroom_forest_center_03": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_center_03.tres"
+},
+"shroom_forest_center_04": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_center_04.tres"
+},
+"shroom_forest_outer_01": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_01.tres"
 },
-"shroom_forest_RetopoFlow007": {
+"shroom_forest_outer_02": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_02.tres"
 },
-"shroom_forest_RetopoFlow008": {
+"shroom_forest_outer_03": {
 "save_to_file/enabled": true,
 "save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_03.tres"
+},
+"shroom_forest_outer_04": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_04.tres"
+},
+"shroom_forest_outer_05": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_05.tres"
+},
+"shroom_forest_outer_06": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://assets/graphics/models/shroom_forest_outer_06.tres"
 }
 }
 }
