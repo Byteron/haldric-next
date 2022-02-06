@@ -52,7 +52,7 @@ public class EditorEditTerrainSystem : IEcsSystem
             {
                 if (!locations.Has(cube))
                 {
-                    return;
+                    continue;
                 }
 
                 var nLocEntity = locations.Get(cube);
@@ -81,11 +81,11 @@ public class EditorEditTerrainSystem : IEcsSystem
 
             if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
             {
-                SendFeaturesUpdateEvent(world, chunks);
+                world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
             }
             else
             {
-                SendUpdateMapEvent(world, chunks);
+                world.Spawn().Add(new UpdateMapEvent(chunks));
             }
         }
     }
@@ -137,15 +137,5 @@ public class EditorEditTerrainSystem : IEcsSystem
         {
             elevation.Value = editorView.Elevation;
         }
-    }
-
-    private void SendUpdateMapEvent(EcsWorld world, List<Vector3i> chunks)
-    {
-        world.Spawn().Add(new UpdateMapEvent(chunks));
-    }
-
-    private void SendFeaturesUpdateEvent(EcsWorld world, List<Vector3i> chunks)
-    {
-        world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
     }
 }
