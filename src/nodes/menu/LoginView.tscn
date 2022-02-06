@@ -41,8 +41,8 @@ offset_bottom = 40.0
 rect_min_size = Vector2(100, 0)
 size_flags_vertical = 3
 text = "User"
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Username"]
 offset_left = 104.0
@@ -51,7 +51,7 @@ offset_bottom = 40.0
 focus_next = NodePath("../../Email/LineEdit")
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
-align = 1
+horizontal_alignment = 1
 
 [node name="Email" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
 offset_top = 44.0
@@ -66,8 +66,8 @@ rect_min_size = Vector2(100, 0)
 size_flags_vertical = 3
 text = "Email
 "
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Email"]
 offset_left = 104.0
@@ -77,7 +77,7 @@ focus_next = NodePath("../../Password/LineEdit")
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "mail@haldric.com"
-align = 1
+horizontal_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -94,8 +94,8 @@ offset_bottom = 40.0
 rect_min_size = Vector2(100, 0)
 size_flags_vertical = 3
 text = "Password"
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Password"]
 offset_left = 104.0
@@ -104,7 +104,7 @@ offset_bottom = 40.0
 focus_next = NodePath("../../HBoxContainer/LoginButton")
 size_flags_horizontal = 3
 text = "HaldricHaldric"
-align = 1
+horizontal_alignment = 1
 secret = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -140,8 +140,8 @@ modulate = Color(1, 0.784314, 0, 1)
 offset_top = 186.0
 offset_right = 350.0
 offset_bottom = 209.0
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/LoginButton" to="." method="OnLoginButtonPressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="OnCancelButtonPressed"]

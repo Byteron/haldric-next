@@ -26,5 +26,5 @@ size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
 theme_override_font_sizes/font_size = 12
 text = "0495625609586"
-valign = 2
+vertical_alignment = 2
 script = null

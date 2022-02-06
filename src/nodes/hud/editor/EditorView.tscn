@@ -115,8 +115,8 @@ offset_right = 202.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Brush Size"
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 structured_text_bidi_override_options = []
 script = null
 
@@ -151,8 +151,8 @@ offset_right = 174.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Elevation"
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 structured_text_bidi_override_options = []
 script = null
 
@@ -197,8 +197,8 @@ offset_right = 174.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Terrain"
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 structured_text_bidi_override_options = []
 script = null
 

@@ -18,7 +18,7 @@ offset_right = 80.0
 offset_bottom = 38.0
 rect_min_size = Vector2(80, 0)
 text = "Side 1"
-align = 1
+horizontal_alignment = 1
 
 [node name="PlayerOptionButton" type="OptionButton" parent="."]
 offset_left = 84.0
@@ -33,7 +33,7 @@ offset_right = 288.0
 offset_bottom = 38.0
 rect_min_size = Vector2(80, 0)
 text = "Faction"
-align = 1
+horizontal_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,7 +51,7 @@ offset_right = 496.0
 offset_bottom = 38.0
 rect_min_size = Vector2(80, 0)
 text = "Gold: 100"
-align = 1
+horizontal_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

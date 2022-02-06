@@ -28,7 +28,7 @@ offset_top = 7.0
 offset_right = 55.0
 offset_bottom = 33.0
 text = "sdfsdf"
-align = 1
+horizontal_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
