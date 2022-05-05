@@ -1,3 +1,0 @@
-[submodule "addons/ecs"]
-	path = addons/ecs
-	url = https://github.com/Byteron/ecs.git
