@@ -5,7 +5,7 @@ public partial class FlagView : Node3D
 {
     public Color Color { get; set; }
 
-    private MeshInstance3D _meshInstance;
+     MeshInstance3D _meshInstance;
 
     public override void _Ready()
     {

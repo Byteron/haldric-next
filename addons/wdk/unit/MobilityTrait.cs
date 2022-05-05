@@ -1,4 +1,4 @@
-using Bitron.Ecs;
+using RelEcs;
 using Godot;
 
 namespace Haldric.Wdk
@@ -8,7 +8,7 @@ namespace Haldric.Wdk
         [Export] TerrainType TerrainType = TerrainType.Flat;
         [Export] int Cost = 1;
 
-        public override void Apply(EcsEntity unitEntity)
+        public override void Apply(Entity unitEntity)
         {
             ref var mobility = ref unitEntity.Get<Mobility>();
             mobility.Dict.Add(TerrainType, Cost);

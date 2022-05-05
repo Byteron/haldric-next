@@ -1,6 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Id : IEcsAutoReset<Id>
+public struct Id : IReset<Id>
 {
     public string Value { get; set; }
 
@@ -9,7 +10,7 @@ public struct Id : IEcsAutoReset<Id>
         Value = value;
     }
 
-    public void AutoReset(ref Id c)
+    public void Reset(ref Id c)
     {
         c.Value = "";
     }

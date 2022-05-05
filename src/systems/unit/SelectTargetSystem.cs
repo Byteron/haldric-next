@@ -1,24 +1,25 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class SelectTargetSystem : IEcsSystem
+public class SelectTargetSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        if (!commands.TryGetElement<SelectedLocation>(out var selectedLocation))
         {
             return;
         }
 
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
         var defenderLocEntity = hoveredLocation.Entity;
 
-        if (!defenderLocEntity.IsAlive())
+        if (!defenderLocEntity.IsAlive)
         {
             return;
         }
@@ -54,14 +55,14 @@ public class SelectTargetSystem : IEcsSystem
             ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
             ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
 
-            var map = world.GetResource<Map>();
+            var map = commands.GetElement<Map>();
 
             var isInMeleeRange = map.IsInMeleeRange(attackerCoords, defenderCoords);
             var attackDistance = map.GetAttackDistance(attackerCoords, defenderCoords);
 
             var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(isInMeleeRange, attackDistance);
 
-            var attackPairs = new Dictionary<EcsEntity, EcsEntity>();
+            var attackPairs = new Dictionary<Entity, Entity>();
 
             foreach (var attackerAttackEntity in attackerUsableAttacks)
             {
@@ -74,9 +75,9 @@ public class SelectTargetSystem : IEcsSystem
                 return;
             }
 
-            var gameStateController = world.GetResource<GameStateController>();
+            var gameStateController = commands.GetElement<GameStateController>();
 
-            var attackSelectionState = new AttackSelectionState(world);
+            var attackSelectionState = new AttackSelectionState();
 
             attackSelectionState.AttackerLocEntity = attackerLocEntity;
             attackSelectionState.DefenderLocEntity = defenderLocEntity;

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public struct IsInZoc { }
@@ -18,9 +19,9 @@ public struct Distance
 
 public struct PathFrom
 {
-    public EcsEntity LocEntity { get; set; }
+    public Entity LocEntity { get; set; }
 
-    public PathFrom(EcsEntity locEntity)
+    public PathFrom(Entity locEntity)
     {
         LocEntity = locEntity;
     }
@@ -38,7 +39,7 @@ public class Map
         Grid = new Grid(width, height);
         Locations = new Locations()
         {
-            Dict = new Dictionary<Vector3, EcsEntity>()
+            Dict = new Dictionary<Vector3, Entity>()
         };
         ChunkSize = new Vector2i(chunkSize, chunkSize);
         PathFinder = new PathFinder();
@@ -89,7 +90,7 @@ public class Map
 
                 foreach (var nLoc in neighbors.Array)
                 {
-                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
+                    if (!nLoc.IsAlive || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
                     {
                         continue;
                     }
@@ -112,7 +113,7 @@ public class Map
 
         fromLocEntity.Get<Distance>().Value = 0;
 
-        List<EcsEntity> frontier = new List<EcsEntity>();
+        List<Entity> frontier = new List<Entity>();
         frontier.Add(fromLocEntity);
 
         while (frontier.Count > 0)
@@ -127,7 +128,7 @@ public class Map
 
             foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
-                if (!nLocEntity.IsAlive())
+                if (!nLocEntity.IsAlive)
                 {
                     continue;
                 }
@@ -227,7 +228,7 @@ public class Map
 
                 foreach (var nLoc in neighbors.Array)
                 {
-                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
+                    if (!nLoc.IsAlive || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
                     {
                         continue;
                     }
@@ -260,7 +261,7 @@ public class Map
             mobility = unitEntity.Get<Mobility>();
         }
 
-        List<EcsEntity> frontier = new List<EcsEntity>();
+        List<Entity> frontier = new List<Entity>();
         frontier.Add(fromLocEntity);
 
         while (frontier.Count > 0)
@@ -284,7 +285,7 @@ public class Map
                     cPathFrom = current.Get<PathFrom>();
                 }
 
-                path.Checkpoints = new Queue<EcsEntity>(path.Checkpoints.Reverse());
+                path.Checkpoints = new Queue<Entity>(path.Checkpoints.Reverse());
                 break;
             }
 
@@ -293,7 +294,7 @@ public class Map
 
             foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
-                if (!nLocEntity.IsAlive())
+                if (!nLocEntity.IsAlive)
                 {
                     continue;
                 }
@@ -347,9 +348,9 @@ public class Map
         return path;
     }
 
-    private List<EcsEntity> GetLocEntitiesFromCubes(Vector3[] cubes)
+     List<Entity> GetLocEntitiesFromCubes(Vector3[] cubes)
     {
-        List<EcsEntity> list = new List<EcsEntity>();
+        List<Entity> list = new List<Entity>();
 
         foreach (var cube in cubes)
         {

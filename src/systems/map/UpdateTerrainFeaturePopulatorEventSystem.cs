@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct UpdateTerrainFeaturePopulatorEvent
 {
@@ -12,46 +13,38 @@ public struct UpdateTerrainFeaturePopulatorEvent
     }
 }
 
-public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
+public class UpdateTerrainFeaturePopulatorEventSystem : ISystem
 {
-    private TerrainFeaturePopulator _terrainFeaturePopulator;
+    TerrainFeaturePopulator _terrainFeaturePopulator;
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var eventQuery = world.Query<UpdateTerrainFeaturePopulatorEvent>().End();
-        var chunksQuery = world.Query<Locations>()
-            .Inc<NodeHandle<TerrainFeaturePopulator>>()
-            .Inc<NodeHandle<TerrainCollider>>()
-            .Inc<Vector3i>()
-            .End();
+        var chunksQuery = commands.Query().Has<Locations, Node<TerrainFeaturePopulator>, Node<TerrainCollider>, Vector3i>();
 
-        foreach (var eventEntityId in eventQuery)
+        commands.Receive((UpdateTerrainFeaturePopulatorEvent e) =>
         {
-            foreach (var chunkEntityId in chunksQuery)
+            foreach (var chunkEntity in chunksQuery)
             {
-                ref var updateEvent = ref world.Entity(eventEntityId).Get<UpdateTerrainFeaturePopulatorEvent>();
-
-                var chunkEntity = world.Entity(chunkEntityId);
-
                 ref var chunkCell = ref chunkEntity.Get<Vector3i>();
 
-                if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
+                if (e.Chunks != null && !e.Chunks.Contains(chunkCell))
                 {
                     continue;
                 }
 
-                _terrainFeaturePopulator = chunkEntity.Get<NodeHandle<TerrainFeaturePopulator>>().Node;
+                _terrainFeaturePopulator = chunkEntity.Get<Node<TerrainFeaturePopulator>>().Value;
 
                 ref var locations = ref chunkEntity.Get<Locations>();
 
                 Populate(locations);
 
-                var terrainCollider = chunkEntity.Get<NodeHandle<TerrainCollider>>().Node;
+                var terrainCollider = chunkEntity.Get<Node<TerrainCollider>>().Value;
             }
-        }
+
+        });
     }
 
-    private void Populate(Locations locations)
+    void Populate(Locations locations)
     {
         _terrainFeaturePopulator.Clear();
 
@@ -63,7 +56,7 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         _terrainFeaturePopulator.Apply();
     }
 
-    private void Populate(EcsEntity locEntity)
+    void Populate(Entity locEntity)
     {
         for (int i = 0; i < 6; i++)
         {
@@ -71,7 +64,7 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         }
     }
 
-    private void Populate(Direction direction, EcsEntity locEntity)
+    void Populate(Direction direction, Entity locEntity)
     {
         ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
         ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
@@ -88,7 +81,7 @@ public class UpdateTerrainFeaturePopulatorEventSystem : IEcsSystem
         }
     }
 
-    private void Populate(EcsEntity locEntity, TerrainCode terrainCode)
+    void Populate(Entity locEntity, TerrainCode terrainCode)
     {
         if (Data.Instance.Decorations.ContainsKey(terrainCode.Value))
         {

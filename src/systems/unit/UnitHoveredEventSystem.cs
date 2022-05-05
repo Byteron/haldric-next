@@ -1,24 +1,25 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using System.Collections.Generic;
 using System.Linq;
 using Haldric.Wdk;
 
 public struct UnitHoveredEvent
 {
-    public EcsEntity UnitEntity { get; set; }
+    public Entity UnitEntity { get; set; }
 
-    public UnitHoveredEvent(EcsEntity unitEntity)
+    public UnitHoveredEvent(Entity unitEntity)
     {
         UnitEntity = unitEntity;
     }
 }
 
-public class UnitHoveredEventSystem : IEcsSystem
+public class UnitHoveredEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref UnitHoveredEvent e) =>
+        commands.Receive((UnitHoveredEvent e) =>
         {
             var unitEntity = e.UnitEntity;
 
@@ -33,7 +34,7 @@ public class UnitHoveredEventSystem : IEcsSystem
             if (unitEntity.Has<Attacks>())
             {
                 s += "\nAttacks:";
-                foreach (EcsEntity attackEntity in unitEntity.Get<Attacks>().List)
+                foreach (Entity attackEntity in unitEntity.Get<Attacks>().List)
                 {
                     ref var attackId = ref attackEntity.Get<Id>();
                     ref var damage = ref attackEntity.Get<Damage>();
@@ -83,7 +84,7 @@ public class UnitHoveredEventSystem : IEcsSystem
                 s += "\nImmune To: " + string.Join(", ", immunities.List);
             }
 
-            var unitPanel = world.GetResource<UnitPanel>();
+            var unitPanel = commands.GetElement<UnitPanel>();
             unitPanel.UpdateInfo(s);
         });
     }

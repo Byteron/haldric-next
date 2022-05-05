@@ -1,16 +1,18 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
-public class NextUnitInputSystem : IEcsSystem
+public class NextUnitInputSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Input.IsActionJustPressed("next_unit"))
         {
-            var unitQuery = world.Query<Attribute<Moves>>().Inc<Side>().Exc<Suspended>().End();
-            var map = world.GetResource<Map>();
-            var scenario = world.GetResource<Scenario>();
-            var localPlayer = world.GetResource<LocalPlayer>();
+            var unitQuery = commands.Query().Has<Side, Attribute<Moves>>().Not<Suspended>();
+
+            var map = commands.GetElement<Map>();
+            var scenario = commands.GetElement<Scenario>();
+            var localPlayer = commands.GetElement<LocalPlayer>();
 
             var sideEntity = scenario.GetCurrentSideEntity();
             ref var side = ref sideEntity.Get<Side>();
@@ -21,10 +23,8 @@ public class NextUnitInputSystem : IEcsSystem
                 return;
             }
 
-            foreach (var unitId in unitQuery)
+            foreach (var unitEntity in unitQuery)
             {
-                var unitEntity = world.Entity(unitId);
-
                 ref var unitSide = ref unitEntity.Get<Side>();
                 ref var moves = ref unitEntity.Get<Attribute<Moves>>();
 
@@ -34,13 +34,13 @@ public class NextUnitInputSystem : IEcsSystem
 
                     var locEntity = map.Locations.Get(coords.Cube());
 
-                    if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
+                    if (commands.TryGetElement<SelectedLocation>(out var selectedLocation))
                     {
-                        world.Spawn().Add(new UnitDeselectedEvent());
+                        commands.Send(new UnitDeselectedEvent());
                     }
 
-                    world.Spawn().Add(new FocusCameraEvent(coords));
-                    world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+                    commands.Send(new FocusCameraEvent(coords));
+                    commands.Send(new UnitSelectedEvent(unitEntity));
                     return;
                 }
             }

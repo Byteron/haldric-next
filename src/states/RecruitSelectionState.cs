@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 using Nakama;
@@ -6,70 +7,85 @@ using Nakama.TinyJson;
 
 public partial class RecruitSelectionState : GameState
 {
-    private EcsEntity _freeLocEntity;
+    public Entity FreeLocEntity;
 
-    private RecruitSelectionView _view;
-
-    private int _side;
-
-    public RecruitSelectionState(EcsWorld world, EcsEntity freeLocEntity) : base(world)
+    public override void Init(GameStateController gameStates)
     {
-        _freeLocEntity = freeLocEntity;
+        var initSystem = new RecruitSelectionStateInitSystem();
+        initSystem.FreeLocEntity = FreeLocEntity;
+
+        InitSystems.Add(initSystem);
+        ExitSystems.Add(new RecruitSelectionStateExitSystem());
     }
+}
 
-    public override void Enter(GameStateController gameStates)
+public class RecruitSelectionStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        var scenario = _world.GetResource<Scenario>();
+        commands.GetElement<RecruitSelectionView>().Cleanup();
+        commands.GetElement<RecruitSelectionView>().QueueFree();
+        commands.RemoveElement<RecruitSelectionView>();
+    }
+}
+
+public partial class RecruitSelectionStateInitSystem : Resource, ISystem
+{
+    public int Side;
+    public Entity FreeLocEntity;
+
+    Commands commands;
+
+    public void Run(Commands commands)
+    {
+        this.commands = commands;
+
+        var scenario = commands.GetElement<Scenario>();
         var sideEntity = scenario.GetCurrentSideEntity();
 
-        _side = scenario.Side;
+        Side = scenario.Side;
 
-        var canvas = _world.GetResource<Canvas>();
+        var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(2);
 
-        _view = Scenes.Instantiate<RecruitSelectionView>();
-        _view.Connect(nameof(RecruitSelectionView.RecruitSelected), new Callable(this, nameof(OnRecruitSelected)));
-        _view.Connect(nameof(RecruitSelectionView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
-        canvasLayer.AddChild(_view);
+        var view = Scenes.Instantiate<RecruitSelectionView>();
+        view.Connect(nameof(RecruitSelectionView.RecruitSelected), new Callable(this, nameof(OnRecruitSelected)));
+        view.Connect(nameof(RecruitSelectionView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
+        canvasLayer.AddChild(view);
 
-        _view.UpdateInfo(_freeLocEntity, sideEntity, sideEntity.Get<Recruits>().List);
+        view.UpdateInfo(FreeLocEntity, sideEntity, sideEntity.Get<Recruits>().List);
+        commands.AddElement(view);
     }
 
-    public override void Exit(GameStateController gameStates)
-    {
-        _view.Cleanup();
-        _view.QueueFree();
-    }
-
-    private void OnRecruitSelected(string unitTypeId)
+    void OnRecruitSelected(string unitTypeId)
     {
         var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
-        var coords = _freeLocEntity.Get<Coords>();
+        var coords = FreeLocEntity.Get<Coords>();
 
-        var recruitEvent = new RecruitUnitEvent(_side, unitType, _freeLocEntity);
-        _world.Spawn().Add(recruitEvent);
+        var recruitEvent = new RecruitUnitEvent(Side, unitType, FreeLocEntity);
+        commands.Send(recruitEvent);
 
-        var gameStateController = _world.GetResource<GameStateController>();
+        var gameStateController = commands.GetElement<GameStateController>();
         gameStateController.PopState();
 
-        if (!_world.TryGetResource<ISocket>(out var socket))
+        if (!commands.TryGetElement<ISocket>(out var socket))
         {
             return;
         }
 
-        if (!_world.TryGetResource<IMatch>(out var match))
+        if (!commands.TryGetElement<IMatch>(out var match))
         {
             return;
         }
-        
-        var message = new RecruitUnitMessage { Side = _side, UnitTypeId = unitTypeId, Coords = coords };
+
+        var message = new RecruitUnitMessage { Side = Side, UnitTypeId = unitTypeId, Coords = coords };
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.RecruitUnit, message.ToJson());
     }
 
-    private void OnCancelButtonPressed()
+    void OnCancelButtonPressed()
     {
-        var gameStateController = _world.GetResource<GameStateController>();
+        var gameStateController = commands.GetElement<GameStateController>();
         gameStateController.PopState();
     }
 }

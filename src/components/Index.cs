@@ -1,6 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Index : IEcsAutoReset<Index>
+public struct Index : IReset<Index>
 {
     public int Value { get; set; }
 
@@ -9,7 +10,7 @@ public struct Index : IEcsAutoReset<Index>
         Value = value;
     }
 
-    public void AutoReset(ref Index c)
+    public void Reset(ref Index c)
     {
         c.Value = -1;
     }

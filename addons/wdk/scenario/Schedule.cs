@@ -56,7 +56,7 @@ namespace Haldric.Wdk
 
 			GD.Print("Daytime: ", daytime.Name);
 
-			var tween = Main.Instance.GetTree().CreateTween();
+			var tween = GetTree().CreateTween();
 
 			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.SetEase(Tween.EaseType.InOut);
@@ -72,7 +72,7 @@ namespace Haldric.Wdk
 				var light = _lights[i];
 				var config = configs[i];
 
-				var lightTween = Main.Instance.GetTree().CreateTween();
+				var lightTween = GetTree().CreateTween();
 
 				lightTween.SetTrans(Tween.TransitionType.Sine);
 				lightTween.SetEase(Tween.EaseType.InOut);

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Village : IEcsAutoReset<Village>
+public struct Village : IReset<Village>
 {
-    public List<EcsEntity> List { get; set; }
+    public List<Entity> List { get; set; }
 
-    public void AutoReset(ref Village c)
+    public void Reset(ref Village c)
     {
-        c.List = new List<EcsEntity>();
+        c.List = new List<Entity>();
     }
 }

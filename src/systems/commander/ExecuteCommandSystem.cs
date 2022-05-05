@@ -1,12 +1,12 @@
-using Bitron.Ecs;
+using RelEcs;
 
-public class ExecuteCommandSystem : IEcsSystem
+public class ExecuteCommandSystem : ISystem
 {
-    private Command _activeCommand;
+     ICommandSystem _activeCommand;
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var commander = world.GetResource<Commander>();
+        var commander = commands.GetElement<Commander>();
 
         if (_activeCommand != null && !_activeCommand.IsDone)
         {
@@ -22,7 +22,7 @@ public class ExecuteCommandSystem : IEcsSystem
                 commander.ClearHistory();
             }
 
-            _activeCommand.Execute();
+            _activeCommand.Run(commands);
 
             if (!_activeCommand.IsDone)
             {
@@ -32,6 +32,6 @@ public class ExecuteCommandSystem : IEcsSystem
         }
 
         _activeCommand = null;
-        world.GetResource<GameStateController>().PopState();
+        commands.GetElement<GameStateController>().PopState();
     }
 }

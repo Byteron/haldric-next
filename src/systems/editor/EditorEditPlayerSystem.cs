@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class EditorEditPlayerSystem : IEcsSystem
+public class EditorEditPlayerSystem : ISystem
 {
     Node3D _parent;
 
@@ -13,19 +14,19 @@ public class EditorEditPlayerSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<Map>(out var map))
+        if (!commands.TryGetElement<Map>(out var map))
         {
             return;
         }
 
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        var editorView = world.GetResource<EditorView>();
+        var editorView = commands.GetElement<EditorView>();
 
         if (editorView.Mode != EditorView.EditorMode.Player)
         {
@@ -34,7 +35,7 @@ public class EditorEditPlayerSystem : IEcsSystem
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive())
+        if (!locEntity.IsAlive)
         {
             return;
         }
@@ -54,13 +55,13 @@ public class EditorEditPlayerSystem : IEcsSystem
 
             if (locEntity.Has<IsStartingPositionOfSide>())
             {
-                var handle = locEntity.Get<NodeHandle<FlagView>>();
+                var handle = locEntity.Get<Node<FlagView>>();
 
-                _parent.RemoveChild(handle.Node);
-                handle.Node.QueueFree();
-                handle.Node = null;
+                _parent.RemoveChild(handle.Value);
+                handle.Value.QueueFree();
+                handle.Value = null;
 
-                locEntity.Remove<NodeHandle<FlagView>>();
+                locEntity.Remove<Node<FlagView>>();
                 locEntity.Remove<IsStartingPositionOfSide>();
                 editorView.RemovePlayer(coords);
             }
@@ -72,7 +73,7 @@ public class EditorEditPlayerSystem : IEcsSystem
                 pos.y = elevation.Height + elevationOffset.Value;
                 flagView.Position = pos;
 
-                locEntity.Add(new NodeHandle<FlagView>(flagView));
+                locEntity.Add(new Node<FlagView>(flagView));
                 locEntity.Add(new IsStartingPositionOfSide(editorView.Players.Count));
                 editorView.AddPlayer(coords);
             }

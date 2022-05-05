@@ -1,26 +1,27 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class SelectUnitSystem : IEcsSystem
+public class SelectUnitSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
         var hoveredLocEntity = hoveredLocation.Entity;
 
-        if (!hoveredLocEntity.IsAlive())
+        if (!hoveredLocEntity.IsAlive)
         {
             return;
         }
 
         if (Input.IsActionJustPressed("select_unit") && hoveredLocEntity.Has<HasUnit>())
         {
-            var scenario = world.GetResource<Scenario>();
-            var localPlayer = world.GetResource<LocalPlayer>();
+            var scenario = commands.GetElement<Scenario>();
+            var localPlayer = commands.GetElement<LocalPlayer>();
 
             var sideEntity = scenario.GetCurrentSideEntity();
             var playerId = sideEntity.Get<PlayerId>();
@@ -38,12 +39,12 @@ public class SelectUnitSystem : IEcsSystem
                 return;
             }
 
-            if (world.HasResource<SelectedLocation>())
+            if (commands.HasElement<SelectedLocation>())
             {
-                world.Spawn().Add(new UnitDeselectedEvent());
+                commands.Send(new UnitDeselectedEvent());
             }
 
-            world.Spawn().Add(new UnitSelectedEvent(unitEntity));
+            commands.Send(new UnitSelectedEvent(unitEntity));
         }
     }
 }

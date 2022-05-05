@@ -1,28 +1,29 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct CheckVictoryConditionEvent { }
 
-public class CheckVictoryConditionEventSystem : IEcsSystem
+public class CheckVictoryConditionEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref CheckVictoryConditionEvent _e) =>
+        commands.Receive((CheckVictoryConditionEvent _e) =>
         {
-            if (!world.TryGetResource<Scenario>(out var scenario))
+            if (!commands.TryGetElement<Scenario>(out var scenario))
             {
                 return;
             }
 
-            var aliveFactions = new List<EcsEntity>();
+            var aliveFactions = new List<Entity>();
 
             foreach (var sideEntity in scenario.Sides.Values)
             {
                 var leaderCount = 0;
                 var playerSide = sideEntity.Get<Side>().Value;
 
-                world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref IsLeader isLeader) =>
+                commands.ForEach((Entity unitEntity, ref Side unitSide, ref IsLeader isLeader) =>
                 {
                     if (unitSide.Value == playerSide)
                     {
@@ -40,7 +41,7 @@ public class CheckVictoryConditionEventSystem : IEcsSystem
             {
                 var winningPlayer = aliveFactions[0];
                 GD.Print($"Player {winningPlayer.Get<Side>().Value} won the game!");
-                world.GetResource<GameStateController>().PopState();
+                commands.GetElement<GameStateController>().PopState();
             }
         });
     }

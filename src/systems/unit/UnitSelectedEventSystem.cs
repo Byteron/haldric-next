@@ -1,22 +1,23 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct UnitSelectedEvent
 {
-    public EcsEntity Unit { get; set; }
+    public Entity Unit { get; set; }
 
-    public UnitSelectedEvent(EcsEntity unit)
+    public UnitSelectedEvent(Entity unit)
     {
         Unit = unit;
     }
 }
 
-public class UnitSelectedEventSystem : IEcsSystem
+public class UnitSelectedEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref UnitSelectedEvent e) => {
-            var map = world.GetResource<Map>();
+        commands.Receive((UnitSelectedEvent e) => {
+            var map = commands.GetElement<Map>();
 
             var unitEntity = e.Unit;
 
@@ -25,18 +26,18 @@ public class UnitSelectedEventSystem : IEcsSystem
 
             var locEntity = map.Locations.Get(coords.Cube());
 
-            if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
+            if (commands.TryGetElement<SelectedLocation>(out var selectedLocation))
             {
                 selectedLocation.Entity = locEntity;
             }
             else
             {
-                world.AddResource(new SelectedLocation(locEntity));
+                commands.AddElement(new SelectedLocation(locEntity));
             }
 
             map.UpdateDistances(coords, unitEntity.Get<Side>().Value);
 
-            world.Spawn().Add(new HighlightLocationEvent(coords, moves.Value));
+            commands.Send(new HighlightLocationEvent(coords, moves.Value));
         });
     }
 }

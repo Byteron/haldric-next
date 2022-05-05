@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct SpawnPlayersEvent
 {
@@ -15,19 +16,19 @@ public struct SpawnPlayersEvent
     }
 }
 
-public class SpawnPlayersEventSystem : IEcsSystem
+public class SpawnPlayersEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref SpawnPlayersEvent spawnEvent) =>
+        commands.Receive((SpawnPlayersEvent spawnEvent) =>
         {
             var players = spawnEvent.Players;
             var golds = spawnEvent.Golds;
             var factions = spawnEvent.Factions;
 
-            var matchPlayers = world.GetResource<MatchPlayers>();
+            var matchPlayers = commands.GetElement<MatchPlayers>();
 
-            world.ForEach((EcsEntity locEntity, ref Coords coords, ref IsStartingPositionOfSide startPosSide) =>
+            commands.ForEach((Entity locEntity, ref Coords coords, ref IsStartingPositionOfSide startPosSide) =>
             {
                 var side = startPosSide.Value;
 
@@ -35,7 +36,7 @@ public class SpawnPlayersEventSystem : IEcsSystem
                 var playerId = players[side];
                 var gold = golds[side];
 
-                world.Spawn().Add(new SpawnPlayerEvent(playerId, side, coords, factions[side], gold));
+                commands.Send(new SpawnPlayerEvent(playerId, side, coords, factions[side], gold));
             });
         });
     }

@@ -1,23 +1,24 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdateMapCursorSystem : IEcsSystem
+public class UpdateMapCursorSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        if (!world.TryGetResource<Cursor3D>(out var cursor))
+        if (!commands.TryGetElement<Cursor3D>(out var cursor))
         {
             return;
         }
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive())
+        if (!locEntity.IsAlive)
         {
             return;
         }

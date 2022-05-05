@@ -1,5 +1,5 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
 
 namespace Haldric.Wdk
 {
@@ -8,6 +8,6 @@ namespace Haldric.Wdk
         [Export] string Id = "";
         [Export(PropertyHint.MultilineText)] string Description = "";
 
-        public virtual void Apply(EcsEntity unitEntity) { }
+        public virtual void Apply(Entity unitEntity) { }
     }
 }

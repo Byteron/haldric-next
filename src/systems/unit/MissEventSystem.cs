@@ -1,29 +1,30 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
 public struct MissEvent
 {
-    public EcsEntity TargetEntity { get; set; }
+    public Entity TargetEntity { get; set; }
 
-    public MissEvent(EcsEntity targetEntity)
+    public MissEvent(Entity targetEntity)
     {
         TargetEntity = targetEntity;
     }
 }
 
-public class MissEventSystem : IEcsSystem
+public class MissEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref MissEvent missEvent) =>
+        commands.Receive((MissEvent missEvent) =>
         {
             var targetEntity = missEvent.TargetEntity;
 
             var position = missEvent.TargetEntity.Get<Coords>().World() + Vector3.Up * 5f;
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, "Miss!", new Color(0.7f, 0.7f, 0.7f));
 
-            world.Spawn().Add(spawnLabelEvent);
+            commands.Send(spawnLabelEvent);
         });
     }
 }

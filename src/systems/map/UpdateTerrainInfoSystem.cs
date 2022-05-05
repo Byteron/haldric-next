@@ -1,17 +1,18 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
-public class UpdateTerrainInfoSystem : IEcsSystem
+public class UpdateTerrainInfoSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        if (!world.TryGetResource<TerrainPanel>(out var terrainPanel))
+        if (!commands.TryGetElement<TerrainPanel>(out var terrainPanel))
         {
             return;
         }
@@ -19,7 +20,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
         var locEntity = hoveredLocation.Entity;
 
         
-        if (!locEntity.IsAlive())
+        if (!locEntity.IsAlive)
         {
             return;
         }
@@ -27,7 +28,7 @@ public class UpdateTerrainInfoSystem : IEcsSystem
         Mobility mobility = new Mobility();
         mobility.Dict = new Dictionary<TerrainType, int>();
 
-        if (world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        if (commands.TryGetElement<SelectedLocation>(out var selectedLocation))
         {
             if (selectedLocation.Entity.Has<HasUnit>())
             {

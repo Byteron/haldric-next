@@ -1,14 +1,15 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
-public class TestRecruitInputSystem : IEcsSystem
+public class TestRecruitInputSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Input.IsActionJustPressed("recruit"))
         {
-            var scenario = world.GetResource<Scenario>();
-            var localPlayer = world.GetResource<LocalPlayer>();
+            var scenario = commands.GetElement<Scenario>();
+            var localPlayer = commands.GetElement<LocalPlayer>();
             var sideEntity = scenario.GetCurrentSideEntity();
             var side = sideEntity.Get<Side>();
             var playerId = sideEntity.Get<PlayerId>();
@@ -18,17 +19,17 @@ public class TestRecruitInputSystem : IEcsSystem
                 return;
             }
 
-            var hLocEntity = world.GetResource<HoveredLocation>().Entity;
+            var hLocEntity = commands.GetElement<HoveredLocation>().Entity;
 
-            if (!hLocEntity.IsAlive() && hLocEntity.Has<HasUnit>())
+            if (!hLocEntity.IsAlive && hLocEntity.Has<HasUnit>())
             {
                 return;
             }
 
-            var gameStateController = world.GetResource<GameStateController>();
+            var gameStateController = commands.GetElement<GameStateController>();
 
-            var recruitState = new RecruitSelectionState(world, hLocEntity);
-
+            var recruitState = new RecruitSelectionState();
+            recruitState.FreeLocEntity = hLocEntity;
             gameStateController.PushState(recruitState);
         }
     }

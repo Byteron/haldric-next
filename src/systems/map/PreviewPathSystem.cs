@@ -1,16 +1,17 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class PreviewPathSystem : IEcsSystem
+public class PreviewPathSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        if (!world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        if (!commands.TryGetElement<SelectedLocation>(out var selectedLocation))
         {
             return;
         }
@@ -18,12 +19,12 @@ public class PreviewPathSystem : IEcsSystem
         var hLocEntity = hoveredLocation.Entity;
         var sLocEntity = selectedLocation.Entity;
 
-        if (!hLocEntity.IsAlive())
+        if (!hLocEntity.IsAlive)
         {
             return;
         }
 
-        if (!sLocEntity.IsAlive())
+        if (!sLocEntity.IsAlive)
         {
             return;
         }
@@ -33,7 +34,7 @@ public class PreviewPathSystem : IEcsSystem
             return;
         }
 
-        var highlighter = world.GetResource<TerrainHighlighter>();
+        var highlighter = commands.GetElement<TerrainHighlighter>();
         highlighter.ClearPath();
 
         if (hLocEntity.Has<HasUnit>())
@@ -41,8 +42,8 @@ public class PreviewPathSystem : IEcsSystem
             return;
         }
 
-        var map = world.GetResource<Map>();
-        var scenario = world.GetResource<Scenario>();
+        var map = commands.GetElement<Map>();
+        var scenario = commands.GetElement<Scenario>();
 
         Path path = map.FindPath(sLocEntity.Get<Coords>(), hLocEntity.Get<Coords>(), scenario.Side);
         highlighter.ShowPath(path);

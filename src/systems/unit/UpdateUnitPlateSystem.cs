@@ -1,35 +1,36 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public class UpdateUnitPlateSystem : IEcsSystem
+public class UpdateUnitPlateSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((
-            EcsEntity entity,
+        commands.ForEach((
+            Entity entity,
             ref Side side,
             ref Attribute<Health> health,
             ref Attribute<Moves> moves,
             ref Attribute<Experience> experience,
-            ref NodeHandle<UnitView> view,
-            ref NodeHandle<UnitPlate> plate) =>
+            ref Node<UnitView> view,
+            ref Node<UnitPlate> plate) =>
         {
-            plate.Node.MaxHealth = health.Max;
-            plate.Node.Health = health.Value;
+            plate.Value.MaxHealth = health.Max;
+            plate.Value.Health = health.Value;
 
-            plate.Node.MaxMoves = moves.Max;
-            plate.Node.Moves = moves.Value;
+            plate.Value.MaxMoves = moves.Max;
+            plate.Value.Moves = moves.Value;
 
-            plate.Node.MaxExperience = experience.Max;
-            plate.Node.Experience = experience.Value;
+            plate.Value.MaxExperience = experience.Max;
+            plate.Value.Experience = experience.Value;
 
-            plate.Node.Position = view.Node.Position + Vector3.Up * 7.5f;
+            plate.Value.Position = view.Value.Position + Vector3.Up * 7.5f;
 
-            plate.Node.SideColor = Data.Instance.SideColors[side.Value];
+            plate.Value.SideColor = Data.Instance.SideColors[side.Value];
 
-            plate.Node.IsLeader = entity.Has<IsLeader>();
-            plate.Node.IsHero = entity.Has<IsHero>();
+            plate.Value.IsLeader = entity.Has<IsLeader>();
+            plate.Value.IsHero = entity.Has<IsHero>();
         });
     }
 }

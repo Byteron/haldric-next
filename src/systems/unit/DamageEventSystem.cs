@@ -1,14 +1,15 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
 public struct DamageEvent
 {
-    public EcsEntity DamagerEntity { get; set; }
-    public EcsEntity TargetEntity { get; set; }
+    public Entity DamagerEntity { get; set; }
+    public Entity TargetEntity { get; set; }
     public Alignment Alignment { get; set; }
 
-    public DamageEvent(EcsEntity damagerEntity, EcsEntity targetEntity, Alignment alignment)
+    public DamageEvent(Entity damagerEntity, Entity targetEntity, Alignment alignment)
     {
         DamagerEntity = damagerEntity;
         TargetEntity = targetEntity;
@@ -16,19 +17,19 @@ public struct DamageEvent
     }
 }
 
-public class DamageEventSystem : IEcsSystem
+public class DamageEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
 
-        if (!world.TryGetResource<Schedule>(out var schedule))
+        if (!commands.TryGetElement<Schedule>(out var schedule))
         {
             return;
         }
 
         var daytime = schedule.GetCurrentDaytime();
 
-        world.ForEach((ref DamageEvent damageEvent) =>
+        commands.Receive((DamageEvent damageEvent) =>
         {
             var damagerEntity = damageEvent.DamagerEntity;
             var targetEntity = damageEvent.TargetEntity;
@@ -89,12 +90,12 @@ public class DamageEventSystem : IEcsSystem
             var color = new Color(1f, 0f, 0f);
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
-            world.Spawn().Add(spawnLabelEvent);
+            commands.Send(spawnLabelEvent);
 
             if (health.IsEmpty())
             {
                 GD.Print("Death Event Spawned");
-                world.Spawn().Add(new DeathEvent(targetEntity));
+                commands.Send(new DeathEvent(targetEntity));
             }
         });
     }

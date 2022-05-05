@@ -1,7 +1,8 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Grid : IEcsAutoReset<Grid>
+public struct Grid : IReset<Grid>
 {
     public int Width { get; set; }
     public int Height { get; set; }
@@ -12,7 +13,7 @@ public struct Grid : IEcsAutoReset<Grid>
         Height = height;
     }
 
-    public void AutoReset(ref Grid c)
+    public void Reset(ref Grid c)
     {
         c.Width = 0;
         c.Height = 0;

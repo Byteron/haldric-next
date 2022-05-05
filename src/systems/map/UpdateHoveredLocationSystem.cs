@@ -1,28 +1,29 @@
 using Godot;
 using Godot.Collections;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdateHoveredLocationSystem : IEcsSystem
+public class UpdateHoveredLocationSystem : ISystem
 {
-    private Node3D _parent;
+     Node3D _parent;
 
-    private Vector3 previousCell = Vector3.Zero;
+     Vector3 previousCell = Vector3.Zero;
 
     public UpdateHoveredLocationSystem(Node3D parent)
     {
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.HasResource<Map>())
+        if (!commands.HasElement<Map>())
         {
             return;
         }
 
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
-            world.AddResource(new HoveredLocation());
+            commands.AddElement(new HoveredLocation());
         }
 
         var result = ShootRay();
@@ -34,7 +35,7 @@ public class UpdateHoveredLocationSystem : IEcsSystem
 
             if (previousCell != coords.Axial())
             {
-                var map = world.GetResource<Map>();
+                var map = commands.GetElement<Map>();
 
                 var locEntity = map.Locations.Get(coords.Cube());
 
@@ -46,7 +47,7 @@ public class UpdateHoveredLocationSystem : IEcsSystem
         }
     }
 
-    private Dictionary ShootRay()
+     Dictionary ShootRay()
     {
         var spaceState = _parent.GetWorld3d().DirectSpaceState;
         var viewport = _parent.GetViewport();

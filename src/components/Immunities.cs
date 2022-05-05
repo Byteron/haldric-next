@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Haldric.Wdk;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Immunities : IEcsAutoReset<Immunities>
+public struct Immunities : IReset<Immunities>
 {
     public List<DamageType> List { get; set; }
 
@@ -15,7 +16,7 @@ public struct Immunities : IEcsAutoReset<Immunities>
         }
     }
 
-    public void AutoReset(ref Immunities c)
+    public void Reset(ref Immunities c)
     {
         if (c.List != null)
         {

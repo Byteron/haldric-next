@@ -1,6 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Elevation : IEcsAutoReset<Elevation>
+public struct Elevation : IReset<Elevation>
 {
     public int Value { get; set; }
     public float Height { get { return Value * Metrics.ElevationStep; } }
@@ -10,13 +11,13 @@ public struct Elevation : IEcsAutoReset<Elevation>
         Value = value;
     }
 
-    public void AutoReset(ref Elevation c)
+    public void Reset(ref Elevation c)
     {
         c.Value = 0;
     }
 }
 
-public struct ElevationOffset : IEcsAutoReset<ElevationOffset>
+public struct ElevationOffset : IReset<ElevationOffset>
 {
     public float Value { get; set; }
 
@@ -25,7 +26,7 @@ public struct ElevationOffset : IEcsAutoReset<ElevationOffset>
         Value = value;
     }
 
-    public void AutoReset(ref ElevationOffset c)
+    public void Reset(ref ElevationOffset c)
     {
         c.Value = 0f;
     }

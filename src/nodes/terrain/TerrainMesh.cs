@@ -3,15 +3,15 @@ using Godot;
 
 public partial class TerrainMesh : MeshInstance3D
 {
-    private List<int> _indices = new List<int>();
-    private List<Vector3> _vertices = new List<Vector3>();
-    private List<int> _smoothGroups = new List<int>();
-    private List<Vector3> _cellIndicies = new List<Vector3>();
-    private List<Color> _cellWeights = new List<Color>();
+     List<int> _indices = new List<int>();
+     List<Vector3> _vertices = new List<Vector3>();
+     List<int> _smoothGroups = new List<int>();
+     List<Vector3> _cellIndicies = new List<Vector3>();
+     List<Color> _cellWeights = new List<Color>();
 
-    private SurfaceTool _surfaceTool;
+     SurfaceTool _surfaceTool;
 
-    private int _vertexIndex = 0;
+     int _vertexIndex = 0;
 
     public TerrainMesh()
     {

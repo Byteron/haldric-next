@@ -1,19 +1,20 @@
-using System.Collections.Generic;
-using System.Linq;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public partial class MoveUnitCommand : Command
+public partial class MoveUnitCommand : Resource, ICommandSystem
 {
-    private Path _path;
+    Path _path;
 
-    private EcsEntity _unitEntity;
-    private EcsEntity _targetLocEntity;
+    Entity _unitEntity;
+    Entity _targetLocEntity;
 
-    private UnitView _unitView;
-    
-    private Tween _tween;
+    UnitView _unitView;
+
+    Tween _tween;
+
+    Commands commands;
 
     public MoveUnitCommand(Path path)
     {
@@ -21,8 +22,10 @@ public partial class MoveUnitCommand : Command
         _path = path;
     }
 
-    public override void Execute()
+    public void Run(Commands commands)
     {
+        this.commands = commands;
+
         // source location does not have a unit to move
         if (!_path.Start.Has<HasUnit>())
         {
@@ -38,12 +41,12 @@ public partial class MoveUnitCommand : Command
         }
 
         _unitEntity = _path.Start.Get<HasUnit>().Entity;
-        _unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
+        _unitView = _unitEntity.Get<Node<UnitView>>().Value;
 
         ref var unitCoords = ref _unitEntity.Get<Coords>();
         ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
 
-        _tween = Main.Instance.GetTree().CreateTween();
+        _tween = commands.GetElement<SceneTree>().CreateTween();
 
         foreach (var checkpointLocEntity in _path.Checkpoints)
         {
@@ -69,7 +72,7 @@ public partial class MoveUnitCommand : Command
         unitCoords = _path.Destination.Get<Coords>();
     }
 
-    public override void Revert()
+    public void Revert()
     {
         // _unitEntity = default;
         // _targetLocEntity = default;
@@ -78,7 +81,7 @@ public partial class MoveUnitCommand : Command
         // _path.Start = _path.Destination;
         // _path.Destination = temp;
 
-        // _path.Checkpoints = new Queue<EcsEntity>(_path.Checkpoints.Reverse());
+        // _path.Checkpoints = new Queue<Entity>(_path.Checkpoints.Reverse());
         // _path.Checkpoints.Dequeue();
         // _path.Checkpoints.Enqueue(_path.Destination);
 
@@ -86,11 +89,11 @@ public partial class MoveUnitCommand : Command
         // IsDone = false;
     }
 
-    private void OnUnitMoveFinished()
+    void OnUnitMoveFinished()
     {
         ref var side = ref _unitEntity.Get<Side>();
         ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
-        
+
         if (_targetLocEntity.Has<Village>())
         {
             if (_targetLocEntity.Has<IsCapturedBySide>())
@@ -100,16 +103,16 @@ public partial class MoveUnitCommand : Command
                 if (captured.Value != side.Value)
                 {
                     moves.Empty();
-                    Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                    commands.Send(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
                 }
             }
             else
             {
                 moves.Empty();
-                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                commands.Send(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
             }
         }
-        
+
         if (_targetLocEntity.Has<IsInZoc>())
         {
             moves.Empty();
@@ -118,9 +121,13 @@ public partial class MoveUnitCommand : Command
         IsDone = true;
     }
 
-    private int index;
+    int index;
 
-    private void OnUnitStepFinished()
+    public bool IsDone { get; set; }
+    public bool IsRevertable { get; set; }
+    public bool IsReverted { get; set; }
+
+    void OnUnitStepFinished()
     {
         if (index == _path.Checkpoints.Count)
         {
@@ -131,15 +138,15 @@ public partial class MoveUnitCommand : Command
             ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
             ref var mobility = ref _unitEntity.Get<Mobility>();
 
-            if (_targetLocEntity.IsAlive() && _targetLocEntity.Has<IsInZoc>())
+            if (_targetLocEntity.IsAlive && _targetLocEntity.Has<IsInZoc>())
             {
                 _tween.Stop();
                 OnUnitMoveFinished();
                 return;
             }
-            
+
             _targetLocEntity = _path.Checkpoints.ToArray()[index];
-            
+
             var coords = _targetLocEntity.Get<Coords>();
 
             _unitView.LookAt(coords.World(), Vector3.Up);

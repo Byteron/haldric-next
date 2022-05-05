@@ -1,66 +1,84 @@
-using Bitron.Ecs;
+using Godot;
+using RelEcs;
 using Haldric.Wdk;
 
 public partial class EditorState : GameState
 {
-    public EditorState(EcsWorld world) : base(world)
+    public override void Init(GameStateController gameStates)
     {
-        AddInitSystem(new SpawnCameraOperatorSystem(this));
+        InitSystems.Add(new EditorStateInitSystem())
+            .Add(new SpawnCameraOperatorSystem(this));
 
-        AddInputSystem(new EditorEditTerrainSystem(this));
-        AddInputSystem(new EditorEditPlayerSystem(this));
+        InputSystems.Add(new ChangeDaytimeSystem())
+            .Add(new EditorEditTerrainSystem(this))
+            .Add(new EditorEditPlayerSystem(this));
 
-        AddUpdateSystem(new UpdateTerrainInfoSystem());
-        AddUpdateSystem(new UpdateHoveredLocationSystem(this));
-        AddUpdateSystem(new UpdateMapCursorSystem());
-        AddUpdateSystem(new UpdateCameraOperatorSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem());
+        UpdateSystems.Add(new UpdateTerrainInfoSystem())
+            .Add(new UpdateHoveredLocationSystem(this))
+            .Add(new UpdateMapCursorSystem())
+            .Add(new UpdateCameraOperatorSystem())
+            .Add(new UpdateStatsInfoSystem())
+            .Add(new UpdateMapEventSystem())
+            .Add(new UpdateTerrainMeshEventSystem())
+            .Add(new UpdateTerrainFeaturePopulatorEventSystem())
+            .Add(new SaveMapEventSystem())
+            .Add(new LoadMapEventSystem())
+            .Add(new DespawnMapEventSystem())
+            .Add(new SpawnScheduleEventSystem(this))
+            .Add(new SpawnMapEventSystem(this))
+            .Add(new ChangeDaytimeEventSystem());
 
-        AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
-        AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
-        AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
-        AddEventSystem<SaveMapEvent>(new SaveMapEventSystem());
-        AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
-        AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
-        AddEventSystem<SpawnScheduleEvent>(new SpawnScheduleEventSystem(this));
-        AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
-        AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
-
-        AddDestroySystem(new DespawnCameraOperatorSystem());
+        ExitSystems.Add(new EditorStateExitSystem())
+            .Add(new DespawnCameraOperatorSystem());
     }
+}
 
-    public override void Enter(GameStateController gameStates)
+public class EditorStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _world.AddResource(new Commander());
+        commands.RemoveElement<Commander>();
+        commands.RemoveElement<EditorView>();
+        commands.RemoveElement<Schedule>();
+        commands.Send(new DespawnMapEvent());
+    }
+}
+
+public class EditorStateInitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.AddElement(new Commander());
 
         var editorView = Scenes.Instantiate<EditorView>();
-        AddChild(editorView);
+        editorView.Commands = commands;
+        commands.GetElement<CurrentGameState>().State.AddChild(editorView);
 
-        _world.AddResource(editorView);
+        commands.AddElement(editorView);
 
-        _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
-        _world.Spawn().Add(new SpawnMapEvent(40, 40));
-        _world.Spawn().Add(new ChangeDaytimeEvent());
+        commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
+        commands.Send(new SpawnMapEvent(40, 40));
+        commands.Send(new ChangeDaytimeEvent());
     }
+}
 
-    public override void Exit(GameStateController gameStates)
+public class ChangeDaytimeSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _world.RemoveResource<Commander>();
-        _world.RemoveResource<EditorView>();
-        _world.RemoveResource<Schedule>();
-        _world.Spawn().Add(new DespawnMapEvent());
-    }
+        if (!commands.TryGetElement<GameStateController>(out var gameStates))
+        {
+            return;
+        }
 
-    public override void Input(GameStateController gameStates, Godot.InputEvent e)
-    {
-        if (e.IsActionPressed("ui_cancel"))
+        if (Input.IsActionPressed("ui_cancel"))
         {
             gameStates.PopState();
         }
 
-        if (e.IsActionPressed("ui_accept"))
+        if (Input.IsActionPressed("ui_accept"))
         {
-            _world.Spawn().Add(new ChangeDaytimeEvent());
+            commands.Send(new ChangeDaytimeEvent());
         }
     }
 }

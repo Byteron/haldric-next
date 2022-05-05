@@ -3,7 +3,7 @@ using System;
 
 public partial class TerrainCollider : StaticBody3D
 {
-    private CollisionShape3D _collisionShape = new CollisionShape3D();
+     CollisionShape3D _collisionShape = new CollisionShape3D();
 
     public TerrainCollider()
     {

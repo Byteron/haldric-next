@@ -1,13 +1,14 @@
 using Godot;
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using System;
 
-public struct Locations : IEcsAutoReset<Locations>
+public struct Locations : IReset<Locations>
 {
-    public Dictionary<Vector3, EcsEntity> Dict { get; set; }
+    public Dictionary<Vector3, Entity> Dict { get; set; }
 
-    public Dictionary<Vector3, EcsEntity>.ValueCollection Values { get { return Dict.Values; } }
+    public Dictionary<Vector3, Entity>.ValueCollection Values { get { return Dict.Values; } }
     public int Count { get { return Dict.Count; } }
 
     public bool Has(Vector3 cell)
@@ -15,7 +16,7 @@ public struct Locations : IEcsAutoReset<Locations>
         return Dict.ContainsKey(cell);
     }
 
-    public EcsEntity Get(Vector3 cell)
+    public Entity Get(Vector3 cell)
     {
         if (Dict.ContainsKey(cell))
         {
@@ -25,11 +26,11 @@ public struct Locations : IEcsAutoReset<Locations>
         return default;
     }
 
-    public void Set(Vector3 cell, EcsEntity entity)
+    public void Set(Vector3 cell, Entity entity)
     {
         if (Dict == null)
         {
-            Dict = new Dictionary<Vector3, EcsEntity>();
+            Dict = new Dictionary<Vector3, Entity>();
         }
 
         if (Dict.ContainsKey(cell))
@@ -42,7 +43,7 @@ public struct Locations : IEcsAutoReset<Locations>
         }
     }
 
-    public void AutoReset(ref Locations c)
+    public void Reset(ref Locations c)
     {
         if (c.Dict != null)
         {
@@ -50,7 +51,7 @@ public struct Locations : IEcsAutoReset<Locations>
         }
         else
         {
-            c.Dict = new Dictionary<Vector3, EcsEntity>();
+            c.Dict = new Dictionary<Vector3, Entity>();
         }
     }
 }

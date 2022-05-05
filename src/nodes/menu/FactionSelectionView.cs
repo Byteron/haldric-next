@@ -10,7 +10,7 @@ public partial class FactionSelectionView : PanelContainer
     [Signal] public delegate void ContinueButtonPressed();
     [Signal] public delegate void BackButtonPressed();
 
-    [Export] private PackedScene _playerOption;
+    [Export]  PackedScene _playerOption;
 
     public int LocalPlayerId { get; set; }
     public List<string> Players { get; set; }
@@ -91,29 +91,29 @@ public partial class FactionSelectionView : PanelContainer
         return golds;
     }
 
-    private void OnFactionChanged(int side, int index)
+     void OnFactionChanged(int side, int index)
     {
         EmitSignal(nameof(FactionChanged), side, index);
     }
 
-    private void OnPlayerChanged(int side, int index)
+     void OnPlayerChanged(int side, int index)
     {
         EmitSignal(nameof(PlayerChanged), side, index);
     }
 
-    private void OnGoldChanged(int side, int value)
+     void OnGoldChanged(int side, int value)
     {
         EmitSignal(nameof(GoldChanged), side, value);
     }
 
-    private void OnContinueButtonPressed()
+     void OnContinueButtonPressed()
     {
         _continueButton.Disabled = true;
         _backButton.Disabled = true;
         EmitSignal(nameof(ContinueButtonPressed));
     }
 
-    private void OnBackButtonPressed()
+     void OnBackButtonPressed()
     {
         EmitSignal(nameof(BackButtonPressed));
     }

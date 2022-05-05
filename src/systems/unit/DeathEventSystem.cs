@@ -1,24 +1,25 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct DeathEvent
 {
-    public EcsEntity Entity { get; set; }
+    public Entity Entity { get; set; }
 
-    public DeathEvent(EcsEntity entity)
+    public DeathEvent(Entity entity)
     {
         Entity = entity;
     }
 }
 
-public class DeathEventSystem : IEcsSystem
+public class DeathEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         bool checkVictory = false;
 
-        world.ForEach((ref DeathEvent deathEvent) =>
+        commands.Receive((DeathEvent deathEvent) =>
         {
-            var map = world.GetResource<Map>();
+            var map = commands.GetElement<Map>();
 
             ref var coords = ref deathEvent.Entity.Get<Coords>();
 
@@ -33,7 +34,7 @@ public class DeathEventSystem : IEcsSystem
 
         if (checkVictory)
         {
-            world.Spawn().Add(new CheckVictoryConditionEvent());
+            commands.Send(new CheckVictoryConditionEvent());
         }
     }
 }

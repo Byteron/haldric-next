@@ -1,17 +1,55 @@
-using Bitron.Ecs;
 using Godot;
+using RelEcs;
 
 public partial class MenuState : GameState
 {
-    public MenuState(EcsWorld world) : base(world)
+    public override void Init(GameStateController gameStates)
     {
-        AddUpdateSystem(new UpdateStatsInfoSystem());
+        InitSystems.Add(new MenuStateInitSystem());
+        ContinueSystems.Add(new MenuStateContinueSystem());
+        PauseSystems.Add(new MenuStatePauseSystem());
+        ExitSystems.Add(new MenuStateExitSystem());
+        
+        UpdateSystems.Add(new UpdateStatsInfoSystem());
     }
+}
 
-    public override void Enter(GameStateController gameStates)
+public class MenuStateContinueSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        var canvas = _world.GetResource<Canvas>();
+        commands.GetElement<MainMenuView>().Show();
+    }
+}
 
+public class MenuStatePauseSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<MainMenuView>().Hide();
+    }
+}
+
+public class MenuStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.RemoveElement<MainMenuView>();
+        commands.RemoveElement<DebugPanel>();
+    }
+}
+
+public partial class MenuStateInitSystem : Resource, ISystem
+{
+    Commands commands;
+
+    public void Run(Commands commands)
+    {
+        this.commands = commands;
+
+        var canvas = commands.GetElement<Canvas>();
+        var canvasLayer = canvas.GetCanvasLayer(10);
+        
         var menuView = Scenes.Instantiate<MainMenuView>();
 
         menuView.Connect(nameof(MainMenuView.LobbyButtonPressed), new Callable(this, nameof(OnLobbyButtonPressed)));
@@ -19,49 +57,32 @@ public partial class MenuState : GameState
         menuView.Connect(nameof(MainMenuView.EditorButtonPressed), new Callable(this, nameof(OnEditorButtonPressed)));
         menuView.Connect(nameof(MainMenuView.QuitButtonPressed), new Callable(this, nameof(OnQuitButtonPressed)));
 
-        AddChild(menuView);
-
-        var canvasLayer = canvas.GetCanvasLayer(10);
         var debugView = Scenes.Instantiate<DebugPanel>();
+
+        canvasLayer.AddChild(menuView);
         canvasLayer.AddChild(debugView);
 
-        _world.AddResource(menuView);
-        _world.AddResource(debugView);
+        commands.AddElement(menuView);
+        commands.AddElement(debugView);
     }
 
-    public override void Continue(GameStateController gameStates)
+    void OnLobbyButtonPressed()
     {
-        _world.GetResource<MainMenuView>().Show();
+        commands.GetElement<GameStateController>().PushState(new LoginState());
     }
 
-    public override void Pause(GameStateController gameStates)
+     void OnTestButtonPressed()
     {
-        _world.GetResource<MainMenuView>().Hide();
+        commands.GetElement<GameStateController>().PushState(new TestMapSelectionState());
     }
 
-    public override void Exit(GameStateController gameStates)
+     void OnEditorButtonPressed()
     {
-        _world.RemoveResource<MainMenuView>();
-        _world.RemoveResource<DebugPanel>();
-    }
-
-    private void OnLobbyButtonPressed()
-    {
-        _world.GetResource<GameStateController>().PushState(new LoginState(_world));
-    }
-
-    private void OnTestButtonPressed()
-    {
-        _world.GetResource<GameStateController>().PushState(new TestMapSelectionState(_world));
-    }
-
-    private void OnEditorButtonPressed()
-    {
-        _world.GetResource<GameStateController>().PushState(new EditorState(_world));
+        commands.GetElement<GameStateController>().PushState(new EditorState());
     }
 
     public void OnQuitButtonPressed()
     {
-        GetTree().Quit();
+        commands.GetElement<SceneTree>().Quit();
     }
 }

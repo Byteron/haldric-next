@@ -1,20 +1,21 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct TurnEndEvent { }
 
-public class TurnEndEventSystem : IEcsSystem
+public class TurnEndEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref TurnEndEvent e) =>
+        commands.Receive((TurnEndEvent e) =>
         {
-            var scenario = world.GetResource<Scenario>();
+            var scenario = commands.GetElement<Scenario>();
             scenario.EndTurn();
 
             if (scenario.HasRoundChanged())
             {
-                world.Spawn().Add(new ChangeDaytimeEvent());
+                commands.Send(new ChangeDaytimeEvent());
             }
 
             var sideEntity = scenario.GetCurrentSideEntity();
@@ -23,7 +24,7 @@ public class TurnEndEventSystem : IEcsSystem
             var side = sideEntity.Get<Side>();
             ref var playerId = ref sideEntity.Get<PlayerId>();
 
-            world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref Attribute<Actions> actions, ref Attribute<Moves> moves, ref Level level) =>
+            commands.ForEach((Entity unitEntity, ref Side unitSide, ref Attribute<Actions> actions, ref Attribute<Moves> moves, ref Level level) =>
             {
                 if (side.Value == unitSide.Value)
                 {
@@ -39,7 +40,7 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             });
 
-            world.ForEach((ref Village village, ref IsCapturedBySide villageSide) =>
+            commands.ForEach((ref Village village, ref IsCapturedBySide villageSide) =>
             {
                 if (side.Value == villageSide.Value)
                 {
@@ -47,9 +48,9 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             });
 
-            if (world.TryGetResource<TurnPanel>(out var turnPanel))
+            if (commands.TryGetElement<TurnPanel>(out var turnPanel))
             {
-                var localPlayer = world.GetResource<LocalPlayer>();
+                var localPlayer = commands.GetElement<LocalPlayer>();
 
                 if (playerId.Value == localPlayer.Id)
                 {
@@ -62,7 +63,7 @@ public class TurnEndEventSystem : IEcsSystem
                 }
             }
 
-            world.ForEach((EcsEntity locEntity, ref HasBaseTerrain baseTerrain, ref HasUnit hasUnit) =>
+            commands.ForEach((Entity locEntity, ref HasBaseTerrain baseTerrain, ref HasUnit hasUnit) =>
             {
 
                 var canHeal = baseTerrain.Entity.Has<Heals>();
@@ -83,7 +84,7 @@ public class TurnEndEventSystem : IEcsSystem
 
                     health.Increase(diff);
 
-                    world.Spawn().Add(new SpawnFloatingLabelEvent(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f)));
+                    commands.Send(new SpawnFloatingLabelEvent(unitEntity.Get<Coords>().World() + Godot.Vector3.Up * 7f, diff.ToString(), new Godot.Color(0f, 1f, 0f)));
                 }
             });
 

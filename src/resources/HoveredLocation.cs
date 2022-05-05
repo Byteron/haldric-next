@@ -1,7 +1,8 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public class HoveredLocation
 {
-    public EcsEntity Entity { get; set; } = default;
+    public Entity Entity { get; set; } = default;
     public bool HasChanged { get; set; } = false;
 }

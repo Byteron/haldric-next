@@ -1,23 +1,24 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct GainExperienceEvent
 {
-    public EcsEntity Entity { get; set; }
+    public Entity Entity { get; set; }
     public int Amount { get; set; }
 
-    public GainExperienceEvent(EcsEntity entity, int amount)
+    public GainExperienceEvent(Entity entity, int amount)
     {
         Entity = entity;
         Amount = amount;
     }
 }
 
-public class GainExperienceEventSystem : IEcsSystem
+public class GainExperienceEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref GainExperienceEvent gainEvent) =>
+        commands.Receive((GainExperienceEvent gainEvent) =>
         {
             var entity = gainEvent.Entity;
             var amount = gainEvent.Amount;
@@ -28,11 +29,11 @@ public class GainExperienceEventSystem : IEcsSystem
 
             ref var coords = ref entity.Get<Coords>();
 
-            world.Spawn().Add(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f)));
+            commands.Send(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f)));
 
             if (experience.IsFull())
             {
-                world.Spawn().Add(new AdvanceEvent(entity));
+                commands.Send(new AdvanceEvent(entity));
                 experience.Empty();
             }
         });

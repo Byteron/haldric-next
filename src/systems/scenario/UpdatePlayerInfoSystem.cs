@@ -1,15 +1,16 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdatePlayerInfoSystem : IEcsSystem
+public class UpdatePlayerInfoSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<Scenario>(out var scenario))
+        if (!commands.TryGetElement<Scenario>(out var scenario))
         {
             return;
         }
 
-        if (!world.TryGetResource<SidePanel>(out var sidePanel))
+        if (!commands.TryGetElement<SidePanel>(out var sidePanel))
         {
             return;
         }
@@ -31,12 +32,12 @@ public class UpdatePlayerInfoSystem : IEcsSystem
         var capturedVillageCount = 0;
         var income = 0;
 
-        world.ForEach((EcsEntity locEntity, ref Village village) =>
+        commands.ForEach((Entity locEntity, ref Village village) =>
         {
             villageCount += 1;
         });
 
-        world.ForEach((EcsEntity locEntity, ref Village village, ref IsCapturedBySide captured) =>
+        commands.ForEach((Entity locEntity, ref Village village, ref IsCapturedBySide captured) =>
         {
             if (captured.Value == side)
             {
@@ -45,7 +46,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             }
         });
 
-        world.ForEach((EcsEntity unitEntity, ref Side unitSide, ref Level level, ref Attribute<Health> health) =>
+        commands.ForEach((Entity unitEntity, ref Side unitSide, ref Level level, ref Attribute<Health> health) =>
         {
             if (unitSide.Value == side)
             {
@@ -54,7 +55,7 @@ public class UpdatePlayerInfoSystem : IEcsSystem
             }
         });
 
-        var localPlayer = world.GetResource<LocalPlayer>();
+        var localPlayer = commands.GetElement<LocalPlayer>();
 
         var roundString = "Round: " + scenario.Round;
         var unitString = "Units: " + unitCount;

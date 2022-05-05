@@ -1,6 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct TerrainTypeIndex : IEcsAutoReset<TerrainTypeIndex>
+public struct TerrainTypeIndex : IReset<TerrainTypeIndex>
 {
     public int Value { get; set; }
 
@@ -9,7 +10,7 @@ public struct TerrainTypeIndex : IEcsAutoReset<TerrainTypeIndex>
         Value = value;
     }
 
-    public void AutoReset(ref TerrainTypeIndex c)
+    public void Reset(ref TerrainTypeIndex c)
     {
         c.Value = -1;
     }

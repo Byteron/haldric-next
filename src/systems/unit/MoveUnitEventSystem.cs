@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct MoveUnitEvent
@@ -7,14 +8,14 @@ public struct MoveUnitEvent
     public Vector3 To;
 }
 
-public class MoveUnitEventSystem : IEcsSystem
+public class MoveUnitEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref MoveUnitEvent moveEvent) =>
+        commands.Receive((MoveUnitEvent moveEvent) =>
         {
-            var map = world.GetResource<Map>();
-            var commander = world.GetResource<Commander>();
+            var map = commands.GetElement<Map>();
+            var commander = commands.GetElement<Commander>();
 
 
             var fromLocEntity = map.Locations.Get(moveEvent.From);
@@ -45,7 +46,7 @@ public class MoveUnitEventSystem : IEcsSystem
             }
 
             commander.Enqueue(new MoveUnitCommand(path));
-            world.GetResource<GameStateController>().PushState(new CommanderState(world));
+            commands.GetElement<GameStateController>().PushState(new CommanderState());
         });
     }
 }

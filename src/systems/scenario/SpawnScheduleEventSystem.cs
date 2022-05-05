@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
@@ -14,25 +15,25 @@ public struct SpawnScheduleEvent
     }
 }
 
-public class SpawnScheduleEventSystem : IEcsSystem
+public class SpawnScheduleEventSystem : ISystem
 {
-    private Node3D _parent;
+     Node3D _parent;
 
     public SpawnScheduleEventSystem(Node3D parent)
     {
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref SpawnScheduleEvent spawnEvent) =>
+        commands.Receive((SpawnScheduleEvent spawnEvent) =>
         {
             var schedule = Data.Instance.Schedules[spawnEvent.Id].Instantiate<Schedule>();
             _parent.AddChild(schedule);
 
             schedule.Set(spawnEvent.Index);
 
-            world.AddResource(schedule);
+            commands.AddElement(schedule);
         });
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct SpawnPlayerEvent
@@ -20,17 +21,17 @@ public struct SpawnPlayerEvent
     }
 }
 
-public class SpawnPlayerEventSystem : IEcsSystem
+public class SpawnPlayerEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref SpawnPlayerEvent spawnEvent) =>
+        commands.Receive((SpawnPlayerEvent spawnEvent) =>
         {
-            var scenario = world.GetResource<Scenario>();
+            var scenario = commands.GetElement<Scenario>();
 
             var username = "Username";
 
-            if (world.TryGetResource<MatchPlayers>(out var matchPlayers))
+            if (commands.TryGetElement<MatchPlayers>(out var matchPlayers))
             {
                 username = matchPlayers.Array[spawnEvent.PlayerId].Username;
             }
@@ -49,17 +50,17 @@ public class SpawnPlayerEventSystem : IEcsSystem
 
             GD.Print($"Spawning Player -  Id: {spawnEvent.PlayerId} | Name: {username} | Side: {spawnEvent.Side}");
 
-            var sideEntity = world.Spawn()
+            var sideEntity = commands.Spawn()
                 .Add(new PlayerId(spawnEvent.PlayerId))
                 .Add(new Name(username))
-                .Add(new Side(spawnEvent.Side))
+                // .Add(new Side(spawnEvent.Side))
                 .Add(new Gold(spawnEvent.Gold))
                 .Add(new Faction(faction.Name))
                 .Add(new Recruits(faction.Recruits));
 
             scenario.Sides.Add(spawnEvent.Side, sideEntity);
 
-            world.Spawn().Add(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
+            commands.Send(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
         });
     }
 }

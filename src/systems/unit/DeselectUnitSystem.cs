@@ -1,25 +1,26 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class DeselectUnitSystem : IEcsSystem
+public class DeselectUnitSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive())
+        if (!locEntity.IsAlive)
         {
             return;
         }
 
         if (Input.IsActionJustPressed("deselect_unit"))
         {
-            world.Spawn().Add(new UnitDeselectedEvent());
+            commands.Send(new UnitDeselectedEvent());
         }
     }
 }

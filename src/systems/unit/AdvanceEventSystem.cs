@@ -1,27 +1,28 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
 public struct AdvanceEvent
 {
-    public EcsEntity Entity { get; set; }
+    public Entity Entity { get; set; }
 
-    public AdvanceEvent(EcsEntity entity)
+    public AdvanceEvent(Entity entity)
     {
         Entity = entity;
     }
 }
 
-public class AdvanceEventSystem : IEcsSystem
+public class AdvanceEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<UnitPanel>(out var unitPanel))
+        if (!commands.TryGetElement<UnitPanel>(out var unitPanel))
         {
             return;
         }
 
-        world.ForEach((ref AdvanceEvent advanceEvent) =>
+        commands.Receive((AdvanceEvent advanceEvent) =>
         {
             var unitEntity = advanceEvent.Entity;
 
@@ -46,7 +47,7 @@ public class AdvanceEventSystem : IEcsSystem
             var unitTypeId = advancements.List[0];
             var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
-            var unitView = unitEntity.Get<NodeHandle<UnitView>>().Node;
+            var unitView = unitEntity.Get<Node<UnitView>>().Value;
             var position = unitView.Position;
             var parent = unitView.GetParent();
 
@@ -54,7 +55,7 @@ public class AdvanceEventSystem : IEcsSystem
             unitView = unitType.UnitView;
             unitType.RemoveChild(unitView);
             parent.AddChild(unitView);
-            UnitFactory.CreateFromUnitType(world, unitType, unitView, unitEntity);
+            UnitFactory.CreateFromUnitType(commands, unitType, unitView, unitEntity);
 
             unitType.QueueFree();
 
@@ -69,7 +70,7 @@ public class AdvanceEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            world.Spawn().Add(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f)));
+            commands.Send(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 8f, $"++{level.Value}++", new Color(1f, 1f, 0.6f)));
         });
     }
 }

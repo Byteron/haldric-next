@@ -34,7 +34,7 @@ public static class Loader
         return LoadDirectoryData(path, new List<FileData>(), extentions, loadResource);
     }
 
-    private static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extentions, bool loadResource = false)
+     static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extentions, bool loadResource = false)
     {
         var directory = new Directory();
 
@@ -81,7 +81,7 @@ public static class Loader
         return directoryData;
     }
 
-    private static FileData GetFileData(string path, bool loadResource)
+     static FileData GetFileData(string path, bool loadResource)
     {
         var fileData = new FileData
         {

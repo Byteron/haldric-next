@@ -1,5 +1,6 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct LoadMapEvent
 {
@@ -11,16 +12,16 @@ public struct LoadMapEvent
     }
 }
 
-public class LoadMapEventSystem : IEcsSystem
+public class LoadMapEventSystem : ISystem
 {
     public static string Path = "res://data/maps/";
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref LoadMapEvent e) =>
+        commands.Receive((LoadMapEvent e) =>
         {
             var mapData = Loader.LoadJson<MapData>(Path + e.Name + ".json");
-            world.Spawn().Add(new SpawnMapEvent(mapData));
+            commands.Send(new SpawnMapEvent(mapData));
         });
     }
 }

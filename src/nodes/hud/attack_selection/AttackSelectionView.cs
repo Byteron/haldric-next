@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public partial class AttackSelectionView : Control
@@ -10,16 +11,16 @@ public partial class AttackSelectionView : Control
 
     [Export] PackedScene AttackSelectionOption;
 
-    private ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new ButtonGroup();
 
-    private AttackSelectionOption _selectedOption;
+     AttackSelectionOption _selectedOption;
 
-    private Label _attackerLabel;
-    private Label _defenderLabel;
+     Label _attackerLabel;
+     Label _defenderLabel;
 
-    private Button _acceptButton;
+     Button _acceptButton;
 
-    private VBoxContainer _container;
+     VBoxContainer _container;
 
     public override void _Ready()
     {
@@ -29,17 +30,17 @@ public partial class AttackSelectionView : Control
         _defenderLabel = GetNode<Label>("PanelContainer/VBoxContainer/UnitInfo/DefenderLabel");
     }
 
-    public EcsEntity GetSelectedAttackerAttack()
+    public Entity GetSelectedAttackerAttack()
     {
         return _selectedOption.AttackerAttackEntity;
     }
 
-    public EcsEntity GetSelectedDefenderAttack()
+    public Entity GetSelectedDefenderAttack()
     {
         return _selectedOption.DefenderAttackEntity;
     }
 
-    public void UpdateInfo(EcsEntity attackerLocEntity, EcsEntity defenderLocEntity, Dictionary<EcsEntity, EcsEntity> attackPairs)
+    public void UpdateInfo(Entity attackerLocEntity, Entity defenderLocEntity, Dictionary<Entity, Entity> attackPairs)
     {
         _attackerLabel.Text = $"{attackerLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
         _defenderLabel.Text = $"{defenderLocEntity.Get<HasUnit>().Entity.Get<Id>().Value}";
@@ -53,7 +54,7 @@ public partial class AttackSelectionView : Control
             optionButton.ButtonGroup = _buttonGroup;
             optionButton.AttackerText = AttackToString(attackPair.Key);
 
-            if (attackPair.Value.IsAlive())
+            if (attackPair.Value.IsAlive)
             {
                 optionButton.DefenderText = AttackToString(attackPair.Value);
             }
@@ -69,23 +70,23 @@ public partial class AttackSelectionView : Control
         _selectedOption.Pressed = true;
     }
 
-    private void OnAttackOptionSelected(AttackSelectionOption optionButton)
+     void OnAttackOptionSelected(AttackSelectionOption optionButton)
     {
         _selectedOption = optionButton;
     }
 
-    private void OnAcceptButtonPressed()
+     void OnAcceptButtonPressed()
     {
         _acceptButton.Disabled = true;
         EmitSignal(nameof(AttackSelected));
     }
 
-    private void OnCancelButtonPressed()
+     void OnCancelButtonPressed()
     {
         EmitSignal(nameof(CancelButtonPressed));
     }
 
-    private string AttackToString(EcsEntity attackEntity)
+     string AttackToString(Entity attackEntity)
     {
         string s = "";
         ref var attackId = ref attackEntity.Get<Id>();

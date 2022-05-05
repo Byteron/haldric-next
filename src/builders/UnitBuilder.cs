@@ -1,19 +1,27 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public class UnitBuilder
 {
-    EcsEntity _entity;
+    Entity _entity;
+
+    Commands commands;
+
+    public UnitBuilder(Commands commands)
+    {
+        this.commands = commands;
+    }
 
     public UnitBuilder Create()
     {
-        _entity = Main.Instance.World.Spawn();
+        _entity = commands.Spawn();
         _entity.Add<Mobility>();
         return this;
     }
 
-    public UnitBuilder Use(EcsEntity entity)
+    public UnitBuilder Use(Entity entity)
     {
         _entity = entity;
         return this;
@@ -93,7 +101,7 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithAttack(EcsEntity attackEntity)
+    public UnitBuilder WithAttack(Entity attackEntity)
     {
         if (!_entity.Has<Attacks>())
         {
@@ -107,11 +115,11 @@ public class UnitBuilder
 
     public UnitBuilder WithView(UnitView unitView)
     {
-        _entity.Add(new NodeHandle<UnitView>(unitView));
+        _entity.Add(new Node<UnitView>(unitView));
         return this;
     }
 
-    public EcsEntity Build()
+    public Entity Build()
     {
         return _entity;
     }

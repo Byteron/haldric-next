@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 struct RenderData
 {
@@ -10,10 +11,10 @@ struct RenderData
 
 public partial class TerrainFeaturePopulator : Node3D
 {
-    private Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
-    private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
-    private List<RID> _rids = new List<RID>();
-    private Dictionary<Vector3, int> _randomIndicies = new Dictionary<Vector3, int>();
+     Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
+     Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
+     List<RID> _rids = new List<RID>();
+     Dictionary<Vector3, int> _randomIndicies = new Dictionary<Vector3, int>();
     public TerrainFeaturePopulator()
     {
         Name = "TerrainFeaturePopuplator";
@@ -57,7 +58,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddDecoration(EcsEntity locEntity, string terrainCode)
+    public void AddDecoration(Entity locEntity, string terrainCode)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
@@ -95,7 +96,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddDirectionalDecoration(EcsEntity locEntity, string terrainCode)
+    public void AddDirectionalDecoration(Entity locEntity, string terrainCode)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
@@ -172,7 +173,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddKeepPlateau(EcsEntity locEntity, string terrainCode)
+    public void AddKeepPlateau(Entity locEntity, string terrainCode)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
@@ -187,7 +188,7 @@ public partial class TerrainFeaturePopulator : Node3D
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
     }
 
-    public void AddWater(EcsEntity locEntity, string terrainCode)
+    public void AddWater(Entity locEntity, string terrainCode)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var elevation = ref locEntity.Get<Elevation>();
@@ -197,7 +198,7 @@ public partial class TerrainFeaturePopulator : Node3D
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
     }
 
-    public void AddWalls(EcsEntity locEntity)
+    public void AddWalls(Entity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
@@ -248,7 +249,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddOuterCliffs(EcsEntity locEntity)
+    public void AddOuterCliffs(Entity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
@@ -322,7 +323,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddInnerCliffs(EcsEntity locEntity)
+    public void AddInnerCliffs(Entity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
@@ -393,7 +394,7 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddTowers(EcsEntity locEntity)
+    public void AddTowers(Entity locEntity)
     {
         ref var coords = ref locEntity.Get<Coords>();
         ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
@@ -469,7 +470,7 @@ public partial class TerrainFeaturePopulator : Node3D
         renderDatas.Add(renderData);
     }
 
-    private RID NewMultiMesh(Mesh mesh)
+     RID NewMultiMesh(Mesh mesh)
     {
         RID multimeshRID = RenderingServer.MultimeshCreate();
         RID instanceRID = RenderingServer.InstanceCreate();

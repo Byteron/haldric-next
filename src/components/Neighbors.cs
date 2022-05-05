@@ -1,26 +1,27 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Neighbors : IEcsAutoReset<Neighbors>
+public struct Neighbors : IReset<Neighbors>
 {
-    public EcsEntity[] Array { get; private set; }
+    public Entity[] Array { get; private set; }
 
     public bool Has(Direction direction)
     {
-        return Array[(int)direction].IsAlive();
+        return Array[(int)direction].IsAlive;
     }
 
-    public EcsEntity Get(Direction direction)
+    public Entity Get(Direction direction)
     {
         return Array[(int)direction];
     }
 
-    public void Set(Direction direction, EcsEntity entity)
+    public void Set(Direction direction, Entity entity)
     {
         Array[(int)direction] = entity;
     }
 
-    public void AutoReset(ref Neighbors c)
+    public void Reset(ref Neighbors c)
     {
-        c.Array = new EcsEntity[6];
+        c.Array = new Entity[6];
     }
 }

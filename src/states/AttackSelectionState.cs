@@ -1,61 +1,79 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
 using Godot;
 using Nakama;
 using Nakama.TinyJson;
 
 public partial class AttackSelectionState : GameState
 {
-    public EcsEntity AttackerLocEntity { get; set; }
-    public EcsEntity DefenderLocEntity { get; set; }
-    public Dictionary<EcsEntity, EcsEntity> AttackPairs { get; set; }
+    public Entity AttackerLocEntity { get; set; }
+    public Entity DefenderLocEntity { get; set; }
+    public Dictionary<Entity, Entity> AttackPairs { get; set; }
     public int AttackDistance { get; set; }
 
-    private AttackSelectionView _view;
-
-
-    public AttackSelectionState(EcsWorld world) : base(world) { }
-
-    public override void Enter(GameStateController gameStates)
+    public override void Init(GameStateController gameStates)
     {
-        var canvas = _world.GetResource<Canvas>();
+        var initSystem = new AttackSelectionStateInitSystem();
+        initSystem.AttackerLocEntity = AttackerLocEntity;
+        initSystem.DefenderLocEntity = DefenderLocEntity;
+        initSystem.AttackPairs = AttackPairs;
+        initSystem.AttackDistance = AttackDistance;
+
+        InitSystems.Add(initSystem);
+
+        ExitSystems.Add(new AttackSelectionStateExitSystem());
+    }
+}
+
+public partial class AttackSelectionStateInitSystem : Resource, ISystem
+{
+    public Entity AttackerLocEntity { get; set; }
+    public Entity DefenderLocEntity { get; set; }
+    public Dictionary<Entity, Entity> AttackPairs { get; set; }
+    public int AttackDistance { get; set; }
+
+    Commands commands;
+
+    public void Run(Commands commands)
+    {
+        this.commands = commands;
+
+        var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(5);
 
-        _view = Scenes.Instantiate<AttackSelectionView>();
-        _view.Connect("AttackSelected", new Callable(this, nameof(OnAttackSelected)));
-        _view.Connect("CancelButtonPressed", new Callable(this, nameof(OnCancelButtonPressed)));
-        canvasLayer.AddChild(_view);
+        var view = Scenes.Instantiate<AttackSelectionView>();
+        view.Connect(nameof(AttackSelectionView.AttackSelected), new Callable(this, nameof(OnAttackSelected)));
+        view.Connect(nameof(AttackSelectionView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
+        canvasLayer.AddChild(view);
 
-        _view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);
+        view.UpdateInfo(AttackerLocEntity, DefenderLocEntity, AttackPairs);
+
+        commands.AddElement(view);
     }
 
-    public override void Exit(GameStateController gameStates)
+    void OnAttackSelected()
     {
-        _view.QueueFree();
-    }
+        commands.Send(new UnitDeselectedEvent());
 
-    private void OnAttackSelected()
-    {
-        _world.Spawn().Add(new UnitDeselectedEvent());
+        var commander = commands.GetElement<Commander>();
+        var view = commands.GetElement<AttackSelectionView>();
 
-        var commander = _world.GetResource<Commander>();
-
-        var attackerAttackEntity = _view.GetSelectedAttackerAttack();
-        var defenderAttackEntity = _view.GetSelectedDefenderAttack();
+        var attackerAttackEntity = view.GetSelectedAttackerAttack();
+        var defenderAttackEntity = view.GetSelectedDefenderAttack();
 
         var seed = (ulong)(GD.Randi() % 9999);
 
         commander.Enqueue(new CombatCommand(seed, AttackerLocEntity, attackerAttackEntity, DefenderLocEntity, defenderAttackEntity, AttackDistance));
 
-        var gameStateController = _world.GetResource<GameStateController>();
-        gameStateController.ChangeState(new CommanderState(_world));
+        var gameStateController = commands.GetElement<GameStateController>();
+        gameStateController.ChangeState(new CommanderState());
 
-        if (!_world.TryGetResource<ISocket>(out var socket))
+        if (!commands.TryGetElement<ISocket>(out var socket))
         {
             return;
         }
 
-        if (!_world.TryGetResource<IMatch>(out var match))
+        if (!commands.TryGetElement<IMatch>(out var match))
         {
             return;
         }
@@ -67,15 +85,24 @@ public partial class AttackSelectionState : GameState
             From = AttackerLocEntity.Get<Coords>(),
             To = DefenderLocEntity.Get<Coords>(),
             AttackerAttackId = attackerAttackEntity.Get<Id>().Value,
-            DefenderAttackId = defenderAttackEntity.IsAlive() ? defenderAttackEntity.Get<Id>().Value : "",
+            DefenderAttackId = defenderAttackEntity.IsAlive ? defenderAttackEntity.Get<Id>().Value : "",
         };
 
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.AttackUnit, message.ToJson());
     }
 
-    private void OnCancelButtonPressed()
+    void OnCancelButtonPressed()
     {
-        var gameStateController = _world.GetResource<GameStateController>();
+        var gameStateController = commands.GetElement<GameStateController>();
         gameStateController.PopState();
+    }
+}
+
+public class AttackSelectionStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<AttackSelectionView>().QueueFree();
+        commands.RemoveElement<AttackSelectionView>();
     }
 }

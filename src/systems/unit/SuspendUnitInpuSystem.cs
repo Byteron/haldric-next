@@ -1,18 +1,19 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
-public class SuspendUnitInputSystem : IEcsSystem
+public class SuspendUnitInputSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Input.IsActionJustPressed("suspend_unit"))
         {
-            if (!world.TryGetResource<SelectedLocation>(out var selectedLocation))
+            if (!commands.TryGetElement<SelectedLocation>(out var selectedLocation))
             {
                 return;
             }
 
-            var scenario = world.GetResource<Scenario>();
+            var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
             ref var side = ref sideEntity.Get<Side>();
             ref var playerId = ref sideEntity.Get<PlayerId>();
@@ -22,7 +23,7 @@ public class SuspendUnitInputSystem : IEcsSystem
                 return;
             }
 
-            var localPlayer = world.GetResource<LocalPlayer>();
+            var localPlayer = commands.GetElement<LocalPlayer>();
 
             if (playerId.Value != localPlayer.Id)
             {
@@ -42,7 +43,7 @@ public class SuspendUnitInputSystem : IEcsSystem
                 else
                 {
                     unitEntity.Add(new Suspended());
-                    world.Spawn().Add(new UnitDeselectedEvent());
+                    commands.Send(new UnitDeselectedEvent());
                 }
             }
         }

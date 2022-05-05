@@ -1,43 +1,44 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public struct DespawnMapEvent { }
 
-public class DespawnMapEventSystem : IEcsSystem
+public class DespawnMapEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref DespawnMapEvent e) =>
+        commands.Receive((DespawnMapEvent e) =>
         {
-            world.ForEach((EcsEntity entity, ref Locations locs) =>
+            commands.ForEach((Entity entity, ref Locations locs) =>
             {
                 entity.Despawn();
             });
 
-            world.ForEach((EcsEntity entity, ref Location loc) =>
+            commands.ForEach((Entity entity, ref Location loc) =>
             {
                 entity.Despawn();
             });
 
-            world.ForEach((EcsEntity entity, ref Attribute<Health> health) =>
+            commands.ForEach((Entity entity, ref Attribute<Health> health) =>
             {
                 entity.Despawn();
             });
 
-            world.RemoveResource<Map>();
-            world.RemoveResource<ShaderData>();
-            world.RemoveResource<HoveredLocation>();
+            commands.RemoveElement<Map>();
+            commands.RemoveElement<ShaderData>();
+            commands.RemoveElement<HoveredLocation>();
 
-            var cursor = world.GetResource<Cursor3D>();
-            world.RemoveResource<Cursor3D>();
+            var cursor = commands.GetElement<Cursor3D>();
+            commands.RemoveElement<Cursor3D>();
 
-            var highlighter = world.GetResource<TerrainHighlighter>();
-            world.RemoveResource<TerrainHighlighter>();
+            var highlighter = commands.GetElement<TerrainHighlighter>();
+            commands.RemoveElement<TerrainHighlighter>();
 
-            if (world.HasResource<SelectedLocation>())
+            if (commands.HasElement<SelectedLocation>())
             {
-                world.RemoveResource<SelectedLocation>();
+                commands.RemoveElement<SelectedLocation>();
             }
         });
     }

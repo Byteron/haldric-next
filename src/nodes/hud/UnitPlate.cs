@@ -18,12 +18,12 @@ public partial class UnitPlate : Control
     public bool IsLeader;
     public bool IsHero;
 
-    private TextureProgressBar _healthBar;
-    private TextureProgressBar _xpBar;
-    private ColorRect _sideColorRect;
-    private ColorRect _heroColorRect;
-    private ColorRect _leaderColorRect;
-    private Control _actionContainer;
+     TextureProgressBar _healthBar;
+     TextureProgressBar _xpBar;
+     ColorRect _sideColorRect;
+     ColorRect _heroColorRect;
+     ColorRect _leaderColorRect;
+     Control _actionContainer;
 
     public override void _Ready()
     {

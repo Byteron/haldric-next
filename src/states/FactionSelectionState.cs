@@ -1,68 +1,35 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Nakama;
 using Nakama.TinyJson;
 using System.Collections.Generic;
 
 public partial class FactionSelectionState : GameState
 {
-    private FactionSelectionView _view = null;
+    FactionSelectionView _view = null;
 
-    public int _playerCount = 0;
-    public int _playersReadied = 0;
+    public int PlayerCount = 0;
+    public int PlayersReadied = 0;
 
-    private string _mapName = "";
-    private MapData _mapData = null;
+    string _mapName = "";
 
-    private ISocket _socket = null;
-    private IMatch _match = null;
-
-    public FactionSelectionState(EcsWorld world, string mapName) : base(world)
+    public FactionSelectionState(string mapName)
     {
         _mapName = mapName;
-        _mapData = Data.Instance.Maps[mapName];
     }
 
-    public override void Enter(GameStateController gameStates)
+    GameStateController gameStates;
+
+    public override void Init(GameStateController gameStates)
     {
-        _socket = _world.GetResource<ISocket>();
-        _match = _world.GetResource<IMatch>();
+        this.gameStates = gameStates;
 
-        var localPlayer = _world.GetResource<LocalPlayer>();
-        var matchPlayers = _world.GetResource<MatchPlayers>();
+        var initSystem = new FactionSelectionStateInitSystem();
+        initSystem.MapName = _mapName;
 
-        _playerCount = matchPlayers.Array.Length;
-
-        _socket.ReceivedMatchState += OnMatchStateReceived;
-
-        _view = Scenes.Instantiate<FactionSelectionView>();
-
-        _view.MapName = _mapName;
-        _view.LocalPlayerId = localPlayer.Id;
-
-        var players = new List<string>();
-
-        foreach(var presence in matchPlayers.Array)
-        {
-            players.Add(presence.Username);
-        }
-
-        _view.Players = players;
-
-        _view.Connect(nameof(FactionSelectionView.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
-        _view.Connect(nameof(FactionSelectionView.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
-        _view.Connect(nameof(FactionSelectionView.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
-        _view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));
-        _view.Connect(nameof(FactionSelectionView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
-
-        AddChild(_view);
-    }
-
-    public override void Exit(GameStateController gameStates)
-    {
-        _socket.ReceivedMatchState -= OnMatchStateReceived;
-
-        _view.QueueFree();
+        InitSystems.Add(initSystem);
+        ExitSystems.Add(new FactionSelectionStateExitSystem());
     }
 
     public override void _Process(float delta)
@@ -72,17 +39,80 @@ public partial class FactionSelectionState : GameState
 
     public void CheckAndContinue()
     {
-        if (_playerCount == _playersReadied)
+        if (PlayerCount == PlayersReadied)
         {
-            var gameStateController = _world.GetResource<GameStateController>();
-
-            var playState = new PlayState(_world, _mapName, _view.GetFactions(), _view.GetPlayers(), _view.GetPlayerGolds());
-
-            gameStateController.ChangeState(playState);
+            var playState = new PlayState();
+            playState.MapName = _mapName;
+            playState.Factions = _view.GetFactions();
+            playState.Players = _view.GetPlayers();
+            playState.PlayerGolds = _view.GetPlayerGolds();
+            gameStates.ChangeState(playState);
         }
     }
+}
 
-    private void OnMatchStateReceived(IMatchState state)
+public class FactionSelectionStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<FactionSelectionView>().QueueFree();
+        commands.RemoveElement<FactionSelectionView>();
+    }
+}
+
+public partial class FactionSelectionStateInitSystem : Resource, ISystem
+{
+    public string MapName;
+
+    FactionSelectionView view;
+
+    ISocket socket;
+    IMatch match;
+
+    Commands commands;
+
+    FactionSelectionState state;
+
+    public void Run(Commands commands)
+    {
+        this.commands = commands;
+
+        socket = commands.GetElement<ISocket>();
+        match = commands.GetElement<IMatch>();
+
+        var localPlayer = commands.GetElement<LocalPlayer>();
+        var matchPlayers = commands.GetElement<MatchPlayers>();
+        
+        state = commands.GetElement<CurrentGameState>().State as FactionSelectionState;
+
+        state.PlayerCount = matchPlayers.Array.Length;
+
+        socket.ReceivedMatchState += OnMatchStateReceived;
+
+        view = Scenes.Instantiate<FactionSelectionView>();
+
+        view.MapName = MapName;
+        view.LocalPlayerId = localPlayer.Id;
+
+        var players = new List<string>();
+
+        foreach (var presence in matchPlayers.Array)
+        {
+            players.Add(presence.Username);
+        }
+
+        view.Players = players;
+
+        view.Connect(nameof(FactionSelectionView.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
+        view.Connect(nameof(FactionSelectionView.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
+        view.Connect(nameof(FactionSelectionView.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
+        view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));
+        view.Connect(nameof(FactionSelectionView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
+
+        commands.GetElement<CurrentGameState>().State.AddChild(view);
+    }
+
+    void OnMatchStateReceived(IMatchState state)
     {
         var enc = System.Text.Encoding.UTF8;
         var data = (string)enc.GetString(state.State);
@@ -95,32 +125,32 @@ public partial class FactionSelectionState : GameState
             case NetworkOperation.FactionChanged:
                 {
                     var message = JsonParser.FromJson<FactionChangedMessage>(data);
-                    _view.ChangeFaction(message.Side, message.Index);
+                    view.ChangeFaction(message.Side, message.Index);
                     break;
                 }
             case NetworkOperation.PlayerChanged:
                 {
                     var message = JsonParser.FromJson<PlayerChangedMessage>(data);
-                    _view.ChangePlayer(message.Side, message.Index);
+                    view.ChangePlayer(message.Side, message.Index);
                     break;
                 }
             case NetworkOperation.GoldChanged:
                 {
                     var message = JsonParser.FromJson<GoldChangedMessage>(data);
-                    _view.ChangeGold(message.Side, message.Value);
+                    view.ChangeGold(message.Side, message.Value);
                     break;
                 }
             case NetworkOperation.PlayerReadied:
                 {
-                    _playersReadied += 1;
+                    this.state.PlayersReadied += 1;
                     break;
                 }
         }
     }
 
-    private void OnFactionChanged(int side, int index)
+    void OnFactionChanged(int side, int index)
     {
-        var matchId = _match.Id;
+        var matchId = match.Id;
         var opCode = (int)NetworkOperation.FactionChanged;
 
         var message = new FactionChangedMessage()
@@ -129,12 +159,12 @@ public partial class FactionSelectionState : GameState
             Index = index,
         };
 
-        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+        socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
-    private void OnPlayerChanged(int side, int index)
+    void OnPlayerChanged(int side, int index)
     {
-        var matchId = _match.Id;
+        var matchId = match.Id;
         var opCode = (int)NetworkOperation.PlayerChanged;
 
         var message = new PlayerChangedMessage()
@@ -143,12 +173,12 @@ public partial class FactionSelectionState : GameState
             Index = index,
         };
 
-        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+        socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
-    private void OnGoldChanged(int side, int value)
+    void OnGoldChanged(int side, int value)
     {
-        var matchId = _match.Id;
+        var matchId = match.Id;
         var opCode = (int)NetworkOperation.GoldChanged;
 
         var message = new GoldChangedMessage()
@@ -157,27 +187,30 @@ public partial class FactionSelectionState : GameState
             Value = value,
         };
 
-        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+        socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
-    private void OnContinueButtonPressed()
+    void OnContinueButtonPressed()
     {
-        _playersReadied += 1;
+        state.PlayersReadied += 1;
 
-        var matchId = _match.Id;
+        var matchId = match.Id;
         var opCode = (int)NetworkOperation.PlayerReadied;
 
         var message = new PlayerReadied();
 
-        _socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
+        socket.SendMatchStateAsync(matchId, opCode, message.ToJson());
     }
 
-    private void OnBackButtonPressed()
+    void OnBackButtonPressed()
     {
-        _world.RemoveResource<IMatch>();
-        _world.RemoveResource<LocalPlayer>();
-        _world.RemoveResource<MatchPlayers>();
+        commands.RemoveElement<IMatch>();
+        commands.RemoveElement<LocalPlayer>();
+        commands.RemoveElement<MatchPlayers>();
+
+        commands.GetElement<FactionSelectionView>().QueueFree();
+        commands.RemoveElement<FactionSelectionView>();
         
-        _world.GetResource<GameStateController>().PopState();
+        commands.GetElement<GameStateController>().PopState();
     }
 }

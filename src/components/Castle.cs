@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Castle : IEcsAutoReset<Castle>
+public struct Castle : IReset<Castle>
 {
-    public List<EcsEntity> List { get; set; }
+    public List<Entity> List { get; set; }
 
-    public bool TryGetFreeLoc(out EcsEntity locEntity)
+    public bool TryGetFreeLoc(out Entity locEntity)
     {
         foreach (var cLocEntity in List)
         {
@@ -33,8 +34,8 @@ public struct Castle : IEcsAutoReset<Castle>
         return false;
     }
 
-    public void AutoReset(ref Castle c)
+    public void Reset(ref Castle c)
     {
-        c.List = new List<EcsEntity>();
+        c.List = new List<Entity>();
     }
 }

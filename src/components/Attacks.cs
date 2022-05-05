@@ -1,21 +1,22 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Attacks : IEcsAutoReset<Attacks>
+public struct Attacks : IReset<Attacks>
 {
-    public List<EcsEntity> List { get; set; }
+    public List<Entity> List { get; set; }
 
-    public void Add(EcsEntity attackEntity)
+    public void Add(Entity attackEntity)
     {
         if (List == null)
         {
-            List = new List<EcsEntity>();
+            List = new List<Entity>();
         }
 
         List.Add(attackEntity);
     }
 
-    public EcsEntity GetAttack(string id)
+    public Entity GetAttack(string id)
     {
         foreach (var attack in List)
         {
@@ -28,7 +29,7 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return default;
     }
 
-    public EcsEntity GetUsableAttack(bool isInMeleeRange, int attackRange)
+    public Entity GetUsableAttack(bool isInMeleeRange, int attackRange)
     {
         foreach (var attack in List)
         {
@@ -55,9 +56,9 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return default;
     }
 
-    public EcsEntity[] GetUsableAttacks(bool isInMeleeRange, int attackDistance)
+    public Entity[] GetUsableAttacks(bool isInMeleeRange, int attackDistance)
     {
-        List<EcsEntity> list = new List<EcsEntity>();
+        List<Entity> list = new List<Entity>();
 
         foreach (var attack in List)
         {
@@ -101,11 +102,11 @@ public struct Attacks : IEcsAutoReset<Attacks>
         return range;
     }
 
-    public void AutoReset(ref Attacks c)
+    public void Reset(ref Attacks c)
     {
         if (c.List == null)
         {
-            c.List = new List<EcsEntity>();
+            c.List = new List<Entity>();
         }
         else
         {

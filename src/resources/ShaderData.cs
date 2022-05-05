@@ -9,7 +9,7 @@ public class ShaderData
     ImageTexture _texture;
     Color[] _data;
 
-    private Material _terrainMaterial;
+     Material _terrainMaterial;
 
     public ShaderData(int width, int height)
     {

@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct SpawnFloatingLabelEvent
@@ -15,14 +16,14 @@ public struct SpawnFloatingLabelEvent
     }
 }
 
-public class SpawnFloatingLabelEventSystem : IEcsSystem
+public class SpawnFloatingLabelEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var canvas = world.GetResource<Canvas>();
+        var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
 
-        world.ForEach((ref SpawnFloatingLabelEvent spawnEvent) => 
+        commands.Receive((SpawnFloatingLabelEvent spawnEvent) => 
         {
             var floatingLabel = FloatingLabel.Instantiate(spawnEvent.Position, spawnEvent.Text, spawnEvent.Color);
             canvasLayer.AddChild(floatingLabel);

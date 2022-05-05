@@ -1,6 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct PlateauArea : IEcsAutoReset<PlateauArea>
+public struct PlateauArea : IReset<PlateauArea>
 {
     public float SolidFactor { get; set; }
     public float BlendFactor { get { return 1f - SolidFactor; } }
@@ -10,7 +11,7 @@ public struct PlateauArea : IEcsAutoReset<PlateauArea>
         SolidFactor = solidFactor;
     }
 
-    public void AutoReset(ref PlateauArea c)
+    public void Reset(ref PlateauArea c)
     {
         c.SolidFactor = 0f;
     }

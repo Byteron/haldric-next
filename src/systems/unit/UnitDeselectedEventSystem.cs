@@ -1,26 +1,23 @@
-using Godot;
-using Bitron.Ecs;
+using RelEcs;
 
 public struct UnitDeselectedEvent { }
 
-public class UnitDeselectedEventSystem : IEcsSystem
+public class UnitDeselectedEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var query = world.Query<UnitDeselectedEvent>().End();
-
-        foreach (var _ in query)
+        commands.Receive((UnitDeselectedEvent e) =>
         {
-            if (world.HasResource<SelectedLocation>())
+            if (commands.HasElement<SelectedLocation>())
             {
-                world.RemoveResource<SelectedLocation>();
+                commands.RemoveElement<SelectedLocation>();
 
-                var terrainHighlighter = world.GetResource<TerrainHighlighter>();
+                var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
                 terrainHighlighter.Clear();
 
-                var unitPanel = world.GetResource<UnitPanel>();
+                var unitPanel = commands.GetElement<UnitPanel>();
                 unitPanel.UpdateInfo("");
             }
-        }
+        });
     }
 }

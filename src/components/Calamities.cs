@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Haldric.Wdk;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Calamities : IEcsAutoReset<Calamities>
+public struct Calamities : IReset<Calamities>
 {
     public List<DamageType> List { get; set; }
 
@@ -15,7 +16,7 @@ public struct Calamities : IEcsAutoReset<Calamities>
         }
     }
 
-    public void AutoReset(ref Calamities c)
+    public void Reset(ref Calamities c)
     {
         if (c.List != null)
         {

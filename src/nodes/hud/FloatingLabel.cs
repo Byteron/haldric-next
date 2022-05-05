@@ -1,6 +1,7 @@
 using Godot;
 using System;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public partial class FloatingLabel : Control
 {
@@ -17,7 +18,7 @@ public partial class FloatingLabel : Control
     public Color Color { get; set; }
     public string Text { get; set; }
 
-    private Label _label;
+     Label _label;
 
     public override void _Ready()
     {

@@ -1,18 +1,19 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdateHoveredUnitSystem : IEcsSystem
+public class UpdateHoveredUnitSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
         var hoveredLocEntity = hoveredLocation.Entity;
 
-        if (!hoveredLocEntity.IsAlive())
+        if (!hoveredLocEntity.IsAlive)
         {
             return;
         }
@@ -24,6 +25,6 @@ public class UpdateHoveredUnitSystem : IEcsSystem
 
         var hoveredUnitEntity = hoveredLocEntity.Get<HasUnit>().Entity;
 
-        world.Spawn().Add(new UnitHoveredEvent(hoveredUnitEntity));
+        commands.Send(new UnitHoveredEvent(hoveredUnitEntity));
     }
 }

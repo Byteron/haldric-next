@@ -3,7 +3,7 @@ using Haldric.Wdk;
 
 public class TerrainDictBuilder
 {
-    private Dictionary<string, object> _terrainDict;
+     Dictionary<string, object> _terrainDict;
 
     public TerrainDictBuilder CreateBase()
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct UpdateMapEvent
 {
@@ -12,14 +13,14 @@ public struct UpdateMapEvent
     }
 }
 
-public class UpdateMapEventSystem : IEcsSystem
+public class UpdateMapEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref UpdateMapEvent e) =>
+        commands.Receive((UpdateMapEvent e) =>
         {
-            world.Spawn().Add(new UpdateTerrainMeshEvent(e.Chunks));
-            world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(e.Chunks));
+            commands.Send(new UpdateTerrainMeshEvent(e.Chunks));
+            commands.Send(new UpdateTerrainFeaturePopulatorEvent(e.Chunks));
         });
     }
 }

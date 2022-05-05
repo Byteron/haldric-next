@@ -1,19 +1,20 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
 public struct ChangeDaytimeEvent { }
 
-public class ChangeDaytimeEventSystem : IEcsSystem
+public class ChangeDaytimeEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
 
-        if (!world.TryGetResource<Schedule>(out var schedule))
+        if (!commands.TryGetElement<Schedule>(out var schedule))
         {
             return;
         }
 
-        world.ForEach((ref ChangeDaytimeEvent e) => { schedule.Next(); });
+        commands.Receive((ChangeDaytimeEvent e) => { schedule.Next(); });
     }
 }

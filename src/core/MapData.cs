@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public class MapDataPlayer
 {

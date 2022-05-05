@@ -1,10 +1,11 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class DespawnCameraOperatorSystem : IEcsSystem
+public class DespawnCameraOperatorSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.RemoveResource<CameraOperator>();
+        commands.RemoveElement<CameraOperator>();
     }
 }

@@ -1,14 +1,15 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
-public class RecruitInputSystem : IEcsSystem
+public class RecruitInputSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Input.IsActionJustPressed("recruit"))
         {
-            var scenario = world.GetResource<Scenario>();
-            var localPlayer = world.GetResource<LocalPlayer>();
+            var scenario = commands.GetElement<Scenario>();
+            var localPlayer = commands.GetElement<LocalPlayer>();
             var sideEntity = scenario.GetCurrentSideEntity();
             var side = sideEntity.Get<Side>();
             var playerId = sideEntity.Get<PlayerId>();
@@ -18,15 +19,12 @@ public class RecruitInputSystem : IEcsSystem
                 return;
             }
 
-            var castleQuery = world.Query<Castle>().End();
-
             bool canRecruit = false;
-            EcsEntity castleLocEntity = default;
+            Entity targetCastleLocEntity = default;
 
-            foreach (var castleLocEntityId in castleQuery)
+            var castleQuery = commands.Query().Has<Castle>();
+            foreach (var castleLocEntity in castleQuery)
             {
-                castleLocEntity = world.Entity(castleLocEntityId);
-
                 if (!castleLocEntity.Has<HasUnit>())
                 {
                     continue;
@@ -44,6 +42,7 @@ public class RecruitInputSystem : IEcsSystem
                     continue;
                 }
 
+                targetCastleLocEntity = castleLocEntity;
                 canRecruit = true;
                 break;
             }
@@ -53,13 +52,13 @@ public class RecruitInputSystem : IEcsSystem
                 return;
             }
 
-            EcsEntity freeLocEntity;
+            Entity freeLocEntity;
 
-            ref var castle = ref castleLocEntity.Get<Castle>();
+            ref var castle = ref targetCastleLocEntity.Get<Castle>();
 
-            var hLocEntity = world.GetResource<HoveredLocation>().Entity;
+            var hLocEntity = commands.GetElement<HoveredLocation>().Entity;
 
-            if (hLocEntity.IsAlive() && castle.IsLocFree(hLocEntity.Get<Coords>()))
+            if (hLocEntity.IsAlive && castle.IsLocFree(hLocEntity.Get<Coords>()))
             {
                 freeLocEntity = hLocEntity;
             }
@@ -68,10 +67,10 @@ public class RecruitInputSystem : IEcsSystem
                 return;
             }
 
-            var gameStateController = world.GetResource<GameStateController>();
+            var gameStateController = commands.GetElement<GameStateController>();
 
-            var recruitState = new RecruitSelectionState(world, freeLocEntity);
-
+            var recruitState = new RecruitSelectionState();
+            recruitState.FreeLocEntity = freeLocEntity;
             gameStateController.PushState(recruitState);
         }
     }

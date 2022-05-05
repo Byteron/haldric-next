@@ -2,20 +2,20 @@ using System.Collections.Generic;
 
 public class Commander
 {
-    private Stack<Command> History = new Stack<Command>();
-    private Queue<Command> Queue = new Queue<Command>();
+     Stack<ICommandSystem> History = new Stack<ICommandSystem>();
+     Queue<ICommandSystem> Queue = new Queue<ICommandSystem>();
 
-    public Command Peek()
+    public ICommandSystem Peek()
     {
         return Queue.Peek();
     }
 
-    public void Enqueue(Command command)
+    public void Enqueue(ICommandSystem command)
     {
         Queue.Enqueue(command);
     }
 
-    public Command Dequeue()
+    public ICommandSystem Dequeue()
     {
         var command = Queue.Dequeue();
 

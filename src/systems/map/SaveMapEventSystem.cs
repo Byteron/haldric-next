@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Nakama.TinyJson;
 
 public struct SaveMapEvent
@@ -13,15 +14,15 @@ public struct SaveMapEvent
     }
 }
 
-public class SaveMapEventSystem : IEcsSystem
+public class SaveMapEventSystem : ISystem
 {
     public static string Path = "res://data/maps/";
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref SaveMapEvent e) =>
+        commands.Receive((SaveMapEvent e) =>
         {
-            var map = world.GetResource<Map>();
+            var map = commands.GetElement<Map>();
             var grid = map.Grid;
 
             var mapData = new MapData();
@@ -29,7 +30,7 @@ public class SaveMapEventSystem : IEcsSystem
             mapData.Width = grid.Width;
             mapData.Height = grid.Height;
 
-            world.ForEach((EcsEntity locEntity, ref Coords coords, ref Elevation elevation, ref HasBaseTerrain baseTerrain, ref Location loc) =>
+            commands.ForEach((Entity locEntity, ref Coords coords, ref Elevation elevation, ref HasBaseTerrain baseTerrain, ref Location loc) =>
             {
                 var locData = new MapDataLocation();
                 locData.Coords = coords;
@@ -62,7 +63,7 @@ public class SaveMapEventSystem : IEcsSystem
         });
     }
 
-    private void SaveToFile(string name, MapData mapData)
+     void SaveToFile(string name, MapData mapData)
     {
         var file = new File();
         file.Open(Path + name + ".json", File.ModeFlags.Write);

@@ -1,7 +1,8 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class SpawnCameraOperatorSystem : IEcsSystem
+public class SpawnCameraOperatorSystem : ISystem
 {
     Node3D _parent;
 
@@ -10,11 +11,11 @@ public class SpawnCameraOperatorSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         var cameraOperator = Scenes.Instantiate<CameraOperator>();
         _parent.AddChild(cameraOperator);
 
-        world.AddResource(cameraOperator);
+        commands.AddElement(cameraOperator);
     }
 }

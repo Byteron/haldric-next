@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Location { }
+public struct Location
+{
+}
 
 public struct SpawnMapEvent
 {
@@ -21,41 +24,39 @@ public struct SpawnMapEvent
     }
 }
 
-public class SpawnMapEventSystem : IEcsSystem
+public class SpawnMapEventSystem : ISystem
 {
-    EcsWorld _world;
-    Node _parent;
+    Commands commands;
+    Node parent;
 
     public SpawnMapEventSystem(Node parent)
     {
-        _parent = parent;
+        this.parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        _world = world;
+        this.commands = commands;
 
-        var query = world.Query<SpawnMapEvent>().End();
-        foreach (var eventEntity in query)
+        commands.Receive((SpawnMapEvent e) =>
         {
-            var spawnEvent = world.Entity(eventEntity).Get<SpawnMapEvent>();
-            var mapData = spawnEvent.MapData;
+            var mapData = e.MapData;
 
             if (mapData.Locations.Count == 0)
             {
                 mapData = GetMapDataFromDimensions(mapData.Width, mapData.Height);
             }
 
-            world.AddResource(new ShaderData(mapData.Width, mapData.Height));
+            commands.AddElement(new ShaderData(mapData.Width, mapData.Height));
 
             var terrainHighlighter = Scenes.Instantiate<TerrainHighlighter>();
-            _parent.AddChild(terrainHighlighter);
-            world.AddResource(terrainHighlighter);
+            parent.AddChild(terrainHighlighter);
+            commands.AddElement(terrainHighlighter);
 
             var players = mapData.Players;
-            Map map = CreateMapFromMapData(mapData);
+            var map = CreateMapFromMapData(mapData);
 
-            world.AddResource(map);
+            commands.AddElement(map);
 
             var locations = map.Locations;
             var grid = map.Grid;
@@ -70,10 +71,10 @@ public class SpawnMapEventSystem : IEcsSystem
             InitializePathFinding(map);
             InitializePlayers(locations, players);
             SendUpdateMapEvent();
-        }
+        });
     }
 
-    private void InitializePlayers(Locations locations, List<MapDataPlayer> players)
+    void InitializePlayers(Locations locations, List<MapDataPlayer> players)
     {
         foreach (var player in players)
         {
@@ -81,15 +82,15 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private void InitializeHover()
+    void InitializeHover()
     {
         var cursorView = Scenes.Instantiate<Cursor3D>();
-        _parent.AddChild(cursorView);
+        parent.AddChild(cursorView);
 
-        _world.AddResource(cursorView);
+        commands.AddElement(cursorView);
     }
 
-    private MapData GetMapDataFromDimensions(int width, int height)
+    MapData GetMapDataFromDimensions(int width, int height)
     {
         var mapData = new MapData();
         mapData.Width = width;
@@ -113,7 +114,7 @@ public class SpawnMapEventSystem : IEcsSystem
         return mapData;
     }
 
-    private Map CreateMapFromMapData(MapData mapData)
+    Map CreateMapFromMapData(MapData mapData)
     {
         var width = mapData.Width;
         var height = mapData.Height;
@@ -126,7 +127,7 @@ public class SpawnMapEventSystem : IEcsSystem
         {
             var coords = locData.Coords;
 
-            var locEntity = _world.Spawn();
+            var locEntity = commands.Spawn();
 
             locEntity.Add<Location>();
             locEntity.Add(new Index((int)coords.Offset().z * width + (int)coords.Offset().x));
@@ -159,9 +160,9 @@ public class SpawnMapEventSystem : IEcsSystem
         return map;
     }
 
-    private void InitializeChunks(Vector2i chunkSize, Grid grid, Locations locations)
+    void InitializeChunks(Vector2i chunkSize, Grid grid, Locations locations)
     {
-        var chunks = new System.Collections.Generic.Dictionary<Vector3i, EcsEntity>();
+        var chunks = new System.Collections.Generic.Dictionary<Vector3i, Entity>();
 
         for (int z = 0; z < grid.Height; z++)
         {
@@ -174,7 +175,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
                 if (!chunks.ContainsKey(chunkCelli))
                 {
-                    var newChunk = _world.Spawn().Add<Locations>().Add<Vector3i>();
+                    var newChunk = commands.Spawn().Add<Locations>().Add<Vector3i>();
                     chunks.Add(chunkCelli, newChunk);
                 }
 
@@ -190,8 +191,6 @@ public class SpawnMapEventSystem : IEcsSystem
                 ref var chunkLocations = ref chunkEntity.Get<Locations>();
 
                 chunkLocations.Set(coords.Cube(), locEntity);
-
-
             }
         }
 
@@ -201,17 +200,17 @@ public class SpawnMapEventSystem : IEcsSystem
             var terrainCollider = new TerrainCollider();
             var terrainFeaturePopulator = new TerrainFeaturePopulator();
 
-            _parent.AddChild(terrainMesh);
-            _parent.AddChild(terrainCollider);
-            _parent.AddChild(terrainFeaturePopulator);
+            parent.AddChild(terrainMesh);
+            parent.AddChild(terrainCollider);
+            parent.AddChild(terrainFeaturePopulator);
 
-            chunkEntity.Add(new NodeHandle<TerrainCollider>(terrainCollider));
-            chunkEntity.Add(new NodeHandle<TerrainFeaturePopulator>(terrainFeaturePopulator));
-            chunkEntity.Add(new NodeHandle<TerrainMesh>(terrainMesh));
+            chunkEntity.Add(new Node<TerrainCollider>(terrainCollider));
+            chunkEntity.Add(new Node<TerrainFeaturePopulator>(terrainFeaturePopulator));
+            chunkEntity.Add(new Node<TerrainMesh>(terrainMesh));
         }
     }
 
-    private void InitializeNeighbors(Locations locations)
+    void InitializeNeighbors(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
@@ -236,7 +235,7 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private void InitializeCastles(Locations locations)
+    void InitializeCastles(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
@@ -253,7 +252,7 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private void InitializeVillages(Locations locations)
+    void InitializeVillages(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
@@ -275,11 +274,11 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private List<EcsEntity> FindConnectedLocationsWith<T>(EcsEntity locEntity) where T : struct
+    List<Entity> FindConnectedLocationsWith<T>(Entity locEntity) where T : struct
     {
-        List<EcsEntity> list = new List<EcsEntity>();
+        List<Entity> list = new List<Entity>();
 
-        Queue<EcsEntity> frontier = new Queue<EcsEntity>();
+        Queue<Entity> frontier = new Queue<Entity>();
         frontier.Enqueue(locEntity);
 
         while (frontier.Count > 0)
@@ -289,7 +288,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
             foreach (var nLocEntity in cNeighbors.Array)
             {
-                if (!nLocEntity.IsAlive())
+                if (!nLocEntity.IsAlive)
                 {
                     continue;
                 }
@@ -323,7 +322,7 @@ public class SpawnMapEventSystem : IEcsSystem
         return list;
     }
 
-    private void InitializePathFinding(Map map)
+    void InitializePathFinding(Map map)
     {
         foreach (var locEntity in map.Locations.Dict.Values)
         {
@@ -339,7 +338,7 @@ public class SpawnMapEventSystem : IEcsSystem
 
             foreach (var nLocEntity in neighbors.Array)
             {
-                if (!nLocEntity.IsAlive())
+                if (!nLocEntity.IsAlive)
                 {
                     continue;
                 }
@@ -351,8 +350,8 @@ public class SpawnMapEventSystem : IEcsSystem
         }
     }
 
-    private void SendUpdateMapEvent()
+    void SendUpdateMapEvent()
     {
-        _world.Spawn().Add<UpdateMapEvent>();
+        commands.Send<UpdateMapEvent>();
     }
 }

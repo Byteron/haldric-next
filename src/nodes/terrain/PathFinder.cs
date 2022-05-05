@@ -1,13 +1,14 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using System.Collections.Generic;
 
 public class Path
 {
-    public EcsEntity Start { get; set; }
-    public EcsEntity Destination { get; set; }
+    public Entity Start { get; set; }
+    public Entity Destination { get; set; }
 
-    public Queue<EcsEntity> Checkpoints { get; set; } = new Queue<EcsEntity>();
+    public Queue<Entity> Checkpoints { get; set; } = new Queue<Entity>();
 
     public int GetCost()
     {

@@ -1,4 +1,4 @@
-using Bitron.Ecs;
+using RelEcs;
 using Nakama;
 using Godot;
 using System;
@@ -17,18 +17,18 @@ public struct LoginEvent
     }
 }
 
-public class LoginEventSystem : IEcsSystem
+public class LoginEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref LoginEvent e) =>
+        commands.Receive((LoginEvent e) =>
         {
-            var client = world.GetResource<Client>();
-            Login(world, client, e.Username, e.Email, e.Password);
+            var client = commands.GetElement<Client>();
+            Login(commands, client, e.Username, e.Email, e.Password);
         });
     }
 
-    private async void Login(EcsWorld world, Client client, string username, string email, string password)
+    async void Login(Commands commands, Client client, string username, string email, string password)
     {
         ISession session;
 
@@ -51,11 +51,11 @@ public class LoginEventSystem : IEcsSystem
             socket.ReceivedError += (e) => GD.Print(e);
             await socket.ConnectAsync(session);
 
-            world.AddResource(session);
-            world.AddResource(account);
-            world.AddResource(socket);
+            commands.AddElement(session);
+            commands.AddElement(account);
+            commands.AddElement(socket);
 
-            world.GetResource<GameStateController>().ChangeState(new LobbyState(world));
+            commands.GetElement<GameStateController>().ChangeState(new LobbyState());
         }
         catch (Exception e)
         {

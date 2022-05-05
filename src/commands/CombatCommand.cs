@@ -1,14 +1,15 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public partial class CombatCommand : Command
+public partial class CombatCommand : Resource, ICommandSystem
 {
-    private struct AttackData
+    struct AttackData
     {
-        public EcsEntity AttackerEntity { get; set; }
-        public EcsEntity DefenderEntity { get; set; }
+        public Entity AttackerEntity { get; set; }
+        public Entity DefenderEntity { get; set; }
         public TerrainTypes TerrainTypes { get; set; }
         public DamageEvent DamageEvent { get; set; }
         public int DefenderLevel { get; set; }
@@ -16,8 +17,8 @@ public partial class CombatCommand : Command
         public bool IsRanged { get; set; }
 
         public AttackData(
-            EcsEntity attackerEntity,
-            EcsEntity defenderEntity,
+            Entity attackerEntity,
+            Entity defenderEntity,
             TerrainTypes terrainTypes,
             DamageEvent damageEvent,
             PackedScene projectile,
@@ -33,23 +34,29 @@ public partial class CombatCommand : Command
         }
     }
 
-    private EcsEntity _attackerLocEntity;
-    private EcsEntity _defenderLocEntity;
-    private EcsEntity _attackerAttackEntity;
-    private EcsEntity _defenderAttackEntity;
+    Entity _attackerLocEntity;
+    Entity _defenderLocEntity;
+    Entity _attackerAttackEntity;
+    Entity _defenderAttackEntity;
 
-    private int _attackDistance;
-    private ulong _seed;
+    int _attackDistance;
+    ulong _seed;
 
-    private EcsEntity _attackerEntity;
-    private EcsEntity _defenderEntity;
+    Entity _attackerEntity;
+    Entity _defenderEntity;
 
-    private Queue<AttackData> _attackDataQueue = new Queue<AttackData>();
-    private AttackData _attackData;
+    Queue<AttackData> _attackDataQueue = new Queue<AttackData>();
+    AttackData _attackData;
 
-    private Tween _tween;
+    Tween _tween;
 
-    public CombatCommand(ulong seed, EcsEntity attackerLocEntity, EcsEntity attackerAttackEntity, EcsEntity defenderLocEntity, EcsEntity defenderAttackEntity, int attackDistance)
+    Commands commands;
+
+    public bool IsDone { get; set; }
+    public bool IsRevertable { get; set; }
+    public bool IsReverted { get; set; }
+
+    public CombatCommand(ulong seed, Entity attackerLocEntity, Entity attackerAttackEntity, Entity defenderLocEntity, Entity defenderAttackEntity, int attackDistance)
     {
         _seed = seed;
         _attackerLocEntity = attackerLocEntity;
@@ -61,15 +68,17 @@ public partial class CombatCommand : Command
         _defenderEntity = _defenderLocEntity.Get<HasUnit>().Entity;
     }
 
-    public override void Execute()
+    public void Run(Commands commands)
     {
+        this.commands = commands;
+
         GD.Seed(_seed);
 
         var attackerStrikes = _attackerAttackEntity.Get<Strikes>().Value;
         var attackerRange = _attackerAttackEntity.Get<Range>().Value;
 
         var defenderStrikes = 0;
-        if (_defenderAttackEntity.IsAlive())
+        if (_defenderAttackEntity.IsAlive)
         {
             defenderStrikes = _defenderAttackEntity.Get<Strikes>().Value;
         }
@@ -116,20 +125,20 @@ public partial class CombatCommand : Command
         }
     }
 
-    private void SpawnFloatingLabelEvent(Coords coords, string text, Color color)
+    void SpawnFloatingLabelEvent(Coords coords, string text, Color color)
     {
         var position = coords.World() + Vector3.Up * 5f;
         var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
-        Main.Instance.World.Spawn().Add(spawnLabelEvent);
+        commands.Send(spawnLabelEvent);
     }
 
-    private void Attack()
+    void Attack()
     {
-        _tween = Main.Instance.CreateTween();
+        _tween = commands.GetElement<SceneTree>().CreateTween();
 
-        var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
-        var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
+        var attackerView = _attackData.AttackerEntity.Get<Node<UnitView>>().Value;
+        var defenderView = _attackData.DefenderEntity.Get<Node<UnitView>>().Value;
 
         attackerView.LookAt(defenderView.Position, Vector3.Up);
         defenderView.LookAt(attackerView.Position, Vector3.Up);
@@ -158,15 +167,15 @@ public partial class CombatCommand : Command
         _tween.Play();
     }
 
-    private void SpawnProjectile()
+    void SpawnProjectile()
     {
-        var attackerView = _attackData.AttackerEntity.Get<NodeHandle<UnitView>>().Node;
-        var defenderView = _attackData.DefenderEntity.Get<NodeHandle<UnitView>>().Node;
+        var attackerView = _attackData.AttackerEntity.Get<Node<UnitView>>().Value;
+        var defenderView = _attackData.DefenderEntity.Get<Node<UnitView>>().Value;
 
-        var tween = Main.Instance.CreateTween();
+        var tween = commands.GetElement<SceneTree>().CreateTween();
 
         var projectile = _attackData.Projectile.Instantiate<Projectile>();
-        Main.Instance.AddChild(projectile);
+        commands.GetElement<SceneTree>().CurrentScene.AddChild(projectile);
 
         projectile.Position = attackerView.Position + Vector3.Up * 5f;
         projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
@@ -177,7 +186,7 @@ public partial class CombatCommand : Command
         tween.TweenCallback(new Callable(this, nameof(OnStrike)));
     }
 
-    private void OnStrike()
+    void OnStrike()
     {
         var defense = _attackData.TerrainTypes.GetDefense();
 
@@ -185,19 +194,19 @@ public partial class CombatCommand : Command
 
         if (defense < GD.Randf())
         {
-            Main.Instance.World.Spawn().Add(_attackData.DamageEvent);
+            commands.Send(_attackData.DamageEvent);
         }
         else
         {
-            Main.Instance.World.Spawn().Add(new MissEvent(_attackData.DefenderEntity));
+            commands.Send(new MissEvent(_attackData.DefenderEntity));
         }
     }
 
-    private void OnStrikeFinished()
+    void OnStrikeFinished()
     {
-        if (!_attackData.DefenderEntity.IsAlive())
+        if (!_attackData.DefenderEntity.IsAlive)
         {
-            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderLevel * 8));
+            commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderLevel * 8));
             IsDone = true;
             return;
         }
@@ -208,13 +217,13 @@ public partial class CombatCommand : Command
         }
         else
         {
-            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderEntity.Get<Level>().Value));
-            Main.Instance.World.Spawn().Add(new GainExperienceEvent(_attackData.DefenderEntity, _attackData.AttackerEntity.Get<Level>().Value));
+            commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderEntity.Get<Level>().Value));
+            commands.Send(new GainExperienceEvent(_attackData.DefenderEntity, _attackData.AttackerEntity.Get<Level>().Value));
             IsDone = true;
         }
     }
 
-    public override void Revert()
+    public void Revert()
     {
         throw new System.NotImplementedException();
     }

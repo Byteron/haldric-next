@@ -1,11 +1,10 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
 
-public abstract partial class Command : RefCounted
+public interface ICommandSystem : ISystem
 {
-    public bool IsDone { get; protected set; } = false;
-    public bool IsRevertable { get; protected set; } = false;
-    public bool IsReverted { get; protected set; } = false;
-    public abstract void Revert();
-    public abstract void Execute();
+    bool IsDone { get; set; }
+    bool IsRevertable { get; set; }
+    bool IsReverted { get; set; }
+    void Revert();
 }

@@ -1,14 +1,15 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public struct RecruitUnitEvent
 {
     public int Side;
     public UnitType UnitType;
-    public EcsEntity LocEntity;
+    public Entity LocEntity;
 
-    public RecruitUnitEvent(int side, UnitType unitType, EcsEntity locEntity)
+    public RecruitUnitEvent(int side, UnitType unitType, Entity locEntity)
     {
         Side = side;
         UnitType = unitType;
@@ -16,7 +17,7 @@ public struct RecruitUnitEvent
     }
 }
 
-public class RecruitUnitEventSystem : IEcsSystem
+public class RecruitUnitEventSystem : ISystem
 {
     Node3D _parent;
 
@@ -25,16 +26,16 @@ public class RecruitUnitEventSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Data.Instance.Units.Count == 0)
         {
             return;
         }
 
-        world.ForEach((ref RecruitUnitEvent recruitEvent) =>
+        commands.Receive((RecruitUnitEvent recruitEvent) =>
         {
-            var scenario = world.GetResource<Scenario>();
+            var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
 
             ref var gold = ref sideEntity.Get<Gold>();
@@ -58,7 +59,7 @@ public class RecruitUnitEventSystem : IEcsSystem
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
-            var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
+            var unitEntity = UnitFactory.CreateFromUnitType(commands, unitType, unitView);
 
             gold.Value -= unitType.Cost;
 
@@ -69,20 +70,20 @@ public class RecruitUnitEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            unitEntity.Add(new Side(recruitEvent.Side));
+            // unitEntity.Add(new Side(recruitEvent.Side));
             unitEntity.Add(freeCoords);
 
             unitEntity.Get<Attribute<Moves>>().Empty();
             unitEntity.Get<Attribute<Actions>>().Empty();
 
-            var canvas = world.GetResource<Canvas>();
+            var canvas = commands.GetElement<Canvas>();
             var canvasLayer = canvas.GetCanvasLayer(0);
 
             var unitPlate = Scenes.Instantiate<UnitPlate>();
             
             canvasLayer.AddChild(unitPlate);
 
-            unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
+            unitEntity.Add(new Node<UnitPlate>(unitPlate));
 
             recruitEvent.LocEntity.Add(new HasUnit(unitEntity));
         });

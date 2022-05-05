@@ -2,22 +2,22 @@ using Godot;
 
 public partial class CameraOperator : Node3D
 {
-    private float _zoom = 0.5f;
-    private float _targetZoom = 0.5f;
+     float _zoom = 0.5f;
+     float _targetZoom = 0.5f;
 
-    private float[] _rotations = new float[4] { 0f, 90f, 180f, -90f };
-    private int _rotationIndex = 0;
-    private float _targetRotation = 0f;
+     float[] _rotations = new float[4] { 0f, 90f, 180f, -90f };
+     int _rotationIndex = 0;
+     float _targetRotation = 0f;
 
-    [Export] private Vector3 _cameraOffset = Vector3.Up;
-    [Export] private float _walkSpeed = 30f;
-    [Export] private float _minDistance = 60f;
-    [Export] private float _maxDistance = 60f;
-    [Export] private Curve _zoomCurve;
+    [Export]  Vector3 _cameraOffset = Vector3.Up;
+    [Export]  float _walkSpeed = 30f;
+    [Export]  float _minDistance = 60f;
+    [Export]  float _maxDistance = 60f;
+    [Export]  Curve _zoomCurve;
 
-    private Node3D _gimbalH;
-    private Node3D _gimbalV;
-    private Camera3D _camera;
+     Node3D _gimbalH;
+     Node3D _gimbalV;
+     Camera3D _camera;
 
     public Vector3 MinimumPosition { get; set; }
     public Vector3 MaximumPosition { get; set; }

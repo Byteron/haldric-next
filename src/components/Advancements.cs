@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Haldric.Wdk;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Advancements : IEcsAutoReset<Advancements>
+public struct Advancements : IReset<Advancements>
 {
     public List<string> List { get; set; }
 
@@ -15,7 +16,7 @@ public struct Advancements : IEcsAutoReset<Advancements>
         }
     }
 
-    public void AutoReset(ref Advancements c)
+    public void Reset(ref Advancements c)
     {
         if (c.List != null)
         {

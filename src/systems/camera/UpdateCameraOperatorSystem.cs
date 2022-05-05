@@ -1,21 +1,22 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdateCameraOperatorSystem : IEcsSystem
+public class UpdateCameraOperatorSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<CameraOperator>(out var cameraOperator))
+        if (!commands.TryGetElement<CameraOperator>(out var cameraOperator))
         {
             return;
         }
 
-        if (!world.HasResource<Map>())
+        if (!commands.HasElement<Map>())
         {
             return;
         }
 
-        var map = world.GetResource<Map>();
+        var map = commands.GetElement<Map>();
 
         if (Input.IsActionPressed("camera_zoom_out"))
         {
@@ -48,7 +49,7 @@ public class UpdateCameraOperatorSystem : IEcsSystem
         cameraOperator.UpdateZoom();
     }
 
-    private Vector3 GetWalkInput()
+     Vector3 GetWalkInput()
     {
         int left = Input.IsActionPressed("camera_left") ? 1 : 0;
         int right = Input.IsActionPressed("camera_right") ? 1 : 0;

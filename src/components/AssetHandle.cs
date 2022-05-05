@@ -1,7 +1,8 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct AssetHandle<T> : IEcsAutoReset<AssetHandle<T>> where T : Resource
+public struct AssetHandle<T> : IReset<AssetHandle<T>> where T : Resource
 {
     public T Asset { get; set; }
 
@@ -10,7 +11,7 @@ public struct AssetHandle<T> : IEcsAutoReset<AssetHandle<T>> where T : Resource
         Asset = asset;
     }
 
-    public void AutoReset(ref AssetHandle<T> c)
+    public void Reset(ref AssetHandle<T> c)
     {
         c.Asset = null;
     }

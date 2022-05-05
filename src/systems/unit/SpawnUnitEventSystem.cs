@@ -1,5 +1,6 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public struct SpawnUnitEvent
@@ -20,7 +21,7 @@ public struct SpawnUnitEvent
     }
 }
 
-public class SpawnUnitEventSystem : IEcsSystem
+public class SpawnUnitEventSystem : ISystem
 {
     Node3D _parent;
 
@@ -29,16 +30,16 @@ public class SpawnUnitEventSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
         if (Data.Instance.Units.Count == 0)
         {
             return;
         }
 
-        world.ForEach((ref SpawnUnitEvent spawnEvent) =>
+        commands.Receive((SpawnUnitEvent spawnEvent) =>
         {
-            var map = world.GetResource<Map>();
+            var map = commands.GetElement<Map>();
 
             var locations = map.Locations;
 
@@ -54,7 +55,7 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
-            var unitEntity = UnitFactory.CreateFromUnitType(world, unitType, unitView);
+            var unitEntity = UnitFactory.CreateFromUnitType(commands, unitType, unitView);
 
             unitType.QueueFree();
 
@@ -63,7 +64,7 @@ public class SpawnUnitEventSystem : IEcsSystem
 
             unitView.Position = position;
 
-            unitEntity.Add(new Side(spawnEvent.Side));
+            // unitEntity.Add(new Side(spawnEvent.Side));
             unitEntity.Add(spawnEvent.Coords);
 
             if (spawnEvent.IsLeader)
@@ -76,14 +77,14 @@ public class SpawnUnitEventSystem : IEcsSystem
                 unitEntity.Add(new IsHero());
             }
 
-            var canvas = world.GetResource<Canvas>();
+            var canvas = commands.GetElement<Canvas>();
             var canvasLayer = canvas.GetCanvasLayer(0);
 
             var unitPlate = Scenes.Instantiate<UnitPlate>();
 
             canvasLayer.AddChild(unitPlate);
 
-            unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
+            unitEntity.Add(new Node<UnitPlate>(unitPlate));
 
             locEntity.Add(new HasUnit(unitEntity));
         });

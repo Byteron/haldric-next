@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct UpdateTerrainMeshEvent
 {
@@ -35,7 +36,7 @@ public struct EdgeVertices
     }
 }
 
-public class UpdateTerrainMeshEventSystem : IEcsSystem
+public class UpdateTerrainMeshEventSystem : ISystem
 {
     public static readonly Color ColorRed = new Color(1.0f, 0f, 0f);
     public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
@@ -44,43 +45,40 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
     TerrainMesh _terrainMesh;
     ShaderData _shaderData;
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var eventQuery = world.Query<UpdateTerrainMeshEvent>().End();
-        var chunkQuery = world.Query<Locations>().Inc<NodeHandle<TerrainMesh>>().Inc<NodeHandle<TerrainCollider>>().End();
+        var chunkQuery = commands.Query().Has<Locations, Node<TerrainMesh>, Node<TerrainCollider>>();
 
-        foreach (var eventEntityId in eventQuery)
+        commands.Receive((UpdateTerrainMeshEvent e) =>
         {
-            _shaderData = world.GetResource<ShaderData>();
+            _shaderData = commands.GetElement<ShaderData>();
 
-            ref var updateEvent = ref world.Entity(eventEntityId).Get<UpdateTerrainMeshEvent>();
-
-            foreach (var chunkEntityId in chunkQuery)
+            foreach (var chunkEntity in chunkQuery)
             {
-                var chunkEntity = world.Entity(chunkEntityId);
                 ref var chunkCell = ref chunkEntity.Get<Vector3i>();
 
-                if (updateEvent.Chunks != null && !updateEvent.Chunks.Contains(chunkCell))
+                if (e.Chunks != null && !e.Chunks.Contains(chunkCell))
                 {
                     continue;
                 }
 
-                _terrainMesh = chunkEntity.Get<NodeHandle<TerrainMesh>>().Node;
+                _terrainMesh = chunkEntity.Get<Node<TerrainMesh>>().Value;
 
                 ref var locations = ref chunkEntity.Get<Locations>();
 
                 Triangulate(locations);
 
-                ref var terrainCollider = ref chunkEntity.Get<NodeHandle<TerrainCollider>>();
+                ref var terrainCollider = ref chunkEntity.Get<Node<TerrainCollider>>();
 
-                terrainCollider.Node.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
+                terrainCollider.Value.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
             }
 
             _shaderData.Apply();
-        }
+
+        });
     }
 
-    private void Triangulate(Locations locations)
+    void Triangulate(Locations locations)
     {
         _terrainMesh.Clear();
 
@@ -105,7 +103,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         _terrainMesh.Apply();
     }
 
-    private void Triangulate(EcsEntity locEntity)
+    void Triangulate(Entity locEntity)
     {
         for (int i = 0; i < 6; i++)
         {
@@ -113,7 +111,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         }
     }
 
-    private void Triangulate(Direction direction, EcsEntity locEntity)
+    void Triangulate(Direction direction, Entity locEntity)
     {
         ref var index = ref locEntity.Get<Index>();
 
@@ -140,7 +138,7 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         }
     }
 
-    private void TriangulateConnection(Direction direction, EcsEntity locEntity, EdgeVertices e1)
+    void TriangulateConnection(Direction direction, Entity locEntity, EdgeVertices e1)
     {
         var locIndex = locEntity.Get<Index>().Value;
 
@@ -216,13 +214,13 @@ public class UpdateTerrainMeshEventSystem : IEcsSystem
         }
     }
 
-    private void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
+    void TriangulateCorner(Vector3 bottom, Vector3 left, Vector3 right, Vector3 indices)
     {
         _terrainMesh.AddTrianglePerturbed(bottom, left, right);
         _terrainMesh.AddTriangleCellData(indices, ColorRed, ColorGreen, ColorBlue);
     }
 
-    private void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
+    void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
     {
         // _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v5);
         _terrainMesh.AddTrianglePerturbed(edge.v2, center, edge.v1);

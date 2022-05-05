@@ -1,16 +1,16 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
 
-public class UndoCommandSystem : IEcsSystem
+public class UndoCommandSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var commander = world.GetResource<Commander>();
-        var gameStateController = world.GetResource<GameStateController>();
+        var commander = commands.GetElement<Commander>();
+        var gameStateController = commands.GetElement<GameStateController>();
         if (Input.IsActionJustPressed("undo"))
         {
             commander.Undo();
-            gameStateController.PushState(new CommanderState(world));
+            gameStateController.PushState(new CommanderState());
         }
     }
 }

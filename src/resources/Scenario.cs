@@ -1,13 +1,14 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public class Scenario
 {
     public int Round { get; set; } = 0;
     public int Side { get; set; } = -1;
-    public Dictionary<int, EcsEntity> Sides { get; set; } = new Dictionary<int, EcsEntity>();
+    public Dictionary<int, Entity> Sides { get; set; } = new Dictionary<int, Entity>();
 
-    private int _round = -1;
+     int _round = -1;
 
     public void EndTurn()
     {
@@ -19,7 +20,7 @@ public class Scenario
         }
     }
 
-    public EcsEntity GetCurrentSideEntity()
+    public Entity GetCurrentSideEntity()
     {
         return Sides[Side];
     }

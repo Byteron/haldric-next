@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Recruits : IEcsAutoReset<Recruits>
+public struct Recruits : IReset<Recruits>
 {
     public List<string> List;
 
@@ -14,7 +15,7 @@ public struct Recruits : IEcsAutoReset<Recruits>
         }
     }
 
-    public void AutoReset(ref Recruits c)
+    public void Reset(ref Recruits c)
     {
         if (c.List != null)
         {

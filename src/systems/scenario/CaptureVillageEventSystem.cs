@@ -1,19 +1,20 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 
 public struct CaptureVillageEvent
 {
-    public EcsEntity LocEntity { get; set; }
+    public Entity LocEntity { get; set; }
     public int Side { get; set; }
 
-    public CaptureVillageEvent(EcsEntity locEntity, int side)
+    public CaptureVillageEvent(Entity locEntity, int side)
     {
         LocEntity = locEntity;
         Side = side;
     }
 }
 
-public class CaptureVillageEventSystem : IEcsSystem
+public class CaptureVillageEventSystem : ISystem
 {
     Node3D _parent;
 
@@ -22,9 +23,9 @@ public class CaptureVillageEventSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref CaptureVillageEvent captureEvent) =>
+        commands.Receive((CaptureVillageEvent captureEvent) =>
         {
             var locEntity = captureEvent.LocEntity;
 
@@ -36,8 +37,8 @@ public class CaptureVillageEventSystem : IEcsSystem
 
             if (locEntity.Has<IsCapturedBySide>())
             {
-                var handle = locEntity.Get<NodeHandle<FlagView>>();
-                locEntity.Remove<NodeHandle<FlagView>>();
+                var handle = locEntity.Get<Node<FlagView>>();
+                locEntity.Remove<Node<FlagView>>();
                 locEntity.Remove<IsCapturedBySide>();
             }
 
@@ -49,7 +50,7 @@ public class CaptureVillageEventSystem : IEcsSystem
             pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 
-            locEntity.Add(new NodeHandle<FlagView>(flagView));
+            locEntity.Add(new Node<FlagView>(flagView));
             locEntity.Add(new IsCapturedBySide(captureEvent.Side));
         });
     }

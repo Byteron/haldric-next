@@ -1,14 +1,15 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
 public class UnitFactory
 {
-    static UnitBuilder _builder = new UnitBuilder();
-
-    public static EcsEntity CreateFromUnitType(EcsWorld world, UnitType unitType, UnitView unitView, EcsEntity entity = default)
+    public static Entity CreateFromUnitType(Commands commands, UnitType unitType, UnitView unitView, Entity entity = default)
     {
-        if (entity.IsAlive())
+        var builder = new UnitBuilder(commands);
+
+        if (entity.IsAlive)
         {
             entity.Remove<Id>()
                 .Remove<Level>()
@@ -24,16 +25,16 @@ public class UnitFactory
                 .Remove<Advancements>()
                 .Remove<Attacks>()
                 .Remove<Mobility>()
-                .Remove<NodeHandle<UnitView>>();
+                .Remove<Node<UnitView>>();
 
-            _builder.Use(entity);
+            builder.Use(entity);
         }
         else
         {
-            _builder.Create();
+            builder.Create();
         }
 
-        _builder
+        builder
             .WithId(unitType.Id)
             .WithLevel(unitType.Level)
             .WithHealth(unitType.Health)
@@ -50,17 +51,17 @@ public class UnitFactory
 
         foreach (Attack attack in unitType.Attacks.GetChildren())
         {
-            EcsEntity attackEntity = world.Spawn()
+            Entity attackEntity = commands.Spawn()
                 .Add(new Id(attack.Name))
                 .Add(new Damage(attack.Damage, attack.DamageType))
                 .Add(new Strikes(attack.Strikes))
                 .Add(new Range(attack.Range))
                 .Add(new AssetHandle<PackedScene>(attack.Projectile));
 
-            _builder.WithAttack(attackEntity);
+            builder.WithAttack(attackEntity);
         }
 
-        var unitEntity = _builder.Build();
+        var unitEntity = builder.Build();
 
         foreach (Trait trait in unitType.Traits.GetChildren())
         {

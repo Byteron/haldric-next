@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
@@ -10,14 +11,14 @@ public partial class RecruitSelectionView : Control
 
     [Export] PackedScene RecruitSelectionOption;
 
-    private ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new ButtonGroup();
 
-    private RecruitSelectionOption _selectedOption;
+     RecruitSelectionOption _selectedOption;
 
-    private Label _unitLabel;
+     Label _unitLabel;
 
-    private VBoxContainer _container;
-    private Button _acceptButton;
+     VBoxContainer _container;
+     Button _acceptButton;
 
     public override void _Ready()
     {
@@ -27,7 +28,7 @@ public partial class RecruitSelectionView : Control
         _unitLabel = GetNode<Label>("PanelContainer/VBoxContainer/HBoxContainer/UnitLabel");
     }
 
-    public void UpdateInfo(EcsEntity locEntity, EcsEntity sideEntity, List<string> unitTypeIds)
+    public void UpdateInfo(Entity locEntity, Entity sideEntity, List<string> unitTypeIds)
     {
         var side = sideEntity.Get<Side>().Value;
         var gold = sideEntity.Get<Gold>().Value;
@@ -75,7 +76,7 @@ public partial class RecruitSelectionView : Control
         }
     }
 
-    private void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
+     void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
     {
         _selectedOption = optionButton;
         string s = "";
@@ -94,13 +95,13 @@ public partial class RecruitSelectionView : Control
         _unitLabel.Text = s;
     }
 
-    private void OnAcceptButtonPressed()
+     void OnAcceptButtonPressed()
     {
         _acceptButton.Disabled = true;
         EmitSignal(nameof(RecruitSelected), _selectedOption.UnitType.Name);
     }
 
-    private void OnCancelButtonPressed()
+     void OnCancelButtonPressed()
     {
         EmitSignal(nameof(CancelButtonPressed));
     }

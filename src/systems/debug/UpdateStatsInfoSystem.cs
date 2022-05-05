@@ -1,14 +1,20 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class UpdateStatsInfoSystem : IEcsSystem
+public class UpdateStatsInfoSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        var s = "FPS: " + Engine.GetFramesPerSecond();
-        s += "\nEntities: " + world.GetEntitiesCount();
-        s += "\nComponents: " + world.GetComponentsCount();
+        if (!commands.TryGetElement<WorldInfo>(out var worldInfo))
+        {
+            return;
+        }
 
-        world.GetResource<DebugPanel>().StatsLabel.Text = s;
+        var s = "FPS: " + Engine.GetFramesPerSecond();
+        s += "\nEntities: " + worldInfo.EntityCount;
+        s += "\nComponents: " + worldInfo.ComponentCount;
+
+        commands.GetElement<DebugPanel>().StatsLabel.Text = s;
     }
 }

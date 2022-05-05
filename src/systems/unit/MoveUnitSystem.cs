@@ -1,28 +1,29 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Nakama;
 using Nakama.TinyJson;
 
-public class MoveUnitSystem : IEcsSystem
+public class MoveUnitSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        if (!world.TryGetResource<SelectedLocation>(out var selectedLocation))
+        if (!commands.TryGetElement<SelectedLocation>(out var selectedLocation))
         {
             return;
         }
 
-        var commander = world.GetResource<Commander>();
-        var map = world.GetResource<Map>();
+        var commander = commands.GetElement<Commander>();
+        var map = commands.GetElement<Map>();
 
         var hoveredLocEntity = hoveredLocation.Entity;
 
-        if (!hoveredLocEntity.IsAlive() || hoveredLocEntity.Has<HasUnit>())
+        if (!hoveredLocEntity.IsAlive || hoveredLocEntity.Has<HasUnit>())
         {
             return;
         }
@@ -39,15 +40,15 @@ public class MoveUnitSystem : IEcsSystem
             ref var fromCoords = ref selectedLocEntity.Get<Coords>();
             ref var toCoords = ref hoveredLocEntity.Get<Coords>();
 
-            world.Spawn().Add(new UnitDeselectedEvent());
-            world.Spawn().Add(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
+            commands.Send(new UnitDeselectedEvent());
+            commands.Send(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });
 
-            if (!world.TryGetResource<ISocket>(out var socket))
+            if (!commands.TryGetElement<ISocket>(out var socket))
             {
                 return;
             }
 
-            if (!world.TryGetResource<IMatch>(out var match))
+            if (!commands.TryGetElement<IMatch>(out var match))
             {
                 return;
             }

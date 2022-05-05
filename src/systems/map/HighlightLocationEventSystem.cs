@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using System.Collections.Generic;
 
@@ -14,13 +15,13 @@ public struct HighlightLocationEvent
     }
 }
 
-public class HighlightLocationsEventSystem : IEcsSystem
+public class HighlightLocationsEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        world.ForEach((ref HighlightLocationEvent highlightEvent) =>
+        commands.Receive((HighlightLocationEvent highlightEvent) =>
         {
-            var map = world.GetResource<Map>();
+            var map = commands.GetElement<Map>();
             var grid = map.Grid;
 
             var locEntity = map.Locations.Get(highlightEvent.Coords.Cube());
@@ -29,7 +30,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
             ref var side = ref unitEntity.Get<Side>();
             ref var attacks = ref unitEntity.Get<Attacks>();
 
-            var terrainHighlighter = world.GetResource<TerrainHighlighter>();
+            var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
             terrainHighlighter.Clear();
 
             var maxAttackRange = attacks.GetMaxAttackRange();
@@ -53,7 +54,7 @@ public class HighlightLocationsEventSystem : IEcsSystem
 
                 var hasUnit = nLocEntity.Has<HasUnit>();
 
-                if (attack.IsAlive() && hasUnit)
+                if (attack.IsAlive && hasUnit)
                 {
                     if (nLocEntity.Get<HasUnit>().Entity.Get<Side>().Value == side.Value)
                     {
@@ -92,16 +93,16 @@ public class HighlightLocationsEventSystem : IEcsSystem
                 filteredMoveList.Add(nCoords);
             }
 
-            HighlightBorder(world, filteredAttackList, maxAttackRange, new Color("774411"), 0.9f);
-            HighlightBorder(world, filteredMoveList, highlightEvent.Range, new Color("111188"));
+            HighlightBorder(commands, filteredAttackList, maxAttackRange, new Color("774411"), 0.9f);
+            HighlightBorder(commands, filteredMoveList, highlightEvent.Range, new Color("111188"));
         });
     }
 
-    private void HighlightBorder(EcsWorld world, List<Coords> locations, int range, Color color, float scaleFactor = 1f, bool debug = false)
+     void HighlightBorder(Commands commands, List<Coords> locations, int range, Color color, float scaleFactor = 1f, bool debug = false)
     {
-        var map = world.GetResource<Map>();
+        var map = commands.GetElement<Map>();
         var grid = map.Grid;
-        var terrainHighlighter = world.GetResource<TerrainHighlighter>();
+        var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
 
         foreach (Coords coord in locations)
         {

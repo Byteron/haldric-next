@@ -1,4 +1,5 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public struct FocusCameraEvent
 {
@@ -10,16 +11,16 @@ public struct FocusCameraEvent
     }
 }
 
-public class FocusCameraEventSystem : IEcsSystem
+public class FocusCameraEventSystem : ISystem
 {
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<CameraOperator>(out var cameraOperator))
+        if (!commands.TryGetElement<CameraOperator>(out var cameraOperator))
         {
             return;
         }
 
-        world.ForEach((ref FocusCameraEvent focusEvent) =>
+        commands.Receive((FocusCameraEvent focusEvent) =>
         {
             cameraOperator.Focus(focusEvent.Coords.World());
         });

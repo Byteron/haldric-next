@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public class EditorEditTerrainSystem : IEcsSystem
+public class EditorEditTerrainSystem : ISystem
 {
     Node3D _parent;
 
@@ -13,19 +14,19 @@ public class EditorEditTerrainSystem : IEcsSystem
         _parent = parent;
     }
 
-    public void Run(EcsWorld world)
+    public void Run(Commands commands)
     {
-        if (!world.TryGetResource<Map>(out var map))
+        if (!commands.TryGetElement<Map>(out var map))
         {
             return;
         }
 
-        if (!world.TryGetResource<HoveredLocation>(out var hoveredLocation))
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
             return;
         }
 
-        var editorView = world.GetResource<EditorView>();
+        var editorView = commands.GetElement<EditorView>();
 
         if (editorView.Mode != EditorView.EditorMode.Terrain)
         {
@@ -34,7 +35,7 @@ public class EditorEditTerrainSystem : IEcsSystem
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive())
+        if (!locEntity.IsAlive)
         {
             return;
         }
@@ -81,16 +82,16 @@ public class EditorEditTerrainSystem : IEcsSystem
 
             if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
             {
-                world.Spawn().Add(new UpdateTerrainFeaturePopulatorEvent(chunks));
+                commands.Send(new UpdateTerrainFeaturePopulatorEvent(chunks));
             }
             else
             {
-                world.Spawn().Add(new UpdateMapEvent(chunks));
+                commands.Send(new UpdateMapEvent(chunks));
             }
         }
     }
 
-    private void EditLocation(EditorView editorView, EcsEntity locEntity)
+     void EditLocation(EditorView editorView, Entity locEntity)
     {
         ref HasBaseTerrain baseTerrain = ref locEntity.Get<HasBaseTerrain>();
         ref var elevation = ref locEntity.Get<Elevation>();
