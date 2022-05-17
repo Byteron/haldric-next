@@ -9,6 +9,7 @@ public struct SpawnUnitEvent
     public Coords Coords { get; set; }
     public bool IsLeader { get; set; }
     public bool IsHero { get; set; }
+    public UnitSaveData SaveData { get; set; }
 
     public SpawnUnitEvent(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
@@ -17,6 +18,17 @@ public struct SpawnUnitEvent
         Coords = coords;
         IsLeader = isLeader;
         IsHero = isHero;
+        SaveData = null;
+    }
+
+    public SpawnUnitEvent(UnitSaveData saveData)
+    {
+        Side = saveData.Side;
+        Id = saveData.UnitTypeId;
+        Coords = saveData.Coords;
+        IsLeader = saveData.IsLeader;
+        IsHero = saveData.IsHero;
+        SaveData = saveData;
     }
 }
 
@@ -86,6 +98,19 @@ public class SpawnUnitEventSystem : IEcsSystem
             unitEntity.Add(new NodeHandle<UnitPlate>(unitPlate));
 
             locEntity.Add(new HasUnit(unitEntity));
+
+            if (spawnEvent.SaveData != null)
+            {
+                ref var health = ref unitEntity.Get<Attribute<Health>>();
+                ref var actions = ref unitEntity.Get<Attribute<Actions>>();
+                ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+                ref var experience = ref unitEntity.Get<Attribute<Experience>>();
+
+                health.Value = spawnEvent.SaveData.Health;
+                actions.Value = spawnEvent.SaveData.Actions;
+                moves.Value = spawnEvent.SaveData.Moves;
+                experience.Value = spawnEvent.SaveData.Experince;
+            }
         });
     }
 }
