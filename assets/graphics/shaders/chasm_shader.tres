@@ -4,8 +4,8 @@
 code = "shader_type spatial;
 render_mode unshaded;
 
-uniform vec4 chasm_color = vec4(0.2, 0.1, 0.35, 1.0);
-uniform vec4 chasm_bottom_color = vec4(0, 0, 0,1.0);
+uniform vec4 chasm_color : source_color = vec4(0.2, 0.1, 0.35, 1.0);
+uniform vec4 chasm_bottom_color : source_color = vec4(0, 0, 0,1.0);
 uniform float chasm_intensity : hint_range(0, 20, 0.01) = 0.3;
 varying mat4 CAMERA;
 

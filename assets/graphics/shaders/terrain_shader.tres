@@ -6,14 +6,14 @@ code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform float texture_zoom : hint_range(0,1);
-uniform sampler2DArray textures;
-uniform sampler2D cell_texture;
+uniform sampler2DArray textures : source_color;
+uniform sampler2D cell_texture : source_color;
 
-uniform sampler2DArray normal_textures;
+uniform sampler2DArray normal_textures : hint_normal;
 uniform float normal_scale : hint_range(-16,16);
 
 uniform float roughness : hint_range(0,1);
-uniform sampler2DArray roughness_textures;
+uniform sampler2DArray roughness_textures : source_color;
 
 uniform vec2 texel_size;
 

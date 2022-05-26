@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://dpapojwwjvbfk"]
+[gd_resource type="Shader" format=3 uid="uid://f676imqjh3bw"]
 
 [resource]
 code = "shader_type spatial;
@@ -9,12 +9,12 @@ uniform float roughness: hint_range(0, 1) = 0.1;
 
 uniform float speed: hint_range(-1, 1) = 0.0;
 
-uniform sampler2D noise1;
-uniform sampler2D noise2;
+uniform sampler2D noise1 : source_color;
+uniform sampler2D noise2 : source_color;
 uniform sampler2D normalmap: hint_normal;
 
-uniform vec4 color;
-uniform vec4 deep_water;
+uniform vec4 color  : source_color;
+uniform vec4 deep_water : source_color;
 
 //depth-fade var
 uniform float beer_law_factor = 2.0;
