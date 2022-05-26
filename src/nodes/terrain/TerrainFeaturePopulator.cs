@@ -403,10 +403,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
@@ -414,19 +411,10 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
 
-            if (nElevation.Value < 0)
-            {
-                continue;
-            }
-
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
-            {
-                continue;
-            }
+            if (nElevation.Value < 0) continue;
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
+            if (elevation.Value == nElevation.Value) continue;
+            if (!terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetFirstCorner(direction);
             AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
