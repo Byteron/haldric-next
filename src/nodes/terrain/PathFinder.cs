@@ -21,7 +21,7 @@ public class Path
     }
 }
 
-public partial class PathFinder : AStar
+public partial class PathFinder : AStar3D
 {
     public override float _ComputeCost(int fromId, int toId)
     {

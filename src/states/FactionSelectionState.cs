@@ -1,56 +1,53 @@
 using Godot;
 using RelEcs;
-using RelEcs.Godot;
 using Nakama;
 using Nakama.TinyJson;
 using System.Collections.Generic;
 
 public partial class FactionSelectionState : GameState
 {
-    FactionSelectionView _view = null;
-
-    public int PlayerCount = 0;
-    public int PlayersReadied = 0;
-
-    string _mapName = "";
-
+    public int PlayerCount;
+    public int PlayersReadied;
+    
+    string mapName;
+    
     public FactionSelectionState(string mapName)
     {
-        _mapName = mapName;
+        this.mapName = mapName;
     }
-
-    GameStateController gameStates;
 
     public override void Init(GameStateController gameStates)
     {
-        this.gameStates = gameStates;
-
-        var initSystem = new FactionSelectionStateInitSystem();
-        initSystem.MapName = _mapName;
-
-        InitSystems.Add(initSystem);
+        InitSystems.Add(new FactionSelectionStateInitSystem(mapName));
         ExitSystems.Add(new FactionSelectionStateExitSystem());
-    }
-
-    public override void _Process(float delta)
-    {
-        CheckAndContinue();
-    }
-
-    public void CheckAndContinue()
-    {
-        if (PlayerCount == PlayersReadied)
-        {
-            var playState = new PlayState();
-            playState.MapName = _mapName;
-            playState.Factions = _view.GetFactions();
-            playState.Players = _view.GetPlayers();
-            playState.PlayerGolds = _view.GetPlayerGolds();
-            gameStates.ChangeState(playState);
-        }
+        UpdateSystems.Add(new FactionSelectionStateUpdateSystem(mapName));
     }
 }
 
+public class FactionSelectionStateUpdateSystem : ISystem
+{
+    readonly string mapName;
+
+    public FactionSelectionStateUpdateSystem(string mapName)
+    {
+        this.mapName = mapName;
+    }
+    
+    public void Run(Commands commands)
+    {
+        if (!commands.TryGetElement<CurrentGameState>(out var gameState)) return;
+        if (gameState.State is not FactionSelectionState state) return;
+        if (state.PlayerCount != state.PlayersReadied) return;
+        if (!commands.TryGetElement<FactionSelectionView>(out var view)) return;
+        
+        var playState = new PlayState();
+        playState.MapName = mapName;
+        playState.Factions = view.GetFactions();
+        playState.Players = view.GetPlayers();
+        playState.PlayerGolds = view.GetPlayerGolds();
+        commands.GetElement<GameStateController>().ChangeState(playState);
+    }
+}
 public class FactionSelectionStateExitSystem : ISystem
 {
     public void Run(Commands commands)
@@ -62,7 +59,7 @@ public class FactionSelectionStateExitSystem : ISystem
 
 public partial class FactionSelectionStateInitSystem : Resource, ISystem
 {
-    public string MapName;
+    string mapName;
 
     FactionSelectionView view;
 
@@ -73,6 +70,11 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
 
     FactionSelectionState state;
 
+    public FactionSelectionStateInitSystem(string mapName)
+    {
+        this.mapName = mapName;
+    }
+    
     public void Run(Commands commands)
     {
         this.commands = commands;
@@ -91,7 +93,7 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
 
         view = Scenes.Instantiate<FactionSelectionView>();
 
-        view.MapName = MapName;
+        view.MapName = mapName;
         view.LocalPlayerId = localPlayer.Id;
 
         var players = new List<string>();

@@ -13,15 +13,15 @@ public partial class EditorView : CanvasLayer
 
     public EditorMode Mode { get; set; } = EditorMode.Terrain;
 
-    public int BrushSize { get { return (int)brushSizeSlider.Value; } }
-    public int Elevation { get { return (int)elevationSlider.Value; } }
+    public int BrushSize => (int)brushSizeSlider.Value;
+    public int Elevation => (int)elevationSlider.Value;
 
-    public bool UseElevation { get { return elevationCheckBox.Pressed; } }
-    public bool UseTerrain { get { return terrainCheckBox.Pressed; } }
+    public bool UseElevation => elevationCheckBox.ButtonPressed;
+    public bool UseTerrain => terrainCheckBox.ButtonPressed;
 
-    public Entity TerrainEntity { get { return selectedTerrain; } }
+    public Entity TerrainEntity => selectedTerrain;
 
-    public Dictionary<Coords, int> Players = new Dictionary<Coords, int>();
+    public readonly Dictionary<Coords, int> Players = new();
 
     public Commands Commands { get; set; }
 
@@ -90,7 +90,7 @@ public partial class EditorView : CanvasLayer
 
             var label = new Label();
             label.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
-            label.RectMinSize = new Vector2(0, 50);
+            label.MinimumSize = new Vector2(0, 50);
             label.VerticalAlignment = VerticalAlignment.Center;
             label.HorizontalAlignment = HorizontalAlignment.Center;
             label.Text = $"Player: {id}, Position: {coords.Offset().x}, {coords.Offset().z}";
@@ -108,7 +108,7 @@ public partial class EditorView : CanvasLayer
             var code = item.Key;
 
             var button = new Button();
-            button.RectMinSize = new Vector2(50, 50);
+            button.MinimumSize = new Vector2(50, 50);
             button.Text = code;
             button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
             terrains.AddChild(button);
@@ -133,16 +133,14 @@ public partial class EditorView : CanvasLayer
     }
 
      void OnToolsTabChanged(int index)
-    {
-        if (index == 0)
-        {
-            Mode = EditorMode.Terrain;
-        }
-        else if (index == 1)
-        {
-            Mode = EditorMode.Player;
-        }
-    }
+     {
+         Mode = index switch
+         {
+             0 => EditorMode.Terrain,
+             1 => EditorMode.Player,
+             _ => Mode
+         };
+     }
 
      void OnTerrainSelected(string code)
     {

@@ -11,7 +11,7 @@ public partial class RecruitSelectionView : Control
 
     [Export] PackedScene RecruitSelectionOption;
 
-     ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new();
 
      RecruitSelectionOption _selectedOption;
 
@@ -60,7 +60,7 @@ public partial class RecruitSelectionView : Control
                 if (!button.Disabled)
                 {
                     _selectedOption = button;
-                    _selectedOption.Pressed = true;
+                    _selectedOption.ButtonPressed = true;
                     OnRecruitOptionSelected(_selectedOption);
                     break;
                 }
@@ -79,7 +79,7 @@ public partial class RecruitSelectionView : Control
      void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
     {
         _selectedOption = optionButton;
-        string s = "";
+        var s = "";
         s += $"{optionButton.UnitType.Id}";
         s += $"\n\nL: {optionButton.UnitType.Level}";
         s += $"\nHP: {optionButton.UnitType.Health}";

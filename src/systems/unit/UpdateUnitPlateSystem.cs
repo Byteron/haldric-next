@@ -21,7 +21,7 @@ public class UpdateUnitPlateSystem : ISystem
             plate.MaxExperience = experience.Max;
             plate.Experience = experience.Value;
 
-            plate.Position = view.Position + Vector3.Up * 7.5f;
+            plate.WorldPosition = view.Position + Vector3.Up * 7.5f;
 
             plate.SideColor = Data.Instance.SideColors[side.Value];
 
