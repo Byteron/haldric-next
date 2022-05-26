@@ -61,11 +61,11 @@ public partial class PlayState : GameState
             .Add(new SpawnPlayersEventSystem())
             .Add(new SpawnPlayerEventSystem())
             .Add(new SpawnUnitEventSystem(this))
-            .Add(new RecruitUnitEventSystem(this))
+            .Add(new RecruitUnitTriggerSystem(this))
             .Add(new UnitHoveredEventSystem())
             .Add(new UnitDeselectedEventSystem())
             .Add(new UnitSelectedEventSystem())
-            .Add(new MoveUnitEventSystem())
+            .Add(new MoveUnitTriggerSystem())
             .Add(new HighlightLocationsEventSystem())
             .Add(new DamageEventSystem())
             .Add(new MissEventSystem())
@@ -74,7 +74,7 @@ public partial class PlayState : GameState
             .Add(new DeathEventSystem())
             .Add(new CaptureVillageTriggerSystem(this))
             .Add(new SpawnFloatingLabelEventSystem())
-            .Add(new TurnEndEventSystem())
+            .Add(new TurnEndTriggerSystem())
             .Add(new ChangeDaytimeEventSystem())
             .Add(new CheckVictoryConditionTriggerSystem());
 
@@ -182,7 +182,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
         commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
         commands.Send(new LoadMapEvent(MapName));
         commands.Send(new SpawnPlayersEvent(Factions, Players, PlayerGolds));
-        commands.Send(new TurnEndEvent());
+        commands.Send(new TurnEndTrigger());
     }
 
     public void OnTurnEndButtonPressed()
@@ -190,7 +190,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
         var opCode = (int)NetworkOperation.TurnEnd;
         var state = new TurnEndMessage();
         socket.SendMatchStateAsync(match.Id, opCode, state.ToJson());
-        commands.Send(new TurnEndEvent());
+        commands.Send(new TurnEndTrigger());
     }
 
     void OnReceivedMatchState(IMatchState state)
@@ -214,13 +214,13 @@ public partial class PlayStateInitSystem : Resource, ISystem
         {
             case NetworkOperation.TurnEnd:
                 {
-                    commands.Send(new TurnEndEvent());
+                    commands.Send(new TurnEndTrigger());
                     break;
                 }
             case NetworkOperation.MoveUnit:
                 {
                     var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                    commands.Send(new MoveUnitEvent() { From = message.From.Cube(), To = message.To.Cube() });
+                    commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
                     break;
                 }
             case NetworkOperation.RecruitUnit:
@@ -229,7 +229,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
                     var message = JsonParser.FromJson<RecruitUnitMessage>(data);
                     var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
                     var locEntity = map.Locations.Get(message.Coords.Cube());
-                    commands.Send(new RecruitUnitEvent(message.Side, unitType, locEntity));
+                    commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
                     break;
                 }
             case NetworkOperation.AttackUnit:

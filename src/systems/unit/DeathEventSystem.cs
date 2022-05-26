@@ -15,7 +15,7 @@ public class DeathEventSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        bool checkVictory = false;
+        var checkVictory = false;
 
         commands.Receive((DeathEvent deathEvent) =>
         {
@@ -27,14 +27,11 @@ public class DeathEventSystem : ISystem
 
             locEntity.Remove<HasUnit>();
 
-            deathEvent.Entity.Despawn();
+            deathEvent.Entity.DespawnAndFree();
 
             checkVictory = true;
         });
 
-        if (checkVictory)
-        {
-            commands.Send(new CheckVictoryConditionTrigger());
-        }
+        if (checkVictory) commands.Send(new CheckVictoryConditionTrigger());
     }
 }

@@ -46,13 +46,13 @@ public partial class TestMapState : GameState
             .Add(new SpawnMapEventSystem(this))
             .Add(new SpawnPlayerEventSystem())
             .Add(new SpawnUnitEventSystem(this))
-            .Add(new RecruitUnitEventSystem(this))
+            .Add(new RecruitUnitTriggerSystem(this))
             .Add(new UnitHoveredEventSystem())
             .Add(new UnitDeselectedEventSystem())
             .Add(new UnitSelectedEventSystem())
-            .Add(new MoveUnitEventSystem())
+            .Add(new MoveUnitTriggerSystem())
             .Add(new HighlightLocationsEventSystem())
-            .Add(new TurnEndEventSystem())
+            .Add(new TurnEndTriggerSystem())
             .Add(new ChangeDaytimeEventSystem())
             .Add(new CaptureVillageTriggerSystem(this));
 
@@ -124,11 +124,11 @@ public partial class TestMapStateInitSystem : Resource, ISystem
 
         commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
         commands.Send(new LoadMapEvent(MapName));
-        commands.Send(new TurnEndEvent());
+        commands.Send(new TurnEndTrigger());
     }
 
     public void OnTurnEndButtonPressed()
     {
-        commands.Send(new TurnEndEvent());
+        commands.Send(new TurnEndTrigger());
     }
 }

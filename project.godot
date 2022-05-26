@@ -23,7 +23,8 @@ Sfx="*res://src/nodes/global/Sfx.tscn"
 
 [debug]
 
-settings/fps/force_fps=60
+settings/stdout/print_fps=true
+settings/stdout/print_gpu_profile=true
 
 [display]
 

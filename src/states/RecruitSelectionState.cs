@@ -60,26 +60,17 @@ public partial class RecruitSelectionStateInitSystem : Resource, ISystem
     void OnRecruitSelected(string unitTypeId)
     {
         var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
-
-        var coords = FreeLocEntity.Get<Coords>();
-
-        var recruitEvent = new RecruitUnitEvent(Side, unitType, FreeLocEntity);
+        
+        var recruitEvent = new RecruitUnitTrigger(Side, unitType, FreeLocEntity);
         commands.Send(recruitEvent);
 
         var gameStateController = commands.GetElement<GameStateController>();
         gameStateController.PopState();
 
-        if (!commands.TryGetElement<ISocket>(out var socket))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<ISocket>(out var socket)) return;
+        if (!commands.TryGetElement<IMatch>(out var match)) return;
 
-        if (!commands.TryGetElement<IMatch>(out var match))
-        {
-            return;
-        }
-
-        var message = new RecruitUnitMessage { Side = Side, UnitTypeId = unitTypeId, Coords = coords };
+        var message = new RecruitUnitMessage { Side = Side, UnitTypeId = unitTypeId, Coords = FreeLocEntity.Get<Coords>() };
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.RecruitUnit, message.ToJson());
     }
 

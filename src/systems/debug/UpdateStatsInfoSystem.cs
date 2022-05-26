@@ -6,15 +6,16 @@ public class UpdateStatsInfoSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<WorldInfo>(out var worldInfo))
+        if (!commands.TryGetElement<DebugPanel>(out var panel)) return;
+        if (!commands.TryGetElement<WorldInfo>(out var info)) return;
+
+        var s = $"Entities: {info.EntityCount}\nArchetypes: {info.ArchetypeCount}\nSystems: {info.SystemCount}";
+        
+        foreach (var (type, time) in info.SystemExecutionTimes)
         {
-            return;
+            s += $"\n{type.Name}: {time}";
         }
 
-        var s = "FPS: " + Engine.GetFramesPerSecond();
-        s += "\nEntities: " + worldInfo.EntityCount;
-        s += "\nArcheTypes: " + worldInfo.ArchetypeCount;
-
-        commands.GetElement<DebugPanel>().StatsLabel.Text = s;
+        panel.StatsLabel.Text = s;
     }
 }

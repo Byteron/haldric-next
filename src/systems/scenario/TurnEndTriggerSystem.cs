@@ -2,13 +2,13 @@ using RelEcs;
 using RelEcs.Godot;
 using Godot;
 
-public class TurnEndEvent { }
+public class TurnEndTrigger { }
 
-public class TurnEndEventSystem : ISystem
+public class TurnEndTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        commands.Receive((TurnEndEvent _) =>
+        commands.Receive((TurnEndTrigger _) =>
         {
             var scenario = commands.GetElement<Scenario>();
             scenario.EndTurn();

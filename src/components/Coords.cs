@@ -15,6 +15,11 @@ public class Coords
         return coords;
     }
 
+    public Coords Clone()
+    {
+        return new  Coords { X = X, Z = Z };
+    }
+
     public static Coords FromWorld(Vector3 position)
     {
         var coords = new Coords();

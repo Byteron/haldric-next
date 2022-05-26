@@ -5,13 +5,13 @@ using Haldric.Wdk;
 
 public class DamageEvent
 {
-    public Entity DamagerEntity { get; set; }
+    public Entity DamagingEntity { get; set; }
     public Entity TargetEntity { get; set; }
     public Alignment Alignment { get; set; }
 
-    public DamageEvent(Entity damagerEntity, Entity targetEntity, Alignment alignment)
+    public DamageEvent(Entity damagingEntity, Entity targetEntity, Alignment alignment)
     {
-        DamagerEntity = damagerEntity;
+        DamagingEntity = damagingEntity;
         TargetEntity = targetEntity;
         Alignment = alignment;
     }
@@ -21,20 +21,16 @@ public class DamageEventSystem : ISystem
 {
     public void Run(Commands commands)
     {
-
-        if (!commands.TryGetElement<Schedule>(out var schedule))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<Schedule>(out var schedule)) return;
 
         var daytime = schedule.GetCurrentDaytime();
 
         commands.Receive((DamageEvent damageEvent) =>
         {
-            var damagerEntity = damageEvent.DamagerEntity;
+            var damagingEntity = damageEvent.DamagingEntity;
             var targetEntity = damageEvent.TargetEntity;
 
-            var damage = damagerEntity.Get<Damage>();
+            var damage = damagingEntity.Get<Damage>();
 
             var modifier = 1.0f * daytime.GetDamageModifier(damageEvent.Alignment);
 

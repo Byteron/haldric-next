@@ -33,7 +33,7 @@ public class EditorEditTerrainSystem : ISystem
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive) return;
+        if (locEntity is null || !locEntity.IsAlive) return;
 
         var locations = map.Locations;
 

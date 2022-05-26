@@ -44,14 +44,8 @@ public class RecruitInputSystem : ISystem
 
         var hLocEntity = commands.GetElement<HoveredLocation>().Entity;
 
-        if (hLocEntity.IsAlive && castle.IsLocFree(hLocEntity.Get<Coords>()))
-        {
-            freeLocEntity = hLocEntity;
-        }
-        else if (!castle.TryGetFreeLoc(out freeLocEntity))
-        {
-            return;
-        }
+        if (hLocEntity.IsAlive && castle.IsLocFree(hLocEntity.Get<Coords>())) freeLocEntity = hLocEntity;
+        else if (!castle.TryGetFreeLoc(out freeLocEntity)) return;
 
         var gameStateController = commands.GetElement<GameStateController>();
 

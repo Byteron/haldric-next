@@ -31,11 +31,10 @@ public class GainExperienceEventSystem : ISystem
 
             commands.Send(new SpawnFloatingLabelEvent(coords.World() + Vector3.Up * 7f, $"XP + {amount}", new Color(0.8f, 0.8f, 1f)));
 
-            if (experience.IsFull())
-            {
-                commands.Send(new AdvanceEvent(entity));
-                experience.Empty();
-            }
+            if (!experience.IsFull()) return;
+            
+            commands.Send(new AdvanceEvent(entity));
+            experience.Empty();
         });
     }
 }

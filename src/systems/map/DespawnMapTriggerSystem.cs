@@ -9,14 +9,11 @@ public class DespawnMapTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        commands.Receive((DespawnMapTrigger e) =>
+        commands.Receive((DespawnMapTrigger _) =>
         {
             var query = commands.Query<Entity>().Any<Locations>().Any<Location>().Any<Attribute<Health>>();
 
-            foreach (var entity in query)
-            {
-                entity.Despawn();
-            }
+            foreach (var entity in query) entity.Despawn();
 
             commands.RemoveElement<Map>();
             commands.RemoveElement<ShaderData>();

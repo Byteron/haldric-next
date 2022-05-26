@@ -44,7 +44,6 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
         _unitView = _unitEntity.Get<UnitView>();
 
         var unitCoords = _unitEntity.Get<Coords>();
-
         _tween = commands.GetElement<SceneTree>().CreateTween();
 
         foreach (var checkpointLocEntity in _path.Checkpoints)

@@ -34,13 +34,13 @@ public class ShaderData
 
     public void UpdateTerrain(int x, int z, int terrainTypeIndex)
     {
-        int index = z * _width + x;
+        var index = z * _width + x;
         _data[index].a8 = terrainTypeIndex;
     }
 
     public void UpdateLighting(int x, int z, bool isLit)
     {
-        int index = z * _width + x;
+        var index = z * _width + x;
 
         if (index >= _data.Length || index < 0)
         {
@@ -52,7 +52,7 @@ public class ShaderData
 
     public void ResetLighting(bool isLit)
     {
-        for (int i = 0; i < _data.Length; i++)
+        for (var i = 0; i < _data.Length; i++)
         {
             _data[i].b8 = isLit ? 255 : 0;
         }

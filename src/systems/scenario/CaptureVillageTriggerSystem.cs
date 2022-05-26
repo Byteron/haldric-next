@@ -37,7 +37,7 @@ public class CaptureVillageTriggerSystem : ISystem
 
             if (locEntity.Has<IsCapturedBySide>())
             {
-                var handle = locEntity.Get<FlagView>();
+                locEntity.Get<FlagView>().QueueFree();
                 locEntity.Remove<FlagView>();
                 locEntity.Remove<IsCapturedBySide>();
             }

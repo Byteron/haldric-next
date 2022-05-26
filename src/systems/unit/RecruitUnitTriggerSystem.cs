@@ -3,13 +3,13 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public class RecruitUnitEvent
+public class RecruitUnitTrigger
 {
     public int Side;
     public UnitType UnitType;
     public Entity LocEntity;
 
-    public RecruitUnitEvent(int side, UnitType unitType, Entity locEntity)
+    public RecruitUnitTrigger(int side, UnitType unitType, Entity locEntity)
     {
         Side = side;
         UnitType = unitType;
@@ -17,11 +17,11 @@ public class RecruitUnitEvent
     }
 }
 
-public class RecruitUnitEventSystem : ISystem
+public class RecruitUnitTriggerSystem : ISystem
 {
     Node3D _parent;
 
-    public RecruitUnitEventSystem(Node3D parent)
+    public RecruitUnitTriggerSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -33,7 +33,7 @@ public class RecruitUnitEventSystem : ISystem
             return;
         }
 
-        commands.Receive((RecruitUnitEvent recruitEvent) =>
+        commands.Receive((RecruitUnitTrigger recruitEvent) =>
         {
             var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
@@ -53,9 +53,9 @@ public class RecruitUnitEventSystem : ISystem
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
-            UnitType unitType = recruitEvent.UnitType;
+            var unitType = recruitEvent.UnitType;
             _parent.AddChild(unitType);
-            UnitView unitView = unitType.UnitView;
+            var unitView = unitType.UnitView;
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
@@ -71,7 +71,7 @@ public class RecruitUnitEventSystem : ISystem
             unitView.Position = position;
 
             unitEntity.Add(new Side { Value = recruitEvent.Side });
-            unitEntity.Add(freeCoords);
+            unitEntity.Add(freeCoords.Clone());
 
             unitEntity.Get<Attribute<Moves>>().Empty();
             unitEntity.Get<Attribute<Actions>>().Empty();

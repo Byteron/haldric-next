@@ -32,10 +32,7 @@ public class SpawnUnitEventSystem : ISystem
 
     public void Run(Commands commands)
     {
-        if (Data.Instance.Units.Count == 0)
-        {
-            return;
-        }
+        if (Data.Instance.Units.Count == 0) return;
 
         commands.Receive((SpawnUnitEvent spawnEvent) =>
         {
@@ -65,7 +62,7 @@ public class SpawnUnitEventSystem : ISystem
             unitView.Position = position;
 
             unitEntity.Add(new Side { Value = spawnEvent.Side });
-            unitEntity.Add(spawnEvent.Coords);
+            unitEntity.Add(spawnEvent.Coords.Clone());
 
             if (spawnEvent.IsLeader)
             {

@@ -12,7 +12,6 @@ public class Distance
     public int Value { get; set; }
 
     public Distance() => Value = 0;
-    public Distance(int value) => Value = value;
 }
 
 public class PathFrom
@@ -25,10 +24,10 @@ public class PathFrom
 
 public class Map
 {
-    public Grid Grid { get; set; }
-    public Locations Locations { get; set; }
-    public Vector2i ChunkSize { get; set; }
-    public PathFinder PathFinder { get; set; }
+    public Grid Grid { get; }
+    public Locations Locations { get; }
+    public Vector2i ChunkSize { get; }
+    public PathFinder PathFinder { get; }
 
     public Map(int width, int height, int chunkSize)
     {
@@ -171,18 +170,12 @@ public class Map
         {
             loc.Get<Distance>().Value = int.MaxValue;
 
-            if (loc.Has<IsInZoc>())
-            {
-                loc.Remove<IsInZoc>();
-            }
+            if (loc.Has<IsInZoc>()) loc.Remove<IsInZoc>();
         }
 
         foreach (var loc in Locations.Dict.Values)
         {
-            if (!loc.Has<HasUnit>())
-            {
-                continue;
-            }
+            if (!loc.Has<HasUnit>()) continue;
 
             var unitEntity = loc.Get<HasUnit>().Entity;
 

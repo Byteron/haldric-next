@@ -8,16 +8,15 @@ public class UnitDeselectedEventSystem : ISystem
     {
         commands.Receive((UnitDeselectedEvent e) =>
         {
-            if (commands.HasElement<SelectedLocation>())
-            {
-                commands.RemoveElement<SelectedLocation>();
+            if (!commands.HasElement<SelectedLocation>()) return;
+            
+            commands.RemoveElement<SelectedLocation>();
 
-                var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
-                terrainHighlighter.Clear();
+            var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
+            terrainHighlighter.Clear();
 
-                var unitPanel = commands.GetElement<UnitPanel>();
-                unitPanel.UpdateInfo("");
-            }
+            var unitPanel = commands.GetElement<UnitPanel>();
+            unitPanel.UpdateInfo("");
         });
     }
 }

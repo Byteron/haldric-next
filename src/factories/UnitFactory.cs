@@ -62,7 +62,7 @@ public static class UnitFactory
         }
 
         var unitEntity = builder.Build();
-
+        
         foreach (Trait trait in unitType.Traits.GetChildren())
         {
             trait.Apply(unitEntity);
