@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct Castle : IReset<Castle>
+public class Castle
 {
-    public List<Entity> List { get; set; }
+    public List<Entity> List { get; set; } = new();
 
     public bool TryGetFreeLoc(out Entity locEntity)
     {
@@ -32,10 +32,5 @@ public struct Castle : IReset<Castle>
         }
 
         return false;
-    }
-
-    public void Reset(ref Castle c)
-    {
-        c.List = new List<Entity>();
     }
 }

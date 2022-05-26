@@ -3,6 +3,13 @@ using Godot;
 using RelEcs;
 using RelEcs.Godot;
 
+public class Cell
+{
+    public Vector3i Value;
+    public Cell() => Value = Vector3i.Zero;
+    public Cell(Vector3i value) => Value = value;
+}
+
 public class EditorEditTerrainSystem : ISystem
 {
     Node3D _parent;
@@ -16,85 +23,71 @@ public class EditorEditTerrainSystem : ISystem
 
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<Map>(out var map))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<Map>(out var map)) return;
 
-        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation)) return;
 
         var editorView = commands.GetElement<EditorView>();
 
-        if (editorView.Mode != EditorView.EditorMode.Terrain)
-        {
-            return;
-        }
+        if (editorView.Mode != EditorView.EditorMode.Terrain) return;
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive)
+        if (!locEntity.IsAlive) return;
+
+        var locations = map.Locations;
+
+        var hoveredCoords = locEntity.Get<Coords>();
+        
+        if (hoveredCoords.Cube() == _previousCoords || !Input.IsActionPressed("editor_select")) return;
+        _previousCoords = hoveredCoords.Cube();
+
+        var chunks = new List<Vector3i>();
+
+        foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube(), editorView.BrushSize))
+        {
+            if (!locations.Has(cube))
+            {
+                continue;
+            }
+
+            var nLocEntity = locations.Get(cube);
+            EditLocation(editorView, nLocEntity);
+
+            var chunkCell = nLocEntity.Get<Cell>().Value;
+
+            if (chunks.Contains(chunkCell)) continue;
+            
+            chunks.Add(chunkCell);
+            chunks.Add(chunkCell + new Vector3i(1, 0, 1));
+            chunks.Add(chunkCell + new Vector3i(1, 0, 0));
+            chunks.Add(chunkCell + new Vector3i(1, 0, -1));
+            chunks.Add(chunkCell + new Vector3i(-1, 0, 1));
+            chunks.Add(chunkCell + new Vector3i(-1, 0, 0));
+            chunks.Add(chunkCell + new Vector3i(-1, 0, -1));
+            chunks.Add(chunkCell + new Vector3i(0, 0, 1));
+            chunks.Add(chunkCell + new Vector3i(0, 0, -1));
+        }
+
+        if (!editorView.UseTerrain && !editorView.UseElevation)
         {
             return;
         }
 
-        var locations = map.Locations;
-
-        ref var hoveredCoords = ref locEntity.Get<Coords>();
-        if (hoveredCoords.Cube() != _previousCoords && Input.IsActionPressed("editor_select"))
+        if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
         {
-            _previousCoords = hoveredCoords.Cube();
-
-            var chunks = new List<Vector3i>();
-
-            foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube(), editorView.BrushSize))
-            {
-                if (!locations.Has(cube))
-                {
-                    continue;
-                }
-
-                var nLocEntity = locations.Get(cube);
-                EditLocation(editorView, nLocEntity);
-
-                ref var chunkCell = ref nLocEntity.Get<Vector3i>();
-
-                if (!chunks.Contains(chunkCell))
-                {
-                    chunks.Add(chunkCell);
-                    chunks.Add(chunkCell + new Vector3i(1, 0, 1));
-                    chunks.Add(chunkCell + new Vector3i(1, 0, 0));
-                    chunks.Add(chunkCell + new Vector3i(1, 0, -1));
-                    chunks.Add(chunkCell + new Vector3i(-1, 0, 1));
-                    chunks.Add(chunkCell + new Vector3i(-1, 0, 0));
-                    chunks.Add(chunkCell + new Vector3i(-1, 0, -1));
-                    chunks.Add(chunkCell + new Vector3i(0, 0, 1));
-                    chunks.Add(chunkCell + new Vector3i(0, 0, -1));
-                }
-            }
-
-            if (!editorView.UseTerrain && !editorView.UseElevation)
-            {
-                return;
-            }
-
-            if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
-            {
-                commands.Send(new UpdateTerrainFeaturePopulatorEvent(chunks));
-            }
-            else
-            {
-                commands.Send(new UpdateMapEvent(chunks));
-            }
+            commands.Send(new UpdateTerrainFeaturePopulatorEvent(chunks));
+        }
+        else
+        {
+            commands.Send(new UpdateMapTrigger(chunks));
         }
     }
 
      void EditLocation(EditorView editorView, Entity locEntity)
     {
-        ref HasBaseTerrain baseTerrain = ref locEntity.Get<HasBaseTerrain>();
-        ref var elevation = ref locEntity.Get<Elevation>();
+        var baseTerrain = locEntity.Get<HasBaseTerrain>();
+        var elevation = locEntity.Get<Elevation>();
 
         if (editorView.UseTerrain)
         {

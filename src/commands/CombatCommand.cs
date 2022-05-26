@@ -93,7 +93,7 @@ public partial class CombatCommand : Resource, ICommandSystem
                     _defenderEntity,
                     TerrainTypes.FromLocEntity(_defenderLocEntity),
                     damageEvent,
-                    _attackerAttackEntity.Get<AssetHandle<PackedScene>>().Asset,
+                    _attackerAttackEntity.Get<PackedScene>(),
                     attackerRange > 1
                 ));
             }
@@ -106,14 +106,14 @@ public partial class CombatCommand : Resource, ICommandSystem
                     _attackerEntity,
                     TerrainTypes.FromLocEntity(_attackerLocEntity),
                     damageEvent,
-                    _attackerAttackEntity.Get<AssetHandle<PackedScene>>().Asset,
+                    _attackerAttackEntity.Get<PackedScene>(),
                     attackerRange > 1
                 ));
             }
         }
 
-        ref var moves = ref _attackerEntity.Get<Attribute<Moves>>();
-        ref var actions = ref _attackerEntity.Get<Attribute<Actions>>();
+        var moves = _attackerEntity.Get<Attribute<Moves>>();
+        var actions = _attackerEntity.Get<Attribute<Actions>>();
 
         moves.Empty();
         actions.Decrease(1);
@@ -137,8 +137,8 @@ public partial class CombatCommand : Resource, ICommandSystem
     {
         _tween = commands.GetElement<SceneTree>().CreateTween();
 
-        var attackerView = _attackData.AttackerEntity.Get<Node<UnitView>>().Value;
-        var defenderView = _attackData.DefenderEntity.Get<Node<UnitView>>().Value;
+        var attackerView = _attackData.AttackerEntity.Get<UnitView>();
+        var defenderView = _attackData.DefenderEntity.Get<UnitView>();
 
         attackerView.LookAt(defenderView.Position, Vector3.Up);
         defenderView.LookAt(attackerView.Position, Vector3.Up);
@@ -169,8 +169,8 @@ public partial class CombatCommand : Resource, ICommandSystem
 
     void SpawnProjectile()
     {
-        var attackerView = _attackData.AttackerEntity.Get<Node<UnitView>>().Value;
-        var defenderView = _attackData.DefenderEntity.Get<Node<UnitView>>().Value;
+        var attackerView = _attackData.AttackerEntity.Get<UnitView>();
+        var defenderView = _attackData.DefenderEntity.Get<UnitView>();
 
         var tween = commands.GetElement<SceneTree>().CreateTween();
 

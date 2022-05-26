@@ -122,7 +122,7 @@ public partial class EditorView : CanvasLayer
             int width = int.Parse(widthTextEdit.Text);
             int height = int.Parse(heightTextEdit.Text);
 
-            Commands.Send(new DespawnMapEvent());
+            Commands.Send(new DespawnMapTrigger());
             Commands.Send(new SpawnMapEvent(width, height));
         }
         else
@@ -177,7 +177,7 @@ public partial class EditorView : CanvasLayer
 
         if (mapNameTextEdit.Text.IsValidIdentifier())
         {
-            Commands.Send(new DespawnMapEvent());
+            Commands.Send(new DespawnMapTrigger());
             Commands.Send(new LoadMapEvent(mapNameTextEdit.Text));
         }
         else

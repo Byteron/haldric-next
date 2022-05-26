@@ -4,7 +4,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Nakama.TinyJson;
 
-public struct SaveMapEvent
+public class SaveMapEvent
 {
     public string Name { get; set; }
 
@@ -30,34 +30,38 @@ public class SaveMapEventSystem : ISystem
             mapData.Width = grid.Width;
             mapData.Height = grid.Height;
 
-            commands.ForEach((Entity locEntity, ref Coords coords, ref Elevation elevation, ref HasBaseTerrain baseTerrain, ref Location loc) =>
-            {
-                var locData = new MapDataLocation();
-                locData.Coords = coords;
-                locData.Elevation = elevation.Value;
+            var query = commands.Query<Entity, Coords, Elevation, HasBaseTerrain>().Has<Location>();
 
-                ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
+            foreach (var (entity, coords, elevation, baseTerrain) in query)
+            {
+                var locData = new MapDataLocation
+                {
+                    Coords = coords,
+                    Elevation = elevation.Value
+                };
+
+                var baseTerrainCode = baseTerrain.Entity.Get<TerrainCode>();
 
                 locData.Terrain.Add(baseTerrainCode.Value);
 
-                if (locEntity.Has<HasOverlayTerrain>())
+                if (entity.Has<HasOverlayTerrain>())
                 {
-                    ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
-                    ref var overlayTerrainCode = ref overlayTerrain.Entity.Get<TerrainCode>();
+                    var overlayTerrain = entity.Get<HasOverlayTerrain>();
+                    var overlayTerrainCode = overlayTerrain.Entity.Get<TerrainCode>();
 
                     locData.Terrain.Add(overlayTerrainCode.Value);
                 }
 
-                if (locEntity.Has<IsStartingPositionOfSide>())
+                if (entity.Has<IsStartingPositionOfSide>())
                 {
                     var playerMapData = new MapDataPlayer();
                     playerMapData.Coords = coords;
-                    playerMapData.Side = locEntity.Get<IsStartingPositionOfSide>().Value;
+                    playerMapData.Side = entity.Get<IsStartingPositionOfSide>().Value;
                     mapData.Players.Add(playerMapData);
                 }
 
                 mapData.Locations.Add(locData);
-            });
+            }
 
             SaveToFile(e.Name, mapData);
         });

@@ -3,7 +3,7 @@ using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public struct MissEvent
+public class MissEvent
 {
     public Entity TargetEntity { get; set; }
 

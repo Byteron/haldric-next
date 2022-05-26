@@ -6,45 +6,35 @@ public class NextUnitInputSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (Input.IsActionJustPressed("next_unit"))
+        if (!Input.IsActionJustPressed("next_unit")) return;
+        
+        var unitQuery = commands.Query<Entity>().Has<Side>().Has<Attribute<Moves>>().Not<Suspended>();
+
+        var scenario = commands.GetElement<Scenario>();
+        var localPlayer = commands.GetElement<LocalPlayer>();
+
+        var sideEntity = scenario.GetCurrentSideEntity();
+        var side = sideEntity.Get<Side>();
+        var playerId = sideEntity.Get<PlayerId>();
+
+        if (playerId.Value != localPlayer.Id) return;
+
+        foreach (var unitEntity in unitQuery)
         {
-            var unitQuery = commands.Query().Has<Side, Attribute<Moves>>().Not<Suspended>();
+            var unitSide = unitEntity.Get<Side>();
+            var moves = unitEntity.Get<Attribute<Moves>>();
 
-            var map = commands.GetElement<Map>();
-            var scenario = commands.GetElement<Scenario>();
-            var localPlayer = commands.GetElement<LocalPlayer>();
+            if (unitSide.Value != side.Value || moves.IsEmpty()) continue;
+            
+            var coords = unitEntity.Get<Coords>();
 
-            var sideEntity = scenario.GetCurrentSideEntity();
-            ref var side = ref sideEntity.Get<Side>();
-            ref var playerId = ref sideEntity.Get<PlayerId>();
-
-            if (playerId.Value != localPlayer.Id)
+            if (commands.HasElement<SelectedLocation>())
             {
-                return;
+                commands.Send(new UnitDeselectedEvent());
             }
 
-            foreach (var unitEntity in unitQuery)
-            {
-                ref var unitSide = ref unitEntity.Get<Side>();
-                ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-
-                if (unitSide.Value == side.Value && !moves.IsEmpty())
-                {
-                    ref var coords = ref unitEntity.Get<Coords>();
-
-                    var locEntity = map.Locations.Get(coords.Cube());
-
-                    if (commands.TryGetElement<SelectedLocation>(out var selectedLocation))
-                    {
-                        commands.Send(new UnitDeselectedEvent());
-                    }
-
-                    commands.Send(new FocusCameraEvent(coords));
-                    commands.Send(new UnitSelectedEvent(unitEntity));
-                    return;
-                }
-            }
-
+            commands.Send(new FocusCameraEvent(coords));
+            commands.Send(new UnitSelectedEvent(unitEntity));
         }
     }
 }

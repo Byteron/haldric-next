@@ -1,1 +1,1 @@
-public struct Suspended { }
+public class Suspended { }

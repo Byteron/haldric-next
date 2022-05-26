@@ -19,7 +19,7 @@ public class TerrainBuilder
     {
         terrainEntity = commands.Spawn();
         terrainEntity.Add<IsBaseTerrain>();
-        terrainEntity.Add<ElevationOffset>();
+        terrainEntity.Add(new ElevationOffset());
         return this;
     }
     public TerrainBuilder CreateOverlay()
@@ -31,7 +31,7 @@ public class TerrainBuilder
 
     public TerrainBuilder WithCode(string code)
     {
-        terrainEntity.Add(new TerrainCode(code));
+        terrainEntity.Add(new TerrainCode { Value = code });
         return this;
     }
 

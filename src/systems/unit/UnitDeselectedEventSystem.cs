@@ -1,6 +1,6 @@
 using RelEcs;
 
-public struct UnitDeselectedEvent { }
+public class UnitDeselectedEvent { }
 
 public class UnitDeselectedEventSystem : ISystem
 {

@@ -3,11 +3,15 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public struct SpawnScheduleEvent
+public class SpawnScheduleEvent
 {
     public string Id;
     public int Index;
 
+    public SpawnScheduleEvent()
+    {
+    }
+    
     public SpawnScheduleEvent(string id, int index = 0)
     {
         Id = id;

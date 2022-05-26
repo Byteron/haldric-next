@@ -3,7 +3,7 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public struct ChangeDaytimeEvent { }
+public class ChangeDaytimeEvent { }
 
 public class ChangeDaytimeEventSystem : ISystem
 {

@@ -37,8 +37,8 @@ public class MoveUnitSystem : ISystem
 
         if (Input.IsActionJustPressed("select_unit"))
         {
-            ref var fromCoords = ref selectedLocEntity.Get<Coords>();
-            ref var toCoords = ref hoveredLocEntity.Get<Coords>();
+            var fromCoords = selectedLocEntity.Get<Coords>();
+            var toCoords = hoveredLocEntity.Get<Coords>();
 
             commands.Send(new UnitDeselectedEvent());
             commands.Send(new MoveUnitEvent { From = fromCoords.Cube(), To = toCoords.Cube() });

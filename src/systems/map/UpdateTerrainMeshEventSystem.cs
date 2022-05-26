@@ -3,7 +3,7 @@ using Godot;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct UpdateTerrainMeshEvent
+public class UpdateTerrainMeshEvent
 {
     public List<Vector3i> Chunks { get; set; }
 
@@ -13,7 +13,7 @@ public struct UpdateTerrainMeshEvent
     }
 }
 
-public struct EdgeVertices
+public class EdgeVertices
 {
     public Vector3 v1, v2, v3, v4, v5;
 
@@ -38,43 +38,36 @@ public struct EdgeVertices
 
 public class UpdateTerrainMeshEventSystem : ISystem
 {
-    public static readonly Color ColorRed = new Color(1.0f, 0f, 0f);
-    public static readonly Color ColorGreen = new Color(0f, 1.0f, 0f);
-    public static readonly Color ColorBlue = new Color(0f, 0f, 1.0f);
+    static readonly Color ColorRed = new (1.0f, 0f, 0f);
+    static readonly Color ColorGreen = new (0f, 1.0f, 0f);
+    static readonly Color ColorBlue = new (0f, 0f, 1.0f);
 
     TerrainMesh _terrainMesh;
     ShaderData _shaderData;
 
     public void Run(Commands commands)
     {
-        var chunkQuery = commands.Query().Has<Locations, Node<TerrainMesh>, Node<TerrainCollider>>();
+        var chunkQuery = commands.Query<Locations, TerrainMesh, TerrainCollider, Cell>();
 
         commands.Receive((UpdateTerrainMeshEvent e) =>
         {
             _shaderData = commands.GetElement<ShaderData>();
 
-            foreach (var chunkEntity in chunkQuery)
+            foreach (var (locs, mesh, collider, cell) in chunkQuery)
             {
-                ref var chunkCell = ref chunkEntity.Get<Vector3i>();
-
-                if (e.Chunks != null && !e.Chunks.Contains(chunkCell))
+                if (e.Chunks != null && !e.Chunks.Contains(cell.Value))
                 {
                     continue;
                 }
 
-                _terrainMesh = chunkEntity.Get<Node<TerrainMesh>>().Value;
+                _terrainMesh = mesh;
 
-                ref var locations = ref chunkEntity.Get<Locations>();
-
-                Triangulate(locations);
-
-                ref var terrainCollider = ref chunkEntity.Get<Node<TerrainCollider>>();
-
-                terrainCollider.Value.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
+                Triangulate(locs);
+                
+                collider.UpdateCollisionShape(_terrainMesh.Mesh.CreateTrimeshShape());
             }
 
             _shaderData.Apply();
-
         });
     }
 
@@ -86,11 +79,11 @@ public class UpdateTerrainMeshEventSystem : ISystem
         {
             Triangulate(locEntity);
 
-            ref var coords = ref locEntity.Get<Coords>();
-            ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
+            var coords = locEntity.Get<Coords>();
+            var baseTerrain = locEntity.Get<HasBaseTerrain>();
 
-            int x = (int)coords.Offset().x;
-            int z = (int)coords.Offset().z;
+            var x = (int)coords.Offset().x;
+            var z = (int)coords.Offset().z;
 
             _shaderData.UpdateTerrain(x, z, baseTerrain.Entity.Get<TerrainTypeIndex>().Value);
 
@@ -105,7 +98,7 @@ public class UpdateTerrainMeshEventSystem : ISystem
 
     void Triangulate(Entity locEntity)
     {
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             Triangulate((Direction)i, locEntity);
         }
@@ -113,19 +106,18 @@ public class UpdateTerrainMeshEventSystem : ISystem
 
     void Triangulate(Direction direction, Entity locEntity)
     {
-        ref var index = ref locEntity.Get<Index>();
+        var index = locEntity.Get<Index>();
 
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
+        var elevation = locEntity.Get<Elevation>();
+        var plateauArea = locEntity.Get<PlateauArea>();
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
-        Vector3 center = locEntity.Get<Coords>().World();
+        var center = locEntity.Get<Coords>().World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        EdgeVertices e = new EdgeVertices(
+        var e = new EdgeVertices(
             center + Metrics.GetFirstSolidCorner(direction, plateauArea),
             center + Metrics.GetSecondSolidCorner(direction, plateauArea)
         );
@@ -142,12 +134,12 @@ public class UpdateTerrainMeshEventSystem : ISystem
     {
         var locIndex = locEntity.Get<Index>().Value;
 
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         if (!neighbors.Has(direction))
         {
@@ -155,14 +147,14 @@ public class UpdateTerrainMeshEventSystem : ISystem
         }
 
         var nLocEntity = neighbors.Get(direction);
-        ref var nLocIndex = ref nLocEntity.Get<Index>();
+        var nLocIndex = nLocEntity.Get<Index>();
 
-        ref var nCoords = ref nLocEntity.Get<Coords>();
-        ref var nElevation = ref nLocEntity.Get<Elevation>();
-        ref var nPlateauArea = ref nLocEntity.Get<PlateauArea>();
+        var nCoords = nLocEntity.Get<Coords>();
+        var nElevation = nLocEntity.Get<Elevation>();
+        var nPlateauArea = nLocEntity.Get<PlateauArea>();
 
         var nTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
-        ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
+        var nElevationOffset = nTerrainEntity.Get<ElevationOffset>();
 
         var bridge = Metrics.GetBridge(direction, nPlateauArea);
         bridge.y = (nCoords.World().y + nElevation.Height + nElevationOffset.Value) - (coords.World().y + elevation.Height + elevationOffset.Value);
@@ -174,43 +166,42 @@ public class UpdateTerrainMeshEventSystem : ISystem
 
         TriangulateSlope(e1, e2, locIndex, nLocIndex.Value);
 
-        if (direction <= (Direction)2 && neighbors.Has(direction.Next()))
+        if (direction > (Direction)2 || !neighbors.Has(direction.Next())) return;
+        
+        var nextLocEntity = neighbors.Get(direction.Next());
+        var nextLocIndex = nextLocEntity.Get<Index>();
+
+        var nextElevation = nextLocEntity.Get<Elevation>();
+        var nextPlateauArea = nextLocEntity.Get<PlateauArea>();
+
+        var nextTerrainEntity = nextLocEntity.Get<HasBaseTerrain>().Entity;
+        var nextElevationOffset = nextTerrainEntity.Get<ElevationOffset>();
+
+        var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
+        v6.y = nextElevation.Height + nextElevationOffset.Value;
+
+        var indices = new Vector3();
+
+        if (elevation.Value <= nElevation.Value)
         {
-            var nextLocEntity = neighbors.Get(direction.Next());
-            ref var nextLocIndex = ref nextLocEntity.Get<Index>();
-
-            ref var nextElevation = ref nextLocEntity.Get<Elevation>();
-            ref var nextPlateauArea = ref nextLocEntity.Get<PlateauArea>();
-
-            var nextTerrainEntity = nextLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var nextElevationOffset = ref nextTerrainEntity.Get<ElevationOffset>();
-
-            var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
-            v6.y = nextElevation.Height + nextElevationOffset.Value;
-
-            var indices = new Vector3();
-
-            if (elevation.Value <= nElevation.Value)
-            {
-                indices.x = locIndex;
-                indices.y = nLocIndex.Value;
-                indices.z = nextLocIndex.Value;
-                TriangulateCorner(e1.v5, e2.v5, v6, indices);
-            }
-            else if (nElevation.Value <= nextElevation.Value)
-            {
-                indices.x = nLocIndex.Value;
-                indices.y = nextLocIndex.Value;
-                indices.z = locIndex;
-                TriangulateCorner(e2.v5, v6, e1.v5, indices);
-            }
-            else
-            {
-                indices.x = nextLocIndex.Value;
-                indices.y = locIndex;
-                indices.z = nLocIndex.Value;
-                TriangulateCorner(v6, e1.v5, e2.v5, indices);
-            }
+            indices.x = locIndex;
+            indices.y = nLocIndex.Value;
+            indices.z = nextLocIndex.Value;
+            TriangulateCorner(e1.v5, e2.v5, v6, indices);
+        }
+        else if (nElevation.Value <= nextElevation.Value)
+        {
+            indices.x = nLocIndex.Value;
+            indices.y = nextLocIndex.Value;
+            indices.z = locIndex;
+            TriangulateCorner(e2.v5, v6, e1.v5, indices);
+        }
+        else
+        {
+            indices.x = nextLocIndex.Value;
+            indices.y = locIndex;
+            indices.z = nLocIndex.Value;
+            TriangulateCorner(v6, e1.v5, e2.v5, indices);
         }
     }
 

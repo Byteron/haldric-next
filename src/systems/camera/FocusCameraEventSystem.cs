@@ -1,7 +1,7 @@
 using RelEcs;
 using RelEcs.Godot;
 
-public struct FocusCameraEvent
+public class FocusCameraEvent
 {
     public Coords Coords;
 

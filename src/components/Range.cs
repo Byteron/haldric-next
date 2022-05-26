@@ -1,9 +1,4 @@
-public struct Range
+public class Range
 {
     public int Value { get; set; }
-
-    public Range(int value)
-    {
-        Value = value;
-    }
 }

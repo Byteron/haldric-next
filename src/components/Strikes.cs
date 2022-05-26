@@ -1,9 +1,4 @@
-public struct Strikes
+public class Strikes
 {
     public int Value { get; set; }
-
-    public Strikes(int value)
-    {
-        Value = value;
-    }
 }

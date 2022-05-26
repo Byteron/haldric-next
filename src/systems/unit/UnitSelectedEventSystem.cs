@@ -2,7 +2,7 @@ using Godot;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct UnitSelectedEvent
+public class UnitSelectedEvent
 {
     public Entity Unit { get; set; }
 

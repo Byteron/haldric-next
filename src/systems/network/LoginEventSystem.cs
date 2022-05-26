@@ -3,12 +3,12 @@ using Nakama;
 using Godot;
 using System;
 
-public struct LoginEvent
+public class LoginEvent
 {
     public string Email;
     public string Password;
     public string Username;
-
+    
     public LoginEvent(string email, string password, string username)
     {
         Email = email;

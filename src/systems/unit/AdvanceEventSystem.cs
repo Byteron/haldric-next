@@ -3,7 +3,7 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public struct AdvanceEvent
+public class AdvanceEvent
 {
     public Entity Entity { get; set; }
 
@@ -26,10 +26,10 @@ public class AdvanceEventSystem : ISystem
         {
             var unitEntity = advanceEvent.Entity;
 
-            ref var health = ref unitEntity.Get<Attribute<Health>>();
-            ref var experience = ref unitEntity.Get<Attribute<Experience>>();
-            ref var oldMoves = ref unitEntity.Get<Attribute<Moves>>();
-            ref var oldActions = ref unitEntity.Get<Attribute<Actions>>();
+            var health = unitEntity.Get<Attribute<Health>>();
+            var experience = unitEntity.Get<Attribute<Experience>>();
+            var oldMoves = unitEntity.Get<Attribute<Moves>>();
+            var oldActions = unitEntity.Get<Attribute<Actions>>();
 
             health.Restore();
             experience.Empty();
@@ -37,7 +37,7 @@ public class AdvanceEventSystem : ISystem
             var remainingMoves = oldMoves.Value;
             var remainingActions = oldActions.Value;
 
-            ref var advancements = ref unitEntity.Get<Advancements>();
+            var advancements = unitEntity.Get<Advancements>();
 
             if (advancements.List.Count == 0)
             {
@@ -47,7 +47,7 @@ public class AdvanceEventSystem : ISystem
             var unitTypeId = advancements.List[0];
             var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
 
-            var unitView = unitEntity.Get<Node<UnitView>>().Value;
+            var unitView = unitEntity.Get<UnitView>();
             var position = unitView.Position;
             var parent = unitView.GetParent();
 
@@ -59,11 +59,11 @@ public class AdvanceEventSystem : ISystem
 
             unitType.QueueFree();
 
-            ref var coords = ref unitEntity.Get<Coords>();
-            ref var level = ref unitEntity.Get<Level>();
+            var coords = unitEntity.Get<Coords>();
+            var level = unitEntity.Get<Level>();
 
-            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
-            ref var actions = ref unitEntity.Get<Attribute<Actions>>();
+            var moves = unitEntity.Get<Attribute<Moves>>();
+            var actions = unitEntity.Get<Attribute<Actions>>();
 
             moves.Value = remainingMoves;
             actions.Value = remainingActions;

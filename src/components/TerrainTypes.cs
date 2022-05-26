@@ -3,14 +3,12 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public struct TerrainTypes
+public class TerrainTypes
 {
-    public List<TerrainType> List { get; set; }
-
-    public TerrainTypes(List<TerrainType> list)
-    {
-        List = list;
-    }
+    public List<TerrainType> List { get; }
+    
+    public TerrainTypes() => List = new List<TerrainType>();
+    public TerrainTypes(List<TerrainType> list) => List = list;
 
     public static TerrainTypes FromLocEntity(Entity locEntity)
     {

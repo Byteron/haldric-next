@@ -1,9 +1,4 @@
-public struct IsStartingPositionOfSide
+public class IsStartingPositionOfSide
 {
     public int Value;
-
-    public IsStartingPositionOfSide(int value)
-    {
-        Value = value;
-    }
 }

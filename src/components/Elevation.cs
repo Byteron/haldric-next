@@ -1,33 +1,15 @@
 using RelEcs;
 using RelEcs.Godot;
 
-public struct Elevation : IReset<Elevation>
+public class Elevation
 {
     public int Value { get; set; }
-    public float Height { get { return Value * Metrics.ElevationStep; } }
-
-    public Elevation(int value, int offset = 0)
-    {
-        Value = value;
-    }
-
-    public void Reset(ref Elevation c)
-    {
-        c.Value = 0;
-    }
+    public float Height => Value * Metrics.ElevationStep;
 }
 
-public struct ElevationOffset : IReset<ElevationOffset>
+public class ElevationOffset
 {
     public float Value { get; set; }
-
-    public ElevationOffset(float value)
-    {
-        Value = value;
-    }
-
-    public void Reset(ref ElevationOffset c)
-    {
-        c.Value = 0f;
-    }
+    public ElevationOffset() => Value = 0f;
+    public ElevationOffset(float value) => Value = value;
 }

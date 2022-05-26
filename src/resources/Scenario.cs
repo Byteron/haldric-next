@@ -27,12 +27,8 @@ public class Scenario
 
     public bool HasRoundChanged()
     {
-        if (Round != _round)
-        {
-            _round = Round;
-            return true;
-        }
-
-        return false;
+        if (Round == _round) return false;
+        _round = Round;
+        return true;
     }
 }

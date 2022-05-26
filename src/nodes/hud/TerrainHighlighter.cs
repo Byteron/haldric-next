@@ -23,8 +23,8 @@ public partial class TerrainHighlighter : Node3D
     {
         foreach (var pLocEntity in path.Checkpoints)
         {
-            ref var coords = ref pLocEntity.Get<Coords>();
-            ref var elevation = ref pLocEntity.Get<Elevation>();
+            var coords = pLocEntity.Get<Coords>();
+            var elevation = pLocEntity.Get<Elevation>();
 
             var pos = coords.World();
             pos.y = elevation.Height;

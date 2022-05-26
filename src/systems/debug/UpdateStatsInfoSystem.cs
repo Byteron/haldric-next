@@ -13,7 +13,7 @@ public class UpdateStatsInfoSystem : ISystem
 
         var s = "FPS: " + Engine.GetFramesPerSecond();
         s += "\nEntities: " + worldInfo.EntityCount;
-        s += "\nComponents: " + worldInfo.ComponentCount;
+        s += "\nArcheTypes: " + worldInfo.ArchetypeCount;
 
         commands.GetElement<DebugPanel>().StatsLabel.Text = s;
     }

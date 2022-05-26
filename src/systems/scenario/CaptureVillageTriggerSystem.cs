@@ -2,43 +2,43 @@ using RelEcs;
 using RelEcs.Godot;
 using Godot;
 
-public struct CaptureVillageEvent
+public class CaptureVillageTrigger
 {
     public Entity LocEntity { get; set; }
     public int Side { get; set; }
 
-    public CaptureVillageEvent(Entity locEntity, int side)
+    public CaptureVillageTrigger(Entity locEntity, int side)
     {
         LocEntity = locEntity;
         Side = side;
     }
 }
 
-public class CaptureVillageEventSystem : ISystem
+public class CaptureVillageTriggerSystem : ISystem
 {
     Node3D _parent;
 
-    public CaptureVillageEventSystem(Node3D parent)
+    public CaptureVillageTriggerSystem(Node3D parent)
     {
         _parent = parent;
     }
 
     public void Run(Commands commands)
     {
-        commands.Receive((CaptureVillageEvent captureEvent) =>
+        commands.Receive((CaptureVillageTrigger captureEvent) =>
         {
             var locEntity = captureEvent.LocEntity;
 
-            ref var coords = ref locEntity.Get<Coords>();
-            ref var elevation = ref locEntity.Get<Elevation>();
+            var coords = locEntity.Get<Coords>();
+            var elevation = locEntity.Get<Elevation>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+            var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
             if (locEntity.Has<IsCapturedBySide>())
             {
-                var handle = locEntity.Get<Node<FlagView>>();
-                locEntity.Remove<Node<FlagView>>();
+                var handle = locEntity.Get<FlagView>();
+                locEntity.Remove<FlagView>();
                 locEntity.Remove<IsCapturedBySide>();
             }
 
@@ -50,8 +50,8 @@ public class CaptureVillageEventSystem : ISystem
             pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 
-            locEntity.Add(new Node<FlagView>(flagView));
-            locEntity.Add(new IsCapturedBySide(captureEvent.Side));
+            locEntity.Add(flagView);
+            locEntity.Add(new IsCapturedBySide { Value = captureEvent.Side });
         });
     }
 }

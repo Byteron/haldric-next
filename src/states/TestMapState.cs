@@ -37,11 +37,11 @@ public partial class TestMapState : GameState
             .Add(new UpdateHoveredUnitSystem())
             .Add(new MoveUnitSystem())
             .Add(new FocusCameraEventSystem())
-            .Add(new UpdateMapEventSystem())
+            .Add(new UpdateMapTriggerSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
             .Add(new LoadMapEventSystem())
-            .Add(new DespawnMapEventSystem())
+            .Add(new DespawnMapTriggerSystem())
             .Add(new SpawnScheduleEventSystem(this))
             .Add(new SpawnMapEventSystem(this))
             .Add(new SpawnPlayerEventSystem())
@@ -54,7 +54,7 @@ public partial class TestMapState : GameState
             .Add(new HighlightLocationsEventSystem())
             .Add(new TurnEndEventSystem())
             .Add(new ChangeDaytimeEventSystem())
-            .Add(new CaptureVillageEventSystem(this));
+            .Add(new CaptureVillageTriggerSystem(this));
 
         ExitSystems.Add(new TestMapStateExitSystem())
             .Add(new DespawnCameraOperatorSystem());
@@ -82,7 +82,7 @@ public class TestMapStateExitSystem : ISystem
         commands.RemoveElement<Scenario>();
         commands.RemoveElement<LocalPlayer>();
 
-        commands.Send(new DespawnMapEvent());
+        commands.Send(new DespawnMapTrigger());
     }
 }
 

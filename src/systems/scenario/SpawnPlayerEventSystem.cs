@@ -3,7 +3,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Godot;
 
-public struct SpawnPlayerEvent
+public class SpawnPlayerEvent
 {
     public int PlayerId;
     public int Side;
@@ -51,11 +51,11 @@ public class SpawnPlayerEventSystem : ISystem
             GD.Print($"Spawning Player -  Id: {spawnEvent.PlayerId} | Name: {username} | Side: {spawnEvent.Side}");
 
             var sideEntity = commands.Spawn()
-                .Add(new PlayerId(spawnEvent.PlayerId))
-                .Add(new Name(username))
-                // .Add(new Side(spawnEvent.Side))
-                .Add(new Gold(spawnEvent.Gold))
-                .Add(new Faction(faction.Name))
+                .Add(new PlayerId { Value = spawnEvent.PlayerId })
+                .Add(new Name { Value = username })
+                .Add(new Side { Value = spawnEvent.Side })
+                .Add(new Gold { Value = spawnEvent.Gold })
+                .Add(new Faction { Value = faction.Name })
                 .Add(new Recruits(faction.Recruits));
 
             scenario.Sides.Add(spawnEvent.Side, sideEntity);

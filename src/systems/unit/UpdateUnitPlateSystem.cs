@@ -7,30 +7,36 @@ public class UpdateUnitPlateSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        commands.ForEach((
-            Entity entity,
-            ref Side side,
-            ref Attribute<Health> health,
-            ref Attribute<Moves> moves,
-            ref Attribute<Experience> experience,
-            ref Node<UnitView> view,
-            ref Node<UnitPlate> plate) =>
+        var query = commands
+            .Query<Side, Attribute<Health>, Attribute<Moves>, Attribute<Experience>, UnitView, UnitPlate>();
+
+        foreach (var (side, health, moves, experience, view, plate) in query)
         {
-            plate.Value.MaxHealth = health.Max;
-            plate.Value.Health = health.Value;
+            plate.MaxHealth = health.Max;
+            plate.Health = health.Value;
 
-            plate.Value.MaxMoves = moves.Max;
-            plate.Value.Moves = moves.Value;
+            plate.MaxMoves = moves.Max;
+            plate.Moves = moves.Value;
 
-            plate.Value.MaxExperience = experience.Max;
-            plate.Value.Experience = experience.Value;
+            plate.MaxExperience = experience.Max;
+            plate.Experience = experience.Value;
 
-            plate.Value.Position = view.Value.Position + Vector3.Up * 7.5f;
+            plate.Position = view.Position + Vector3.Up * 7.5f;
 
-            plate.Value.SideColor = Data.Instance.SideColors[side.Value];
+            plate.SideColor = Data.Instance.SideColors[side.Value];
 
-            plate.Value.IsLeader = entity.Has<IsLeader>();
-            plate.Value.IsHero = entity.Has<IsHero>();
-        });
+            plate.IsLeader = false;
+            plate.IsHero = false;
+        }
+
+        foreach (var plate in commands.Query<UnitPlate>().Has<IsLeader>())
+        {
+            plate.IsLeader = true;
+        }
+        
+        foreach (var plate in commands.Query<UnitPlate>().Has<IsHero>())
+        {
+            plate.IsHero = true;
+        }
     }
 }

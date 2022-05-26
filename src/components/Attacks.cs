@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct Attacks : IReset<Attacks>
+public class Attacks
 {
-    public List<Entity> List { get; set; }
+    public List<Entity> List { get; set; } = new();
 
     public void Add(Entity attackEntity)
     {
@@ -100,17 +100,5 @@ public struct Attacks : IReset<Attacks>
         }
 
         return range;
-    }
-
-    public void Reset(ref Attacks c)
-    {
-        if (c.List == null)
-        {
-            c.List = new List<Entity>();
-        }
-        else
-        {
-            c.List.Clear();
-        }
     }
 }

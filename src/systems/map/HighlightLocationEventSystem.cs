@@ -3,7 +3,7 @@ using RelEcs.Godot;
 using Godot;
 using System.Collections.Generic;
 
-public struct HighlightLocationEvent
+public class HighlightLocationEvent
 {
     public Coords Coords { get; set; }
     public int Range { get; set; }
@@ -25,10 +25,10 @@ public class HighlightLocationsEventSystem : ISystem
             var grid = map.Grid;
 
             var locEntity = map.Locations.Get(highlightEvent.Coords.Cube());
-            ref var unit = ref locEntity.Get<HasUnit>();
+            var unit = locEntity.Get<HasUnit>();
             var unitEntity = unit.Entity;
-            ref var side = ref unitEntity.Get<Side>();
-            ref var attacks = ref unitEntity.Get<Attacks>();
+            var side = unitEntity.Get<Side>();
+            var attacks = unitEntity.Get<Attacks>();
 
             var terrainHighlighter = commands.GetElement<TerrainHighlighter>();
             terrainHighlighter.Clear();
@@ -48,7 +48,7 @@ public class HighlightLocationsEventSystem : ISystem
                 var nLocEntity = map.Locations.Dict[nCoords.Cube()];
 
                 var isInMeleeRange = map.IsInMeleeRange(highlightEvent.Coords, nCoords);
-                var attackRange = map.GetAttackDistance(highlightEvent.Coords, nCoords);
+                var attackRange = Map.GetAttackDistance(highlightEvent.Coords, nCoords);
 
                 var attack = attacks.GetUsableAttack(isInMeleeRange, attackRange);
 

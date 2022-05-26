@@ -3,7 +3,7 @@ using Godot;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct UpdateTerrainFeaturePopulatorEvent
+public class UpdateTerrainFeaturePopulatorEvent
 {
     public List<Vector3i> Chunks { get; set; }
 
@@ -19,28 +19,21 @@ public class UpdateTerrainFeaturePopulatorEventSystem : ISystem
 
     public void Run(Commands commands)
     {
-        var chunksQuery = commands.Query().Has<Locations, Node<TerrainFeaturePopulator>, Node<TerrainCollider>, Vector3i>();
+        var chunksQuery = commands.Query<Locations, TerrainFeaturePopulator, Cell>();
 
         commands.Receive((UpdateTerrainFeaturePopulatorEvent e) =>
         {
-            foreach (var chunkEntity in chunksQuery)
+            foreach (var (locations, populator, cell) in chunksQuery)
             {
-                ref var chunkCell = ref chunkEntity.Get<Vector3i>();
-
-                if (e.Chunks != null && !e.Chunks.Contains(chunkCell))
+                if (e.Chunks != null && !e.Chunks.Contains(cell.Value))
                 {
                     continue;
                 }
 
-                _terrainFeaturePopulator = chunkEntity.Get<Node<TerrainFeaturePopulator>>().Value;
-
-                ref var locations = ref chunkEntity.Get<Locations>();
+                _terrainFeaturePopulator = populator;
 
                 Populate(locations);
-
-                var terrainCollider = chunkEntity.Get<Node<TerrainCollider>>().Value;
             }
-
         });
     }
 
@@ -58,27 +51,17 @@ public class UpdateTerrainFeaturePopulatorEventSystem : ISystem
 
     void Populate(Entity locEntity)
     {
-        for (int i = 0; i < 6; i++)
-        {
-            Populate((Direction)i, locEntity);
-        }
-    }
-
-    void Populate(Direction direction, Entity locEntity)
-    {
-        ref var baseTerrain = ref locEntity.Get<HasBaseTerrain>();
-        ref var baseTerrainCode = ref baseTerrain.Entity.Get<TerrainCode>();
-
+        var baseTerrain = locEntity.Get<HasBaseTerrain>();
+        var baseTerrainCode = baseTerrain.Entity.Get<TerrainCode>();
 
         Populate(locEntity, baseTerrainCode);
 
-        if (locEntity.Has<HasOverlayTerrain>())
-        {
-            ref var overlayTerrain = ref locEntity.Get<HasOverlayTerrain>();
-            ref var overlayTerrainCode = ref overlayTerrain.Entity.Get<TerrainCode>();
+        if (!locEntity.Has<HasOverlayTerrain>()) return;
+        
+        var overlayTerrain = locEntity.Get<HasOverlayTerrain>();
+        var overlayTerrainCode = overlayTerrain.Entity.Get<TerrainCode>();
 
-            Populate(locEntity, overlayTerrainCode);
-        }
+        Populate(locEntity, overlayTerrainCode);
     }
 
     void Populate(Entity locEntity, TerrainCode terrainCode)

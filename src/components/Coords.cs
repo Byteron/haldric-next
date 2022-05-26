@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 [Serializable]
-public struct Coords
+public class Coords
 {
     public static Coords FromOffset(float x, float z)
     {

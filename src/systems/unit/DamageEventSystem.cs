@@ -3,7 +3,7 @@ using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public struct DamageEvent
+public class DamageEvent
 {
     public Entity DamagerEntity { get; set; }
     public Entity TargetEntity { get; set; }
@@ -34,13 +34,13 @@ public class DamageEventSystem : ISystem
             var damagerEntity = damageEvent.DamagerEntity;
             var targetEntity = damageEvent.TargetEntity;
 
-            ref var damage = ref damagerEntity.Get<Damage>();
+            var damage = damagerEntity.Get<Damage>();
 
             var modifier = 1.0f * daytime.GetDamageModifier(damageEvent.Alignment);
 
             if (targetEntity.Has<Weaknesses>())
             {
-                ref var weaknesses = ref targetEntity.Get<Weaknesses>();
+                var weaknesses = targetEntity.Get<Weaknesses>();
 
                 if (weaknesses.List.Contains(damage.Type))
                 {
@@ -50,7 +50,7 @@ public class DamageEventSystem : ISystem
 
             if (targetEntity.Has<Resistances>())
             {
-                ref var resistances = ref targetEntity.Get<Resistances>();
+                var resistances = targetEntity.Get<Resistances>();
 
                 if (resistances.List.Contains(damage.Type))
                 {
@@ -60,7 +60,7 @@ public class DamageEventSystem : ISystem
 
             if (targetEntity.Has<Calamities>())
             {
-                ref var calamities = ref targetEntity.Get<Calamities>();
+                var calamities = targetEntity.Get<Calamities>();
 
                 if (calamities.List.Contains(damage.Type))
                 {
@@ -70,7 +70,7 @@ public class DamageEventSystem : ISystem
 
             if (targetEntity.Has<Immunities>())
             {
-                ref var immunities = ref targetEntity.Get<Immunities>();
+                var immunities = targetEntity.Get<Immunities>();
 
                 if (immunities.List.Contains(damage.Type))
                 {
@@ -78,13 +78,13 @@ public class DamageEventSystem : ISystem
                 }
             }
 
-            ref var health = ref targetEntity.Get<Attribute<Health>>();
+            var health = targetEntity.Get<Attribute<Health>>();
 
             var finalDamage = (int)(damage.Value * modifier);
 
             health.Decrease(finalDamage);
 
-            ref var coords = ref damageEvent.TargetEntity.Get<Coords>();
+            var coords = damageEvent.TargetEntity.Get<Coords>();
             var position = coords.World() + Vector3.Up * 5f;
             var text = finalDamage.ToString();
             var color = new Color(1f, 0f, 0f);

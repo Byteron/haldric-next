@@ -9,7 +9,7 @@ public class CurrentGameState
     public GameState State;
 }
 
-public struct GodotInput
+public class GodotInput
 {
     public InputEvent Event;
 }

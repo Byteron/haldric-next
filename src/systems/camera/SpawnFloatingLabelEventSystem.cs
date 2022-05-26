@@ -2,7 +2,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Godot;
 
-public struct SpawnFloatingLabelEvent
+public class SpawnFloatingLabelEvent
 {
     public Vector3 Position { get; set; }
     public string Text { get; set; }

@@ -89,11 +89,11 @@ public partial class AttackSelectionView : Control
      string AttackToString(Entity attackEntity)
     {
         string s = "";
-        ref var attackId = ref attackEntity.Get<Id>();
+        var attackId = attackEntity.Get<Id>();
 
-        ref var damage = ref attackEntity.Get<Damage>();
-        ref var strikes = ref attackEntity.Get<Strikes>();
-        ref var range = ref attackEntity.Get<Range>();
+        var damage = attackEntity.Get<Damage>();
+        var strikes = attackEntity.Get<Strikes>();
+        var range = attackEntity.Get<Range>();
         s += string.Format("{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
         return s;
     }

@@ -5,23 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Haldric.Wdk;
 
-public struct UnitHoveredEvent
+public class UnitHoveredTrigger
 {
-    public Entity UnitEntity { get; set; }
-
-    public UnitHoveredEvent(Entity unitEntity)
-    {
-        UnitEntity = unitEntity;
-    }
+    public Entity Entity;
 }
 
 public class UnitHoveredEventSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        commands.Receive((UnitHoveredEvent e) =>
+        commands.Receive((UnitHoveredTrigger e) =>
         {
-            var unitEntity = e.UnitEntity;
+            var unitEntity = e.Entity;
 
             var id = unitEntity.Get<Id>().Value;
             var l = unitEntity.Get<Level>().Value;
@@ -36,10 +31,10 @@ public class UnitHoveredEventSystem : ISystem
                 s += "\nAttacks:";
                 foreach (Entity attackEntity in unitEntity.Get<Attacks>().List)
                 {
-                    ref var attackId = ref attackEntity.Get<Id>();
-                    ref var damage = ref attackEntity.Get<Damage>();
-                    ref var strikes = ref attackEntity.Get<Strikes>();
-                    ref var range = ref attackEntity.Get<Range>();
+                    var attackId = attackEntity.Get<Id>();
+                    var damage = attackEntity.Get<Damage>();
+                    var strikes = attackEntity.Get<Strikes>();
+                    var range = attackEntity.Get<Range>();
                     s += string.Format("\n{0} {1}x{2}~{4} ({3})", attackId.Value, damage.Value, strikes.Value, damage.Type.ToString(), range.Value.ToString());
                 }
             }

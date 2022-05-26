@@ -15,8 +15,8 @@ public class SuspendUnitInputSystem : ISystem
 
             var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
-            ref var side = ref sideEntity.Get<Side>();
-            ref var playerId = ref sideEntity.Get<PlayerId>();
+            var side = sideEntity.Get<Side>();
+            var playerId = sideEntity.Get<PlayerId>();
 
             if (side.Value == -1)
             {
@@ -32,7 +32,7 @@ public class SuspendUnitInputSystem : ISystem
 
             var unitEntity = selectedLocation.Entity.Get<HasUnit>().Entity;
 
-            ref var unitSide = ref unitEntity.Get<Side>();
+            var unitSide = unitEntity.Get<Side>();
 
             if (unitSide.Value == side.Value)
             {

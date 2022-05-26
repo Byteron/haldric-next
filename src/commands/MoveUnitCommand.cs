@@ -41,20 +41,19 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
         }
 
         _unitEntity = _path.Start.Get<HasUnit>().Entity;
-        _unitView = _unitEntity.Get<Node<UnitView>>().Value;
+        _unitView = _unitEntity.Get<UnitView>();
 
-        ref var unitCoords = ref _unitEntity.Get<Coords>();
-        ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
+        var unitCoords = _unitEntity.Get<Coords>();
 
         _tween = commands.GetElement<SceneTree>().CreateTween();
 
         foreach (var checkpointLocEntity in _path.Checkpoints)
         {
-            ref var targetCoords = ref checkpointLocEntity.Get<Coords>();
-            ref var targetElevation = ref checkpointLocEntity.Get<Elevation>();
+            var targetCoords = checkpointLocEntity.Get<Coords>();
+            var targetElevation = checkpointLocEntity.Get<Elevation>();
 
             var terrainEntity = checkpointLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+            var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
             var newPos = targetCoords.World();
             newPos.y = targetElevation.Height + elevationOffset.Value;
@@ -68,8 +67,9 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
         _path.Start.Remove<HasUnit>();
 
-        _path.Destination.Add(new HasUnit(_unitEntity));
-        unitCoords = _path.Destination.Get<Coords>();
+        _path.Destination.Add(new HasUnit { Entity = _unitEntity });
+        unitCoords.X = _path.Destination.Get<Coords>().X;
+        unitCoords.Z = _path.Destination.Get<Coords>().Z;
     }
 
     public void Revert()
@@ -91,32 +91,29 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
     void OnUnitMoveFinished()
     {
-        ref var side = ref _unitEntity.Get<Side>();
-        ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
+        var side = _unitEntity.Get<Side>();
+        var moves = _unitEntity.Get<Attribute<Moves>>();
 
         if (_targetLocEntity.Has<Village>())
         {
             if (_targetLocEntity.Has<IsCapturedBySide>())
             {
-                ref var captured = ref _targetLocEntity.Get<IsCapturedBySide>();
+                var captured = _targetLocEntity.Get<IsCapturedBySide>();
 
                 if (captured.Value != side.Value)
                 {
                     moves.Empty();
-                    commands.Send(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                    commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
                 }
             }
             else
             {
                 moves.Empty();
-                commands.Send(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
             }
         }
 
-        if (_targetLocEntity.Has<IsInZoc>())
-        {
-            moves.Empty();
-        }
+        if (_targetLocEntity.Has<IsInZoc>()) moves.Empty();
 
         IsDone = true;
     }
@@ -135,10 +132,10 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
         }
         else
         {
-            ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
-            ref var mobility = ref _unitEntity.Get<Mobility>();
+            var moves = _unitEntity.Get<Attribute<Moves>>();
+            var mobility = _unitEntity.Get<Mobility>();
 
-            if (_targetLocEntity.IsAlive && _targetLocEntity.Has<IsInZoc>())
+            if (_targetLocEntity is not null && _targetLocEntity.IsAlive && _targetLocEntity.Has<IsInZoc>())
             {
                 _tween.Stop();
                 OnUnitMoveFinished();
@@ -154,14 +151,8 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
             var movementCosts = TerrainTypes.FromLocEntity(_targetLocEntity).GetMovementCost(mobility);
 
-            if (IsReverted)
-            {
-                moves.Increase(movementCosts);
-            }
-            else
-            {
-                moves.Decrease(movementCosts);
-            }
+            if (IsReverted) moves.Increase(movementCosts);
+            else moves.Decrease(movementCosts);
 
             index += 1;
         }

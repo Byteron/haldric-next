@@ -35,7 +35,7 @@ public class SelectTargetSystem : ISystem
 
             var attackerUnitEntity = attackerLocEntity.Get<HasUnit>().Entity;
 
-            ref var actions = ref attackerUnitEntity.Get<Attribute<Actions>>();
+            var actions = attackerUnitEntity.Get<Attribute<Actions>>();
 
             if (actions.IsEmpty())
             {
@@ -49,16 +49,16 @@ public class SelectTargetSystem : ISystem
                 return;
             }
 
-            ref var attackerCoords = ref attackerLocEntity.Get<Coords>();
-            ref var defenderCoords = ref defenderLocEntity.Get<Coords>();
+            var attackerCoords = attackerLocEntity.Get<Coords>();
+            var defenderCoords = defenderLocEntity.Get<Coords>();
 
-            ref var attackerAttacks = ref attackerUnitEntity.Get<Attacks>();
-            ref var defenderAttacks = ref defenderUnitEntity.Get<Attacks>();
+            var attackerAttacks = attackerUnitEntity.Get<Attacks>();
+            var defenderAttacks = defenderUnitEntity.Get<Attacks>();
 
             var map = commands.GetElement<Map>();
 
             var isInMeleeRange = map.IsInMeleeRange(attackerCoords, defenderCoords);
-            var attackDistance = map.GetAttackDistance(attackerCoords, defenderCoords);
+            var attackDistance = Map.GetAttackDistance(attackerCoords, defenderCoords);
 
             var attackerUsableAttacks = attackerAttacks.GetUsableAttacks(isInMeleeRange, attackDistance);
 

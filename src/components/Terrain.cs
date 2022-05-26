@@ -1,12 +1,12 @@
-public struct IsBaseTerrain { }
-public struct IsOverlayTerrain { }
+public class IsBaseTerrain { }
+public class IsOverlayTerrain { }
 
-public struct CanRecruitFrom { }
-public struct CanRecruitTo { }
+public class CanRecruitFrom { }
+public class CanRecruitTo { }
 
-public struct IsCapturable { }
-public struct GivesIncome { }
+public class IsCapturable { }
+public class GivesIncome { }
 
-public struct Heals { }
+public class Heals { }
 
-public struct NoLighting { }
+public class NoLighting { }

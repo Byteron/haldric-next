@@ -1,13 +1,14 @@
 using RelEcs;
 using RelEcs.Godot;
 
-public struct Neighbors : IReset<Neighbors>
+public class Neighbors
 {
-    public Entity[] Array { get; private set; }
+    public Entity[] Array { get; } = new Entity[6];
 
     public bool Has(Direction direction)
     {
-        return Array[(int)direction].IsAlive;
+        var entity = Array[(int)direction];
+        return entity is not null && entity.IsAlive;
     }
 
     public Entity Get(Direction direction)
@@ -18,10 +19,5 @@ public struct Neighbors : IReset<Neighbors>
     public void Set(Direction direction, Entity entity)
     {
         Array[(int)direction] = entity;
-    }
-
-    public void Reset(ref Neighbors c)
-    {
-        c.Array = new Entity[6];
     }
 }

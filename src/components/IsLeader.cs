@@ -1,2 +1,2 @@
-public struct IsLeader { }
-public struct IsHero { }
+public class IsLeader { }
+public class IsHero { }

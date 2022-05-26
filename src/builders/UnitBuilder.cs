@@ -29,13 +29,13 @@ public class UnitBuilder
 
     public UnitBuilder WithId(string id)
     {
-        _entity.Add(new Id(id));
+        _entity.Add(new Id { Value = id });
         return this;
     }
 
     public UnitBuilder WithLevel(int level)
     {
-        _entity.Add(new Level(level));
+        _entity.Add(new Level { Value = level });
         return this;
     }
 
@@ -67,7 +67,7 @@ public class UnitBuilder
 
     public UnitBuilder WithAligned(Alignment value)
     {
-        _entity.Add(new Aligned(value));
+        _entity.Add(new Aligned { Value = value });
         return this;
     }
 
@@ -108,14 +108,14 @@ public class UnitBuilder
             _entity.Add<Attacks>();
         }
 
-        ref var attacks = ref _entity.Get<Attacks>();
+        var attacks = _entity.Get<Attacks>();
         attacks.Add(attackEntity);
         return this;
     }
 
     public UnitBuilder WithView(UnitView unitView)
     {
-        _entity.Add(new Node<UnitView>(unitView));
+        _entity.Add(unitView);
         return this;
     }
 

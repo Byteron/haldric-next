@@ -3,7 +3,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public struct SpawnUnitEvent
+public class SpawnUnitEvent
 {
     public int Side { get; set; }
     public string Id { get; set; }
@@ -44,14 +44,14 @@ public class SpawnUnitEventSystem : ISystem
             var locations = map.Locations;
 
             var locEntity = locations.Get(spawnEvent.Coords.Cube());
-            ref var elevation = ref locEntity.Get<Elevation>();
+            var elevation = locEntity.Get<Elevation>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+            var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
-            UnitType unitType = Data.Instance.Units[spawnEvent.Id].Instantiate<UnitType>();
+            var unitType = Data.Instance.Units[spawnEvent.Id].Instantiate<UnitType>();
             _parent.AddChild(unitType);
-            UnitView unitView = unitType.UnitView;
+            var unitView = unitType.UnitView;
             unitType.RemoveChild(unitView);
             _parent.AddChild(unitView);
 
@@ -64,7 +64,7 @@ public class SpawnUnitEventSystem : ISystem
 
             unitView.Position = position;
 
-            // unitEntity.Add(new Side(spawnEvent.Side));
+            unitEntity.Add(new Side { Value = spawnEvent.Side });
             unitEntity.Add(spawnEvent.Coords);
 
             if (spawnEvent.IsLeader)
@@ -84,9 +84,9 @@ public class SpawnUnitEventSystem : ISystem
 
             canvasLayer.AddChild(unitPlate);
 
-            unitEntity.Add(new Node<UnitPlate>(unitPlate));
+            unitEntity.Add(unitPlate);
 
-            locEntity.Add(new HasUnit(unitEntity));
+            locEntity.Add(new HasUnit { Entity = unitEntity });
         });
     }
 }

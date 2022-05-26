@@ -2,7 +2,7 @@ using Godot;
 using RelEcs;
 using RelEcs.Godot;
 
-public struct LoadMapEvent
+public class LoadMapEvent
 {
     public string Name { get; set; }
 

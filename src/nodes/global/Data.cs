@@ -149,7 +149,7 @@ public partial class Data : Node
             var terrainCode = item.Key;
             var terrainEntity = item.Value;
 
-            terrainEntity.Add(new TerrainTypeIndex(index));
+            terrainEntity.Add(new TerrainTypeIndex { Value = index });
 
             TextureArrayIds.Add(terrainCode, index);
             index += 1;

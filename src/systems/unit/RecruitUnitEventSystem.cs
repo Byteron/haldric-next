@@ -3,7 +3,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public struct RecruitUnitEvent
+public class RecruitUnitEvent
 {
     public int Side;
     public UnitType UnitType;
@@ -38,7 +38,7 @@ public class RecruitUnitEventSystem : ISystem
             var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
 
-            ref var gold = ref sideEntity.Get<Gold>();
+            var gold = sideEntity.Get<Gold>();
 
             var locEntity = recruitEvent.LocEntity;
 
@@ -51,7 +51,7 @@ public class RecruitUnitEventSystem : ISystem
             var freeCoords = locEntity.Get<Coords>();
 
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+            var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
             UnitType unitType = recruitEvent.UnitType;
             _parent.AddChild(unitType);
@@ -70,7 +70,7 @@ public class RecruitUnitEventSystem : ISystem
 
             unitView.Position = position;
 
-            // unitEntity.Add(new Side(recruitEvent.Side));
+            unitEntity.Add(new Side { Value = recruitEvent.Side });
             unitEntity.Add(freeCoords);
 
             unitEntity.Get<Attribute<Moves>>().Empty();
@@ -83,9 +83,9 @@ public class RecruitUnitEventSystem : ISystem
             
             canvasLayer.AddChild(unitPlate);
 
-            unitEntity.Add(new Node<UnitPlate>(unitPlate));
+            unitEntity.Add(unitPlate);
 
-            recruitEvent.LocEntity.Add(new HasUnit(unitEntity));
+            recruitEvent.LocEntity.Add(new HasUnit { Entity = unitEntity });
         });
     }
 }

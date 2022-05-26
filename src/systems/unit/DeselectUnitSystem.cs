@@ -6,17 +6,11 @@ public class DeselectUnitSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation)) return;
 
         var locEntity = hoveredLocation.Entity;
 
-        if (!locEntity.IsAlive)
-        {
-            return;
-        }
+        if (locEntity is null || !locEntity.IsAlive) return;
 
         if (Input.IsActionJustPressed("deselect_unit"))
         {

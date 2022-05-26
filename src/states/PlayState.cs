@@ -51,11 +51,11 @@ public partial class PlayState : GameState
             .Add(new UpdateHoveredUnitSystem())
             .Add(new MoveUnitSystem())
             .Add(new FocusCameraEventSystem())
-            .Add(new UpdateMapEventSystem())
+            .Add(new UpdateMapTriggerSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
             .Add(new LoadMapEventSystem())
-            .Add(new DespawnMapEventSystem())
+            .Add(new DespawnMapTriggerSystem())
             .Add(new SpawnScheduleEventSystem(this))
             .Add(new SpawnMapEventSystem(this))
             .Add(new SpawnPlayersEventSystem())
@@ -72,11 +72,11 @@ public partial class PlayState : GameState
             .Add(new GainExperienceEventSystem())
             .Add(new AdvanceEventSystem())
             .Add(new DeathEventSystem())
-            .Add(new CaptureVillageEventSystem(this))
+            .Add(new CaptureVillageTriggerSystem(this))
             .Add(new SpawnFloatingLabelEventSystem())
             .Add(new TurnEndEventSystem())
             .Add(new ChangeDaytimeEventSystem())
-            .Add(new CheckVictoryConditionEventSystem());
+            .Add(new CheckVictoryConditionTriggerSystem());
 
         ExitSystems.Add(new PlayStateExitSystem())
             .Add(new DespawnCameraOperatorSystem());
@@ -130,7 +130,7 @@ public class PlayStateExitSystem : ISystem
         turnPanel.QueueFree();
         commands.RemoveElement<TurnPanel>();
 
-        commands.Send(new DespawnMapEvent());
+        commands.Send(new DespawnMapTrigger());
     }
 }
 public partial class PlayStateInitSystem : Resource, ISystem

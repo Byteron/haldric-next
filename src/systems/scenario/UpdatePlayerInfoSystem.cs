@@ -5,55 +5,42 @@ public class UpdatePlayerInfoSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<Scenario>(out var scenario))
-        {
-            return;
-        }
-
-        if (!commands.TryGetElement<SidePanel>(out var sidePanel))
-        {
-            return;
-        }
-
-        if (scenario.Side == -1)
-        {
-            return;
-        }
+        if (!commands.TryGetElement<Scenario>(out var scenario)) return;
+        if (!commands.TryGetElement<SidePanel>(out var sidePanel)) return;
+        if (scenario.Side == -1) return;
 
         var sideEntity = scenario.GetCurrentSideEntity();
 
         var side = sideEntity.Get<Side>().Value;
-        ref var playerId = ref sideEntity.Get<PlayerId>();
-        ref var gold = ref sideEntity.Get<Gold>();
-        ref var name = ref sideEntity.Get<Name>();
+        var playerId = sideEntity.Get<PlayerId>();
+        var gold = sideEntity.Get<Gold>();
+        var name = sideEntity.Get<Name>();
 
         var unitCount = 0;
         var villageCount = 0;
         var capturedVillageCount = 0;
         var income = 0;
 
-        commands.ForEach((Entity locEntity, ref Village village) =>
+        foreach (var _ in commands.Query<Village>())
         {
             villageCount += 1;
-        });
-
-        commands.ForEach((Entity locEntity, ref Village village, ref IsCapturedBySide captured) =>
+        }
+        
+        foreach (var (village, captured) in commands.Query<Village, IsCapturedBySide>())
         {
-            if (captured.Value == side)
-            {
-                capturedVillageCount += 1;
-                income += village.List.Count;
-            }
-        });
+            if (captured.Value != side) continue;
+            
+            capturedVillageCount += 1;
+            income += village.List.Count;
+        }
 
-        commands.ForEach((Entity unitEntity, ref Side unitSide, ref Level level, ref Attribute<Health> health) =>
+        foreach (var (unitSide, level) in commands.Query<Side, Level>())
         {
-            if (unitSide.Value == side)
-            {
-                income -= level.Value;
-                unitCount += 1;
-            }
-        });
+            if (unitSide.Value != side) continue;
+            income -= level.Value;
+            unitCount += 1;
+
+        }
 
         var localPlayer = commands.GetElement<LocalPlayer>();
 

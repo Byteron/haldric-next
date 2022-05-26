@@ -2,7 +2,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Godot;
 
-public struct MoveUnitEvent
+public class MoveUnitEvent
 {
     public Vector3 From;
     public Vector3 To;
@@ -21,8 +21,8 @@ public class MoveUnitEventSystem : ISystem
             var fromLocEntity = map.Locations.Get(moveEvent.From);
             var toLocEntity = map.Locations.Get(moveEvent.To);
 
-            ref var fromCoords = ref fromLocEntity.Get<Coords>();
-            ref var toCoords = ref toLocEntity.Get<Coords>();
+            var fromCoords = fromLocEntity.Get<Coords>();
+            var toCoords = toLocEntity.Get<Coords>();
 
             if (fromCoords.Cube() == toCoords.Cube())
             {
@@ -38,7 +38,7 @@ public class MoveUnitEventSystem : ISystem
                 return;
             }
 
-            ref var moves = ref unitEntity.Get<Attribute<Moves>>();
+            var moves = unitEntity.Get<Attribute<Moves>>();
 
             if (path.GetCost() > moves.Value)
             {

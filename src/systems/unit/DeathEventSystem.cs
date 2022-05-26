@@ -1,7 +1,7 @@
 using RelEcs;
 using RelEcs.Godot;
 
-public struct DeathEvent
+public class DeathEvent
 {
     public Entity Entity { get; set; }
 
@@ -21,7 +21,7 @@ public class DeathEventSystem : ISystem
         {
             var map = commands.GetElement<Map>();
 
-            ref var coords = ref deathEvent.Entity.Get<Coords>();
+            var coords = deathEvent.Entity.Get<Coords>();
 
             var locEntity = map.Locations.Get(coords.Cube());
 
@@ -34,7 +34,7 @@ public class DeathEventSystem : ISystem
 
         if (checkVictory)
         {
-            commands.Send(new CheckVictoryConditionEvent());
+            commands.Send(new CheckVictoryConditionTrigger());
         }
     }
 }

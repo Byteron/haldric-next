@@ -3,13 +3,13 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public class UnitFactory
+public static class UnitFactory
 {
     public static Entity CreateFromUnitType(Commands commands, UnitType unitType, UnitView unitView, Entity entity = default)
     {
         var builder = new UnitBuilder(commands);
 
-        if (entity.IsAlive)
+        if (entity is not null && entity.IsAlive)
         {
             entity.Remove<Id>()
                 .Remove<Level>()
@@ -25,7 +25,7 @@ public class UnitFactory
                 .Remove<Advancements>()
                 .Remove<Attacks>()
                 .Remove<Mobility>()
-                .Remove<Node<UnitView>>();
+                .Remove<UnitView>();
 
             builder.Use(entity);
         }
@@ -51,12 +51,12 @@ public class UnitFactory
 
         foreach (Attack attack in unitType.Attacks.GetChildren())
         {
-            Entity attackEntity = commands.Spawn()
-                .Add(new Id(attack.Name))
+            var attackEntity = commands.Spawn()
+                .Add(new Id { Value = attack.Name })
                 .Add(new Damage(attack.Damage, attack.DamageType))
-                .Add(new Strikes(attack.Strikes))
-                .Add(new Range(attack.Range))
-                .Add(new AssetHandle<PackedScene>(attack.Projectile));
+                .Add(new Strikes { Value = attack.Strikes })
+                .Add(new Range { Value = attack.Range })
+                .Add(attack.Projectile);
 
             builder.WithAttack(attackEntity);
         }

@@ -18,12 +18,12 @@ public partial class EditorState : GameState
             .Add(new UpdateMapCursorSystem())
             .Add(new UpdateCameraOperatorSystem())
             .Add(new UpdateStatsInfoSystem())
-            .Add(new UpdateMapEventSystem())
+            .Add(new UpdateMapTriggerSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
             .Add(new SaveMapEventSystem())
             .Add(new LoadMapEventSystem())
-            .Add(new DespawnMapEventSystem())
+            .Add(new DespawnMapTriggerSystem())
             .Add(new SpawnScheduleEventSystem(this))
             .Add(new SpawnMapEventSystem(this))
             .Add(new ChangeDaytimeEventSystem());
@@ -40,7 +40,7 @@ public class EditorStateExitSystem : ISystem
         commands.RemoveElement<Commander>();
         commands.RemoveElement<EditorView>();
         commands.RemoveElement<Schedule>();
-        commands.Send(new DespawnMapEvent());
+        commands.Send(new DespawnMapTrigger());
     }
 }
 
@@ -57,7 +57,7 @@ public class EditorStateInitSystem : ISystem
         commands.AddElement(editorView);
 
         commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
-        commands.Send(new SpawnMapEvent(40, 40));
+        commands.Send(new SpawnMapEvent());
         commands.Send(new ChangeDaytimeEvent());
     }
 }
