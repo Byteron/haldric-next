@@ -30,7 +30,7 @@ public partial class FloatingLabel : Control
         var tween = GetTree().CreateTween();
         tween.SetEase(Tween.EaseType.Out);
         tween.SetTrans(Tween.TransitionType.Back);
-        tween.TweenProperty(this, "Position", WorldPosition + Vector3.Up * 6f, 0.5f);
+        tween.TweenProperty(this, "WorldPosition", WorldPosition + Vector3.Up * 6f, 0.5f);
         tween.TweenCallback(new Callable(this, "queue_free"));
         tween.Play();
     }

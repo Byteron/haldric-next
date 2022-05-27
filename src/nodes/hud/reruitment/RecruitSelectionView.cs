@@ -11,7 +11,7 @@ public partial class RecruitSelectionView : Control
 
     [Export] PackedScene _recruitSelectionOption;
 
-     ButtonGroup _buttonGroup = new();
+    readonly ButtonGroup _buttonGroup = new();
 
      RecruitSelectionOption _selectedOption;
 
