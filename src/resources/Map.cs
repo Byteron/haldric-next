@@ -5,7 +5,9 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public class IsInZoc { }
+public class IsInZoc
+{
+}
 
 public class Distance
 {
@@ -17,9 +19,7 @@ public class Distance
 public class PathFrom
 {
     public Entity LocEntity { get; set; }
-
     public PathFrom() => LocEntity = null;
-    public PathFrom(Entity locEntity) => LocEntity = locEntity;
 }
 
 public class Map
@@ -40,7 +40,7 @@ public class Map
         PathFinder = new PathFinder();
     }
 
-    public Vector3 GetBeginPosition()
+    public static Vector3 GetBeginPosition()
     {
         var coords = Coords.FromOffset(0, 0);
         return coords.World();
@@ -68,7 +68,7 @@ public class Map
             var unitEntity = loc.Get<HasUnit>().Entity;
 
             if (unitEntity.Get<Side>().Value == side) continue;
-            
+
             var neighbors = loc.Get<Neighbors>();
 
             foreach (var nLoc in neighbors.Array)
@@ -79,7 +79,7 @@ public class Map
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
-        
+
         var mobility = new Mobility
         {
             Dict = new Dictionary<TerrainType, int>()
@@ -93,8 +93,7 @@ public class Map
 
         fromLocEntity.Get<Distance>().Value = 0;
 
-        List<Entity> frontier = new List<Entity>();
-        frontier.Add(fromLocEntity);
+        var frontier = new List<Entity> { fromLocEntity };
 
         while (frontier.Count > 0)
         {
@@ -180,7 +179,7 @@ public class Map
             var unitEntity = loc.Get<HasUnit>().Entity;
 
             if (unitEntity.Get<Side>().Value == side) continue;
-            
+
             var neighbors = loc.Get<Neighbors>();
 
             foreach (var nLoc in neighbors.Array)
@@ -291,7 +290,7 @@ public class Map
         return path;
     }
 
-     List<Entity> GetLocEntitiesFromCubes(Vector3[] cubes)
+    List<Entity> GetLocEntitiesFromCubes(Vector3[] cubes)
     {
         var list = new List<Entity>();
 

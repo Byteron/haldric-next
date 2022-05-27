@@ -19,7 +19,7 @@ public class UpdateCameraOperatorSystem : ISystem
         var rawDirection = GetWalkInput();
         var direction = cameraOperator.GetRelativeWalkInput(rawDirection);
 
-        cameraOperator.MinimumPosition = map.GetBeginPosition();
+        cameraOperator.MinimumPosition = Map.GetBeginPosition();
         cameraOperator.MaximumPosition = map.GetEndPosition();
 
         cameraOperator.UpdatePosition(direction);

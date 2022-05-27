@@ -2,14 +2,14 @@ using Godot;
 
 public class ShaderData
 {
-    int _width;
-    int _height;
+    readonly int _width;
+    readonly int _height;
 
-    Image _image;
-    ImageTexture _texture;
-    Color[] _data;
+    readonly Image _image;
+    readonly ImageTexture _texture;
+    readonly Color[] _data;
 
-     Material _terrainMaterial;
+    readonly Material _terrainMaterial;
 
     public ShaderData(int width, int height)
     {
@@ -50,7 +50,7 @@ public class ShaderData
         _data[index].b8 = isLit ? 255 : 0;
     }
 
-    public void ResetLighting(bool isLit)
+    void ResetLighting(bool isLit)
     {
         for (var i = 0; i < _data.Length; i++)
         {
@@ -60,30 +60,27 @@ public class ShaderData
 
     public void UpdateVisibility(int x, int z, bool isVisible)
     {
-        int index = z * _width + x;
+        var index = z * _width + x;
 
-        if (index >= _data.Length || index < 0)
-        {
-            return;
-        }
+        if (index >= _data.Length || index < 0) return;
 
         _data[index].r8 = isVisible ? 255 : 0;
     }
 
-    public void ResetVisibility(bool isVisible)
+    void ResetVisibility(bool isVisible)
     {
-        for (int i = 0; i < _data.Length; i++)
+        for (var i = 0; i < _data.Length; i++)
         {
             _data[i].r8 = isVisible ? 255 : 0;
         }
     }
 
-    public Texture GetTexture()
+    Texture GetTexture()
     {
-        for (int i = 0; i < _data.Length; i++)
+        for (var i = 0; i < _data.Length; i++)
         {
-            int x = i % _width;
-            int z = i / _height;
+            var x = i % _width;
+            var z = i / _height;
 
             var color = _data[i];
             _image.SetPixel(x, z, color);
