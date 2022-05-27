@@ -120,7 +120,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
     int _index;
 
     public bool IsDone { get; set; }
-    public bool IsRevertable { get; set; }
+    public bool IsRevertible { get; set; }
     public bool IsReverted { get; set; }
 
     void OnUnitStepFinished()

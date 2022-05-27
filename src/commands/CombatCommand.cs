@@ -53,7 +53,7 @@ public partial class CombatCommand : Resource, ICommandSystem
     Commands _commands;
 
     public bool IsDone { get; set; }
-    public bool IsRevertable { get; set; }
+    public bool IsRevertible { get; set; }
     public bool IsReverted { get; set; }
 
     public CombatCommand(ulong seed, Entity attackerLocEntity, Entity attackerAttackEntity, Entity defenderLocEntity, Entity defenderAttackEntity, int attackDistance)

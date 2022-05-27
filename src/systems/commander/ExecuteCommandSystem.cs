@@ -14,7 +14,7 @@ public class ExecuteCommandSystem : ISystem
         {
             _activeCommand = commander.Dequeue();
 
-            if (!_activeCommand.IsRevertable) commander.ClearHistory();
+            if (!_activeCommand.IsRevertible) commander.ClearHistory();
 
             _activeCommand.Run(commands);
 
