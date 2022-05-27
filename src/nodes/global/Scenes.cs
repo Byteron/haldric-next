@@ -4,32 +4,32 @@ public partial class Scenes : Node
 {
     static Scenes Instance { get; set; }
 
-    [Export] PackedScene _editorView;
-    [Export] PackedScene _mainMenuView;
-    [Export] PackedScene _loginView;
-    [Export] PackedScene _lobbyView;
-    [Export] PackedScene _attackSelectionView;
-    [Export] PackedScene _factionSelectionView;
-    [Export] PackedScene _scenarioSelectionView;
-    [Export] PackedScene _recruitSelectionView;
-    [Export] PackedScene _loadingStateView;
+    [Export] PackedScene EditorView;
+    [Export] PackedScene MainMenuView;
+    [Export] PackedScene LoginView;
+    [Export] PackedScene LobbyView;
+    [Export] PackedScene AttackSelectionView;
+    [Export] PackedScene FactionSelectionView;
+    [Export] PackedScene ScenarioSelectionView;
+    [Export] PackedScene RecruitSelectionView;
+    [Export] PackedScene LoadingStateView;
 
-    [Export] PackedScene _debugPanel;
+    [Export] PackedScene DebugPanel;
 
-    [Export] PackedScene _sidePanel;
-    [Export] PackedScene _terrainPanel;
-    [Export] PackedScene _turnPanel;
-    [Export] PackedScene _unitPanel;
+    [Export] PackedScene SidePanel;
+    [Export] PackedScene TerrainPanel;
+    [Export] PackedScene TurnPanel;
+    [Export] PackedScene UnitPanel;
     
-    [Export] PackedScene _terrainHighlighter;
+    [Export] PackedScene TerrainHighlighter;
 
-    [Export] PackedScene _cameraOperator;
+    [Export] PackedScene CameraOperator;
 
-    [Export] PackedScene _floatingLabel;
-    [Export] PackedScene _unitPlate;
+    [Export] PackedScene FloatingLabel;
+    [Export] PackedScene UnitPlate;
 
-    [Export] PackedScene _cursor3D;
-    [Export] PackedScene _flagView;
+    [Export] PackedScene Cursor3D;
+    [Export] PackedScene FlagView;
 
     public override void _Ready()
     {
