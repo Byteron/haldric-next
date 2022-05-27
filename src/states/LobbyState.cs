@@ -88,16 +88,16 @@ public partial class LobbyStateInitSystem : Resource, ISystem
     IMatch _match;
     IMatchmakerTicket _ticket;
 
-    List<IUserPresence> _users = new List<IUserPresence>();
+    List<IUserPresence> _users = new();
 
     string _mapName;
-    int _playerCount = 0;
+    int _playerCount;
 
     Commands _commands;
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         _view = Scenes.Instantiate<LobbyView>();
 
@@ -119,12 +119,12 @@ public partial class LobbyStateInitSystem : Resource, ISystem
         _username = account.User.Username;
 
         var settings = commands.GetElement<LobbySettings>();
-        EnterChat(settings.RoomName, ChannelType.Room, settings.Persistence, settings.Hidden);
+        EnterChat(settings.RoomName, settings.Persistence, settings.Hidden);
     }
 
-    async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
+    async void EnterChat(string roomName, bool persistence, bool hidden)
     {
-        _channel = await _socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
+        _channel = await _socket.JoinChatAsync(roomName, ChannelType.Room, persistence, hidden);
         _commands.AddElement(_channel);
         _users.AddRange(_channel.Presences);
         _view.UpdateUsers(_username, _users);
@@ -135,14 +135,12 @@ public partial class LobbyStateInitSystem : Resource, ISystem
         _match = await _socket.JoinMatchAsync(matched);
 
         var localPlayer = new LocalPlayer();
-        var matchPlayers = new MatchPlayers();
-        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
+        var matchPlayers = new MatchPlayers
+        {
+            Array = new IUserPresence[matched.Users.ToList().Count]
+        };
 
         localPlayer.Presence = matched.Self.Presence;
-
-        var users = new List<string>();
-
-        users.Add(localPlayer.Presence.Username);
 
         GD.Print("User: ", localPlayer.Presence.Username);
 
@@ -174,10 +172,7 @@ public partial class LobbyStateInitSystem : Resource, ISystem
 
     async void JoinMatchmaking()
     {
-        if (_ticket != null || _match != null)
-        {
-            return;
-        }
+        if (_ticket != null || _match != null) return;
 
         var query = "*";
         var minCount = _playerCount;
@@ -192,7 +187,7 @@ public partial class LobbyStateInitSystem : Resource, ISystem
     async void OnMessageSubmitted(string message)
     {
         var content = new ChannelMessage { Message = message }.ToJson();
-        var sendAck = await _socket.WriteChatMessageAsync(_channel.Id, content);
+        await _socket.WriteChatMessageAsync(_channel.Id, content);
     }
 
     void OnBackButtonPressed()
@@ -234,7 +229,7 @@ public partial class LobbyStateInitSystem : Resource, ISystem
     {
         var mapData = Data.Instance.Maps[mapName];
         var playerList = mapData.Players;
-        this._mapName = mapName;
+        _mapName = mapName;
         _playerCount = playerList.Count;
     }
 

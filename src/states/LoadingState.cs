@@ -15,8 +15,8 @@ public partial class LoadingStateInitSystem : Resource, ISystem
 {
     struct LoadingData
     {
-        public string Info { get; set; }
-        public Action<Commands> Action { get; set; }
+        public string Info { get; }
+        public Action<Commands> Action { get; }
 
         public LoadingData(string info, Action<Commands> action)
         {
@@ -25,8 +25,8 @@ public partial class LoadingStateInitSystem : Resource, ISystem
         }
     }
 
-    Queue<LoadingData> _loadingStates = new Queue<LoadingData>();
-    LoadingStateView _view = null;
+    Queue<LoadingData> _loadingStates = new();
+    LoadingStateView _view;
 
     GameState _state;
 
@@ -34,7 +34,7 @@ public partial class LoadingStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
         _loadingStates.Enqueue(new LoadingData("Schedules", Data.Instance.LoadSchedules));

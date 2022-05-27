@@ -38,7 +38,7 @@ public partial class RecruitSelectionStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         var scenario = commands.GetElement<Scenario>();
         var sideEntity = scenario.GetCurrentSideEntity();

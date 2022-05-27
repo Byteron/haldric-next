@@ -4,7 +4,7 @@ using Haldric.Wdk;
 
 public partial class TestMapState : GameState
 {
-    string _mapName;
+    readonly string _mapName;
 
     public TestMapState(string mapName)
     {

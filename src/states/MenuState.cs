@@ -45,7 +45,7 @@ public partial class MenuStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(10);

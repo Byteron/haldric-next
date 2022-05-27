@@ -66,19 +66,9 @@ public class ChangeDaytimeSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<GameStateController>(out var gameStates))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<GameStateController>(out var gameStates)) return;
 
-        if (Input.IsActionPressed("ui_cancel"))
-        {
-            gameStates.PopState();
-        }
-
-        if (Input.IsActionPressed("ui_accept"))
-        {
-            commands.Send(new ChangeDaytimeTrigger());
-        }
+        if (Input.IsActionPressed("ui_cancel")) gameStates.PopState();
+        if (Input.IsActionPressed("ui_accept")) commands.Send(new ChangeDaytimeTrigger());
     }
 }

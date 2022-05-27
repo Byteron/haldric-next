@@ -46,7 +46,7 @@ public partial class LoginStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         var view = Scenes.Instantiate<LoginView>();
 

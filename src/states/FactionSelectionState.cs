@@ -144,7 +144,7 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
                 }
             case NetworkOperation.PlayerReadied:
                 {
-                    this._state.PlayersReadied += 1;
+                    _state.PlayersReadied += 1;
                     break;
                 }
         }

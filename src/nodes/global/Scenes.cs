@@ -36,7 +36,8 @@ public partial class Scenes : Node
         Instance = this;
     }
 
-    public static CT Instantiate<CT>() where CT: Node {
+    public static CT Instantiate<CT>() where CT: Node
+    {
         return (Instance.Get(typeof(CT).ToString()) as PackedScene).Instantiate<CT>();
     }
 }

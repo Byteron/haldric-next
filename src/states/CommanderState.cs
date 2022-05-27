@@ -11,6 +11,5 @@ public partial class CommanderState : GameState
             .Add(new MissTriggerSystem())
             .Add(new DeathTriggerSystem())
             .Add(new SpawnFloatingLabelEventSystem());
-
     }
 }

@@ -8,18 +8,10 @@ using Nakama.TinyJson;
 
 public partial class PlayState : GameState
 {
-     partial class MarshallableState : Resource
-    {
-        public IMatchState State { get; set; }
-    }
-
     public string MapName;
     public Dictionary<int, string> Factions;
     public Dictionary<int, int> Players;
     public Dictionary<int, int> PlayerGolds;
-
-    public ISocket Socket;
-    public IMatch Match;
 
     public override void Init(GameStateController gameStates)
     {
@@ -80,7 +72,7 @@ public partial class PlayState : GameState
 
         ExitSystems.Add(new PlayStateExitSystem())
             .Add(new DespawnCameraOperatorSystem());
-    }  
+    }
 }
 
 public class ExitFromStateSystem : ISystem
@@ -109,7 +101,7 @@ public class PlayStateExitSystem : ISystem
         commands.RemoveElement<IMatch>();
         commands.RemoveElement<LocalPlayer>();
         commands.RemoveElement<MatchPlayers>();
-        
+
         commands.RemoveElement<Commander>();
         commands.RemoveElement<Scenario>();
         commands.RemoveElement<Schedule>();
@@ -133,6 +125,7 @@ public class PlayStateExitSystem : ISystem
         commands.Send(new DespawnMapTrigger());
     }
 }
+
 public partial class PlayStateInitSystem : Resource, ISystem
 {
     public string MapName;
@@ -147,14 +140,12 @@ public partial class PlayStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         _socket = commands.GetElement<ISocket>();
         _socket.ReceivedMatchState += OnReceivedMatchState;
 
         _match = commands.GetElement<IMatch>();
-
-        var matchPlayers = commands.GetElement<MatchPlayers>();
 
         commands.AddElement(new Commander());
         commands.AddElement(new Scenario());
@@ -187,7 +178,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
 
     public void OnTurnEndButtonPressed()
     {
-        var opCode = (int)NetworkOperation.TurnEnd;
+        const int opCode = (int)NetworkOperation.TurnEnd;
         var state = new TurnEndMessage();
         _socket.SendMatchStateAsync(_match.Id, opCode, state.ToJson());
         _commands.Send(new TurnEndTrigger());
@@ -195,7 +186,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
 
     void OnReceivedMatchState(IMatchState state)
     {
-        GD.Print("Reseived Match State");
+        GD.Print("Received Match State");
         CallDeferred(nameof(ProcessMatchStateChange), new Marshallable<IMatchState>(state));
     }
 
@@ -213,50 +204,51 @@ public partial class PlayStateInitSystem : Resource, ISystem
         switch (operation)
         {
             case NetworkOperation.TurnEnd:
-                {
-                    _commands.Send(new TurnEndTrigger());
-                    break;
-                }
+            {
+                _commands.Send(new TurnEndTrigger());
+                break;
+            }
             case NetworkOperation.MoveUnit:
-                {
-                    var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                    _commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
-                    break;
-                }
+            {
+                var message = JsonParser.FromJson<MoveUnitMessage>(data);
+                _commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
+                break;
+            }
             case NetworkOperation.RecruitUnit:
-                {
-                    var map = _commands.GetElement<Map>();
-                    var message = JsonParser.FromJson<RecruitUnitMessage>(data);
-                    var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
-                    var locEntity = map.Locations.Get(message.Coords.Cube());
-                    _commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
-                    break;
-                }
+            {
+                var map = _commands.GetElement<Map>();
+                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
+                var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
+                var locEntity = map.Locations.Get(message.Coords.Cube());
+                _commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
+                break;
+            }
             case NetworkOperation.AttackUnit:
-                {
-                    var map = _commands.GetElement<Map>();
-                    var commander = _commands.GetElement<Commander>();
+            {
+                var map = _commands.GetElement<Map>();
+                var commander = _commands.GetElement<Commander>();
 
-                    var message = JsonParser.FromJson<AttackUnitMessage>(data);
+                var message = JsonParser.FromJson<AttackUnitMessage>(data);
 
-                    var attackerLocEntity = map.Locations.Get(message.From.Cube());
-                    var defenderLocEntity = map.Locations.Get(message.To.Cube());
+                var attackerLocEntity = map.Locations.Get(message.From.Cube());
+                var defenderLocEntity = map.Locations.Get(message.To.Cube());
 
-                    var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
-                    var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
+                var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
+                var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-                    var attackerAttacks = attackerEntity.Get<Attacks>();
-                    var defenderAttacks = defenderEntity.Get<Attacks>();
+                var attackerAttacks = attackerEntity.Get<Attacks>();
+                var defenderAttacks = defenderEntity.Get<Attacks>();
 
-                    var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
-                    var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
+                var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
+                var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
 
-                    var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity, message.Distance);
-                    commander.Enqueue(command);
+                var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity,
+                    defenderLocEntity, defenderAttackEntity, message.Distance);
+                commander.Enqueue(command);
 
-                    gameStateController.PushState(new CommanderState());
-                    break;
-                }
+                gameStateController.PushState(new CommanderState());
+                break;
+            }
         }
     }
 }

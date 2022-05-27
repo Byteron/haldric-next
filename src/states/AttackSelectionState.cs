@@ -36,7 +36,7 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
 
     public void Run(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
 
         var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(5);
@@ -68,15 +68,8 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
         var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.ChangeState(new CommanderState());
 
-        if (!_commands.TryGetElement<ISocket>(out var socket))
-        {
-            return;
-        }
-
-        if (!_commands.TryGetElement<IMatch>(out var match))
-        {
-            return;
-        }
+        if (!_commands.TryGetElement<ISocket>(out var socket)) return;
+        if (!_commands.TryGetElement<IMatch>(out var match)) return;
 
         var message = new AttackUnitMessage
         {
