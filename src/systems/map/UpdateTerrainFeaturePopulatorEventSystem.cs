@@ -5,7 +5,7 @@ using RelEcs.Godot;
 
 public class UpdateTerrainFeaturePopulatorEvent
 {
-    public List<Vector3i> Chunks { get; set; }
+    public List<Vector3i> Chunks { get; }
 
     public UpdateTerrainFeaturePopulatorEvent(List<Vector3i> chunks = null)
     {
@@ -25,13 +25,9 @@ public class UpdateTerrainFeaturePopulatorEventSystem : ISystem
         {
             foreach (var (locations, populator, cell) in chunksQuery)
             {
-                if (e.Chunks != null && !e.Chunks.Contains(cell.Value))
-                {
-                    continue;
-                }
-
+                if (e.Chunks != null && !e.Chunks.Contains(cell.Value)) continue;
+                
                 _terrainFeaturePopulator = populator;
-
                 Populate(locations);
             }
         });

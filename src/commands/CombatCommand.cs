@@ -11,7 +11,7 @@ public partial class CombatCommand : Resource, ICommandSystem
         public Entity AttackerEntity { get; set; }
         public Entity DefenderEntity { get; set; }
         public TerrainTypes TerrainTypes { get; set; }
-        public DamageEvent DamageEvent { get; set; }
+        public DamageTrigger DamageTrigger { get; set; }
         public int DefenderLevel { get; set; }
         public PackedScene Projectile { get; set; }
         public bool IsRanged { get; set; }
@@ -20,14 +20,14 @@ public partial class CombatCommand : Resource, ICommandSystem
             Entity attackerEntity,
             Entity defenderEntity,
             TerrainTypes terrainTypes,
-            DamageEvent damageEvent,
+            DamageTrigger damageTrigger,
             PackedScene projectile,
             bool isRanged)
         {
             AttackerEntity = attackerEntity;
             DefenderEntity = defenderEntity;
             TerrainTypes = terrainTypes;
-            DamageEvent = damageEvent;
+            DamageTrigger = damageTrigger;
             DefenderLevel = DefenderEntity.Get<Level>().Value;
             Projectile = projectile;
             IsRanged = isRanged;
@@ -50,7 +50,7 @@ public partial class CombatCommand : Resource, ICommandSystem
 
     Tween _tween;
 
-    Commands commands;
+    Commands _commands;
 
     public bool IsDone { get; set; }
     public bool IsRevertable { get; set; }
@@ -70,7 +70,7 @@ public partial class CombatCommand : Resource, ICommandSystem
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         GD.Seed(_seed);
 
@@ -87,7 +87,7 @@ public partial class CombatCommand : Resource, ICommandSystem
         {
             if (i < attackerStrikes)
             {
-                var damageEvent = new DamageEvent(_attackerAttackEntity, _defenderEntity, _attackerEntity.Get<Aligned>().Value);
+                var damageEvent = new DamageTrigger(_attackerAttackEntity, _defenderEntity, _attackerEntity.Get<Aligned>().Value);
                 _attackDataQueue.Enqueue(new AttackData(
                     _attackerEntity,
                     _defenderEntity,
@@ -100,7 +100,7 @@ public partial class CombatCommand : Resource, ICommandSystem
 
             if (i < defenderStrikes)
             {
-                var damageEvent = new DamageEvent(_defenderAttackEntity, _attackerEntity, _defenderEntity.Get<Aligned>().Value);
+                var damageEvent = new DamageTrigger(_defenderAttackEntity, _attackerEntity, _defenderEntity.Get<Aligned>().Value);
                 _attackDataQueue.Enqueue(new AttackData(
                     _defenderEntity,
                     _attackerEntity,
@@ -130,12 +130,12 @@ public partial class CombatCommand : Resource, ICommandSystem
         var position = coords.World() + Vector3.Up * 5f;
         var spawnLabelEvent = new SpawnFloatingLabelEvent(position, text, color);
 
-        commands.Send(spawnLabelEvent);
+        _commands.Send(spawnLabelEvent);
     }
 
     void Attack()
     {
-        _tween = commands.GetElement<SceneTree>().CreateTween();
+        _tween = _commands.GetElement<SceneTree>().CreateTween();
 
         var attackerView = _attackData.AttackerEntity.Get<UnitView>();
         var defenderView = _attackData.DefenderEntity.Get<UnitView>();
@@ -172,10 +172,10 @@ public partial class CombatCommand : Resource, ICommandSystem
         var attackerView = _attackData.AttackerEntity.Get<UnitView>();
         var defenderView = _attackData.DefenderEntity.Get<UnitView>();
 
-        var tween = commands.GetElement<SceneTree>().CreateTween();
+        var tween = _commands.GetElement<SceneTree>().CreateTween();
 
         var projectile = _attackData.Projectile.Instantiate<Projectile>();
-        commands.GetElement<SceneTree>().CurrentScene.AddChild(projectile);
+        _commands.GetElement<SceneTree>().CurrentScene.AddChild(projectile);
 
         projectile.Position = attackerView.Position + Vector3.Up * 5f;
         projectile.LookAt(defenderView.Position + Vector3.Up * 5f);
@@ -194,11 +194,11 @@ public partial class CombatCommand : Resource, ICommandSystem
 
         if (defense < GD.Randf())
         {
-            commands.Send(_attackData.DamageEvent);
+            _commands.Send(_attackData.DamageTrigger);
         }
         else
         {
-            commands.Send(new MissEvent(_attackData.DefenderEntity));
+            _commands.Send(new MissTrigger(_attackData.DefenderEntity));
         }
     }
 
@@ -206,7 +206,7 @@ public partial class CombatCommand : Resource, ICommandSystem
     {
         if (!_attackData.DefenderEntity.IsAlive)
         {
-            commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderLevel * 8));
+            _commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderLevel * 8));
             IsDone = true;
             return;
         }
@@ -217,8 +217,8 @@ public partial class CombatCommand : Resource, ICommandSystem
         }
         else
         {
-            commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderEntity.Get<Level>().Value));
-            commands.Send(new GainExperienceEvent(_attackData.DefenderEntity, _attackData.AttackerEntity.Get<Level>().Value));
+            _commands.Send(new GainExperienceEvent(_attackData.AttackerEntity, _attackData.DefenderEntity.Get<Level>().Value));
+            _commands.Send(new GainExperienceEvent(_attackData.DefenderEntity, _attackData.AttackerEntity.Get<Level>().Value));
             IsDone = true;
         }
     }

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class HighlightLocationEvent
 {
-    public Coords Coords { get; set; }
-    public int Range { get; set; }
+    public Coords Coords { get; }
+    public int Range { get; }
 
     public HighlightLocationEvent(Coords coords, int range)
     {

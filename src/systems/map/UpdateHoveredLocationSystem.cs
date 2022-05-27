@@ -7,7 +7,7 @@ public class UpdateHoveredLocationSystem : ISystem
 {
      Node3D _parent;
 
-     Vector3 previousCell = Vector3.Zero;
+     Vector3 _previousCell = Vector3.Zero;
 
     public UpdateHoveredLocationSystem(Node3D parent)
     {
@@ -16,10 +16,7 @@ public class UpdateHoveredLocationSystem : ISystem
 
     public void Run(Commands commands)
     {
-        if (!commands.HasElement<Map>())
-        {
-            return;
-        }
+        if (!commands.HasElement<Map>()) return;
 
         if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation))
         {
@@ -28,23 +25,21 @@ public class UpdateHoveredLocationSystem : ISystem
 
         var result = ShootRay();
 
-        if (result.Contains("position"))
-        {
-            var position = (Vector3)result["position"];
-            var coords = Coords.FromWorld(position);
+        if (!result.Contains("position")) return;
+        
+        var position = (Vector3)result["position"];
+        var coords = Coords.FromWorld(position);
 
-            if (previousCell != coords.Axial())
-            {
-                var map = commands.GetElement<Map>();
+        if (_previousCell == coords.Axial()) return;
+        
+        var map = commands.GetElement<Map>();
 
-                var locEntity = map.Locations.Get(coords.Cube());
+        var locEntity = map.Locations.Get(coords.Cube());
 
-                hoveredLocation.Entity = locEntity;
-                hoveredLocation.HasChanged = true;
+        hoveredLocation.Entity = locEntity;
+        hoveredLocation.HasChanged = true;
 
-                previousCell = coords.Axial();
-            }
-        }
+        _previousCell = coords.Axial();
     }
 
      Dictionary ShootRay()
@@ -55,10 +50,7 @@ public class UpdateHoveredLocationSystem : ISystem
         var camera = viewport.GetCamera3d();
         var mousePosition = viewport.GetMousePosition();
 
-        if (camera == null)
-        {
-            return new Dictionary();
-        }
+        if (camera == null) return new Dictionary();
 
         var from = camera.ProjectRayOrigin(mousePosition);
         var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
@@ -66,6 +58,7 @@ public class UpdateHoveredLocationSystem : ISystem
         var parameters3D = new PhysicsRayQueryParameters3D();
         parameters3D.From = from;
         parameters3D.To = to;
+        
         return spaceState.IntersectRay(parameters3D);
     }
 }

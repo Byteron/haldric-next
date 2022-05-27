@@ -42,10 +42,10 @@ public partial class TestMapState : GameState
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
             .Add(new LoadMapEventSystem())
             .Add(new DespawnMapTriggerSystem())
-            .Add(new SpawnScheduleEventSystem(this))
-            .Add(new SpawnMapEventSystem(this))
+            .Add(new SpawnScheduleTriggerSystem(this))
+            .Add(new SpawnMapTriggerSystem(this))
             .Add(new SpawnPlayerEventSystem())
-            .Add(new SpawnUnitEventSystem(this))
+            .Add(new SpawnUnitTriggerSystem(this))
             .Add(new RecruitUnitTriggerSystem(this))
             .Add(new UnitHoveredEventSystem())
             .Add(new UnitDeselectedEventSystem())
@@ -53,7 +53,7 @@ public partial class TestMapState : GameState
             .Add(new MoveUnitTriggerSystem())
             .Add(new HighlightLocationsEventSystem())
             .Add(new TurnEndTriggerSystem())
-            .Add(new ChangeDaytimeEventSystem())
+            .Add(new ChangeDaytimeTriggerSystem())
             .Add(new CaptureVillageTriggerSystem(this));
 
         ExitSystems.Add(new TestMapStateExitSystem())
@@ -90,11 +90,11 @@ public partial class TestMapStateInitSystem : Resource, ISystem
 {
     public string MapName;
 
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var localPlayer = new LocalPlayer();
         localPlayer.Id = 0;
@@ -122,13 +122,13 @@ public partial class TestMapStateInitSystem : Resource, ISystem
         commands.Send(new SpawnPlayerEvent(0, 0, Coords.FromOffset(1, 1), "Test", 1000));
         commands.Send(new SpawnPlayerEvent(0, 1, Coords.FromOffset(2, 2), "Test", 1000));
 
-        commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
+        commands.Send(new SpawnScheduleTrigger("DefaultSchedule"));
         commands.Send(new LoadMapEvent(MapName));
         commands.Send(new TurnEndTrigger());
     }
 
     public void OnTurnEndButtonPressed()
     {
-        commands.Send(new TurnEndTrigger());
+        _commands.Send(new TurnEndTrigger());
     }
 }

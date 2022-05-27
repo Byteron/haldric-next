@@ -3,28 +3,23 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public class AdvanceEvent
+public class AdvanceTrigger
 {
-    public Entity Entity { get; set; }
+    public Entity Entity { get; }
 
-    public AdvanceEvent(Entity entity)
+    public AdvanceTrigger(Entity entity)
     {
         Entity = entity;
     }
 }
 
-public class AdvanceEventSystem : ISystem
+public class AdvanceTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<UnitPanel>(out var unitPanel))
+        commands.Receive((AdvanceTrigger t) =>
         {
-            return;
-        }
-
-        commands.Receive((AdvanceEvent advanceEvent) =>
-        {
-            var unitEntity = advanceEvent.Entity;
+            var unitEntity = t.Entity;
 
             var health = unitEntity.Get<Attribute<Health>>();
             var experience = unitEntity.Get<Attribute<Experience>>();
@@ -39,10 +34,7 @@ public class AdvanceEventSystem : ISystem
 
             var advancements = unitEntity.Get<Advancements>();
 
-            if (advancements.List.Count == 0)
-            {
-                return;
-            }
+            if (advancements.List.Count == 0) return;
 
             var unitTypeId = advancements.List[0];
             var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();

@@ -13,7 +13,7 @@ public class TurnEndTriggerSystem : ISystem
             var scenario = commands.GetElement<Scenario>();
             scenario.EndTurn();
 
-            if (scenario.HasRoundChanged()) commands.Send(new ChangeDaytimeEvent());
+            if (scenario.HasRoundChanged()) commands.Send(new ChangeDaytimeTrigger());
 
             var sideEntity = scenario.GetCurrentSideEntity();
 

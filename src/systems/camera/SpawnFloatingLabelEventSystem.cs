@@ -4,9 +4,9 @@ using Godot;
 
 public class SpawnFloatingLabelEvent
 {
-    public Vector3 Position { get; set; }
-    public string Text { get; set; }
-    public Color Color { get; set; }
+    public Vector3 Position { get; }
+    public string Text { get; }
+    public Color Color { get; }
 
     public SpawnFloatingLabelEvent(Vector3 position, string text, Color color)
     {

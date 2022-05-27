@@ -16,7 +16,7 @@ public class Metrics
 
     public const float CellPerturbStrength = 1f;
 
-    public static readonly Vector3[] corners = {
+    public static readonly Vector3[] Corners = {
         new Vector3(-InnerRadius, 0f, 0.5f * OuterRadius),
         new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
         new Vector3(0f, 0f, -OuterRadius),
@@ -44,27 +44,27 @@ public class Metrics
 
     public static Vector3 GetBridge(Direction direction, PlateauArea plateauArea)
     {
-        return (corners[(int)direction] + corners[(int)direction.Next()]) * plateauArea.BlendFactor;
+        return (Corners[(int)direction] + Corners[(int)direction.Next()]) * plateauArea.BlendFactor;
     }
 
     public static Vector3 GetFirstCorner(Direction direction)
     {
-        return corners[(int)direction];
+        return Corners[(int)direction];
     }
 
     public static Vector3 GetSecondCorner(Direction direction)
     {
-        return corners[(int)direction.Next()];
+        return Corners[(int)direction.Next()];
     }
 
     public static Vector3 GetFirstSolidCorner(Direction direction, PlateauArea plateauArea)
     {
-        return corners[(int)direction] * plateauArea.SolidFactor;
+        return Corners[(int)direction] * plateauArea.SolidFactor;
     }
 
     public static Vector3 GetSecondSolidCorner(Direction direction, PlateauArea plateauArea)
     {
-        return corners[(int)direction.Next()] * plateauArea.SolidFactor;
+        return Corners[(int)direction.Next()] * plateauArea.SolidFactor;
     }
 
     public static Vector3 GetEdgeMiddle(Direction direction)

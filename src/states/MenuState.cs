@@ -41,11 +41,11 @@ public class MenuStateExitSystem : ISystem
 
 public partial class MenuStateInitSystem : Resource, ISystem
 {
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(10);
@@ -68,21 +68,21 @@ public partial class MenuStateInitSystem : Resource, ISystem
 
     void OnLobbyButtonPressed()
     {
-        commands.GetElement<GameStateController>().PushState(new LoginState());
+        _commands.GetElement<GameStateController>().PushState(new LoginState());
     }
 
      void OnTestButtonPressed()
     {
-        commands.GetElement<GameStateController>().PushState(new TestMapSelectionState());
+        _commands.GetElement<GameStateController>().PushState(new TestMapSelectionState());
     }
 
      void OnEditorButtonPressed()
     {
-        commands.GetElement<GameStateController>().PushState(new EditorState());
+        _commands.GetElement<GameStateController>().PushState(new EditorState());
     }
 
     public void OnQuitButtonPressed()
     {
-        commands.GetElement<SceneTree>().Quit();
+        _commands.GetElement<SceneTree>().Quit();
     }
 }

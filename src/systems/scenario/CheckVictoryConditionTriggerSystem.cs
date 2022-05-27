@@ -25,16 +25,10 @@ public class CheckVictoryConditionTriggerSystem : ISystem
 
                 foreach (var side in query)
                 {
-                    if (side.Value == playerSide)
-                    {
-                        leaderCount += 1;
-                    }
+                    if (side.Value == playerSide) leaderCount += 1;
                 }
 
-                if (leaderCount > 0)
-                {
-                    aliveFactions.Add(sideEntity);
-                }
+                if (leaderCount > 0) aliveFactions.Add(sideEntity);
             }
 
             if (aliveFactions.Count != 1) return;

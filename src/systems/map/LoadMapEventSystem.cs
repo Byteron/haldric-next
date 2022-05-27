@@ -4,7 +4,7 @@ using RelEcs.Godot;
 
 public class LoadMapEvent
 {
-    public string Name { get; set; }
+    public string Name { get; }
 
     public LoadMapEvent(string name)
     {
@@ -14,14 +14,14 @@ public class LoadMapEvent
 
 public class LoadMapEventSystem : ISystem
 {
-    public static string Path = "res://data/maps/";
+    const string Path = "res://data/maps/";
 
     public void Run(Commands commands)
     {
         commands.Receive((LoadMapEvent e) =>
         {
             var mapData = Loader.LoadJson<MapData>(Path + e.Name + ".json");
-            commands.Send(new SpawnMapEvent(mapData));
+            commands.Send(new SpawnMapTrigger(mapData));
         });
     }
 }

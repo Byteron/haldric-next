@@ -9,7 +9,7 @@ public partial class AttackSelectionView : Control
     [Signal] public delegate void AttackSelected();
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export] PackedScene AttackSelectionOption;
+    [Export] PackedScene _attackSelectionOption;
 
      ButtonGroup _buttonGroup = new();
 
@@ -47,7 +47,7 @@ public partial class AttackSelectionView : Control
 
         foreach (var attackPair in attackPairs)
         {
-            var optionButton = AttackSelectionOption.Instantiate<AttackSelectionOption>();
+            var optionButton = _attackSelectionOption.Instantiate<AttackSelectionOption>();
             optionButton.Connect("pressed", new Callable(this, "OnAttackOptionSelected"), new Godot.Collections.Array() { optionButton });
             optionButton.AttackerAttackEntity = attackPair.Key;
             optionButton.DefenderAttackEntity = attackPair.Value;

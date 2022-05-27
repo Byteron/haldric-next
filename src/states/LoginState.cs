@@ -42,11 +42,11 @@ public class LoginStatePauseSystem : ISystem
 
 public partial class LoginStateInitSystem : Resource, ISystem
 {
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var view = Scenes.Instantiate<LoginView>();
 
@@ -61,18 +61,18 @@ public partial class LoginStateInitSystem : Resource, ISystem
 
     public void OnLoginPressed(string email, string password, string username)
     {
-        if (!commands.HasElement<Client>())
+        if (!_commands.HasElement<Client>())
         {
-            var settings = commands.GetElement<ServerSettings>();
+            var settings = _commands.GetElement<ServerSettings>();
             var client = new Client(settings.Scheme, settings.Host, settings.Port, settings.ServerKey);
-            commands.AddElement(client);
+            _commands.AddElement(client);
         }
 
-        commands.Send(new LoginEvent(email, password, username));
+        _commands.Send(new LoginEvent(email, password, username));
     }
 
     public void OnCancelPressed()
     {
-        commands.GetElement<GameStateController>().PopState();
+        _commands.GetElement<GameStateController>().PopState();
     }
 }

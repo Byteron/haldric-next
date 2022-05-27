@@ -5,7 +5,7 @@ using RelEcs.Godot;
 
 public class EditorEditPlayerSystem : ISystem
 {
-    Node3D _parent;
+    readonly Node3D _parent;
 
     Vector3 _previousCoords;
 

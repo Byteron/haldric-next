@@ -21,11 +21,11 @@ public class TestMapSelectionStateExitSystem : ISystem
 
 public partial class TestMapSelectionStateInitSystem : Resource, ISystem
 {
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var view = Scenes.Instantiate<ScenarioSelectionView>();
 
@@ -38,13 +38,13 @@ public partial class TestMapSelectionStateInitSystem : Resource, ISystem
 
     public void OnContinuePressed(string mapName)
     {
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.ChangeState(new TestMapState(mapName));
     }
 
     public void OnCancelPressed()
     {
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.PopState();
     }
 }

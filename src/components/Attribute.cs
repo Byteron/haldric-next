@@ -8,7 +8,7 @@ public struct Moves { } // For Attribute<T>
 
 public struct Actions { } // For Attribute<T>
 
-public class Attribute<T>
+public class Attribute<CT>
 {
     public int Value { get; set; }
     public int Max { get; set; }

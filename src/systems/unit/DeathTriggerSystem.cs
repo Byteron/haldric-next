@@ -1,23 +1,23 @@
 using RelEcs;
 using RelEcs.Godot;
 
-public class DeathEvent
+public class DeathTrigger
 {
     public Entity Entity { get; set; }
 
-    public DeathEvent(Entity entity)
+    public DeathTrigger(Entity entity)
     {
         Entity = entity;
     }
 }
 
-public class DeathEventSystem : ISystem
+public class DeathTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
         var checkVictory = false;
 
-        commands.Receive((DeathEvent deathEvent) =>
+        commands.Receive((DeathTrigger deathEvent) =>
         {
             var map = commands.GetElement<Map>();
 

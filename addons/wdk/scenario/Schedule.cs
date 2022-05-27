@@ -5,48 +5,48 @@ namespace Haldric.Wdk
 {
 	public partial class Schedule : Node
 	{
-		int current;
+		int _current;
 
-		Node daytimes;
-		WorldEnvironment env;
-		Node3D lightContainer;
-		List<DirectionalLight3D> lights = new();
+		Node _daytimes;
+		WorldEnvironment _env;
+		Node3D _lightContainer;
+		List<DirectionalLight3D> _lights = new();
 
 		public override void _Ready()
 		{
-			daytimes = GetNode<Node>("Daytimes");
-			env = GetNode<WorldEnvironment>("WorldEnvironment");
-			lightContainer = GetNode<Node3D>("Pivot/LightContainer");
+			_daytimes = GetNode<Node>("Daytimes");
+			_env = GetNode<WorldEnvironment>("WorldEnvironment");
+			_lightContainer = GetNode<Node3D>("Pivot/LightContainer");
 
-			foreach (Node child in lightContainer.GetChildren())
+			foreach (Node child in _lightContainer.GetChildren())
 			{
 				if (child is DirectionalLight3D light)
 				{
-					lights.Add(light);
+					_lights.Add(light);
 				}
 			}
 		}
 
 		public void Next()
 		{
-			current = (current + 1) % daytimes.GetChildCount();
+			_current = (_current + 1) % _daytimes.GetChildCount();
 			TweenVisuals();
 		}
 
 		public void Set(int index)
 		{
-			current = index;
+			_current = index;
 			SetVisuals();
 		}
 
 		public Daytime GetCurrentDaytime()
 		{
-			return daytimes.GetChild<Daytime>(current);
+			return _daytimes.GetChild<Daytime>(_current);
 		}
 
 		public int GetCurrentDaytimeIndex()
 		{
-			return current;
+			return _current;
 		}
 
 		void TweenVisuals()
@@ -61,15 +61,15 @@ namespace Haldric.Wdk
 			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.SetEase(Tween.EaseType.InOut);
 
-			tween.Parallel().TweenProperty(env.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyEnergy, 2.5f);
-			tween.Parallel().TweenProperty(env.Environment.Sky.SkyMaterial, "sky_curve", daytime.SkyCurve, 2.5f);
-			tween.Parallel().TweenProperty(env.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyTopColor, 2.5f);
-			tween.Parallel().TweenProperty(env.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyHorizonColor, 2.5f);
-			tween.Parallel().TweenProperty(env.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.SkyHorizonColor, 2.5f);
+			tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyEnergy, 2.5f);
+			tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_curve", daytime.SkyCurve, 2.5f);
+			tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyTopColor, 2.5f);
+			tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyHorizonColor, 2.5f);
+			tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.SkyHorizonColor, 2.5f);
 
-			for (int i = 0; i < lights.Count; i++)
+			for (int i = 0; i < _lights.Count; i++)
 			{
-				var light = lights[i];
+				var light = _lights[i];
 				var config = configs[i];
 
 				var lightTween = GetTree().CreateTween();
@@ -111,14 +111,14 @@ namespace Haldric.Wdk
 
 			GD.Print("Daytime: ", daytime.Name);
 
-			env.Environment.Sky.SkyMaterial.Set("sky_energy", daytime.SkyEnergy);
-			env.Environment.Sky.SkyMaterial.Set("sky_curve", daytime.SkyCurve);
-			env.Environment.Sky.SkyMaterial.Set("sky_top_color", daytime.SkyTopColor);
-			env.Environment.Sky.SkyMaterial.Set("sky_horizon_color", daytime.SkyHorizonColor);
+			_env.Environment.Sky.SkyMaterial.Set("sky_energy", daytime.SkyEnergy);
+			_env.Environment.Sky.SkyMaterial.Set("sky_curve", daytime.SkyCurve);
+			_env.Environment.Sky.SkyMaterial.Set("sky_top_color", daytime.SkyTopColor);
+			_env.Environment.Sky.SkyMaterial.Set("sky_horizon_color", daytime.SkyHorizonColor);
 
-			for (int i = 0; i < lights.Count; i++)
+			for (int i = 0; i < _lights.Count; i++)
 			{
-				var light = lights[i];
+				var light = _lights[i];
 				var config = configs[i];
 
 				light.Rotation = new Vector3(Mathf.Deg2Rad(config.Angle), 0, 0);
@@ -133,7 +133,7 @@ namespace Haldric.Wdk
 		void SetLightAngle(int index, int angle)
 		{
 			GD.Print("Resetting Angle: ", angle);
-			lights[index].Rotation = new Vector3(Mathf.Deg2Rad(angle), 0, 0);
+			_lights[index].Rotation = new Vector3(Mathf.Deg2Rad(angle), 0, 0);
 		}
 	}
 }

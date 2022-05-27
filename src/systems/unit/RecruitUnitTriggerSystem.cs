@@ -28,23 +28,20 @@ public class RecruitUnitTriggerSystem : ISystem
 
     public void Run(Commands commands)
     {
-        if (Data.Instance.Units.Count == 0)
-        {
-            return;
-        }
+        if (Data.Instance.Units.Count == 0) return;
 
-        commands.Receive((RecruitUnitTrigger recruitEvent) =>
+        commands.Receive((RecruitUnitTrigger t) =>
         {
             var scenario = commands.GetElement<Scenario>();
             var sideEntity = scenario.GetCurrentSideEntity();
 
             var gold = sideEntity.Get<Gold>();
 
-            var locEntity = recruitEvent.LocEntity;
+            var locEntity = t.LocEntity;
 
             if (locEntity.Has<HasUnit>())
             {
-                GD.PrintErr("Location already has a unit! Not recruiting: " + recruitEvent.UnitType.Name);
+                GD.PrintErr("Location already has a unit! Not recruiting: " + t.UnitType.Name);
                 return;
             }
             
@@ -53,7 +50,7 @@ public class RecruitUnitTriggerSystem : ISystem
             var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
             var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
-            var unitType = recruitEvent.UnitType;
+            var unitType = t.UnitType;
             _parent.AddChild(unitType);
             var unitView = unitType.UnitView;
             unitType.RemoveChild(unitView);
@@ -70,7 +67,7 @@ public class RecruitUnitTriggerSystem : ISystem
 
             unitView.Position = position;
 
-            unitEntity.Add(new Side { Value = recruitEvent.Side });
+            unitEntity.Add(new Side { Value = t.Side });
             unitEntity.Add(freeCoords.Clone());
 
             unitEntity.Get<Attribute<Moves>>().Empty();
@@ -85,7 +82,7 @@ public class RecruitUnitTriggerSystem : ISystem
 
             unitEntity.Add(unitPlate);
 
-            recruitEvent.LocEntity.Add(new HasUnit { Entity = unitEntity });
+            t.LocEntity.Add(new HasUnit { Entity = unitEntity });
         });
     }
 }

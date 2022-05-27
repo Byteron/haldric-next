@@ -56,26 +56,26 @@ public partial class PlayState : GameState
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
             .Add(new LoadMapEventSystem())
             .Add(new DespawnMapTriggerSystem())
-            .Add(new SpawnScheduleEventSystem(this))
-            .Add(new SpawnMapEventSystem(this))
+            .Add(new SpawnScheduleTriggerSystem(this))
+            .Add(new SpawnMapTriggerSystem(this))
             .Add(new SpawnPlayersEventSystem())
             .Add(new SpawnPlayerEventSystem())
-            .Add(new SpawnUnitEventSystem(this))
+            .Add(new SpawnUnitTriggerSystem(this))
             .Add(new RecruitUnitTriggerSystem(this))
             .Add(new UnitHoveredEventSystem())
             .Add(new UnitDeselectedEventSystem())
             .Add(new UnitSelectedEventSystem())
             .Add(new MoveUnitTriggerSystem())
             .Add(new HighlightLocationsEventSystem())
-            .Add(new DamageEventSystem())
-            .Add(new MissEventSystem())
+            .Add(new DamageTriggerSystem())
+            .Add(new MissTriggerSystem())
             .Add(new GainExperienceEventSystem())
-            .Add(new AdvanceEventSystem())
-            .Add(new DeathEventSystem())
+            .Add(new AdvanceTriggerSystem())
+            .Add(new DeathTriggerSystem())
             .Add(new CaptureVillageTriggerSystem(this))
             .Add(new SpawnFloatingLabelEventSystem())
             .Add(new TurnEndTriggerSystem())
-            .Add(new ChangeDaytimeEventSystem())
+            .Add(new ChangeDaytimeTriggerSystem())
             .Add(new CheckVictoryConditionTriggerSystem());
 
         ExitSystems.Add(new PlayStateExitSystem())
@@ -140,19 +140,19 @@ public partial class PlayStateInitSystem : Resource, ISystem
     public Dictionary<int, int> Players;
     public Dictionary<int, int> PlayerGolds;
 
-    ISocket socket;
-    IMatch match;
+    ISocket _socket;
+    IMatch _match;
 
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
-        socket = commands.GetElement<ISocket>();
-        socket.ReceivedMatchState += OnReceivedMatchState;
+        _socket = commands.GetElement<ISocket>();
+        _socket.ReceivedMatchState += OnReceivedMatchState;
 
-        match = commands.GetElement<IMatch>();
+        _match = commands.GetElement<IMatch>();
 
         var matchPlayers = commands.GetElement<MatchPlayers>();
 
@@ -179,7 +179,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
         canvasLayer.AddChild(terrainPanel);
         commands.AddElement(terrainPanel);
 
-        commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
+        commands.Send(new SpawnScheduleTrigger("DefaultSchedule"));
         commands.Send(new LoadMapEvent(MapName));
         commands.Send(new SpawnPlayersEvent(Factions, Players, PlayerGolds));
         commands.Send(new TurnEndTrigger());
@@ -189,8 +189,8 @@ public partial class PlayStateInitSystem : Resource, ISystem
     {
         var opCode = (int)NetworkOperation.TurnEnd;
         var state = new TurnEndMessage();
-        socket.SendMatchStateAsync(match.Id, opCode, state.ToJson());
-        commands.Send(new TurnEndTrigger());
+        _socket.SendMatchStateAsync(_match.Id, opCode, state.ToJson());
+        _commands.Send(new TurnEndTrigger());
     }
 
     void OnReceivedMatchState(IMatchState state)
@@ -202,7 +202,7 @@ public partial class PlayStateInitSystem : Resource, ISystem
     void ProcessMatchStateChange(Marshallable<IMatchState> marshallableState)
     {
         var state = marshallableState.Value;
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
 
         var enc = System.Text.Encoding.UTF8;
         var data = (string)enc.GetString(state.State);
@@ -214,28 +214,28 @@ public partial class PlayStateInitSystem : Resource, ISystem
         {
             case NetworkOperation.TurnEnd:
                 {
-                    commands.Send(new TurnEndTrigger());
+                    _commands.Send(new TurnEndTrigger());
                     break;
                 }
             case NetworkOperation.MoveUnit:
                 {
                     var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                    commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
+                    _commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
                     break;
                 }
             case NetworkOperation.RecruitUnit:
                 {
-                    var map = commands.GetElement<Map>();
+                    var map = _commands.GetElement<Map>();
                     var message = JsonParser.FromJson<RecruitUnitMessage>(data);
                     var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
                     var locEntity = map.Locations.Get(message.Coords.Cube());
-                    commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
+                    _commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
                     break;
                 }
             case NetworkOperation.AttackUnit:
                 {
-                    var map = commands.GetElement<Map>();
-                    var commander = commands.GetElement<Commander>();
+                    var map = _commands.GetElement<Map>();
+                    var commander = _commands.GetElement<Commander>();
 
                     var message = JsonParser.FromJson<AttackUnitMessage>(data);
 

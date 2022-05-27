@@ -29,7 +29,7 @@ public class UnitHoveredEventSystem : ISystem
             if (unitEntity.Has<Attacks>())
             {
                 s += "\nAttacks:";
-                foreach (Entity attackEntity in unitEntity.Get<Attacks>().List)
+                foreach (var attackEntity in unitEntity.Get<Attacks>().List)
                 {
                     var attackId = attackEntity.Get<Id>();
                     var damage = attackEntity.Get<Damage>();
@@ -46,12 +46,9 @@ public class UnitHoveredEventSystem : ISystem
                 s += "\nMobility: ";
             }
 
-            foreach (var item in mobility.Dict)
+            foreach (var (terrainType, cost) in mobility.Dict)
             {
-                var terrainType = item.Key;
-                var cost = item.Value;
-
-                s += terrainType.ToString() + ": " + cost;
+                s += terrainType + ": " + cost;
             }
 
             var weaknesses = unitEntity.Get<Weaknesses>();

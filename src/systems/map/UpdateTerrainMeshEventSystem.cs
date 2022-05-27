@@ -5,7 +5,7 @@ using RelEcs.Godot;
 
 public class UpdateTerrainMeshEvent
 {
-    public List<Vector3i> Chunks { get; set; }
+    public List<Vector3i> Chunks { get; }
 
     public UpdateTerrainMeshEvent(List<Vector3i> chunks = null)
     {
@@ -15,24 +15,24 @@ public class UpdateTerrainMeshEvent
 
 public class EdgeVertices
 {
-    public Vector3 v1, v2, v3, v4, v5;
+    public Vector3 V1, V2, V3, V4, V5;
 
     public EdgeVertices(Vector3 corner1, Vector3 corner2)
     {
-        v1 = corner1;
-        v2 = corner1.Lerp(corner2, 0.25f);
-        v3 = corner1.Lerp(corner2, 0.5f);
-        v4 = corner1.Lerp(corner2, 0.75f);
-        v5 = corner2;
+        V1 = corner1;
+        V2 = corner1.Lerp(corner2, 0.25f);
+        V3 = corner1.Lerp(corner2, 0.5f);
+        V4 = corner1.Lerp(corner2, 0.75f);
+        V5 = corner2;
     }
 
     public EdgeVertices(Vector3 corner1, Vector3 corner2, float outerStep)
     {
-        v1 = corner1;
-        v2 = corner1.Lerp(corner2, outerStep);
-        v3 = corner1.Lerp(corner2, 0.5f);
-        v4 = corner1.Lerp(corner2, 1f - outerStep);
-        v5 = corner2;
+        V1 = corner1;
+        V2 = corner1.Lerp(corner2, outerStep);
+        V3 = corner1.Lerp(corner2, 0.5f);
+        V4 = corner1.Lerp(corner2, 1f - outerStep);
+        V5 = corner2;
     }
 }
 
@@ -55,10 +55,7 @@ public class UpdateTerrainMeshEventSystem : ISystem
 
             foreach (var (locs, mesh, collider, cell) in chunkQuery)
             {
-                if (e.Chunks != null && !e.Chunks.Contains(cell.Value))
-                {
-                    continue;
-                }
+                if (e.Chunks != null && !e.Chunks.Contains(cell.Value)) continue;
 
                 _terrainMesh = mesh;
 
@@ -160,8 +157,8 @@ public class UpdateTerrainMeshEventSystem : ISystem
         bridge.y = (nCoords.World().y + nElevation.Height + nElevationOffset.Value) - (coords.World().y + elevation.Height + elevationOffset.Value);
 
         var e2 = new EdgeVertices(
-            e1.v1 + bridge,
-            e1.v5 + bridge
+            e1.V1 + bridge,
+            e1.V5 + bridge
         );
 
         TriangulateSlope(e1, e2, locIndex, nLocIndex.Value);
@@ -177,7 +174,7 @@ public class UpdateTerrainMeshEventSystem : ISystem
         var nextTerrainEntity = nextLocEntity.Get<HasBaseTerrain>().Entity;
         var nextElevationOffset = nextTerrainEntity.Get<ElevationOffset>();
 
-        var v6 = e1.v5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
+        var v6 = e1.V5 + Metrics.GetBridge(direction.Next(), nextPlateauArea);
         v6.y = nextElevation.Height + nextElevationOffset.Value;
 
         var indices = new Vector3();
@@ -187,21 +184,21 @@ public class UpdateTerrainMeshEventSystem : ISystem
             indices.x = locIndex;
             indices.y = nLocIndex.Value;
             indices.z = nextLocIndex.Value;
-            TriangulateCorner(e1.v5, e2.v5, v6, indices);
+            TriangulateCorner(e1.V5, e2.V5, v6, indices);
         }
         else if (nElevation.Value <= nextElevation.Value)
         {
             indices.x = nLocIndex.Value;
             indices.y = nextLocIndex.Value;
             indices.z = locIndex;
-            TriangulateCorner(e2.v5, v6, e1.v5, indices);
+            TriangulateCorner(e2.V5, v6, e1.V5, indices);
         }
         else
         {
             indices.x = nextLocIndex.Value;
             indices.y = locIndex;
             indices.z = nLocIndex.Value;
-            TriangulateCorner(v6, e1.v5, e2.v5, indices);
+            TriangulateCorner(v6, e1.V5, e2.V5, indices);
         }
     }
 
@@ -214,10 +211,10 @@ public class UpdateTerrainMeshEventSystem : ISystem
     void TriangulatePlateau(Vector3 center, EdgeVertices edge, float index)
     {
         // _terrainMesh.AddTrianglePerturbed(edge.v1, center, edge.v5);
-        _terrainMesh.AddTrianglePerturbed(edge.v2, center, edge.v1);
-        _terrainMesh.AddTrianglePerturbed(edge.v3, center, edge.v2);
-        _terrainMesh.AddTrianglePerturbed(edge.v4, center, edge.v3);
-        _terrainMesh.AddTrianglePerturbed(edge.v5, center, edge.v4);
+        _terrainMesh.AddTrianglePerturbed(edge.V2, center, edge.V1);
+        _terrainMesh.AddTrianglePerturbed(edge.V3, center, edge.V2);
+        _terrainMesh.AddTrianglePerturbed(edge.V4, center, edge.V3);
+        _terrainMesh.AddTrianglePerturbed(edge.V5, center, edge.V4);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
         _terrainMesh.AddTriangleCellData(new Vector3(index, index, index), ColorRed);
@@ -227,10 +224,10 @@ public class UpdateTerrainMeshEventSystem : ISystem
     void TriangulateSlope(EdgeVertices e1, EdgeVertices e2, float index1, float index2)
     {
         // _terrainMesh.AddQuadPerturbed(e1.v1, e1.v5, e2.v1, e2.v5);
-        _terrainMesh.AddQuadPerturbed(e1.v2, e1.v1, e2.v2, e2.v1);
-        _terrainMesh.AddQuadPerturbed(e1.v3, e1.v2, e2.v3, e2.v2);
-        _terrainMesh.AddQuadPerturbed(e1.v4, e1.v3, e2.v4, e2.v3);
-        _terrainMesh.AddQuadPerturbed(e1.v5, e1.v4, e2.v5, e2.v4);
+        _terrainMesh.AddQuadPerturbed(e1.V2, e1.V1, e2.V2, e2.V1);
+        _terrainMesh.AddQuadPerturbed(e1.V3, e1.V2, e2.V3, e2.V2);
+        _terrainMesh.AddQuadPerturbed(e1.V4, e1.V3, e2.V4, e2.V3);
+        _terrainMesh.AddQuadPerturbed(e1.V5, e1.V4, e2.V5, e2.V4);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);
         _terrainMesh.AddQuadCellData(new Vector3(index1, index2, index1), ColorRed, ColorGreen);

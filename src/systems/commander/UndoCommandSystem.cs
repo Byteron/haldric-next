@@ -7,10 +7,10 @@ public class UndoCommandSystem : ISystem
     {
         var commander = commands.GetElement<Commander>();
         var gameStateController = commands.GetElement<GameStateController>();
-        if (Input.IsActionJustPressed("undo"))
-        {
-            commander.Undo();
-            gameStateController.PushState(new CommanderState());
-        }
+        
+        if (!Input.IsActionJustPressed("undo")) return;
+        
+        commander.Undo();
+        gameStateController.PushState(new CommanderState());
     }
 }

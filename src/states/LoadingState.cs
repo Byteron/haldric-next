@@ -28,13 +28,13 @@ public partial class LoadingStateInitSystem : Resource, ISystem
     Queue<LoadingData> _loadingStates = new Queue<LoadingData>();
     LoadingStateView _view = null;
 
-    GameState state;
+    GameState _state;
 
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
         _loadingStates.Enqueue(new LoadingData("Schedules", Data.Instance.LoadSchedules));
@@ -51,15 +51,15 @@ public partial class LoadingStateInitSystem : Resource, ISystem
 
     async void Loading()
     {
-        var sceneTree = commands.GetElement<SceneTree>();
-        var gameStates = commands.GetElement<GameStateController>();
+        var sceneTree = _commands.GetElement<SceneTree>();
+        var gameStates = _commands.GetElement<GameStateController>();
 
         while (_loadingStates.Count > 0)
         {
             var loadingData = _loadingStates.Dequeue();
             _view.Label.Text = $"Loading {loadingData.Info} ...";
             await ToSignal(sceneTree, "process_frame");
-            loadingData.Action(commands);
+            loadingData.Action(_commands);
         }
 
         gameStates.ChangeState(new MenuState());

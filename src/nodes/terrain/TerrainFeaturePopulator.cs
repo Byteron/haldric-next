@@ -448,18 +448,18 @@ public partial class TerrainFeaturePopulator : Node3D
 
      RID NewMultiMesh(Mesh mesh)
     {
-        var multimeshRID = RenderingServer.MultimeshCreate();
-        var instanceRID = RenderingServer.InstanceCreate();
+        var multimeshRid = RenderingServer.MultimeshCreate();
+        var instanceRid = RenderingServer.InstanceCreate();
 
-        var scenarioRID = GetWorld3d().Scenario;
+        var scenarioRid = GetWorld3d().Scenario;
 
-        RenderingServer.MultimeshSetMesh(multimeshRID, mesh.GetRid());
-        RenderingServer.InstanceSetScenario(instanceRID, scenarioRID);
-        RenderingServer.InstanceSetBase(instanceRID, multimeshRID);
+        RenderingServer.MultimeshSetMesh(multimeshRid, mesh.GetRid());
+        RenderingServer.InstanceSetScenario(instanceRid, scenarioRid);
+        RenderingServer.InstanceSetBase(instanceRid, multimeshRid);
 
-        _rids.Add(multimeshRID);
-        _rids.Add(instanceRID);
+        _rids.Add(multimeshRid);
+        _rids.Add(instanceRid);
 
-        return multimeshRID;
+        return multimeshRid;
     }
 }

@@ -7,9 +7,9 @@ public partial class CommanderState : GameState
             .Add(new UpdateCameraOperatorSystem())
             .Add(new UpdateUnitPlateSystem())
             .Add(new UnitDeselectedEventSystem())
-            .Add(new DamageEventSystem())
-            .Add(new MissEventSystem())
-            .Add(new DeathEventSystem())
+            .Add(new DamageTriggerSystem())
+            .Add(new MissTriggerSystem())
+            .Add(new DeathTriggerSystem())
             .Add(new SpawnFloatingLabelEventSystem());
 
     }

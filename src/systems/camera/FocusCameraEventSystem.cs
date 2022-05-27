@@ -15,14 +15,8 @@ public class FocusCameraEventSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        if (!commands.TryGetElement<CameraOperator>(out var cameraOperator))
-        {
-            return;
-        }
+        if (!commands.TryGetElement<CameraOperator>(out var cameraOperator)) return;
 
-        commands.Receive((FocusCameraEvent focusEvent) =>
-        {
-            cameraOperator.Focus(focusEvent.Coords.World());
-        });
+        commands.Receive((FocusCameraEvent focusEvent) => cameraOperator.Focus(focusEvent.Coords.World()));
     }
 }

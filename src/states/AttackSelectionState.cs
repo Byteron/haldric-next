@@ -32,11 +32,11 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
     public Dictionary<Entity, Entity> AttackPairs { get; set; }
     public int AttackDistance { get; set; }
 
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(5);
@@ -53,10 +53,10 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
 
     void OnAttackSelected()
     {
-        commands.Send(new UnitDeselectedEvent());
+        _commands.Send(new UnitDeselectedEvent());
 
-        var commander = commands.GetElement<Commander>();
-        var view = commands.GetElement<AttackSelectionView>();
+        var commander = _commands.GetElement<Commander>();
+        var view = _commands.GetElement<AttackSelectionView>();
 
         var attackerAttackEntity = view.GetSelectedAttackerAttack();
         var defenderAttackEntity = view.GetSelectedDefenderAttack();
@@ -65,15 +65,15 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
 
         commander.Enqueue(new CombatCommand(seed, AttackerLocEntity, attackerAttackEntity, DefenderLocEntity, defenderAttackEntity, AttackDistance));
 
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.ChangeState(new CommanderState());
 
-        if (!commands.TryGetElement<ISocket>(out var socket))
+        if (!_commands.TryGetElement<ISocket>(out var socket))
         {
             return;
         }
 
-        if (!commands.TryGetElement<IMatch>(out var match))
+        if (!_commands.TryGetElement<IMatch>(out var match))
         {
             return;
         }
@@ -93,7 +93,7 @@ public partial class AttackSelectionStateInitSystem : Resource, ISystem
 
     void OnCancelButtonPressed()
     {
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.PopState();
     }
 }

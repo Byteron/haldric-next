@@ -14,7 +14,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
     Tween _tween;
 
-    Commands commands;
+    Commands _commands;
 
     public MoveUnitCommand(Path path)
     {
@@ -24,7 +24,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         // source location does not have a unit to move
         if (!_path.Start.Has<HasUnit>())
@@ -102,13 +102,13 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
                 if (captured.Value != side.Value)
                 {
                     moves.Empty();
-                    commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                    _commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
                 }
             }
             else
             {
                 moves.Empty();
-                commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                _commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
             }
         }
 
@@ -117,7 +117,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
         IsDone = true;
     }
 
-    int index;
+    int _index;
 
     public bool IsDone { get; set; }
     public bool IsRevertable { get; set; }
@@ -125,9 +125,9 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
 
     void OnUnitStepFinished()
     {
-        if (index == _path.Checkpoints.Count)
+        if (_index == _path.Checkpoints.Count)
         {
-            index = 0;
+            _index = 0;
         }
         else
         {
@@ -141,7 +141,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
                 return;
             }
 
-            _targetLocEntity = _path.Checkpoints.ToArray()[index];
+            _targetLocEntity = _path.Checkpoints.ToArray()[_index];
 
             var coords = _targetLocEntity.Get<Coords>();
 
@@ -153,7 +153,7 @@ public partial class MoveUnitCommand : Resource, ICommandSystem
             if (IsReverted) moves.Increase(movementCosts);
             else moves.Decrease(movementCosts);
 
-            index += 1;
+            _index += 1;
         }
     }
 }

@@ -21,12 +21,12 @@ public partial class EditorState : GameState
             .Add(new UpdateMapTriggerSystem())
             .Add(new UpdateTerrainMeshEventSystem())
             .Add(new UpdateTerrainFeaturePopulatorEventSystem())
-            .Add(new SaveMapEventSystem())
+            .Add(new SaveMapTriggerSystem())
             .Add(new LoadMapEventSystem())
             .Add(new DespawnMapTriggerSystem())
-            .Add(new SpawnScheduleEventSystem(this))
-            .Add(new SpawnMapEventSystem(this))
-            .Add(new ChangeDaytimeEventSystem());
+            .Add(new SpawnScheduleTriggerSystem(this))
+            .Add(new SpawnMapTriggerSystem(this))
+            .Add(new ChangeDaytimeTriggerSystem());
 
         ExitSystems.Add(new EditorStateExitSystem())
             .Add(new DespawnCameraOperatorSystem());
@@ -56,9 +56,9 @@ public class EditorStateInitSystem : ISystem
 
         commands.AddElement(editorView);
 
-        commands.Send(new SpawnScheduleEvent("DefaultSchedule"));
-        commands.Send(new SpawnMapEvent());
-        commands.Send(new ChangeDaytimeEvent());
+        commands.Send(new SpawnScheduleTrigger("DefaultSchedule"));
+        commands.Send(new SpawnMapTrigger());
+        commands.Send(new ChangeDaytimeTrigger());
     }
 }
 
@@ -78,7 +78,7 @@ public class ChangeDaytimeSystem : ISystem
 
         if (Input.IsActionPressed("ui_accept"))
         {
-            commands.Send(new ChangeDaytimeEvent());
+            commands.Send(new ChangeDaytimeTrigger());
         }
     }
 }

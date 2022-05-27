@@ -34,11 +34,11 @@ public partial class RecruitSelectionStateInitSystem : Resource, ISystem
     public int Side;
     public Entity FreeLocEntity;
 
-    Commands commands;
+    Commands _commands;
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
         var scenario = commands.GetElement<Scenario>();
         var sideEntity = scenario.GetCurrentSideEntity();
@@ -62,13 +62,13 @@ public partial class RecruitSelectionStateInitSystem : Resource, ISystem
         var unitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
         
         var recruitEvent = new RecruitUnitTrigger(Side, unitType, FreeLocEntity);
-        commands.Send(recruitEvent);
+        _commands.Send(recruitEvent);
 
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.PopState();
 
-        if (!commands.TryGetElement<ISocket>(out var socket)) return;
-        if (!commands.TryGetElement<IMatch>(out var match)) return;
+        if (!_commands.TryGetElement<ISocket>(out var socket)) return;
+        if (!_commands.TryGetElement<IMatch>(out var match)) return;
 
         var message = new RecruitUnitMessage { Side = Side, UnitTypeId = unitTypeId, Coords = FreeLocEntity.Get<Coords>() };
         socket.SendMatchStateAsync(match.Id, (int)NetworkOperation.RecruitUnit, message.ToJson());
@@ -76,7 +76,7 @@ public partial class RecruitSelectionStateInitSystem : Resource, ISystem
 
     void OnCancelButtonPressed()
     {
-        var gameStateController = commands.GetElement<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.PopState();
     }
 }

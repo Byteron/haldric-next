@@ -3,34 +3,30 @@ using RelEcs.Godot;
 using Haldric.Wdk;
 using Godot;
 
-public class SpawnScheduleEvent
+public class SpawnScheduleTrigger
 {
-    public string Id;
-    public int Index;
+    public readonly string Id;
+    public readonly int Index;
 
-    public SpawnScheduleEvent()
-    {
-    }
-    
-    public SpawnScheduleEvent(string id, int index = 0)
+    public SpawnScheduleTrigger(string id, int index = 0)
     {
         Id = id;
         Index = index;
     }
 }
 
-public class SpawnScheduleEventSystem : ISystem
+public class SpawnScheduleTriggerSystem : ISystem
 {
-     Node3D _parent;
+    readonly Node3D _parent;
 
-    public SpawnScheduleEventSystem(Node3D parent)
+    public SpawnScheduleTriggerSystem(Node3D parent)
     {
         _parent = parent;
     }
 
     public void Run(Commands commands)
     {
-        commands.Receive((SpawnScheduleEvent spawnEvent) =>
+        commands.Receive((SpawnScheduleTrigger spawnEvent) =>
         {
             var schedule = Data.Instance.Schedules[spawnEvent.Id].Instantiate<Schedule>();
             _parent.AddChild(schedule);
