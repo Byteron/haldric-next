@@ -17,9 +17,9 @@ config/features=PackedStringArray("4.0", "C#")
 
 [autoload]
 
-Scenes="*res://src/nodes/global/Scenes.tscn"
-Data="*res://src/nodes/global/Data.tscn"
-Sfx="*res://src/nodes/global/Sfx.tscn"
+Scenes="*res://src/Nodes/Global/Scenes.tscn"
+Data="*res://src/Nodes/Global/Data.tscn"
+Sfx="*res://src/Nodes/Global/Sfx.tscn"
 
 [display]
 

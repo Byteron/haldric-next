@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbfpyrftokqnw"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="PackedScene" uid="uid://di8brbt3hxbxh" path="res://addons/wdk/scenario/Schedule.tscn" id="1_s78rg"]
-[ext_resource type="Script" path="res://addons/wdk/scenario/Daytime.cs" id="2_4es4v"]
-[ext_resource type="Script" path="res://addons/wdk/scenario/DaytimeLightConfig.cs" id="3_67x7x"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Schedule.tscn" id="1_s78rg"]
+[ext_resource type="Script" path="res://addons/Wdk/Daytime.cs" id="2_4es4v"]
+[ext_resource type="Script" path="res://addons/Wdk/DaytimeLightConfig.cs" id="3_67x7x"]
+
 
 [node name="DefaultSchedule" instance=ExtResource( "1_s78rg" )]
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4ygms1io222n"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_hoqyh"]
-[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_cjnxs"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/UnitType.tscn" id="1_hoqyh"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Attack.tscn" id="2_cjnxs"]
 [ext_resource type="PackedScene" uid="uid://btfu5vqdkro0v" path="res://assets/graphics/models/OrcishArcher.tscn" id="3_e6p5a"]
+
 
 [node name="Orcish Archer" instance=ExtResource( "1_hoqyh" )]
 Id = "Orcish Archer"

@@ -1,6 +1,4 @@
 using Godot;
-using RelEcs;
-using RelEcs.Godot;
 
 public partial class Main : Node3D
 {

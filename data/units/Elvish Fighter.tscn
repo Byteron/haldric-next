@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnnpb6sq7qrwo"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_530nh"]
-[ext_resource type="PackedScene" uid="uid://dlyfspvg78th5" path="res://data/traits/MobileForest.tscn" id="2_3nfqc"]
-[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_iot7p"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/UnitType.tscn" id="1_530nh"]
+[ext_resource type="PackedScene" path="res://data/traits/MobileForest.tscn" id="2_3nfqc"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Attack.tscn" id="2_iot7p"]
 [ext_resource type="PackedScene" uid="uid://xo8g44l4cfda" path="res://assets/graphics/gltf/elf_fighter.gltf" id="3_vudf4"]
+
 
 [node name="Elvish Fighter" instance=ExtResource( "1_530nh" )]
 Id = "Elvish Fighter"

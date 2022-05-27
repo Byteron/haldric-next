@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://fpohpih3ac1t"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="PackedScene" uid="uid://m1dn36qbyare" path="res://addons/wdk/unit/UnitType.tscn" id="1_5pl2b"]
-[ext_resource type="PackedScene" uid="uid://dv6f2olg81jiv" path="res://addons/wdk/unit/Attack.tscn" id="2_tldcq"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/UnitType.tscn" id="1_5pl2b"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Attack.tscn" id="2_tldcq"]
 [ext_resource type="PackedScene" uid="uid://8w3p6rl2g3ic" path="res://assets/graphics/gltf/orc_wolf_rider.gltf" id="3_pk62e"]
+
 
 [node name="Orcish Wolf Rider" instance=ExtResource( "1_5pl2b" )]
 Id = "Orcish Wolf Rider"

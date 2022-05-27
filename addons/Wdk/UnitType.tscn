@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/Wdk/UnitType.cs" id="1_ab082"]
+[ext_resource type="Script" path="res://addons/Wdk/UnitView.cs" id="3_jrinh"]
+
+
+[node name="UnitType" type="Node3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+script = ExtResource( "1_ab082" )
+
+[node name="Traits" type="Node" parent="."]
+
+[node name="Attacks" type="Node" parent="."]
+
+[node name="UnitView" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+script = ExtResource( "3_jrinh" )
+
+[node name="AnimationTree" type="AnimationTree" parent="UnitView"]

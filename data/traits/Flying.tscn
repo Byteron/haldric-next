@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjvl21ge6evnk"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/wdk/unit/FlyingTrait.cs" id="1_t22ai"]
+[ext_resource type="Script" path="res://addons/Wdk/FlyingTrait.cs" id="1_t22ai"]
+
 
 [node name="Flying" type="Node"]
 script = ExtResource( "1_t22ai" )
