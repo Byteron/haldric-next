@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 using RelEcs;
-using RelEcs.Godot;
 using Haldric.Wdk;
 
 public class TerrainBuilder
@@ -12,7 +11,7 @@ public class TerrainBuilder
 
     public TerrainBuilder(Commands commands)
     {
-        this._commands = commands;
+        _commands = commands;
     }
 
     public TerrainBuilder CreateBase()
