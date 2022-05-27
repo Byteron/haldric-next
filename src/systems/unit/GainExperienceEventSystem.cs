@@ -33,7 +33,7 @@ public class GainExperienceEventSystem : ISystem
 
             if (!experience.IsFull()) return;
             
-            commands.Send(new AdvanceEvent(entity));
+            commands.Send(new AdvanceTrigger(entity));
             experience.Empty();
         });
     }

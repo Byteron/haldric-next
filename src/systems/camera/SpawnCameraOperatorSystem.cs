@@ -4,7 +4,7 @@ using RelEcs.Godot;
 
 public class SpawnCameraOperatorSystem : ISystem
 {
-    Node3D _parent;
+    readonly Node3D _parent;
 
     public SpawnCameraOperatorSystem(Node3D parent)
     {

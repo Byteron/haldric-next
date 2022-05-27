@@ -14,17 +14,11 @@ public class TestRecruitInputSystem : ISystem
             var side = sideEntity.Get<Side>();
             var playerId = sideEntity.Get<PlayerId>();
 
-            if (localPlayer.Id != playerId.Value)
-            {
-                return;
-            }
+            if (localPlayer.Id != playerId.Value) return;
 
             var hLocEntity = commands.GetElement<HoveredLocation>().Entity;
 
-            if (!hLocEntity.IsAlive && hLocEntity.Has<HasUnit>())
-            {
-                return;
-            }
+            if (!hLocEntity.IsAlive && hLocEntity.Has<HasUnit>()) return;
 
             var gameStateController = commands.GetElement<GameStateController>();
 

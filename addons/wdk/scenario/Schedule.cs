@@ -5,12 +5,12 @@ namespace Haldric.Wdk
 {
 	public partial class Schedule : Node
 	{
-		private int _current = 0;
+		int _current;
 
-		private Node _daytimes;
-		private WorldEnvironment _env;
-		private Node3D _lightContainer;
-		private List<DirectionalLight3D> _lights = new List<DirectionalLight3D>();
+		Node _daytimes;
+		WorldEnvironment _env;
+		Node3D _lightContainer;
+		List<DirectionalLight3D> _lights = new();
 
 		public override void _Ready()
 		{
@@ -49,7 +49,7 @@ namespace Haldric.Wdk
 			return _current;
 		}
 
-		private void TweenVisuals()
+		void TweenVisuals()
 		{
 			var daytime = GetCurrentDaytime();
 			var configs = daytime.GetLightConfigs();
@@ -93,7 +93,7 @@ namespace Haldric.Wdk
 				lightTween.Parallel().TweenProperty(light, "light_energy", config.LightEnergy, 2.5f);
 
 				lightTween.Parallel().TweenProperty(light, "shadow_enabled", config.Shadows, 2.5f);
-				lightTween.Parallel().TweenProperty(light, "shadow_color", config.ShadowColor, 2.5f);
+				// lightTween.Parallel().TweenProperty(light, "shadow_color", config.ShadowColor, 2.5f);
 				lightTween.Parallel().TweenProperty(light, "shadow_blur", config.ShadowBlur, 2.5f);
 
 				lightTween.Connect("finished", new Callable(this, nameof(SetLightAngle)), new Array() { i, config.Angle });
@@ -104,7 +104,7 @@ namespace Haldric.Wdk
 			tween.Play();
 		}
 
-		private void SetVisuals()
+		void SetVisuals()
 		{
 			var daytime = GetCurrentDaytime();
 			var configs = daytime.GetLightConfigs();
@@ -125,12 +125,12 @@ namespace Haldric.Wdk
 				light.LightColor = config.LightColor;
 				light.LightEnergy = config.LightEnergy;
 				light.ShadowEnabled = config.Shadows;
-				light.ShadowColor = config.ShadowColor;
+				// light.ShadowColor = config.ShadowColor;
 				light.ShadowBlur = config.ShadowBlur;
 			}
 		}
 
-		private void SetLightAngle(int index, int angle)
+		void SetLightAngle(int index, int angle)
 		{
 			GD.Print("Resetting Angle: ", angle);
 			_lights[index].Rotation = new Vector3(Mathf.Deg2Rad(angle), 0, 0);

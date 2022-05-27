@@ -9,9 +9,9 @@ public partial class RecruitSelectionView : Control
     [Signal] public delegate void RecruitSelected(string unitTypeId);
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export] PackedScene RecruitSelectionOption;
+    [Export] PackedScene _recruitSelectionOption;
 
-     ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new();
 
      RecruitSelectionOption _selectedOption;
 
@@ -35,7 +35,7 @@ public partial class RecruitSelectionView : Control
 
         foreach (var unitTypeId in unitTypeIds)
         {
-            var optionButton = RecruitSelectionOption.Instantiate<RecruitSelectionOption>();
+            var optionButton = _recruitSelectionOption.Instantiate<RecruitSelectionOption>();
             optionButton.Connect("pressed", new Callable(this, "OnRecruitOptionSelected"), new Godot.Collections.Array() { optionButton });
             optionButton.UnitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
             optionButton.Text = $"({optionButton.UnitType.Cost}) {unitTypeId}";
@@ -60,7 +60,7 @@ public partial class RecruitSelectionView : Control
                 if (!button.Disabled)
                 {
                     _selectedOption = button;
-                    _selectedOption.Pressed = true;
+                    _selectedOption.ButtonPressed = true;
                     OnRecruitOptionSelected(_selectedOption);
                     break;
                 }
@@ -79,7 +79,7 @@ public partial class RecruitSelectionView : Control
      void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
     {
         _selectedOption = optionButton;
-        string s = "";
+        var s = "";
         s += $"{optionButton.UnitType.Id}";
         s += $"\n\nL: {optionButton.UnitType.Level}";
         s += $"\nHP: {optionButton.UnitType.Health}";

@@ -7,16 +7,16 @@ public class UnitBuilder
 {
     Entity _entity;
 
-    Commands commands;
+    Commands _commands;
 
     public UnitBuilder(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
     }
 
     public UnitBuilder Create()
     {
-        _entity = commands.Spawn();
+        _entity = _commands.Spawn();
         _entity.Add<Mobility>();
         return this;
     }

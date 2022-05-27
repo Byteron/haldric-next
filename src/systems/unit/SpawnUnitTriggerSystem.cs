@@ -3,7 +3,7 @@ using RelEcs;
 using RelEcs.Godot;
 using Haldric.Wdk;
 
-public class SpawnUnitEvent
+public class SpawnUnitTrigger
 {
     public int Side { get; set; }
     public string Id { get; set; }
@@ -11,7 +11,7 @@ public class SpawnUnitEvent
     public bool IsLeader { get; set; }
     public bool IsHero { get; set; }
 
-    public SpawnUnitEvent(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
+    public SpawnUnitTrigger(int side, string id, Coords coords, bool isLeader = false, bool isHero = false)
     {
         Side = side;
         Id = id;
@@ -21,11 +21,11 @@ public class SpawnUnitEvent
     }
 }
 
-public class SpawnUnitEventSystem : ISystem
+public class SpawnUnitTriggerSystem : ISystem
 {
-    Node3D _parent;
+    readonly Node3D _parent;
 
-    public SpawnUnitEventSystem(Node3D parent)
+    public SpawnUnitTriggerSystem(Node3D parent)
     {
         _parent = parent;
     }
@@ -34,7 +34,7 @@ public class SpawnUnitEventSystem : ISystem
     {
         if (Data.Instance.Units.Count == 0) return;
 
-        commands.Receive((SpawnUnitEvent spawnEvent) =>
+        commands.Receive((SpawnUnitTrigger spawnEvent) =>
         {
             var map = commands.GetElement<Map>();
 

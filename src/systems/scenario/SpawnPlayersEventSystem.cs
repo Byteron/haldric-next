@@ -4,9 +4,9 @@ using RelEcs.Godot;
 
 public class SpawnPlayersEvent
 {
-    public Dictionary<int, string> Factions;
-    public Dictionary<int, int> Players;
-    public Dictionary<int, int> Golds;
+    public readonly Dictionary<int, string> Factions;
+    public readonly Dictionary<int, int> Players;
+    public readonly Dictionary<int, int> Golds;
 
     public SpawnPlayersEvent(Dictionary<int, string> factions, Dictionary<int, int> players, Dictionary<int, int> golds)
     {

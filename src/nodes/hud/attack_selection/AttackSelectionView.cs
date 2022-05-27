@@ -9,9 +9,9 @@ public partial class AttackSelectionView : Control
     [Signal] public delegate void AttackSelected();
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export] PackedScene AttackSelectionOption;
+    [Export] PackedScene _attackSelectionOption;
 
-     ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new();
 
      AttackSelectionOption _selectedOption;
 
@@ -47,27 +47,20 @@ public partial class AttackSelectionView : Control
 
         foreach (var attackPair in attackPairs)
         {
-            var optionButton = AttackSelectionOption.Instantiate<AttackSelectionOption>();
+            var optionButton = _attackSelectionOption.Instantiate<AttackSelectionOption>();
             optionButton.Connect("pressed", new Callable(this, "OnAttackOptionSelected"), new Godot.Collections.Array() { optionButton });
             optionButton.AttackerAttackEntity = attackPair.Key;
             optionButton.DefenderAttackEntity = attackPair.Value;
             optionButton.ButtonGroup = _buttonGroup;
             optionButton.AttackerText = AttackToString(attackPair.Key);
 
-            if (attackPair.Value.IsAlive)
-            {
-                optionButton.DefenderText = AttackToString(attackPair.Value);
-            }
-            else
-            {
-                optionButton.DefenderText = " - ";
-            }
+            optionButton.DefenderText = attackPair.Value.IsAlive ? AttackToString(attackPair.Value) : " - ";
 
             _container.AddChild(optionButton);
         }
 
         _selectedOption = _container.GetChild<AttackSelectionOption>(0);
-        _selectedOption.Pressed = true;
+        _selectedOption.ButtonPressed = true;
     }
 
      void OnAttackOptionSelected(AttackSelectionOption optionButton)
@@ -88,7 +81,7 @@ public partial class AttackSelectionView : Control
 
      string AttackToString(Entity attackEntity)
     {
-        string s = "";
+        var s = "";
         var attackId = attackEntity.Get<Id>();
 
         var damage = attackEntity.Get<Damage>();

@@ -6,14 +6,14 @@ code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform float texture_zoom : hint_range(0,1);
-uniform sampler2DArray textures : hint_albedo;
-uniform sampler2D cell_texture : hint_albedo;
+uniform sampler2DArray textures : source_color;
+uniform sampler2D cell_texture : source_color;
 
-uniform sampler2DArray normal_textures;
+uniform sampler2DArray normal_textures : hint_normal;
 uniform float normal_scale : hint_range(-16,16);
 
 uniform float roughness : hint_range(0,1);
-uniform sampler2DArray roughness_textures;
+uniform sampler2DArray roughness_textures : source_color;
 
 uniform vec2 texel_size;
 
@@ -93,7 +93,7 @@ void vertex()
 
 void fragment()
 {
-	vec2 pos = ((CAMERA_MATRIX) * vec4(VERTEX, 1.0)).xz;
+	vec2 pos = ((INV_VIEW_MATRIX) * vec4(VERTEX, 1.0)).xz;
 	
 	vec4 c = get_terrain_color(COLOR, pos, 0) + get_terrain_color(COLOR, pos, 1) + get_terrain_color(COLOR, pos, 2);
 	vec4 n = get_terrain_normal(pos, 0) + get_terrain_normal(pos, 1) + get_terrain_normal(pos, 2);

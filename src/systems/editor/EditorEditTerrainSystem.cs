@@ -24,7 +24,6 @@ public class EditorEditTerrainSystem : ISystem
     public void Run(Commands commands)
     {
         if (!commands.TryGetElement<Map>(out var map)) return;
-
         if (!commands.TryGetElement<HoveredLocation>(out var hoveredLocation)) return;
 
         var editorView = commands.GetElement<EditorView>();
@@ -40,16 +39,14 @@ public class EditorEditTerrainSystem : ISystem
         var hoveredCoords = locEntity.Get<Coords>();
         
         if (hoveredCoords.Cube() == _previousCoords || !Input.IsActionPressed("editor_select")) return;
+        
         _previousCoords = hoveredCoords.Cube();
 
         var chunks = new List<Vector3i>();
 
         foreach (var cube in Hex.GetCellsInRange(hoveredCoords.Cube(), editorView.BrushSize))
         {
-            if (!locations.Has(cube))
-            {
-                continue;
-            }
+            if (!locations.Has(cube)) continue;
 
             var nLocEntity = locations.Get(cube);
             EditLocation(editorView, nLocEntity);
@@ -69,10 +66,7 @@ public class EditorEditTerrainSystem : ISystem
             chunks.Add(chunkCell + new Vector3i(0, 0, -1));
         }
 
-        if (!editorView.UseTerrain && !editorView.UseElevation)
-        {
-            return;
-        }
+        if (!editorView.UseTerrain && !editorView.UseElevation) return;
 
         if (editorView.TerrainEntity.Has<HasOverlayTerrain>())
         {
@@ -84,7 +78,7 @@ public class EditorEditTerrainSystem : ISystem
         }
     }
 
-     void EditLocation(EditorView editorView, Entity locEntity)
+    static void EditLocation(EditorView editorView, Entity locEntity)
     {
         var baseTerrain = locEntity.Get<HasBaseTerrain>();
         var elevation = locEntity.Get<Elevation>();
@@ -127,9 +121,6 @@ public class EditorEditTerrainSystem : ISystem
             }
         }
 
-        if (editorView.UseElevation)
-        {
-            elevation.Value = editorView.Elevation;
-        }
+        if (editorView.UseElevation) elevation.Value = editorView.Elevation;
     }
 }

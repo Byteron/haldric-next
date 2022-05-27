@@ -10,7 +10,7 @@ public partial class LobbyView : Control
     [Signal] public delegate void BackButtonPressed();
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export]  PackedScene ChatMessageView;
+    [Export]  PackedScene _chatMessageView;
 
      VBoxContainer _userListContainer;
      VBoxContainer _messages;
@@ -78,7 +78,7 @@ public partial class LobbyView : Control
 
     public void NewMessage(string username, string message, string time)
     {
-        var messageView = ChatMessageView.Instantiate<ChatMessageView>();
+        var messageView = _chatMessageView.Instantiate<ChatMessageView>();
         messageView.Message = message;
         messageView.User = username;
         messageView.Time = time;

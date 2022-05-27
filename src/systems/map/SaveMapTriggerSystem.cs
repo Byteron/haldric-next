@@ -4,31 +4,32 @@ using RelEcs;
 using RelEcs.Godot;
 using Nakama.TinyJson;
 
-public class SaveMapEvent
+public class SaveMapTrigger
 {
     public string Name { get; set; }
 
-    public SaveMapEvent(string name)
+    public SaveMapTrigger(string name)
     {
         Name = name;
     }
 }
 
-public class SaveMapEventSystem : ISystem
+public class SaveMapTriggerSystem : ISystem
 {
-    public static string Path = "res://data/maps/";
+    const string Path = "res://data/maps/";
 
     public void Run(Commands commands)
     {
-        commands.Receive((SaveMapEvent e) =>
+        commands.Receive((SaveMapTrigger e) =>
         {
             var map = commands.GetElement<Map>();
             var grid = map.Grid;
 
-            var mapData = new MapData();
-
-            mapData.Width = grid.Width;
-            mapData.Height = grid.Height;
+            var mapData = new MapData
+            {
+                Width = grid.Width,
+                Height = grid.Height
+            };
 
             var query = commands.Query<Entity, Coords, Elevation, HasBaseTerrain>().Has<Location>();
 
@@ -67,7 +68,7 @@ public class SaveMapEventSystem : ISystem
         });
     }
 
-     void SaveToFile(string name, MapData mapData)
+    static void SaveToFile(string name, MapData mapData)
     {
         var file = new File();
         file.Open(Path + name + ".json", File.ModeFlags.Write);

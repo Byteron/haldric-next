@@ -3,13 +3,13 @@ using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public class DamageEvent
+public class DamageTrigger
 {
-    public Entity DamagingEntity { get; set; }
-    public Entity TargetEntity { get; set; }
-    public Alignment Alignment { get; set; }
+    public Entity DamagingEntity { get; }
+    public Entity TargetEntity { get; }
+    public Alignment Alignment { get; }
 
-    public DamageEvent(Entity damagingEntity, Entity targetEntity, Alignment alignment)
+    public DamageTrigger(Entity damagingEntity, Entity targetEntity, Alignment alignment)
     {
         DamagingEntity = damagingEntity;
         TargetEntity = targetEntity;
@@ -17,7 +17,7 @@ public class DamageEvent
     }
 }
 
-public class DamageEventSystem : ISystem
+public class DamageTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
@@ -25,7 +25,7 @@ public class DamageEventSystem : ISystem
 
         var daytime = schedule.GetCurrentDaytime();
 
-        commands.Receive((DamageEvent damageEvent) =>
+        commands.Receive((DamageTrigger damageEvent) =>
         {
             var damagingEntity = damageEvent.DamagingEntity;
             var targetEntity = damageEvent.TargetEntity;
@@ -38,40 +38,28 @@ public class DamageEventSystem : ISystem
             {
                 var weaknesses = targetEntity.Get<Weaknesses>();
 
-                if (weaknesses.List.Contains(damage.Type))
-                {
-                    modifier *= Modifiers.Weakness;
-                }
+                if (weaknesses.List.Contains(damage.Type)) modifier *= Modifiers.Weakness;
             }
 
             if (targetEntity.Has<Resistances>())
             {
                 var resistances = targetEntity.Get<Resistances>();
 
-                if (resistances.List.Contains(damage.Type))
-                {
-                    modifier *= Modifiers.Resistance;
-                }
+                if (resistances.List.Contains(damage.Type)) modifier *= Modifiers.Resistance;
             }
 
             if (targetEntity.Has<Calamities>())
             {
                 var calamities = targetEntity.Get<Calamities>();
 
-                if (calamities.List.Contains(damage.Type))
-                {
-                    modifier *= Modifiers.Calamity;
-                }
+                if (calamities.List.Contains(damage.Type)) modifier *= Modifiers.Calamity;
             }
 
             if (targetEntity.Has<Immunities>())
             {
                 var immunities = targetEntity.Get<Immunities>();
 
-                if (immunities.List.Contains(damage.Type))
-                {
-                    modifier *= Modifiers.Immunity;
-                }
+                if (immunities.List.Contains(damage.Type)) modifier *= Modifiers.Immunity;
             }
 
             var health = targetEntity.Get<Attribute<Health>>();
@@ -88,11 +76,10 @@ public class DamageEventSystem : ISystem
 
             commands.Send(spawnLabelEvent);
 
-            if (health.IsEmpty())
-            {
-                GD.Print("Death Event Spawned");
-                commands.Send(new DeathEvent(targetEntity));
-            }
+            if (!health.IsEmpty()) return;
+            
+            GD.Print("Death Trigger Spawned");
+            commands.Send(new DeathTrigger(targetEntity));
         });
     }
 }

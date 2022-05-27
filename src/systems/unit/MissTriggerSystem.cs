@@ -3,21 +3,21 @@ using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public class MissEvent
+public class MissTrigger
 {
-    public Entity TargetEntity { get; set; }
+    public Entity TargetEntity { get; }
 
-    public MissEvent(Entity targetEntity)
+    public MissTrigger(Entity targetEntity)
     {
         TargetEntity = targetEntity;
     }
 }
 
-public class MissEventSystem : ISystem
+public class MissTriggerSystem : ISystem
 {
     public void Run(Commands commands)
     {
-        commands.Receive((MissEvent missEvent) =>
+        commands.Receive((MissTrigger missEvent) =>
         {
             var position = missEvent.TargetEntity.Get<Coords>().World() + Vector3.Up * 5f;
             var spawnLabelEvent = new SpawnFloatingLabelEvent(position, "Miss!", new Color(0.7f, 0.7f, 0.7f));

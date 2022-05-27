@@ -8,27 +8,17 @@ public class ExecuteCommandSystem : ISystem
     {
         var commander = commands.GetElement<Commander>();
 
-        if (_activeCommand != null && !_activeCommand.IsDone)
-        {
-            return;
-        }
+        if (_activeCommand is { IsDone: false }) return;
 
         while (!commander.IsEmpty())
         {
             _activeCommand = commander.Dequeue();
 
-            if (!_activeCommand.IsRevertable)
-            {
-                commander.ClearHistory();
-            }
+            if (!_activeCommand.IsRevertable) commander.ClearHistory();
 
             _activeCommand.Run(commands);
 
-            if (!_activeCommand.IsDone)
-            {
-                return;
-            }
-
+            if (!_activeCommand.IsDone) return;
         }
 
         _activeCommand = null;

@@ -16,7 +16,7 @@ public class CaptureVillageTrigger
 
 public class CaptureVillageTriggerSystem : ISystem
 {
-    Node3D _parent;
+    readonly Node3D _parent;
 
     public CaptureVillageTriggerSystem(Node3D parent)
     {

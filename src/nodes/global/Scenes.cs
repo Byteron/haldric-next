@@ -4,39 +4,39 @@ public partial class Scenes : Node
 {
     static Scenes Instance { get; set; }
 
-    [Export] PackedScene EditorView;
-    [Export] PackedScene MainMenuView;
-    [Export] PackedScene LoginView;
-    [Export] PackedScene LobbyView;
-    [Export] PackedScene AttackSelectionView;
-    [Export] PackedScene FactionSelectionView;
-    [Export] PackedScene ScenarioSelectionView;
-    [Export] PackedScene RecruitSelectionView;
-    [Export] PackedScene LoadingStateView;
+    [Export] PackedScene _editorView;
+    [Export] PackedScene _mainMenuView;
+    [Export] PackedScene _loginView;
+    [Export] PackedScene _lobbyView;
+    [Export] PackedScene _attackSelectionView;
+    [Export] PackedScene _factionSelectionView;
+    [Export] PackedScene _scenarioSelectionView;
+    [Export] PackedScene _recruitSelectionView;
+    [Export] PackedScene _loadingStateView;
 
-    [Export] PackedScene DebugPanel;
+    [Export] PackedScene _debugPanel;
 
-    [Export] PackedScene SidePanel;
-    [Export] PackedScene TerrainPanel;
-    [Export] PackedScene TurnPanel;
-    [Export] PackedScene UnitPanel;
+    [Export] PackedScene _sidePanel;
+    [Export] PackedScene _terrainPanel;
+    [Export] PackedScene _turnPanel;
+    [Export] PackedScene _unitPanel;
     
-    [Export] PackedScene TerrainHighlighter;
+    [Export] PackedScene _terrainHighlighter;
 
-    [Export] PackedScene CameraOperator;
+    [Export] PackedScene _cameraOperator;
 
-    [Export] PackedScene FloatingLabel;
-    [Export] PackedScene UnitPlate;
+    [Export] PackedScene _floatingLabel;
+    [Export] PackedScene _unitPlate;
 
-    [Export] PackedScene Cursor3D;
-    [Export] PackedScene FlagView;
+    [Export] PackedScene _cursor3D;
+    [Export] PackedScene _flagView;
 
     public override void _Ready()
     {
         Instance = this;
     }
 
-    public static T Instantiate<T>() where T: Node {
-        return (Instance.Get(typeof(T).ToString()) as PackedScene).Instantiate<T>();
+    public static CT Instantiate<CT>() where CT: Node {
+        return (Instance.Get(typeof(CT).ToString()) as PackedScene).Instantiate<CT>();
     }
 }

@@ -6,85 +6,85 @@ using Haldric.Wdk;
 
 public class TerrainBuilder
 {
-    Commands commands;
+    Commands _commands;
 
-    Entity terrainEntity;
+    Entity _terrainEntity;
 
     public TerrainBuilder(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
     }
 
     public TerrainBuilder CreateBase()
     {
-        terrainEntity = commands.Spawn();
-        terrainEntity.Add<IsBaseTerrain>();
-        terrainEntity.Add(new ElevationOffset());
+        _terrainEntity = _commands.Spawn();
+        _terrainEntity.Add<IsBaseTerrain>();
+        _terrainEntity.Add(new ElevationOffset());
         return this;
     }
     public TerrainBuilder CreateOverlay()
     {
-        terrainEntity = commands.Spawn();
-        terrainEntity.Add<IsOverlayTerrain>();
+        _terrainEntity = _commands.Spawn();
+        _terrainEntity.Add<IsOverlayTerrain>();
         return this;
     }
 
     public TerrainBuilder WithCode(string code)
     {
-        terrainEntity.Add(new TerrainCode { Value = code });
+        _terrainEntity.Add(new TerrainCode { Value = code });
         return this;
     }
 
     public TerrainBuilder WithTypes(List<TerrainType> types)
     {
-        terrainEntity.Add(new TerrainTypes(types));
+        _terrainEntity.Add(new TerrainTypes(types));
         return this;
     }
 
     public TerrainBuilder WithElevationOffset(float elevationOffset)
     {
-        terrainEntity.Get<ElevationOffset>().Value = elevationOffset;
+        _terrainEntity.Get<ElevationOffset>().Value = elevationOffset;
         return this;
     }
 
     public TerrainBuilder WithRecruitFrom()
     {
-        terrainEntity.Add<CanRecruitFrom>();
+        _terrainEntity.Add<CanRecruitFrom>();
         return this;
     }
 
     public TerrainBuilder WithRecruitTo()
     {
-        terrainEntity.Add<CanRecruitTo>();
+        _terrainEntity.Add<CanRecruitTo>();
         return this;
     }
 
     public TerrainBuilder WithGivesIncome()
     {
-        terrainEntity.Add<GivesIncome>();
+        _terrainEntity.Add<GivesIncome>();
         return this;
     }
 
     public TerrainBuilder WithIsCapturable()
     {
-        terrainEntity.Add<IsCapturable>();
+        _terrainEntity.Add<IsCapturable>();
         return this;
     }
 
     public TerrainBuilder WithHeals()
     {
-        terrainEntity.Add<Heals>();
+        _terrainEntity.Add<Heals>();
         return this;
     }
 
     public TerrainBuilder WithNoLighting()
     {
-        terrainEntity.Add<NoLighting>();
+        _terrainEntity.Add<NoLighting>();
         return this;
     }
 
     public Entity Build()
     {
-        return terrainEntity;
+        return _terrainEntity;
     }
 }

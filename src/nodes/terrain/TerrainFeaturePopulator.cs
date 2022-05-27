@@ -403,10 +403,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
@@ -414,19 +411,10 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
 
-            if (nElevation.Value < 0)
-            {
-                continue;
-            }
-
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
-            {
-                continue;
-            }
+            if (nElevation.Value < 0) continue;
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
+            if (elevation.Value == nElevation.Value) continue;
+            if (!terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetFirstCorner(direction);
             AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
@@ -460,18 +448,18 @@ public partial class TerrainFeaturePopulator : Node3D
 
      RID NewMultiMesh(Mesh mesh)
     {
-        var multimeshRID = RenderingServer.MultimeshCreate();
-        var instanceRID = RenderingServer.InstanceCreate();
+        var multimeshRid = RenderingServer.MultimeshCreate();
+        var instanceRid = RenderingServer.InstanceCreate();
 
-        var scenarioRID = GetWorld3d().Scenario;
+        var scenarioRid = GetWorld3d().Scenario;
 
-        RenderingServer.MultimeshSetMesh(multimeshRID, mesh.GetRid());
-        RenderingServer.InstanceSetScenario(instanceRID, scenarioRID);
-        RenderingServer.InstanceSetBase(instanceRID, multimeshRID);
+        RenderingServer.MultimeshSetMesh(multimeshRid, mesh.GetRid());
+        RenderingServer.InstanceSetScenario(instanceRid, scenarioRid);
+        RenderingServer.InstanceSetBase(instanceRid, multimeshRid);
 
-        _rids.Add(multimeshRID);
-        _rids.Add(instanceRID);
+        _rids.Add(multimeshRid);
+        _rids.Add(instanceRid);
 
-        return multimeshRID;
+        return multimeshRid;
     }
 }

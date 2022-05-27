@@ -7,42 +7,35 @@ public class Location
 {
 }
 
-public class SpawnMapEvent
+public class SpawnMapTrigger
 {
-    public MapData MapData { get; set; }
+    public MapData MapData { get; }
 
-    public SpawnMapEvent(MapData mapData)
-    {
-        MapData = mapData;
-    }
+    public SpawnMapTrigger(MapData mapData) => MapData = mapData;
+    public SpawnMapTrigger() : this(40, 40) { }
 
-    public SpawnMapEvent() : this(40, 40)
+    public SpawnMapTrigger(int width, int height)
     {
-    }
-
-    public SpawnMapEvent(int width, int height)
-    {
-        MapData = new MapData();
-        MapData.Width = width;
-        MapData.Height = height;
+        MapData = new MapData
+        {
+            Width = width,
+            Height = height
+        };
     }
 }
 
-public class SpawnMapEventSystem : ISystem
+public class SpawnMapTriggerSystem : ISystem
 {
-    Commands commands;
-    Node parent;
+    Commands _commands;
+    Node _parent;
 
-    public SpawnMapEventSystem(Node parent)
-    {
-        this.parent = parent;
-    }
+    public SpawnMapTriggerSystem(Node parent) { this._parent = parent; }
 
     public void Run(Commands commands)
     {
-        this.commands = commands;
+        this._commands = commands;
 
-        commands.Receive((SpawnMapEvent e) =>
+        commands.Receive((SpawnMapTrigger e) =>
         {
             var mapData = e.MapData;
 
@@ -54,7 +47,7 @@ public class SpawnMapEventSystem : ISystem
             commands.AddElement(new ShaderData(mapData.Width, mapData.Height));
 
             var terrainHighlighter = Scenes.Instantiate<TerrainHighlighter>();
-            parent.AddChild(terrainHighlighter);
+            _parent.AddChild(terrainHighlighter);
             commands.AddElement(terrainHighlighter);
 
             var players = mapData.Players;
@@ -78,7 +71,7 @@ public class SpawnMapEventSystem : ISystem
         });
     }
 
-    void InitializePlayers(Locations locations, List<MapDataPlayer> players)
+    static void InitializePlayers(Locations locations, List<MapDataPlayer> players)
     {
         foreach (var player in players)
         {
@@ -89,27 +82,31 @@ public class SpawnMapEventSystem : ISystem
     void InitializeHover()
     {
         var cursorView = Scenes.Instantiate<Cursor3D>();
-        parent.AddChild(cursorView);
+        _parent.AddChild(cursorView);
 
-        commands.AddElement(cursorView);
+        _commands.AddElement(cursorView);
     }
 
-    MapData GetMapDataFromDimensions(int width, int height)
+    static MapData GetMapDataFromDimensions(int width, int height)
     {
-        var mapData = new MapData();
-        mapData.Width = width;
-        mapData.Height = height;
-
-        for (int z = 0; z < height; z++)
+        var mapData = new MapData
         {
-            for (int x = 0; x < width; x++)
+            Width = width,
+            Height = height
+        };
+
+        for (var z = 0; z < height; z++)
+        {
+            for (var x = 0; x < width; x++)
             {
                 var coords = Coords.FromOffset(x, z);
 
-                var locData = new MapDataLocation();
-                locData.Coords = coords;
-                locData.Terrain = new List<string>() { "Gg" };
-                locData.Elevation = 0;
+                var locData = new MapDataLocation
+                {
+                    Coords = coords,
+                    Terrain = new List<string>() { "Gg" },
+                    Elevation = 0
+                };
 
                 mapData.Locations.Add(locData);
             }
@@ -131,7 +128,7 @@ public class SpawnMapEventSystem : ISystem
         {
             var coords = locData.Coords;
 
-            var locEntity = commands.Spawn();
+            var locEntity = _commands.Spawn();
 
             locEntity.Add<Location>();
             locEntity.Add(new Index { Value = (int)coords.Offset().z * width + (int)coords.Offset().x });
@@ -165,11 +162,11 @@ public class SpawnMapEventSystem : ISystem
 
     void InitializeChunks(Vector2i chunkSize, Grid grid, Locations locations)
     {
-        var chunks = new System.Collections.Generic.Dictionary<Vector3i, Entity>();
+        var chunks = new Dictionary<Vector3i, Entity>();
 
-        for (int z = 0; z < grid.Height; z++)
+        for (var z = 0; z < grid.Height; z++)
         {
-            for (int x = 0; x < grid.Height; x++)
+            for (var x = 0; x < grid.Height; x++)
             {
                 var coords = Coords.FromOffset(x, z);
 
@@ -178,7 +175,7 @@ public class SpawnMapEventSystem : ISystem
 
                 if (!chunks.ContainsKey(chunkCelli))
                 {
-                    var newChunk = commands.Spawn().Add<Locations>().Add<Cell>();
+                    var newChunk = _commands.Spawn().Add<Locations>().Add<Cell>();
                     chunks.Add(chunkCelli, newChunk);
                 }
 
@@ -189,7 +186,7 @@ public class SpawnMapEventSystem : ISystem
                 var chunkCellComponent = chunkEntity.Get<Cell>();
 
                 chunkCellComponent.Value = chunkCelli;
-                
+
                 var chunkLocations = chunkEntity.Get<Locations>();
 
                 chunkLocations.Set(coords.Cube(), locEntity);
@@ -202,9 +199,9 @@ public class SpawnMapEventSystem : ISystem
             var terrainCollider = new TerrainCollider();
             var terrainFeaturePopulator = new TerrainFeaturePopulator();
 
-            parent.AddChild(terrainMesh);
-            parent.AddChild(terrainCollider);
-            parent.AddChild(terrainFeaturePopulator);
+            _parent.AddChild(terrainMesh);
+            _parent.AddChild(terrainCollider);
+            _parent.AddChild(terrainFeaturePopulator);
 
             chunkEntity.Add(terrainCollider);
             chunkEntity.Add(terrainFeaturePopulator);
@@ -212,7 +209,7 @@ public class SpawnMapEventSystem : ISystem
         }
     }
 
-    void InitializeNeighbors(Locations locations)
+    static void InitializeNeighbors(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
@@ -220,16 +217,13 @@ public class SpawnMapEventSystem : ISystem
 
             var coords = locEntity.Get<Coords>();
             var neighbors = locEntity.Get<Neighbors>();
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
                 var direction = (Direction)i;
 
-                Vector3 nCell = Hex.GetNeighbor(coords.Cube(), direction);
+                var nCell = Hex.GetNeighbor(coords.Cube(), direction);
 
-                if (!locations.Has(nCell))
-                {
-                    continue;
-                }
+                if (!locations.Has(nCell)) continue;
 
                 var nEntity = locations.Get(nCell);
                 neighbors.Set(direction, nEntity);
@@ -237,50 +231,46 @@ public class SpawnMapEventSystem : ISystem
         }
     }
 
-    void InitializeCastles(Locations locations)
+    static void InitializeCastles(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
             var baseTerrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
 
-            if (!baseTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
+            if (!baseTerrainEntity.Has<CanRecruitFrom>()) continue;
 
-            var castle = new Castle();
-            castle.List = FindConnectedLocationsWith<CanRecruitTo>(locEntity);
+            var castle = new Castle
+            {
+                List = FindConnectedLocationsWith<CanRecruitTo>(locEntity)
+            };
+
             locEntity.Add(castle);
         }
     }
 
-    void InitializeVillages(Locations locations)
+    static void InitializeVillages(Locations locations)
     {
         foreach (var locEntity in locations.Values)
         {
-            if (!locEntity.Has<HasOverlayTerrain>())
-            {
-                continue;
-            }
+            if (!locEntity.Has<HasOverlayTerrain>()) continue;
 
             var overlayTerrainEntity = locEntity.Get<HasOverlayTerrain>().Entity;
 
-            if (!overlayTerrainEntity.Has<IsCapturable>())
-            {
-                continue;
-            }
+            if (!overlayTerrainEntity.Has<IsCapturable>()) continue;
 
-            var village = new Village();
-            village.List = FindConnectedLocationsWith<GivesIncome>(locEntity);
+            var village = new Village
+            {
+                List = FindConnectedLocationsWith<GivesIncome>(locEntity)
+            };
+
             locEntity.Add(village);
         }
     }
 
-    List<Entity> FindConnectedLocationsWith<T>(Entity locEntity) where T : class
+    static List<Entity> FindConnectedLocationsWith<CT>(Entity locEntity) where CT : class
     {
-        List<Entity> list = new List<Entity>();
-
-        Queue<Entity> frontier = new Queue<Entity>();
+        var list = new List<Entity>();
+        var frontier = new Queue<Entity>();
         frontier.Enqueue(locEntity);
 
         while (frontier.Count > 0)
@@ -290,31 +280,21 @@ public class SpawnMapEventSystem : ISystem
 
             foreach (var nLocEntity in cNeighbors.Array)
             {
-                if (!nLocEntity.IsAlive)
-                {
-                    continue;
-                }
+                if (!nLocEntity.IsAlive) continue;
 
-                if (list.Contains(nLocEntity))
-                {
-                    continue;
-                }
+                if (list.Contains(nLocEntity)) continue;
 
                 var nBaseTerrainEntity = nLocEntity.Get<HasBaseTerrain>().Entity;
 
-                var hasT = nBaseTerrainEntity.Has<T>();
+                var hasT = nBaseTerrainEntity.Has<CT>();
 
                 if (nLocEntity.Has<HasOverlayTerrain>())
                 {
                     var nOverlayTerrainEntity = nLocEntity.Get<HasOverlayTerrain>().Entity;
-                    hasT = hasT || nOverlayTerrainEntity.Has<T>();
+                    hasT = hasT || nOverlayTerrainEntity.Has<CT>();
                 }
 
-                if (!hasT)
-                {
-                    continue;
-                }
-
+                if (!hasT) continue;
 
                 frontier.Enqueue(nLocEntity);
                 list.Add(nLocEntity);
@@ -324,7 +304,7 @@ public class SpawnMapEventSystem : ISystem
         return list;
     }
 
-    void InitializePathFinding(Map map)
+    static void InitializePathFinding(Map map)
     {
         foreach (var locEntity in map.Locations.Dict.Values)
         {
@@ -352,8 +332,5 @@ public class SpawnMapEventSystem : ISystem
         }
     }
 
-    void SendUpdateMapEvent()
-    {
-        commands.Send(new UpdateMapTrigger());
-    }
+    void SendUpdateMapEvent() { _commands.Send(new UpdateMapTrigger()); }
 }

@@ -3,7 +3,7 @@ using Godot;
 
 public class Hex
 {
-     static readonly Vector3[] _neighborTable = new Vector3[6]
+     static readonly Vector3[] NeighborTable = new Vector3[6]
     {
         new Vector3(-1, 1, 0), // E
         new Vector3(0, 1, -1), // SE
@@ -94,7 +94,7 @@ public class Hex
 
     public static Vector3 GetNeighbor(Vector3 cube, Direction direction)
     {
-        return cube + _neighborTable[(int)direction];
+        return cube + NeighborTable[(int)direction];
     }
 
     public static Vector3[] GetNeighbors(Vector3 cube)

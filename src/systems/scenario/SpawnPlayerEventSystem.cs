@@ -1,6 +1,5 @@
 using System.Linq;
 using RelEcs;
-using RelEcs.Godot;
 using Godot;
 
 public class SpawnPlayerEvent
@@ -60,7 +59,7 @@ public class SpawnPlayerEventSystem : ISystem
 
             scenario.Sides.Add(spawnEvent.Side, sideEntity);
 
-            commands.Send(new SpawnUnitEvent(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
+            commands.Send(new SpawnUnitTrigger(spawnEvent.Side, faction.Leaders[0], spawnEvent.Coords, true));
         });
     }
 }
