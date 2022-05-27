@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/Nodes/Global/Data.cs" id="1_jlu5w"]
-
-
-[node name="Data" type="Node"]
-script = ExtResource( "1_jlu5w" )
