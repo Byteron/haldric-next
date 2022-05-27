@@ -7,38 +7,30 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( "1_4ednk" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
-offset_left = 618.0
-offset_top = 288.0
-offset_right = 968.0
-offset_bottom = 497.0
+minimum_size = Vector2(300, 0)
+offset_left = 810.0
+offset_top = 458.0
+offset_right = 1110.0
+offset_bottom = 621.0
 
 [node name="Username" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
-offset_right = 350.0
-offset_bottom = 40.0
-rect_min_size = Vector2(350, 40)
+offset_right = 300.0
+offset_bottom = 31.0
 
 [node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Username"]
+minimum_size = Vector2(100, 0)
 offset_right = 100.0
-offset_bottom = 40.0
-rect_min_size = Vector2(100, 0)
+offset_bottom = 31.0
 size_flags_vertical = 3
 text = "User"
 horizontal_alignment = 2
@@ -46,23 +38,21 @@ vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Username"]
 offset_left = 104.0
-offset_right = 350.0
-offset_bottom = 40.0
-focus_next = NodePath("../../Email/LineEdit")
+offset_right = 300.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+focus_next = NodePath("../../Email/LineEdit")
 theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
 
 [node name="Email" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
-offset_top = 44.0
-offset_right = 350.0
-offset_bottom = 84.0
-rect_min_size = Vector2(350, 40)
+offset_top = 35.0
+offset_right = 300.0
+offset_bottom = 66.0
 
 [node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Email"]
+minimum_size = Vector2(100, 0)
 offset_right = 100.0
-offset_bottom = 40.0
-rect_min_size = Vector2(100, 0)
+offset_bottom = 31.0
 size_flags_vertical = 3
 text = "Email
 "
@@ -71,27 +61,22 @@ vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Email"]
 offset_left = 104.0
-offset_right = 350.0
-offset_bottom = 40.0
-focus_next = NodePath("../../Password/LineEdit")
+offset_right = 300.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+focus_next = NodePath("../../Password/LineEdit")
 theme_override_font_sizes/font_size = 16
 text = "mail@haldric.com"
-horizontal_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Password" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
-offset_top = 88.0
-offset_right = 350.0
-offset_bottom = 128.0
-rect_min_size = Vector2(350, 40)
+offset_top = 70.0
+offset_right = 300.0
+offset_bottom = 101.0
 
 [node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer/Password"]
+minimum_size = Vector2(100, 0)
 offset_right = 100.0
-offset_bottom = 40.0
-rect_min_size = Vector2(100, 0)
+offset_bottom = 31.0
 size_flags_vertical = 3
 text = "Password"
 horizontal_alignment = 2
@@ -99,47 +84,38 @@ vertical_alignment = 1
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer/Password"]
 offset_left = 104.0
-offset_right = 350.0
-offset_bottom = 40.0
-focus_next = NodePath("../../HBoxContainer/LoginButton")
+offset_right = 300.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+focus_next = NodePath("../../HBoxContainer/LoginButton")
 text = "HaldricHaldric"
-horizontal_alignment = 1
 secret = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer"]
-offset_top = 132.0
-offset_right = 350.0
-offset_bottom = 182.0
+offset_top = 105.0
+offset_right = 300.0
+offset_bottom = 136.0
 
 [node name="LoginButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-offset_right = 173.0
-offset_bottom = 50.0
-rect_min_size = Vector2(0, 50)
-focus_next = NodePath("../CancelButton")
+offset_right = 148.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+focus_next = NodePath("../CancelButton")
 text = "Login"
 
 [node name="CancelButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-offset_left = 177.0
-offset_right = 350.0
-offset_bottom = 50.0
-rect_min_size = Vector2(0, 50)
-focus_next = NodePath("../../Username/LineEdit")
+offset_left = 152.0
+offset_right = 300.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
+focus_next = NodePath("../../Username/LineEdit")
 text = "Cancel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="WarnLabel" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer"]
 modulate = Color(1, 0.784314, 0, 1)
-offset_top = 186.0
-offset_right = 350.0
-offset_bottom = 209.0
+offset_top = 140.0
+offset_right = 300.0
+offset_bottom = 163.0
 horizontal_alignment = 1
 vertical_alignment = 1
 

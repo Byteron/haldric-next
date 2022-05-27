@@ -8,127 +8,101 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( "1_4ednk" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-ChatMessageView = ExtResource( "2_u5131" )
+_chatMessageView = ExtResource( "2_u5131" )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
-offset_right = 1382.0
-offset_bottom = 786.0
+offset_right = 1716.0
+offset_bottom = 1080.0
 size_flags_horizontal = 3
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer"]
-offset_right = 1382.0
-offset_bottom = 742.0
+offset_right = 1716.0
+offset_bottom = 1045.0
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_top = 5
 theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Messages" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer"]
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 1377.0
-offset_bottom = 737.0
+offset_right = 1711.0
+offset_bottom = 1040.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
-offset_top = 746.0
-offset_right = 1382.0
-offset_bottom = 786.0
+offset_top = 1049.0
+offset_right = 1716.0
+offset_bottom = 1080.0
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-offset_right = 1278.0
-offset_bottom = 40.0
+offset_right = 1665.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 
 [node name="SendButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-offset_left = 1282.0
-offset_right = 1382.0
-offset_bottom = 40.0
-rect_min_size = Vector2(100, 40)
+offset_left = 1669.0
+offset_right = 1716.0
+offset_bottom = 31.0
 text = "Send"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
-offset_left = 1386.0
-offset_right = 1586.0
-offset_bottom = 786.0
+minimum_size = Vector2(200, 0)
+offset_left = 1720.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
 offset_right = 200.0
-offset_bottom = 602.0
-rect_min_size = Vector2(200, 0)
+offset_bottom = 940.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="UserList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/Panel/VBoxContainer"]
 offset_right = 200.0
-offset_bottom = 602.0
-rect_min_size = Vector2(200, 0)
+offset_bottom = 940.0
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 606.0
+offset_top = 944.0
 offset_right = 200.0
-offset_bottom = 646.0
-rect_min_size = Vector2(0, 40)
+offset_bottom = 967.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MapOptionButton" type="OptionButton" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 650.0
+offset_top = 971.0
 offset_right = 200.0
-offset_bottom = 690.0
-rect_min_size = Vector2(0, 40)
-text = "Scenario"
+offset_bottom = 1002.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 694.0
+offset_top = 1006.0
 offset_right = 200.0
-offset_bottom = 734.0
+offset_bottom = 1037.0
 
 [node name="JoinButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 offset_right = 98.0
-offset_bottom = 40.0
-rect_min_size = Vector2(0, 40)
+offset_bottom = 31.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "Join"
@@ -136,24 +110,19 @@ text = "Join"
 [node name="CancelButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 offset_left = 102.0
 offset_right = 200.0
-offset_bottom = 40.0
-rect_min_size = Vector2(0, 40)
+offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Cancel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 738.0
+offset_top = 1041.0
 offset_right = 200.0
-offset_bottom = 742.0
+offset_bottom = 1045.0
 
 [node name="BackButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
-offset_top = 746.0
+offset_top = 1049.0
 offset_right = 200.0
-offset_bottom = 786.0
-rect_min_size = Vector2(0, 40)
+offset_bottom = 1080.0
 theme_override_font_sizes/font_size = 16
 text = "Back"
 

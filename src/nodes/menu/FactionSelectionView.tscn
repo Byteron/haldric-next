@@ -7,47 +7,37 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( "1_870ed" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 _playerOption = ExtResource( "2_bor52" )
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1593.0
-offset_bottom = 793.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-offset_left = 691.0
-offset_top = 366.0
-offset_right = 895.0
-offset_bottom = 420.0
+offset_left = 896.0
+offset_top = 522.0
+offset_right = 1024.0
+offset_bottom = 557.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
-offset_right = 204.0
+offset_right = 128.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 offset_top = 4.0
-offset_right = 204.0
-offset_bottom = 54.0
+offset_right = 128.0
+offset_bottom = 35.0
 alignment = 1
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-offset_right = 100.0
-offset_bottom = 50.0
-rect_min_size = Vector2(100, 50)
+offset_right = 79.0
+offset_bottom = 31.0
 theme_override_font_sizes/font_size = 16
 text = "Continue"
 
 [node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-offset_left = 104.0
-offset_right = 204.0
-offset_bottom = 50.0
-rect_min_size = Vector2(100, 50)
+offset_left = 83.0
+offset_right = 128.0
+offset_bottom = 31.0
 text = "Back"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ContinueButton" to="." method="OnContinueButtonPressed"]

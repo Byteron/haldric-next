@@ -6,25 +6,20 @@
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource( "1_ytnua" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MessageLabel" type="Label" parent="."]
 offset_top = 7.0
-offset_right = 257.0
+offset_right = 262.0
 offset_bottom = 33.0
 text = "Bitron: Hello there how is it going!"
-script = null
 
 [node name="TimeLabel" type="Label" parent="."]
-offset_left = 261.0
+offset_left = 266.0
 offset_top = 10.0
-offset_right = 352.0
+offset_right = 355.0
 offset_bottom = 30.0
 size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
 theme_override_font_sizes/font_size = 12
 text = "0495625609586"
 vertical_alignment = 2
-script = null

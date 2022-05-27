@@ -11,78 +11,55 @@ anchor_right = 1.0
 offset_left = -210.0
 offset_bottom = 77.0
 grow_horizontal = 0
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Create"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 203.0
-offset_bottom = 70.0
-script = null
+offset_right = 210.0
+offset_bottom = 77.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Create/VBoxContainer"]
-offset_right = 196.0
-offset_bottom = 30.0
-script = null
+offset_right = 210.0
+offset_bottom = 26.0
 
 [node name="Width" type="HBoxContainer" parent="Create/VBoxContainer/HBoxContainer"]
-offset_right = 96.0
-offset_bottom = 30.0
-rect_min_size = Vector2(0, 30)
+offset_right = 103.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
-script = null
 
 [node name="Label" type="Label" parent="Create/VBoxContainer/HBoxContainer/Width"]
-offset_top = 2.0
-offset_right = 46.0
-offset_bottom = 28.0
+offset_right = 49.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Width"
-structured_text_bidi_override_options = []
-script = null
 
 [node name="TextEdit" type="TextEdit" parent="Create/VBoxContainer/HBoxContainer/Width"]
-offset_left = 50.0
-offset_right = 96.0
-offset_bottom = 30.0
+offset_left = 53.0
+offset_right = 103.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
-structured_text_bidi_override_options = []
-script = null
 
 [node name="Height" type="HBoxContainer" parent="Create/VBoxContainer/HBoxContainer"]
-offset_left = 100.0
-offset_right = 196.0
-offset_bottom = 30.0
-rect_min_size = Vector2(0, 30)
+offset_left = 107.0
+offset_right = 210.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
-script = null
 
 [node name="Label" type="Label" parent="Create/VBoxContainer/HBoxContainer/Height"]
-offset_top = 2.0
-offset_right = 50.0
-offset_bottom = 28.0
+offset_right = 52.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Height"
-structured_text_bidi_override_options = []
-script = null
 
 [node name="TextEdit" type="TextEdit" parent="Create/VBoxContainer/HBoxContainer/Height"]
-offset_left = 54.0
-offset_right = 96.0
-offset_bottom = 30.0
+offset_left = 56.0
+offset_right = 103.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
-structured_text_bidi_override_options = []
-script = null
 
 [node name="CreateButton" type="Button" parent="Create/VBoxContainer"]
-offset_top = 34.0
-offset_right = 196.0
-offset_bottom = 63.0
+offset_top = 30.0
+offset_right = 210.0
+offset_bottom = 61.0
 text = "Create"
-script = null
 
 [node name="Tools" type="TabContainer" parent="."]
 anchor_left = 1.0
@@ -91,134 +68,102 @@ anchor_bottom = 1.0
 offset_left = -210.0
 offset_top = 126.0
 offset_bottom = -73.0
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Terrain" type="VBoxContainer" parent="Tools"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 41.0
-offset_right = -4.0
-offset_bottom = -4.0
-script = null
+offset_top = 31.0
 
 [node name="BrushSize" type="VBoxContainer" parent="Tools/Terrain"]
-offset_right = 202.0
+offset_right = 210.0
 offset_bottom = 46.0
-script = null
 
 [node name="Label" type="Label" parent="Tools/Terrain/BrushSize"]
-offset_right = 202.0
+offset_right = 210.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Brush Size"
 horizontal_alignment = 1
 vertical_alignment = 1
-structured_text_bidi_override_options = []
-script = null
 
 [node name="HSlider" type="HSlider" parent="Tools/Terrain/BrushSize"]
 offset_top = 30.0
-offset_right = 202.0
+offset_right = 210.0
 offset_bottom = 46.0
 size_flags_horizontal = 3
 max_value = 5.0
-script = null
 
 [node name="HSeparator" type="HSeparator" parent="Tools/Terrain"]
 offset_top = 50.0
-offset_right = 202.0
+offset_right = 210.0
 offset_bottom = 54.0
-script = null
 
 [node name="Elevation" type="VBoxContainer" parent="Tools/Terrain"]
 offset_top = 58.0
-offset_right = 202.0
-offset_bottom = 117.0
-script = null
+offset_right = 210.0
+offset_bottom = 112.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tools/Terrain/Elevation"]
-offset_right = 202.0
-offset_bottom = 31.0
-script = null
+offset_right = 210.0
+offset_bottom = 26.0
 
 [node name="Label" type="Label" parent="Tools/Terrain/Elevation/HBoxContainer"]
-offset_top = 2.0
-offset_right = 174.0
-offset_bottom = 28.0
+offset_right = 182.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Elevation"
 horizontal_alignment = 2
 vertical_alignment = 1
-structured_text_bidi_override_options = []
-script = null
 
 [node name="CheckBox" type="CheckBox" parent="Tools/Terrain/Elevation/HBoxContainer"]
-offset_left = 178.0
-offset_right = 202.0
-offset_bottom = 31.0
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 186.0
+offset_right = 210.0
+offset_bottom = 26.0
 
 [node name="HSlider" type="HSlider" parent="Tools/Terrain/Elevation"]
-offset_top = 35.0
-offset_right = 202.0
-offset_bottom = 51.0
+offset_top = 30.0
+offset_right = 210.0
+offset_bottom = 46.0
 size_flags_horizontal = 3
 max_value = 5.0
-script = null
 
 [node name="HSeparator2" type="HSeparator" parent="Tools/Terrain/Elevation"]
-offset_top = 55.0
-offset_right = 202.0
-offset_bottom = 59.0
-script = null
+offset_top = 50.0
+offset_right = 210.0
+offset_bottom = 54.0
 
 [node name="Terrains" type="VBoxContainer" parent="Tools/Terrain"]
-offset_top = 121.0
-offset_right = 202.0
-offset_bottom = 156.0
+offset_top = 116.0
+offset_right = 210.0
+offset_bottom = 146.0
 grow_vertical = 0
-script = null
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tools/Terrain/Terrains"]
-offset_right = 202.0
-offset_bottom = 31.0
-script = null
+offset_right = 210.0
+offset_bottom = 26.0
 
 [node name="Label" type="Label" parent="Tools/Terrain/Terrains/HBoxContainer"]
-offset_top = 2.0
-offset_right = 174.0
-offset_bottom = 28.0
+offset_right = 182.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Terrain"
 horizontal_alignment = 2
 vertical_alignment = 1
-structured_text_bidi_override_options = []
-script = null
 
 [node name="CheckBox" type="CheckBox" parent="Tools/Terrain/Terrains/HBoxContainer"]
-offset_left = 178.0
-offset_right = 202.0
-offset_bottom = 31.0
-script = null
+offset_left = 186.0
+offset_right = 210.0
+offset_bottom = 26.0
 
 [node name="CenterContainer" type="CenterContainer" parent="Tools/Terrain/Terrains"]
-offset_top = 35.0
-offset_right = 202.0
-offset_bottom = 35.0
-script = null
+offset_top = 30.0
+offset_right = 210.0
+offset_bottom = 30.0
 
 [node name="GridContainer" type="GridContainer" parent="Tools/Terrain/Terrains/CenterContainer"]
-offset_left = 101.0
-offset_right = 101.0
+offset_left = 105.0
+offset_right = 105.0
 columns = 3
-script = null
 
 [node name="Players" type="VBoxContainer" parent="Tools"]
 visible = false
@@ -228,7 +173,6 @@ offset_left = 4.0
 offset_top = 41.0
 offset_right = -4.0
 offset_bottom = -4.0
-script = null
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -238,47 +182,28 @@ anchor_bottom = 1.0
 offset_left = -211.0
 offset_top = -63.0
 offset_right = -1.0
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MapTextEdit" type="TextEdit" parent="VBoxContainer"]
 offset_right = 210.0
-offset_bottom = 30.0
-rect_min_size = Vector2(0, 30)
-structured_text_bidi_override_options = []
-script = null
+offset_bottom = 8.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 34.0
+offset_top = 12.0
 offset_right = 210.0
-offset_bottom = 63.0
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_bottom = 43.0
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 offset_right = 103.0
-offset_bottom = 29.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Save"
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LoadButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 offset_left = 107.0
 offset_right = 210.0
-offset_bottom = 29.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Load"
-script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="pressed" from="Create/VBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
 [connection signal="tab_changed" from="Tools" to="." method="OnToolsTabChanged"]
