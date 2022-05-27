@@ -27,7 +27,8 @@ public abstract class TerrainLoader
 
     protected void NewBase(string code, List<TerrainType> types, float elevationOffset = 0)
     {
-        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset).Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset)
+            .Build();
         TerrainDicts.Add(code, terrain);
     }
 
@@ -39,7 +40,8 @@ public abstract class TerrainLoader
 
     protected void NewKeep(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types)
+            .WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
         TerrainDicts.Add(code, terrain);
     }
 
@@ -51,7 +53,8 @@ public abstract class TerrainLoader
 
     protected void NewVillage(string code, List<TerrainType> types)
     {
-        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable().WithGivesIncome().WithHeals().Build();
+        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable()
+            .WithGivesIncome().WithHeals().Build();
         TerrainDicts.Add(code, terrain);
     }
 
@@ -200,12 +203,12 @@ public abstract class TerrainLoader
             {
                 var graphic = dict[name];
                 var mesh = LoadAsset<Mesh>(path);
-                    
+
                 if (!string.IsNullOrEmpty(materialPath))
                 {
                     mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
                 }
-                    
+
                 graphic.AddVariation(mesh);
             }
         }
@@ -248,12 +251,12 @@ public abstract class TerrainLoader
             {
                 var graphic = dict[name];
                 var mesh = LoadAsset<Mesh>(path);
-                    
+
                 if (!string.IsNullOrEmpty(materialPath))
                 {
                     mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
                 }
-                    
+
                 graphic.AddVariation(mesh);
             }
         }
@@ -267,7 +270,8 @@ public abstract class TerrainLoader
 
     public void AddKeepPlateauGraphic(string code, string path, Vector3 offset = default)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset).Build();
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset)
+            .Build();
         KeepPlateaus.Add(code, graphic);
     }
 

@@ -10,7 +10,6 @@ public partial class FlagView : Node3D
     public override void _Ready()
     {
         _meshInstance = GetNode<MeshInstance3D>("Flag/flag_human_01");
-
         _meshInstance.MaterialOverride.Set("albedo_color", Color);
     }
 }

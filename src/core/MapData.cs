@@ -11,7 +11,7 @@ public class MapDataPlayer
 public class MapDataLocation
 {
     public Coords Coords;
-    public List<string> Terrain = new List<string>();
+    public List<string> Terrain = new();
     public int Elevation;
 }
 
@@ -19,6 +19,6 @@ public class MapData
 {
     public int Width = 0;
     public int Height = 0;
-    public List<MapDataPlayer> Players = new List<MapDataPlayer>();
-    public List<MapDataLocation> Locations = new List<MapDataLocation>();
+    public List<MapDataPlayer> Players = new();
+    public List<MapDataLocation> Locations = new();
 }

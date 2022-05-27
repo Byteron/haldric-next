@@ -4,23 +4,32 @@ using Godot;
 
 public partial class FactionSelectionView : PanelContainer
 {
-    [Signal] public delegate void FactionChanged(int side, int index);
-    [Signal] public delegate void PlayerChanged(int side, int index);
-    [Signal] public delegate void GoldChanged(int side, int value);
-    [Signal] public delegate void ContinueButtonPressed();
-    [Signal] public delegate void BackButtonPressed();
+    [Signal]
+    public delegate void FactionChanged(int side, int index);
 
-    [Export]  PackedScene _playerOption;
+    [Signal]
+    public delegate void PlayerChanged(int side, int index);
+
+    [Signal]
+    public delegate void GoldChanged(int side, int value);
+
+    [Signal]
+    public delegate void ContinueButtonPressed();
+
+    [Signal]
+    public delegate void BackButtonPressed();
+
+    [Export] PackedScene _playerOption;
 
     public int LocalPlayerId { get; set; }
     public List<string> Players { get; set; }
     public string MapName { get; set; }
 
-    Dictionary<int, PlayerOption> _options = new Dictionary<int, PlayerOption>();
+    readonly Dictionary<int, PlayerOption> _options = new();
 
-    VBoxContainer _container = null;
-    Button _continueButton = null;
-    Button _backButton = null;
+    VBoxContainer _container;
+    Button _continueButton;
+    Button _backButton;
 
     public override void _Ready()
     {
@@ -28,7 +37,7 @@ public partial class FactionSelectionView : PanelContainer
         _continueButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/ContinueButton");
         _backButton = GetNode<Button>("CenterContainer/VBoxContainer/HBoxContainer/BackButton");
 
-        for (int side = 0; side < Players.Count; side++)
+        for (var side = 0; side < Players.Count; side++)
         {
             var option = _playerOption.Instantiate<PlayerOption>();
             option.Connect(nameof(PlayerOption.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
@@ -91,29 +100,29 @@ public partial class FactionSelectionView : PanelContainer
         return golds;
     }
 
-     void OnFactionChanged(int side, int index)
+    void OnFactionChanged(int side, int index)
     {
         EmitSignal(nameof(FactionChanged), side, index);
     }
 
-     void OnPlayerChanged(int side, int index)
+    void OnPlayerChanged(int side, int index)
     {
         EmitSignal(nameof(PlayerChanged), side, index);
     }
 
-     void OnGoldChanged(int side, int value)
+    void OnGoldChanged(int side, int value)
     {
         EmitSignal(nameof(GoldChanged), side, value);
     }
 
-     void OnContinueButtonPressed()
+    void OnContinueButtonPressed()
     {
         _continueButton.Disabled = true;
         _backButton.Disabled = true;
         EmitSignal(nameof(ContinueButtonPressed));
     }
 
-     void OnBackButtonPressed()
+    void OnBackButtonPressed()
     {
         EmitSignal(nameof(BackButtonPressed));
     }

@@ -11,16 +11,13 @@ struct RenderData
 
 public partial class TerrainFeaturePopulator : Node3D
 {
-     Dictionary<int, RID> _multiMeshRids = new();
-     Dictionary<int, List<RenderData>> _renderData = new();
-     List<RID> _rids = new();
-     Dictionary<Vector3, int> _randomIndicies = new();
+    readonly Dictionary<int, RID> _multiMeshRids = new();
+    readonly Dictionary<int, List<RenderData>> _renderData = new();
+    readonly List<RID> _rids = new();
+    readonly Dictionary<Vector3, int> _randomIndices = new();
     public TerrainFeaturePopulator() => Name = "TerrainFeaturePopuplator";
 
-    public override void _ExitTree()
-    {
-        Clear();
-    }
+    public override void _ExitTree() { Clear(); }
 
     public void Clear()
     {
@@ -38,7 +35,8 @@ public partial class TerrainFeaturePopulator : Node3D
     {
         foreach (var (meshId, renderDatas) in _renderData)
         {
-            RenderingServer.MultimeshAllocateData(_multiMeshRids[meshId], renderDatas.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshAllocateData(_multiMeshRids[meshId], renderDatas.Count,
+                RenderingServer.MultimeshTransformFormat.Transform3d);
             RenderingServer.MultimeshSetVisibleInstances(_multiMeshRids[meshId], renderDatas.Count);
 
             var index = 0;
@@ -71,17 +69,17 @@ public partial class TerrainFeaturePopulator : Node3D
             }
             else
             {
-                if (!_randomIndicies.TryGetValue(position, out var index))
+                if (!_randomIndices.TryGetValue(position, out var index))
                 {
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                    _randomIndicies.Add(position, index);
+                    _randomIndices.Add(position, index);
                 }
 
                 if (terrainGraphic.Variations.Count <= index)
                 {
-                    _randomIndicies.Remove(position);
+                    _randomIndices.Remove(position);
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                    _randomIndicies.Add(position, index);
+                    _randomIndices.Add(position, index);
                 }
 
                 var mesh = terrainGraphic.Variations[index];
@@ -109,10 +107,7 @@ public partial class TerrainFeaturePopulator : Node3D
 
             var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
@@ -123,17 +118,11 @@ public partial class TerrainFeaturePopulator : Node3D
             var nElevationOffset = nTerrainEntity.Get<ElevationOffset>();
 
 
-            if (elevation.Value != nElevation.Value)
-            {
-                continue;
-            }
+            if (elevation.Value != nElevation.Value) continue;
 
             var elevationOffsetDifference = elevationOffset.Value - nElevationOffset.Value;
 
-            if (Mathf.Abs(elevationOffsetDifference) > 0.5f)
-            {
-                continue;
-            }
+            if (Mathf.Abs(elevationOffsetDifference) > 0.5f) continue;
 
             var position = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
 
@@ -145,17 +134,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -211,10 +200,7 @@ public partial class TerrainFeaturePopulator : Node3D
             //walls want to rotate the other way it seems?
             var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
@@ -222,19 +208,14 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
 
-            if (nElevation.Value < 0)
-            {
-                continue;
-            }
+            if (nElevation.Value < 0) continue;
 
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
-            {
-                continue;
-            }
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
+
+            if (elevation.Value == nElevation.Value 
+                && !terrainEntity.Has<CanRecruitFrom>()
+                && terrainEntity.Has<CanRecruitTo>() 
+                && nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetEdgeMiddle(direction);
             AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
@@ -255,16 +236,13 @@ public partial class TerrainFeaturePopulator : Node3D
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
             // cliffs want to rotate the other way it seems?
             var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
@@ -273,17 +251,11 @@ public partial class TerrainFeaturePopulator : Node3D
             var nTerrainEntity = nTerrainBase.Entity;
             var nTerrainCode = nTerrainEntity.Get<TerrainCode>();
 
-            if (Data.Instance.InnerCliffs.ContainsKey(nTerrainCode.Value))
-            {
-                continue;
-            }
+            if (Data.Instance.InnerCliffs.ContainsKey(nTerrainCode.Value)) continue;
 
             var elevationDiff = elevation.Value - nElevation.Value;
-            
-            if (elevationDiff < 2)
-            {
-                continue;
-            }
+
+            if (elevationDiff < 2) continue;
 
             var position = center + Metrics.GetEdgeMiddle(direction);
 
@@ -295,17 +267,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -333,10 +305,7 @@ public partial class TerrainFeaturePopulator : Node3D
             // cliffs want to rotate the other way it seems?
             var rotation = direction.Opposite().Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
             var nElevation = nLocEntity.Get<Elevation>();
@@ -345,16 +314,13 @@ public partial class TerrainFeaturePopulator : Node3D
             var nElevationOffset = nTerrainEntity.Get<ElevationOffset>();
 
             var elevationDiff = nElevation.Value - elevation.Value;
-            
-            if (elevationDiff < 2)
-            {
-                continue;
-            }
+
+            if (elevationDiff < 2) continue;
 
             center.y = nElevation.Height + nElevationOffset.Value;
-            
+
             var position = center + Metrics.GetEdgeMiddle(direction);
-            
+
             foreach (var terrainGraphic in Data.Instance.InnerCliffs[terrainCode.Value].Values)
             {
                 if (terrainGraphic.Variations.Count == 0)
@@ -363,17 +329,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -414,14 +380,15 @@ public partial class TerrainFeaturePopulator : Node3D
             if (nElevation.Value < 0) continue;
             if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
             if (elevation.Value == nElevation.Value) continue;
-            if (!terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>()) continue;
+            if (!terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() &&
+                nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetFirstCorner(direction);
             AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 
-    void AddRenderData(Mesh mesh, Vector3 origin, Vector3 rotation)
+    void AddRenderData(Resource mesh, Vector3 origin, Vector3 rotation)
     {
         var meshId = mesh.GetRid().GetId();
 
@@ -442,24 +409,24 @@ public partial class TerrainFeaturePopulator : Node3D
             Position = origin,
             Rotation = rotation
         };
-        
+
         renderDatas.Add(renderData);
     }
 
-     RID NewMultiMesh(Mesh mesh)
+    RID NewMultiMesh(Resource mesh)
     {
-        var multimeshRid = RenderingServer.MultimeshCreate();
+        var multiMeshRid = RenderingServer.MultimeshCreate();
         var instanceRid = RenderingServer.InstanceCreate();
 
         var scenarioRid = GetWorld3d().Scenario;
 
-        RenderingServer.MultimeshSetMesh(multimeshRid, mesh.GetRid());
+        RenderingServer.MultimeshSetMesh(multiMeshRid, mesh.GetRid());
         RenderingServer.InstanceSetScenario(instanceRid, scenarioRid);
-        RenderingServer.InstanceSetBase(instanceRid, multimeshRid);
+        RenderingServer.InstanceSetBase(instanceRid, multiMeshRid);
 
-        _rids.Add(multimeshRid);
+        _rids.Add(multiMeshRid);
         _rids.Add(instanceRid);
 
-        return multimeshRid;
+        return multiMeshRid;
     }
 }
