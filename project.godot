@@ -21,11 +21,6 @@ Scenes="*res://src/nodes/global/Scenes.tscn"
 Data="*res://src/nodes/global/Data.tscn"
 Sfx="*res://src/nodes/global/Sfx.tscn"
 
-[debug]
-
-settings/stdout/print_fps=true
-settings/stdout/print_gpu_profile=true
-
 [display]
 
 window/size/viewport_width=1920

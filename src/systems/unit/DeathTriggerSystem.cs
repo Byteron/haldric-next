@@ -3,12 +3,8 @@ using RelEcs.Godot;
 
 public class DeathTrigger
 {
-    public Entity Entity { get; set; }
-
-    public DeathTrigger(Entity entity)
-    {
-        Entity = entity;
-    }
+    public Entity Entity { get; }
+    public DeathTrigger(Entity entity) => Entity = entity;
 }
 
 public class DeathTriggerSystem : ISystem

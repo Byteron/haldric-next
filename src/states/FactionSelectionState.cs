@@ -11,10 +11,7 @@ public partial class FactionSelectionState : GameState
 
     readonly string _mapName;
     
-    public FactionSelectionState(string mapName)
-    {
-        _mapName = mapName;
-    }
+    public FactionSelectionState(string mapName) => _mapName = mapName;
 
     public override void Init(GameStateController gameStates)
     {
@@ -28,10 +25,7 @@ public class FactionSelectionStateUpdateSystem : ISystem
 {
     readonly string _mapName;
 
-    public FactionSelectionStateUpdateSystem(string mapName)
-    {
-        _mapName = mapName;
-    }
+    public FactionSelectionStateUpdateSystem(string mapName) => _mapName = mapName;
     
     public void Run(Commands commands)
     {
@@ -70,10 +64,7 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
 
     FactionSelectionState _state;
 
-    public FactionSelectionStateInitSystem(string mapName)
-    {
-        _mapName = mapName;
-    }
+    public FactionSelectionStateInitSystem(string mapName) => _mapName = mapName;
     
     public void Run(Commands commands)
     {
@@ -110,7 +101,9 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
         _view.Connect(nameof(FactionSelectionView.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
         _view.Connect(nameof(FactionSelectionView.ContinueButtonPressed), new Callable(this, nameof(OnContinueButtonPressed)));
         _view.Connect(nameof(FactionSelectionView.BackButtonPressed), new Callable(this, nameof(OnBackButtonPressed)));
-
+        
+        commands.AddElement(_view);
+        
         commands.GetElement<CurrentGameState>().State.AddChild(_view);
     }
 
@@ -144,6 +137,7 @@ public partial class FactionSelectionStateInitSystem : Resource, ISystem
                 }
             case NetworkOperation.PlayerReadied:
                 {
+                    GD.Print("PlayerReadied Received");
                     _state.PlayersReadied += 1;
                     break;
                 }
