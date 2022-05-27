@@ -6,25 +6,25 @@ public partial class TerrainHighlighter : Node3D
     [Export] public PackedScene TerrainHighlight;
     [Export] public PackedScene Border3D;
 
-    public List<Border3D> _borders = new List<Border3D>();
-    public List<TerrainHighlight> _path = new List<TerrainHighlight>();
+    public List<Border3D> Borders = new List<Border3D>();
+    public List<TerrainHighlight> Path = new List<TerrainHighlight>();
 
     public void ClearPath()
     {
-        foreach (var child in _path)
+        foreach (var child in Path)
         {
             RemoveChild(child);
             child.QueueFree();
         }
 
-        _path.Clear();
+        Path.Clear();
     }
     public void ShowPath(Path path)
     {
         foreach (var pLocEntity in path.Checkpoints)
         {
-            ref var coords = ref pLocEntity.Get<Coords>();
-            ref var elevation = ref pLocEntity.Get<Elevation>();
+            var coords = pLocEntity.Get<Coords>();
+            var elevation = pLocEntity.Get<Elevation>();
 
             var pos = coords.World();
             pos.y = elevation.Height;
@@ -40,7 +40,7 @@ public partial class TerrainHighlighter : Node3D
         highlight.ScaleFactor = scaleFactor;
         highlight.Position = position;
         AddChild(highlight);
-        _path.Add(highlight);
+        Path.Add(highlight);
     }
 
     public void PlaceBorder(Vector3 position, Color color, float rotate, float scaleFactor)
@@ -51,7 +51,7 @@ public partial class TerrainHighlighter : Node3D
         highlight.Direction = rotate;
         highlight.Position = position;
         AddChild(highlight);
-        _borders.Add(highlight);
+        Borders.Add(highlight);
     }
 
     public void Clear()
@@ -61,7 +61,7 @@ public partial class TerrainHighlighter : Node3D
             RemoveChild(child);
             child.QueueFree();
         }
-        _path.Clear();
-        _borders.Clear();
+        Path.Clear();
+        Borders.Clear();
     }
 }

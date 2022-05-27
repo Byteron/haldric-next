@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
@@ -8,16 +9,16 @@ public partial class RecruitSelectionView : Control
     [Signal] public delegate void RecruitSelected(string unitTypeId);
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export] PackedScene RecruitSelectionOption;
+    [Export] PackedScene _recruitSelectionOption;
 
-    private ButtonGroup _buttonGroup = new ButtonGroup();
+     ButtonGroup _buttonGroup = new();
 
-    private RecruitSelectionOption _selectedOption;
+     RecruitSelectionOption _selectedOption;
 
-    private Label _unitLabel;
+     Label _unitLabel;
 
-    private VBoxContainer _container;
-    private Button _acceptButton;
+     VBoxContainer _container;
+     Button _acceptButton;
 
     public override void _Ready()
     {
@@ -27,14 +28,14 @@ public partial class RecruitSelectionView : Control
         _unitLabel = GetNode<Label>("PanelContainer/VBoxContainer/HBoxContainer/UnitLabel");
     }
 
-    public void UpdateInfo(EcsEntity locEntity, EcsEntity sideEntity, List<string> unitTypeIds)
+    public void UpdateInfo(Entity locEntity, Entity sideEntity, List<string> unitTypeIds)
     {
         var side = sideEntity.Get<Side>().Value;
         var gold = sideEntity.Get<Gold>().Value;
 
         foreach (var unitTypeId in unitTypeIds)
         {
-            var optionButton = RecruitSelectionOption.Instantiate<RecruitSelectionOption>();
+            var optionButton = _recruitSelectionOption.Instantiate<RecruitSelectionOption>();
             optionButton.Connect("pressed", new Callable(this, "OnRecruitOptionSelected"), new Godot.Collections.Array() { optionButton });
             optionButton.UnitType = Data.Instance.Units[unitTypeId].Instantiate<UnitType>();
             optionButton.Text = $"({optionButton.UnitType.Cost}) {unitTypeId}";
@@ -59,7 +60,7 @@ public partial class RecruitSelectionView : Control
                 if (!button.Disabled)
                 {
                     _selectedOption = button;
-                    _selectedOption.Pressed = true;
+                    _selectedOption.ButtonPressed = true;
                     OnRecruitOptionSelected(_selectedOption);
                     break;
                 }
@@ -75,10 +76,10 @@ public partial class RecruitSelectionView : Control
         }
     }
 
-    private void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
+     void OnRecruitOptionSelected(RecruitSelectionOption optionButton)
     {
         _selectedOption = optionButton;
-        string s = "";
+        var s = "";
         s += $"{optionButton.UnitType.Id}";
         s += $"\n\nL: {optionButton.UnitType.Level}";
         s += $"\nHP: {optionButton.UnitType.Health}";
@@ -94,13 +95,13 @@ public partial class RecruitSelectionView : Control
         _unitLabel.Text = s;
     }
 
-    private void OnAcceptButtonPressed()
+     void OnAcceptButtonPressed()
     {
         _acceptButton.Disabled = true;
         EmitSignal(nameof(RecruitSelected), _selectedOption.UnitType.Name);
     }
 
-    private void OnCancelButtonPressed()
+     void OnCancelButtonPressed()
     {
         EmitSignal(nameof(CancelButtonPressed));
     }

@@ -1,9 +1,4 @@
-public struct TerrainCode
+public class TerrainCode
 {
-    public string Value { get; set; }
-
-    public TerrainCode(string code)
-    {
-        Value = code;
-    }
+    public string Value;
 }

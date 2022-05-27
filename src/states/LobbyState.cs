@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
 using Godot;
 using Nakama;
 using Nakama.TinyJson;
@@ -14,25 +14,91 @@ public struct ChannelMessage
 
 public partial class LobbyState : GameState
 {
+    public override void Init(GameStateController gameStates)
+    {
+        InitSystems.Add(new LobbyStateInitSystem());
+        ContinueSystems.Add(new LobbyStateContinueSystem());
+        PauseSystems.Add(new LobbyStatePauseSystem());
+        ExitSystems.Add(new LobbyStateExitSystem());
+    }
+}
+
+public class LobbyStateContinueSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        var view = commands.GetElement<LobbyView>();
+        view.Show();
+        view.EnableJoinButton();
+        view.UpdateInfo("");
+    }
+}
+
+public class LobbyStatePauseSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<LobbyView>().Hide();
+    }
+}
+
+public class LobbyStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        var view = commands.GetElement<LobbyView>();
+        var socket = commands.GetElement<ISocket>();
+        var channel = commands.GetElement<IChannel>();
+
+        if (commands.TryGetElement<IMatchmakerTicket>(out var ticket))
+        {
+            socket.RemoveMatchmakerAsync(ticket);
+            commands.RemoveElement<IMatchmakerTicket>();
+        }
+
+        if (commands.TryGetElement<IMatch>(out var match))
+        {
+            socket.LeaveMatchAsync(match);
+            commands.RemoveElement<IMatch>();
+        }
+
+        socket.LeaveChatAsync(channel);
+        socket.CloseAsync();
+
+        commands.RemoveElement<IMatchmakerTicket>();
+        commands.RemoveElement<IChannel>();
+        commands.RemoveElement<ISocket>();
+        commands.RemoveElement<ISession>();
+        commands.RemoveElement<IApiAccount>();
+
+        view.QueueFree();
+        commands.RemoveElement<LobbyView>();
+    }
+}
+
+public partial class LobbyStateInitSystem : Resource, ISystem
+{
     LobbyView _view;
 
     string _username;
 
-    private ISocket _socket;
-    private IChannel _channel;
+    ISocket _socket;
+    IChannel _channel;
 
-    private IMatch _match;
-    private IMatchmakerTicket _ticket;
+    IMatch _match;
+    IMatchmakerTicket _ticket;
 
-    private List<IUserPresence> _users = new List<IUserPresence>();
+    List<IUserPresence> _users = new();
 
-    private string _mapName;
-    private int _playerCount = 0;
+    string _mapName;
+    int _playerCount;
 
-    public LobbyState(EcsWorld world) : base(world) { }
+    Commands _commands;
 
-    public override void Enter(GameStateController gameStates)
+    public void Run(Commands commands)
     {
+        _commands = commands;
+
         _view = Scenes.Instantiate<LobbyView>();
 
         _view.Connect(nameof(LobbyView.MessageSubmitted), new Callable(this, nameof(OnMessageSubmitted)));
@@ -41,69 +107,40 @@ public partial class LobbyState : GameState
         _view.Connect(nameof(LobbyView.JoinButtonPressed), new Callable(this, nameof(OnJoinButtonPressed)));
         _view.Connect(nameof(LobbyView.CancelButtonPressed), new Callable(this, nameof(OnCancelButtonPressed)));
 
-        AddChild(_view);
+        commands.GetElement<CurrentGameState>().State.AddChild(_view);
+        commands.AddElement(_view);
 
-        _socket = _world.GetResource<ISocket>();
+        _socket = commands.GetElement<ISocket>();
         _socket.ReceivedChannelMessage += OnReceivedChannelMessage;
         _socket.ReceivedChannelPresence += OnReceivedChannelPresence;
         _socket.ReceivedMatchmakerMatched += OnReceivedMatchmakerMatched;
 
-        var account = _world.GetResource<IApiAccount>();
+        var account = commands.GetElement<IApiAccount>();
         _username = account.User.Username;
 
-        var settings = _world.GetResource<LobbySettings>();
-        EnterChat(settings.RoomName, ChannelType.Room, settings.Persistence, settings.Hidden);
+        var settings = commands.GetElement<LobbySettings>();
+        EnterChat(settings.RoomName, settings.Persistence, settings.Hidden);
     }
 
-    public override void Continue(GameStateController gameStates)
+    async void EnterChat(string roomName, bool persistence, bool hidden)
     {
-        _view.Show();
-        _view.EnableJoinButton();
-        _view.UpdateInfo("");
-    }
-
-    public override void Pause(GameStateController gameStates)
-    {
-        _view.Hide();
-    }
-
-    public override void Exit(GameStateController gameStates)
-    {
-        OnCancelButtonPressed();
-
-        _socket.ReceivedChannelMessage -= OnReceivedChannelMessage;
-        _socket.ReceivedChannelPresence -= OnReceivedChannelPresence;
-        _socket.ReceivedMatchmakerMatched -= OnReceivedMatchmakerMatched;
-
-        _socket.LeaveChatAsync(_channel);
-        _socket.CloseAsync();
-        _world.RemoveResource<ISocket>();
-        _world.RemoveResource<ISession>();
-        _world.RemoveResource<IApiAccount>();
-
-        _view.QueueFree();
-    }
-
-    private async void EnterChat(string roomname, ChannelType channelType, bool persistence, bool hidden)
-    {
-        _channel = await _socket.JoinChatAsync(roomname, ChannelType.Room, persistence, hidden);
+        _channel = await _socket.JoinChatAsync(roomName, ChannelType.Room, persistence, hidden);
+        _commands.AddElement(_channel);
         _users.AddRange(_channel.Presences);
         _view.UpdateUsers(_username, _users);
     }
 
-    private async void CreateMatchWith(IMatchmakerMatched matched)
+    async void CreateMatchWith(IMatchmakerMatched matched)
     {
         _match = await _socket.JoinMatchAsync(matched);
 
         var localPlayer = new LocalPlayer();
-        var matchPlayers = new MatchPlayers();
-        matchPlayers.Array = new IUserPresence[matched.Users.ToList().Count];
+        var matchPlayers = new MatchPlayers
+        {
+            Array = new IUserPresence[matched.Users.ToList().Count]
+        };
 
         localPlayer.Presence = matched.Self.Presence;
-
-        var users = new List<string>();
-
-        users.Add(localPlayer.Presence.Username);
 
         GD.Print("User: ", localPlayer.Presence.Username);
 
@@ -126,40 +163,39 @@ public partial class LobbyState : GameState
         GD.Print("Side: ", localPlayer.Id);
         GD.Print("Players: ", playerString);
 
-        _world.AddResource(_match);
-        _world.AddResource(localPlayer);
-        _world.AddResource(matchPlayers);
+        _commands.AddElement(_match);
+        _commands.AddElement(localPlayer);
+        _commands.AddElement(matchPlayers);
 
-        _world.GetResource<GameStateController>().PushState(new FactionSelectionState(_world, _mapName));
+        _commands.GetElement<GameStateController>().PushState(new FactionSelectionState(_mapName));
     }
 
-    private async void JoinMatchmaking()
+    async void JoinMatchmaking()
     {
-        if (_ticket != null || _match != null)
-        {
-            return;
-        }
+        if (_ticket != null || _match != null) return;
 
         var query = "*";
         var minCount = _playerCount;
         var maxCount = _playerCount;
 
         _ticket = await _socket.AddMatchmakerAsync(query, minCount, maxCount);
+        _commands.AddElement(_ticket);
+
         _view.UpdateInfo("Looking for Match...");
     }
 
-    private async void OnMessageSubmitted(string message)
+    async void OnMessageSubmitted(string message)
     {
         var content = new ChannelMessage { Message = message }.ToJson();
-        var sendAck = await _socket.WriteChatMessageAsync(_channel.Id, content);
+        await _socket.WriteChatMessageAsync(_channel.Id, content);
     }
 
-    private void OnBackButtonPressed()
+    void OnBackButtonPressed()
     {
-        _world.GetResource<GameStateController>().PopState();
+        _commands.GetElement<GameStateController>().PopState();
     }
 
-    private void OnJoinButtonPressed()
+    void OnJoinButtonPressed()
     {
         if (string.IsNullOrEmpty(_mapName))
         {
@@ -170,7 +206,7 @@ public partial class LobbyState : GameState
         JoinMatchmaking();
     }
 
-    private void OnCancelButtonPressed()
+    void OnCancelButtonPressed()
     {
         if (_ticket != null)
         {
@@ -189,7 +225,7 @@ public partial class LobbyState : GameState
         _view.EnableJoinButton();
     }
 
-    private void OnScenarioSelected(string mapName)
+    void OnScenarioSelected(string mapName)
     {
         var mapData = Data.Instance.Maps[mapName];
         var playerList = mapData.Players;
@@ -197,7 +233,7 @@ public partial class LobbyState : GameState
         _playerCount = playerList.Count;
     }
 
-    private void OnReceivedChannelPresence(IChannelPresenceEvent presenceEvent)
+    void OnReceivedChannelPresence(IChannelPresenceEvent presenceEvent)
     {
         foreach (var presence in presenceEvent.Leaves)
         {
@@ -208,7 +244,7 @@ public partial class LobbyState : GameState
         _view.UpdateUsers(_username, _users);
     }
 
-    private void OnReceivedChannelMessage(IApiChannelMessage message)
+    void OnReceivedChannelMessage(IApiChannelMessage message)
     {
 
         switch (message.Code)
@@ -223,7 +259,7 @@ public partial class LobbyState : GameState
         }
     }
 
-    private void OnReceivedMatchmakerMatched(IMatchmakerMatched matched)
+    void OnReceivedMatchmakerMatched(IMatchmakerMatched matched)
     {
         CreateMatchWith(matched);
     }

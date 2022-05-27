@@ -1,54 +1,78 @@
-using Bitron.Ecs;
+using RelEcs;
 using Godot;
 using Nakama;
 
 public partial class LoginState : GameState
 {
-    LoginView _view;
-
-    public LoginState(EcsWorld world) : base(world) { }
-
-    public override void Enter(GameStateController gameStates)
+    public override void Init(GameStateController gameStates)
     {
-        AddEventSystem<LoginEvent>(new LoginEventSystem());
+        InitSystems.Add(new LoginStateInitSystem());
+        ContinueSystems.Add(new LoginStateContinueSystem());
+        PauseSystems.Add(new LoginStatePauseSystem());
+        ExitSystems.Add(new LoginStateExitSystem());
 
-        _view = Scenes.Instantiate<LoginView>();
+        UpdateSystems.Add(new LoginEventSystem());
+    }  
+}
 
-        _view.Connect("LoginPressed", new Callable(this, nameof(OnLoginPressed)));
-        _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
-
-        AddChild(_view);
+public class LoginStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<LoginView>().QueueFree();
+        commands.RemoveElement<LoginView>();
     }
+}
 
-    public override void Continue(GameStateController gameStates)
+public class LoginStateContinueSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _view.Show();
+        commands.GetElement<LoginView>().Show();
     }
+}
 
-    public override void Pause(GameStateController gameStates)
+public class LoginStatePauseSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _view.Hide();
+        commands.GetElement<LoginView>().Hide();
     }
+}
 
-    public override void Exit(GameStateController gameStates)
+public partial class LoginStateInitSystem : Resource, ISystem
+{
+    Commands _commands;
+
+    public void Run(Commands commands)
     {
-        _view.QueueFree();
+        _commands = commands;
+
+        var view = Scenes.Instantiate<LoginView>();
+
+        view.Connect("LoginPressed", new Callable(this, nameof(OnLoginPressed)));
+        view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
+
+        var currentState = commands.GetElement<CurrentGameState>();
+        currentState.State.AddChild(view);
+
+        commands.AddElement(view);
     }
 
     public void OnLoginPressed(string email, string password, string username)
     {
-        if (!_world.HasResource<Client>())
+        if (!_commands.HasElement<Client>())
         {
-            var settings = _world.GetResource<ServerSettings>();
+            var settings = _commands.GetElement<ServerSettings>();
             var client = new Client(settings.Scheme, settings.Host, settings.Port, settings.ServerKey);
-            _world.AddResource(client);
+            _commands.AddElement(client);
         }
 
-        _world.Spawn().Add(new LoginEvent(email, password, username));
+        _commands.Send(new LoginEvent(email, password, username));
     }
 
     public void OnCancelPressed()
     {
-        _world.GetResource<GameStateController>().PopState();
+        _commands.GetElement<GameStateController>().PopState();
     }
 }

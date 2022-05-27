@@ -1,7 +1,8 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Nakama.TinyJson;
 
 public partial class Data : Node
@@ -24,7 +25,7 @@ public partial class Data : Node
     public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
     public Dictionary<string, FactionData> Factions { get; set; } = new Dictionary<string, FactionData>();
     public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
-    public Dictionary<string, EcsEntity> Terrains { get; set; } = new Dictionary<string, EcsEntity>();
+    public Dictionary<string, Entity> Terrains { get; set; } = new Dictionary<string, Entity>();
     public Dictionary<string, MapData> Maps { get; set; } = new Dictionary<string, MapData>();
 
     public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
@@ -51,7 +52,7 @@ public partial class Data : Node
         Instance = this;
     }
 
-    public void LoadFactions()
+    public void LoadFactions(Commands commands)
     {
         Factions.Clear();
 
@@ -69,7 +70,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadUnits()
+    public void LoadUnits(Commands commands)
     {
         Units.Clear();
 
@@ -79,7 +80,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadSchedules()
+    public void LoadSchedules(Commands commands)
     {
         Schedules.Clear();
 
@@ -89,7 +90,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadTerrain()
+    public void LoadTerrain(Commands commands)
     {
         TerrainDicts.Clear();
         Decorations.Clear();
@@ -105,11 +106,10 @@ public partial class Data : Node
 
         TerrainDicts = terrainScript.TerrainDicts;
 
-        foreach (var pair in TerrainDicts)
+                foreach (var pair in TerrainDicts)
         {
-            Terrains.Add(pair.Key, TerrainFactory.CreateFromDict(pair.Value));
+            Terrains.Add(pair.Key, TerrainFactory.CreateFromDict(commands, pair.Value));
         }
-
         Decorations = terrainScript.Decorations;
         DirectionalDecorations = terrainScript.DirectionalDecorations;
         WaterGraphics = terrainScript.WaterGraphics;
@@ -130,7 +130,7 @@ public partial class Data : Node
         RoughnessTextureArray = CreateTextureArray(RoughnessTextureArray, TerrainRoughnessTextures);
     }
 
-    public void LoadMaps()
+    public void LoadMaps(Commands commands)
     {
         Maps.Clear();
 
@@ -149,7 +149,7 @@ public partial class Data : Node
             var terrainCode = item.Key;
             var terrainEntity = item.Value;
 
-            terrainEntity.Add(new TerrainTypeIndex(index));
+            terrainEntity.Add(new TerrainTypeIndex { Value = index });
 
             TextureArrayIds.Add(terrainCode, index);
             index += 1;
@@ -180,11 +180,5 @@ public partial class Data : Node
         texArray._Images = textures;
 
         return texArray;
-    }
-
-    public EcsEntity CreateTerrain(string terrainType)
-    {
-        var dict = TerrainDicts[terrainType];
-        return TerrainFactory.CreateFromDict(dict);
     }
 }

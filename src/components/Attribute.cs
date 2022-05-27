@@ -1,3 +1,5 @@
+using Godot;
+
 public struct Health { } // For Attribute<T>
 
 public struct Experience { } // For Attribute<T>
@@ -6,11 +8,15 @@ public struct Moves { } // For Attribute<T>
 
 public struct Actions { } // For Attribute<T>
 
-public struct Attribute<T>
+public class Attribute<CT>
 {
     public int Value { get; set; }
     public int Max { get; set; }
 
+    public Attribute()
+    {
+    }
+    
     public Attribute(int max)
     {
         Max = max;
@@ -24,13 +30,13 @@ public struct Attribute<T>
 
     public void Increase(int amount)
     {
-        int sum = Value + amount;
+        var sum = Value + amount;
         Value = sum > Max ? Max : sum;
     }
 
     public void Decrease(int amount)
     {
-        int diff = Value - amount;
+        var diff = Value - amount;
         Value = diff < 0 ? 0 : diff;
     }
 

@@ -1,23 +1,24 @@
 using Godot;
 using System;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public partial class FloatingLabel : Control
 {
     public static FloatingLabel Instantiate(Vector3 position, string text, Color color)
     {
         var label = Scenes.Instantiate<FloatingLabel>();
-        label.Position = position;
+        label.WorldPosition = position;
         label.Text = text;
         label.Color = color;
         return label;
     }
     
-    public Vector3 Position { get; set; }
+    public Vector3 WorldPosition { get; set; }
     public Color Color { get; set; }
     public string Text { get; set; }
 
-    private Label _label;
+     Label _label;
 
     public override void _Ready()
     {
@@ -29,7 +30,7 @@ public partial class FloatingLabel : Control
         var tween = GetTree().CreateTween();
         tween.SetEase(Tween.EaseType.Out);
         tween.SetTrans(Tween.TransitionType.Back);
-        tween.TweenProperty(this, "Position", Position + Vector3.Up * 6f, 0.5f);
+        tween.TweenProperty(this, "Position", WorldPosition + Vector3.Up * 6f, 0.5f);
         tween.TweenCallback(new Callable(this, "queue_free"));
         tween.Play();
     }
@@ -44,14 +45,14 @@ public partial class FloatingLabel : Control
             return;
         }
         
-        if (camera.IsPositionBehind(Position))
+        if (camera.IsPositionBehind(WorldPosition))
         {
             Hide();
         }
         else
         {
             Show();
-            RectPosition = camera.UnprojectPosition(Position);
+            Position = camera.UnprojectPosition(WorldPosition);
         }
     }
 }

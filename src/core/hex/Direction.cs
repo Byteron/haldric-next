@@ -1,9 +1,9 @@
 
-public enum Direction { E, SE, SW, W, NW, NE }
+public enum Direction { E, Se, Sw, W, Nw, Ne }
 
 public static class DirectionExtentions
 {
-    private static float[] _rotations = new float[] {
+     static float[] rotations = new float[] {
         Godot.Mathf.Pi,
         2 * Godot.Mathf.Pi / 3,
         Godot.Mathf.Pi / 3,
@@ -14,7 +14,7 @@ public static class DirectionExtentions
 
     public static float Rotation(this Direction direction)
     {
-        return _rotations[(int)direction];
+        return rotations[(int)direction];
     }
     public static Direction Opposite(this Direction direction)
     {

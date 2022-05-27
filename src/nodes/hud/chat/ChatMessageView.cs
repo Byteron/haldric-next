@@ -6,8 +6,8 @@ public partial class ChatMessageView : HBoxContainer
     public string Message { get; set; }
     public string Time { get; set; }
 
-    private Label _messageLabel;
-    private Label _timeLabel;
+     Label _messageLabel;
+     Label _timeLabel;
 
     public override void _Ready()
     {

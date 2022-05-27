@@ -1,11 +1,6 @@
 using Haldric.Wdk;
 
-public struct Aligned
+public class Aligned
 {
     public Alignment Value;
-
-    public Aligned(Alignment value)
-    {
-        Value = value;
-    }
 }

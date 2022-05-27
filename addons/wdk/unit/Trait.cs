@@ -1,13 +1,13 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
 
 namespace Haldric.Wdk
 {
     public partial class Trait : Node
     {
-        [Export] string Id = "";
-        [Export(PropertyHint.MultilineText)] string Description = "";
+        [Export] string _id = "";
+        [Export(PropertyHint.MultilineText)] string _description = "";
 
-        public virtual void Apply(EcsEntity unitEntity) { }
+        public virtual void Apply(Entity unitEntity) { }
     }
 }

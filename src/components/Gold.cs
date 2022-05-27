@@ -1,9 +1,4 @@
-public struct Gold
+public class Gold
 {
     public int Value { get; set; }
-
-    public Gold(int value)
-    {
-        Value = value;
-    }
 }

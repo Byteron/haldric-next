@@ -1,5 +1,6 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public partial class MainMenuView : PanelContainer
 {
@@ -8,17 +9,17 @@ public partial class MainMenuView : PanelContainer
     [Signal] public delegate void EditorButtonPressed();
     [Signal] public delegate void QuitButtonPressed();
 
-    private void OnLobbyButtonPressed()
+     void OnLobbyButtonPressed()
     {
         EmitSignal(nameof(LobbyButtonPressed));
     }
 
-    private void OnTestButtonPressed()
+     void OnTestButtonPressed()
     {
         EmitSignal(nameof(TestButtonPressed));
     }
 
-    private void OnEditorButtonPressed()
+     void OnEditorButtonPressed()
     {
         EmitSignal(nameof(EditorButtonPressed));
     }

@@ -1,9 +1,4 @@
-public struct IsCapturedBySide
+public class IsCapturedBySide
 {
     public int Value { get; set; }
-
-    public IsCapturedBySide(int value)
-    {
-        Value = value;
-    }
 }

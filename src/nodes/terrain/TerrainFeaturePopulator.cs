@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 struct RenderData
 {
@@ -10,19 +11,13 @@ struct RenderData
 
 public partial class TerrainFeaturePopulator : Node3D
 {
-    private Dictionary<int, RID> _multiMeshRids = new Dictionary<int, RID>();
-    private Dictionary<int, List<RenderData>> _renderData = new Dictionary<int, List<RenderData>>();
-    private List<RID> _rids = new List<RID>();
-    private Dictionary<Vector3, int> _randomIndicies = new Dictionary<Vector3, int>();
-    public TerrainFeaturePopulator()
-    {
-        Name = "TerrainFeaturePopuplator";
-    }
+    readonly Dictionary<int, RID> _multiMeshRids = new();
+    readonly Dictionary<int, List<RenderData>> _renderData = new();
+    readonly List<RID> _rids = new();
+    readonly Dictionary<Vector3, int> _randomIndices = new();
+    public TerrainFeaturePopulator() => Name = "TerrainFeaturePopuplator";
 
-    public override void _ExitTree()
-    {
-        Clear();
-    }
+    public override void _ExitTree() { Clear(); }
 
     public void Clear()
     {
@@ -38,15 +33,13 @@ public partial class TerrainFeaturePopulator : Node3D
 
     public void Apply()
     {
-        foreach (var item in _renderData)
+        foreach (var (meshId, renderDatas) in _renderData)
         {
-            var meshId = item.Key;
-            var renderDatas = item.Value;
-
-            RenderingServer.MultimeshAllocateData(_multiMeshRids[meshId], renderDatas.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshAllocateData(_multiMeshRids[meshId], renderDatas.Count,
+                RenderingServer.MultimeshTransformFormat.Transform3d);
             RenderingServer.MultimeshSetVisibleInstances(_multiMeshRids[meshId], renderDatas.Count);
 
-            int index = 0;
+            var index = 0;
             foreach (var renderData in renderDatas)
             {
                 var xform = new Transform3D(Basis.Identity, renderData.Position);
@@ -57,13 +50,13 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddDecoration(EcsEntity locEntity, string terrainCode)
+    public void AddDecoration(Entity locEntity, string terrainCode)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var position = coords.World();
         position.y = elevation.Height + elevationOffset.Value;
@@ -76,17 +69,17 @@ public partial class TerrainFeaturePopulator : Node3D
             }
             else
             {
-                if (!_randomIndicies.TryGetValue(position, out var index))
+                if (!_randomIndices.TryGetValue(position, out var index))
                 {
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                    _randomIndicies.Add(position, index);
+                    _randomIndices.Add(position, index);
                 }
 
                 if (terrainGraphic.Variations.Count <= index)
                 {
-                    _randomIndicies.Remove(position);
+                    _randomIndices.Remove(position);
                     index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                    _randomIndicies.Add(position, index);
+                    _randomIndices.Add(position, index);
                 }
 
                 var mesh = terrainGraphic.Variations[index];
@@ -95,51 +88,41 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddDirectionalDecoration(EcsEntity locEntity, string terrainCode)
+    public void AddDirectionalDecoration(Entity locEntity, string terrainCode)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
+        var plateauArea = locEntity.Get<PlateauArea>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
-            Direction direction = (Direction)i;
+            var direction = (Direction)i;
 
-            float rotation = direction.Rotation();
+            var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
 
             var nTerrainEntity = nTerrainBase.Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
-            ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
+            var nElevationOffset = nTerrainEntity.Get<ElevationOffset>();
 
 
-            if (elevation.Value != nElevation.Value)
-            {
-                continue;
-            }
+            if (elevation.Value != nElevation.Value) continue;
 
             var elevationOffsetDifference = elevationOffset.Value - nElevationOffset.Value;
 
-            if (Mathf.Abs(elevationOffsetDifference) > 0.5f)
-            {
-                continue;
-            }
+            if (Mathf.Abs(elevationOffsetDifference) > 0.5f) continue;
 
             var position = center + Metrics.GetSolidEdgeMiddle(direction, plateauArea);
 
@@ -151,17 +134,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -172,13 +155,13 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddKeepPlateau(EcsEntity locEntity, string terrainCode)
+    public void AddKeepPlateau(Entity locEntity, string terrainCode)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
 
         var terrainEntity = locEntity.Get<HasBaseTerrain>().Entity;
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
         var position = coords.World();
 
         position.y = elevation.Height + elevationOffset.Value;
@@ -187,110 +170,92 @@ public partial class TerrainFeaturePopulator : Node3D
         AddRenderData(Data.Instance.KeepPlateaus[terrainCode].Mesh, position, Vector3.Zero);
     }
 
-    public void AddWater(EcsEntity locEntity, string terrainCode)
+    public void AddWater(Entity locEntity, string terrainCode)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var elevation = ref locEntity.Get<Elevation>();
+        var coords = locEntity.Get<Coords>();
+        var elevation = locEntity.Get<Elevation>();
         var position = coords.World();
         position.y = elevation.Height - Metrics.ElevationStep * 0.5f;
 
         AddRenderData(Data.Instance.WaterGraphics[terrainCode].Mesh, position, Vector3.Zero);
     }
 
-    public void AddWalls(EcsEntity locEntity)
+    public void AddWalls(Entity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainBase = locEntity.Get<HasBaseTerrain>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var terrainCode = terrainEntity.Get<TerrainCode>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
 
         center.y = elevation.Height + elevationOffset.Value;
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
             //walls want to rotate the other way it seems?
-            float rotation = direction.Rotation();
+            var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.Value < 0)
-            {
-                continue;
-            }
+            if (nElevation.Value < 0) continue;
 
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
-            {
-                continue;
-            }
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
+
+            if (elevation.Value == nElevation.Value 
+                && !terrainEntity.Has<CanRecruitFrom>()
+                && terrainEntity.Has<CanRecruitTo>() 
+                && nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetEdgeMiddle(direction);
             AddRenderData(Data.Instance.WallSegments[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 
-    public void AddOuterCliffs(EcsEntity locEntity)
+    public void AddOuterCliffs(Entity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainBase = locEntity.Get<HasBaseTerrain>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var terrainCode = terrainEntity.Get<TerrainCode>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
             // cliffs want to rotate the other way it seems?
-            float rotation = direction.Rotation();
+            var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
+            var nTerrainCode = nTerrainEntity.Get<TerrainCode>();
 
-            if (Data.Instance.InnerCliffs.ContainsKey(nTerrainCode.Value))
-            {
-                continue;
-            }
+            if (Data.Instance.InnerCliffs.ContainsKey(nTerrainCode.Value)) continue;
 
             var elevationDiff = elevation.Value - nElevation.Value;
-            
-            if (elevationDiff < 2)
-            {
-                continue;
-            }
+
+            if (elevationDiff < 2) continue;
 
             var position = center + Metrics.GetEdgeMiddle(direction);
 
@@ -302,17 +267,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -322,49 +287,40 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddInnerCliffs(EcsEntity locEntity)
+    public void AddInnerCliffs(Entity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainBase = locEntity.Get<HasBaseTerrain>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var terrainCode = terrainEntity.Get<TerrainCode>();
 
         var center = coords.World();
 
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
             // cliffs want to rotate the other way it seems?
-            float rotation = direction.Opposite().Rotation();
+            var rotation = direction.Opposite().Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
-            ref var nCoords = ref nLocEntity.Get<Coords>();
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
-            ref var nElevationOffset = ref nTerrainEntity.Get<ElevationOffset>();
+            var nElevationOffset = nTerrainEntity.Get<ElevationOffset>();
 
             var elevationDiff = nElevation.Value - elevation.Value;
-            
-            if (elevationDiff < 2)
-            {
-                continue;
-            }
+
+            if (elevationDiff < 2) continue;
 
             center.y = nElevation.Height + nElevationOffset.Value;
-            
+
             var position = center + Metrics.GetEdgeMiddle(direction);
-            
+
             foreach (var terrainGraphic in Data.Instance.InnerCliffs[terrainCode.Value].Values)
             {
                 if (terrainGraphic.Variations.Count == 0)
@@ -373,17 +329,17 @@ public partial class TerrainFeaturePopulator : Node3D
                 }
                 else
                 {
-                    if (!_randomIndicies.TryGetValue(position, out var index))
+                    if (!_randomIndices.TryGetValue(position, out var index))
                     {
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     if (terrainGraphic.Variations.Count <= index)
                     {
-                        _randomIndicies.Remove(position);
+                        _randomIndices.Remove(position);
                         index = (int)(GD.Randi() % terrainGraphic.Variations.Count);
-                        _randomIndicies.Add(position, index);
+                        _randomIndices.Add(position, index);
                     }
 
                     var mesh = terrainGraphic.Variations[index];
@@ -393,59 +349,46 @@ public partial class TerrainFeaturePopulator : Node3D
         }
     }
 
-    public void AddTowers(EcsEntity locEntity)
+    public void AddTowers(Entity locEntity)
     {
-        ref var coords = ref locEntity.Get<Coords>();
-        ref var terrainBase = ref locEntity.Get<HasBaseTerrain>();
-        ref var elevation = ref locEntity.Get<Elevation>();
-        ref var plateauArea = ref locEntity.Get<PlateauArea>();
-        ref var neighbors = ref locEntity.Get<Neighbors>();
+        var coords = locEntity.Get<Coords>();
+        var terrainBase = locEntity.Get<HasBaseTerrain>();
+        var elevation = locEntity.Get<Elevation>();
+        var neighbors = locEntity.Get<Neighbors>();
 
         var terrainEntity = terrainBase.Entity;
-        ref var terrainCode = ref terrainEntity.Get<TerrainCode>();
-        ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+        var terrainCode = terrainEntity.Get<TerrainCode>();
+        var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
         var center = coords.World();
         center.y = elevation.Height + elevationOffset.Value;
 
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             var direction = (Direction)i;
 
-            float rotation = direction.Rotation();
+            var rotation = direction.Rotation();
 
-            if (!neighbors.Has(direction))
-            {
-                continue;
-            }
+            if (!neighbors.Has(direction)) continue;
 
             var nLocEntity = neighbors.Get(direction);
 
-            ref var nElevation = ref nLocEntity.Get<Elevation>();
-            ref var nTerrainBase = ref nLocEntity.Get<HasBaseTerrain>();
+            var nElevation = nLocEntity.Get<Elevation>();
+            var nTerrainBase = nLocEntity.Get<HasBaseTerrain>();
             var nTerrainEntity = nTerrainBase.Entity;
-            ref var nTerrainCode = ref nTerrainEntity.Get<TerrainCode>();
 
-            if (nElevation.Value < 0)
-            {
-                continue;
-            }
-
-            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>())
-            {
-                continue;
-            }
-            if (elevation.Value == nElevation.Value && !terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() && nTerrainEntity.Has<CanRecruitTo>())
-            {
-                continue;
-            }
+            if (nElevation.Value < 0) continue;
+            if (elevation.Value == nElevation.Value && nTerrainEntity.Has<CanRecruitFrom>()) continue;
+            if (elevation.Value == nElevation.Value) continue;
+            if (!terrainEntity.Has<CanRecruitFrom>() && terrainEntity.Has<CanRecruitTo>() &&
+                nTerrainEntity.Has<CanRecruitTo>()) continue;
 
             var position = center + Metrics.GetFirstCorner(direction);
             AddRenderData(Data.Instance.WallTowers[terrainCode.Value].Mesh, position, new Vector3(0f, rotation, 0f));
         }
     }
 
-    public void AddRenderData(Mesh mesh, Vector3 origin, Vector3 rotation)
+    void AddRenderData(Resource mesh, Vector3 origin, Vector3 rotation)
     {
         var meshId = mesh.GetRid().GetId();
 
@@ -466,23 +409,24 @@ public partial class TerrainFeaturePopulator : Node3D
             Position = origin,
             Rotation = rotation
         };
+
         renderDatas.Add(renderData);
     }
 
-    private RID NewMultiMesh(Mesh mesh)
+    RID NewMultiMesh(Resource mesh)
     {
-        RID multimeshRID = RenderingServer.MultimeshCreate();
-        RID instanceRID = RenderingServer.InstanceCreate();
+        var multiMeshRid = RenderingServer.MultimeshCreate();
+        var instanceRid = RenderingServer.InstanceCreate();
 
-        RID scenarioRID = GetWorld3d().Scenario;
+        var scenarioRid = GetWorld3d().Scenario;
 
-        RenderingServer.MultimeshSetMesh(multimeshRID, mesh.GetRid());
-        RenderingServer.InstanceSetScenario(instanceRID, scenarioRID);
-        RenderingServer.InstanceSetBase(instanceRID, multimeshRID);
+        RenderingServer.MultimeshSetMesh(multiMeshRid, mesh.GetRid());
+        RenderingServer.InstanceSetScenario(instanceRid, scenarioRid);
+        RenderingServer.InstanceSetBase(instanceRid, multiMeshRid);
 
-        _rids.Add(multimeshRID);
-        _rids.Add(instanceRID);
+        _rids.Add(multiMeshRid);
+        _rids.Add(instanceRid);
 
-        return multimeshRID;
+        return multiMeshRid;
     }
 }

@@ -88,17 +88,17 @@ public partial class PlayerOption : HBoxContainer
         _factionOptions.Select(index);
     }
 
-    private void OnPlayerOptionButtonItemSelected(int index)
+     void OnPlayerOptionButtonItemSelected(int index)
     {
         EmitSignal(nameof(PlayerChanged), Side, index);
     }
 
-    private void OnFactionOptionButtonItemSelected(int index)
+     void OnFactionOptionButtonItemSelected(int index)
     {
         EmitSignal(nameof(FactionChanged), Side, index);
     }
 
-    private void OnGoldSliderValueChanged(int value)
+     void OnGoldSliderValueChanged(int value)
     {
         Gold = value;
         _goldLabel.Text = $"Gold: {Gold}";

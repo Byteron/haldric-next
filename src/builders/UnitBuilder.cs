@@ -1,19 +1,27 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public class UnitBuilder
 {
-    EcsEntity _entity;
+    Entity _entity;
+
+    Commands _commands;
+
+    public UnitBuilder(Commands commands)
+    {
+        this._commands = commands;
+    }
 
     public UnitBuilder Create()
     {
-        _entity = Main.Instance.World.Spawn();
+        _entity = _commands.Spawn();
         _entity.Add<Mobility>();
         return this;
     }
 
-    public UnitBuilder Use(EcsEntity entity)
+    public UnitBuilder Use(Entity entity)
     {
         _entity = entity;
         return this;
@@ -21,13 +29,13 @@ public class UnitBuilder
 
     public UnitBuilder WithId(string id)
     {
-        _entity.Add(new Id(id));
+        _entity.Add(new Id { Value = id });
         return this;
     }
 
     public UnitBuilder WithLevel(int level)
     {
-        _entity.Add(new Level(level));
+        _entity.Add(new Level { Value = level });
         return this;
     }
 
@@ -59,7 +67,7 @@ public class UnitBuilder
 
     public UnitBuilder WithAligned(Alignment value)
     {
-        _entity.Add(new Aligned(value));
+        _entity.Add(new Aligned { Value = value });
         return this;
     }
 
@@ -93,25 +101,25 @@ public class UnitBuilder
         return this;
     }
 
-    public UnitBuilder WithAttack(EcsEntity attackEntity)
+    public UnitBuilder WithAttack(Entity attackEntity)
     {
         if (!_entity.Has<Attacks>())
         {
             _entity.Add<Attacks>();
         }
 
-        ref var attacks = ref _entity.Get<Attacks>();
+        var attacks = _entity.Get<Attacks>();
         attacks.Add(attackEntity);
         return this;
     }
 
     public UnitBuilder WithView(UnitView unitView)
     {
-        _entity.Add(new NodeHandle<UnitView>(unitView));
+        _entity.Add(unitView);
         return this;
     }
 
-    public EcsEntity Build()
+    public Entity Build()
     {
         return _entity;
     }

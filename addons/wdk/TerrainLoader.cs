@@ -1,279 +1,282 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace Haldric.Wdk
+namespace Haldric.Wdk;
+
+public abstract class TerrainLoader
 {
-    public abstract class TerrainLoader
+    public readonly Dictionary<string, Dictionary<string, object>> TerrainDicts = new();
+    public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new();
+    public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new();
+    public readonly Dictionary<string, TerrainGraphic> WaterGraphics = new();
+    public readonly Dictionary<string, TerrainGraphic> WallSegments = new();
+    public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> OuterCliffs = new();
+    public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> InnerCliffs = new();
+    public readonly Dictionary<string, TerrainGraphic> WallTowers = new();
+    public readonly Dictionary<string, TerrainGraphic> KeepPlateaus = new();
+    public readonly Dictionary<string, Texture2D> TerrainTextures = new();
+    public readonly Dictionary<string, Texture2D> TerrainNormalTextures = new();
+    public readonly Dictionary<string, Texture2D> TerrainRoughnessTextures = new();
+    public readonly Dictionary<string, string> DefaultOverlayBaseTerrains = new();
+
+    readonly TerrainDictBuilder _terrainBuilder = new();
+
+    readonly TerrainGraphicBuilder _terrainGraphicBuilder = new();
+
+    public abstract void Load();
+
+    protected void NewBase(string code, List<TerrainType> types, float elevationOffset = 0)
     {
-        public Dictionary<string, Dictionary<string, object>> TerrainDicts = new Dictionary<string, Dictionary<string, object>>();
-        public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-        public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-        public Dictionary<string, TerrainGraphic> WaterGraphics = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, TerrainGraphic> WallSegments = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, Dictionary<string, TerrainGraphic>> OuterCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-        public Dictionary<string, Dictionary<string, TerrainGraphic>> InnerCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-        public Dictionary<string, TerrainGraphic> WallTowers = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, TerrainGraphic> KeepPlateaus = new Dictionary<string, TerrainGraphic>();
-        public Dictionary<string, Texture2D> TerrainTextures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, Texture2D> TerrainNormalTextures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, Texture2D> TerrainRoughnessTextures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, string> DefaultOverlayBaseTerrains = new Dictionary<string, string>();
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset)
+            .Build();
+        TerrainDicts.Add(code, terrain);
+    }
 
-        private TerrainDictBuilder _terrainBuilder = new TerrainDictBuilder();
+    protected void NewCastle(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
+        TerrainDicts.Add(code, terrain);
+    }
 
-        private TerrainGraphicBuilder _terrainGraphicBuilder = new TerrainGraphicBuilder();
+    protected void NewKeep(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types)
+            .WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
+        TerrainDicts.Add(code, terrain);
+    }
 
-        public abstract void Load();
+    protected void NewHouses(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithGivesIncome().Build();
+        TerrainDicts.Add(code, terrain);
+    }
 
-        public void NewBase(string code, List<TerrainType> types, float elevationOffset = 0)
+    protected void NewVillage(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable()
+            .WithGivesIncome().WithHeals().Build();
+        TerrainDicts.Add(code, terrain);
+    }
+
+    protected void NewOverlay(string code, List<TerrainType> types)
+    {
+        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
+        TerrainDicts.Add(code, terrain);
+    }
+
+    protected void MapBaseToOverlay(string overlayCode, string baseCode)
+    {
+        DefaultOverlayBaseTerrains.Add(overlayCode, baseCode);
+    }
+
+    protected void AddTerrainTexture(string code, string path)
+    {
+        TerrainTextures.Add(code, LoadAsset<Texture2D>(path));
+    }
+
+    protected void AddTerrainNormalTexture(string code, string path)
+    {
+        TerrainNormalTextures.Add(code, LoadAsset<Texture2D>(path));
+    }
+
+    protected void AddTerrainRoughnessTexture(string code, string path)
+    {
+        TerrainRoughnessTextures.Add(code, LoadAsset<Texture2D>(path));
+    }
+
+    protected void AddDecorationGraphic(string code, string path, string name = null)
+    {
+        if (!Decorations.ContainsKey(code))
         {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset).Build();
-            TerrainDicts.Add(code, terrain);
+            Decorations.Add(code, new Dictionary<string, TerrainGraphic>());
         }
 
-        public void NewCastle(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
-            TerrainDicts.Add(code, terrain);
-        }
+        var dict = Decorations[code];
 
-        public void NewKeep(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
-        public void NewHouses(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithGivesIncome().Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
-        public void NewVillage(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable().WithGivesIncome().WithHeals().Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
-        public void NewOverlay(string code, List<TerrainType> types)
-        {
-            var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
-            TerrainDicts.Add(code, terrain);
-        }
-
-        public void MapBaseToOverlay(string overlayCode, string baseCode)
-        {
-            DefaultOverlayBaseTerrains.Add(overlayCode, baseCode);
-        }
-
-        public void AddTerrainTexture(string code, string path)
-        {
-            TerrainTextures.Add(code, LoadAsset<Texture2D>(path));
-        }
-
-        public void AddTerrainNormalTexture(string code, string path)
-        {
-            TerrainNormalTextures.Add(code, LoadAsset<Texture2D>(path));
-        }
-
-        public void AddTerrainRoughnessTexture(string code, string path)
-        {
-            TerrainRoughnessTextures.Add(code, LoadAsset<Texture2D>(path));
-        }
-
-        public void AddDecorationGraphic(string code, string path, string name = null)
-        {
-            if (!Decorations.ContainsKey(code))
-            {
-                Decorations.Add(code, new Dictionary<string, TerrainGraphic>());
-            }
-
-            var dict = Decorations[code];
-
-            if (string.IsNullOrEmpty(name))
-            {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-                dict.Add(path, graphic);
-            }
-            else
-            {
-                if (!dict.ContainsKey(name))
-                {
-                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-                    dict.Add(name, graphic);
-                }
-                else
-                {
-                    var graphic = dict[name];
-                    graphic.AddVariation(LoadAsset<Mesh>(path));
-                }
-            }
-        }
-
-        public void AddDirectionalDecorationGraphic(string code, string path, string name = null)
-        {
-            if (!DirectionalDecorations.ContainsKey(code))
-            {
-                DirectionalDecorations.Add(code, new Dictionary<string, TerrainGraphic>());
-            }
-
-            var dict = DirectionalDecorations[code];
-
-            if (string.IsNullOrEmpty(name))
-            {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-                dict.Add(path, graphic);
-            }
-            else
-            {
-                if (!dict.ContainsKey(name))
-                {
-                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-                    dict.Add(name, graphic);
-                }
-                else
-                {
-                    var graphic = dict[name];
-                    graphic.AddVariation(LoadAsset<Mesh>(path));
-                }
-            }
-        }
-
-        public void AddWaterGraphic(string code, string path)
+        if (string.IsNullOrEmpty(name))
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-            WaterGraphics.Add(code, graphic);
+            dict.Add(path, graphic);
         }
-
-        public void AddWallSegmentGraphic(string code, string path)
+        else
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-            WallSegments.Add(code, graphic);
-        }
-
-        // public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
-        // {
-        //     var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-        //     if (!string.IsNullOrEmpty(material_path))
-        //     {
-        //         graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-        //     }
-
-        //     OuterCliffs.Add(code, graphic);
-        // }
-
-        public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
-        {
-            if (!OuterCliffs.ContainsKey(code))
-            {
-                OuterCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
-            }
-
-            var dict = OuterCliffs[code];
-
-            if (string.IsNullOrEmpty(name))
+            if (!dict.ContainsKey(name))
             {
                 var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-                if (!string.IsNullOrEmpty(material_path))
-                {
-                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                }
-
-                dict.Add(path, graphic);
+                dict.Add(name, graphic);
             }
             else
             {
-                if (!dict.ContainsKey(name))
-                {
-                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-                    if (!string.IsNullOrEmpty(material_path))
-                    {
-                        graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                    }
-
-                    dict.Add(name, graphic);
-                }
-                else
-                {
-                    var graphic = dict[name];
-                    var mesh = LoadAsset<Mesh>(path);
-                    
-                    if (!string.IsNullOrEmpty(material_path))
-                    {
-                        mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                    }
-                    
-                    graphic.AddVariation(mesh);
-                }
+                var graphic = dict[name];
+                graphic.AddVariation(LoadAsset<Mesh>(path));
             }
         }
+    }
 
-        public void AddInnerCliffGraphic(string code, string path, string material_path = "", string name = "")
+    protected void AddDirectionalDecorationGraphic(string code, string path, string name = null)
+    {
+        if (!DirectionalDecorations.ContainsKey(code))
         {
-            if (!InnerCliffs.ContainsKey(code))
-            {
-                InnerCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
-            }
+            DirectionalDecorations.Add(code, new Dictionary<string, TerrainGraphic>());
+        }
 
-            var dict = InnerCliffs[code];
+        var dict = DirectionalDecorations[code];
 
-            if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(name))
+        {
+            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            dict.Add(path, graphic);
+        }
+        else
+        {
+            if (!dict.ContainsKey(name))
             {
                 var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-                if (!string.IsNullOrEmpty(material_path))
-                {
-                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                }
-
-                dict.Add(path, graphic);
+                dict.Add(name, graphic);
             }
             else
             {
-                if (!dict.ContainsKey(name))
-                {
-                    var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-                    if (!string.IsNullOrEmpty(material_path))
-                    {
-                        graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                    }
-
-                    dict.Add(name, graphic);
-                }
-                else
-                {
-                    var graphic = dict[name];
-                    var mesh = LoadAsset<Mesh>(path);
-                    
-                    if (!string.IsNullOrEmpty(material_path))
-                    {
-                        mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-                    }
-                    
-                    graphic.AddVariation(mesh);
-                }
+                var graphic = dict[name];
+                graphic.AddVariation(LoadAsset<Mesh>(path));
             }
         }
+    }
 
-        public void AddWallTowerGraphic(string code, string path)
+    protected void AddWaterGraphic(string code, string path)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        WaterGraphics.Add(code, graphic);
+    }
+
+    protected void AddWallSegmentGraphic(string code, string path)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        WallSegments.Add(code, graphic);
+    }
+
+    // public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
+    // {
+    //     var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+    //     if (!string.IsNullOrEmpty(material_path))
+    //     {
+    //         graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
+    //     }
+
+    //     OuterCliffs.Add(code, graphic);
+    // }
+
+    protected void AddOuterCliffGraphic(string code, string path, string materialPath = "", string name = "")
+    {
+        if (!OuterCliffs.ContainsKey(code))
+        {
+            OuterCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
+        }
+
+        var dict = OuterCliffs[code];
+
+        if (string.IsNullOrEmpty(name))
         {
             var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-            WallTowers.Add(code, graphic);
+
+            if (!string.IsNullOrEmpty(materialPath))
+            {
+                graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+            }
+
+            dict.Add(path, graphic);
+        }
+        else
+        {
+            if (!dict.ContainsKey(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                if (!string.IsNullOrEmpty(materialPath))
+                {
+                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+                }
+
+                dict.Add(name, graphic);
+            }
+            else
+            {
+                var graphic = dict[name];
+                var mesh = LoadAsset<Mesh>(path);
+
+                if (!string.IsNullOrEmpty(materialPath))
+                {
+                    mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+                }
+
+                graphic.AddVariation(mesh);
+            }
+        }
+    }
+
+    protected void AddInnerCliffGraphic(string code, string path, string materialPath = "", string name = "")
+    {
+        if (!InnerCliffs.ContainsKey(code))
+        {
+            InnerCliffs.Add(code, new Dictionary<string, TerrainGraphic>());
         }
 
-        public void AddKeepPlateauGraphic(string code, string path, Vector3 offset = default)
-        {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset).Build();
-            KeepPlateaus.Add(code, graphic);
-        }
+        var dict = InnerCliffs[code];
 
-        private T LoadAsset<T>(string path) where T : Resource
+        if (string.IsNullOrEmpty(name))
         {
-            return GD.Load<T>("res://" + path);
+            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+            if (!string.IsNullOrEmpty(materialPath))
+            {
+                graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+            }
+
+            dict.Add(path, graphic);
         }
+        else
+        {
+            if (!dict.ContainsKey(name))
+            {
+                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+
+                if (!string.IsNullOrEmpty(materialPath))
+                {
+                    graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+                }
+
+                dict.Add(name, graphic);
+            }
+            else
+            {
+                var graphic = dict[name];
+                var mesh = LoadAsset<Mesh>(path);
+
+                if (!string.IsNullOrEmpty(materialPath))
+                {
+                    mesh.SurfaceSetMaterial(0, LoadAsset<Material>(materialPath));
+                }
+
+                graphic.AddVariation(mesh);
+            }
+        }
+    }
+
+    protected void AddWallTowerGraphic(string code, string path)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        WallTowers.Add(code, graphic);
+    }
+
+    public void AddKeepPlateauGraphic(string code, string path, Vector3 offset = default)
+    {
+        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset)
+            .Build();
+        KeepPlateaus.Add(code, graphic);
+    }
+
+    static CT LoadAsset<CT>(string path) where CT : Resource
+    {
+        return GD.Load<CT>("res://" + path);
     }
 }

@@ -1,16 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct HasUnit : IEcsAutoReset<HasUnit>
+public class HasUnit
 {
-    public EcsEntity Entity { get; set; }
-
-    public HasUnit(EcsEntity entity)
-    {
-        Entity = entity;
-    }
-
-    public void AutoReset(ref HasUnit c)
-    {
-        c.Entity = default;
-    }
+    public Entity Entity { get; set; }
 }

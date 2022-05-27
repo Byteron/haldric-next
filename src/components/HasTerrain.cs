@@ -1,31 +1,12 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-struct HasBaseTerrain : IEcsAutoReset<HasBaseTerrain>
+class HasBaseTerrain
 {
-    public EcsEntity Entity { get; set; }
-
-    public HasBaseTerrain(EcsEntity terrainEntity)
-    {
-        Entity = terrainEntity;
-    }
-
-    public void AutoReset(ref HasBaseTerrain c)
-    {
-        c.Entity = default;
-    }
+    public Entity Entity { get; set; }
 }
 
-struct HasOverlayTerrain : IEcsAutoReset<HasOverlayTerrain>
+class HasOverlayTerrain
 {
-    public EcsEntity Entity { get; set; }
-
-    public HasOverlayTerrain(EcsEntity terrainEntity)
-    {
-        Entity = terrainEntity;
-    }
-
-    public void AutoReset(ref HasOverlayTerrain c)
-    {
-        c.Entity = default;
-    }
+    public Entity Entity { get; set; }
 }

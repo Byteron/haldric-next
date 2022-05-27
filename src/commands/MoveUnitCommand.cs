@@ -1,19 +1,20 @@
-using System.Collections.Generic;
-using System.Linq;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 
-public partial class MoveUnitCommand : Command
+public partial class MoveUnitCommand : Resource, ICommandSystem
 {
-    private Path _path;
+    Path _path;
 
-    private EcsEntity _unitEntity;
-    private EcsEntity _targetLocEntity;
+    Entity _unitEntity;
+    Entity _targetLocEntity;
 
-    private UnitView _unitView;
-    
-    private Tween _tween;
+    UnitView _unitView;
+
+    Tween _tween;
+
+    Commands _commands;
 
     public MoveUnitCommand(Path path)
     {
@@ -21,8 +22,10 @@ public partial class MoveUnitCommand : Command
         _path = path;
     }
 
-    public override void Execute()
+    public void Run(Commands commands)
     {
+        this._commands = commands;
+
         // source location does not have a unit to move
         if (!_path.Start.Has<HasUnit>())
         {
@@ -38,20 +41,18 @@ public partial class MoveUnitCommand : Command
         }
 
         _unitEntity = _path.Start.Get<HasUnit>().Entity;
-        _unitView = _unitEntity.Get<NodeHandle<UnitView>>().Node;
+        _unitView = _unitEntity.Get<UnitView>();
 
-        ref var unitCoords = ref _unitEntity.Get<Coords>();
-        ref var unitMoves = ref _unitEntity.Get<Attribute<Moves>>();
-
-        _tween = Main.Instance.GetTree().CreateTween();
+        var unitCoords = _unitEntity.Get<Coords>();
+        _tween = commands.GetElement<SceneTree>().CreateTween();
 
         foreach (var checkpointLocEntity in _path.Checkpoints)
         {
-            ref var targetCoords = ref checkpointLocEntity.Get<Coords>();
-            ref var targetElevation = ref checkpointLocEntity.Get<Elevation>();
+            var targetCoords = checkpointLocEntity.Get<Coords>();
+            var targetElevation = checkpointLocEntity.Get<Elevation>();
 
             var terrainEntity = checkpointLocEntity.Get<HasBaseTerrain>().Entity;
-            ref var elevationOffset = ref terrainEntity.Get<ElevationOffset>();
+            var elevationOffset = terrainEntity.Get<ElevationOffset>();
 
             var newPos = targetCoords.World();
             newPos.y = targetElevation.Height + elevationOffset.Value;
@@ -65,11 +66,12 @@ public partial class MoveUnitCommand : Command
 
         _path.Start.Remove<HasUnit>();
 
-        _path.Destination.Add(new HasUnit(_unitEntity));
-        unitCoords = _path.Destination.Get<Coords>();
+        _path.Destination.Add(new HasUnit { Entity = _unitEntity });
+        unitCoords.X = _path.Destination.Get<Coords>().X;
+        unitCoords.Z = _path.Destination.Get<Coords>().Z;
     }
 
-    public override void Revert()
+    public void Revert()
     {
         // _unitEntity = default;
         // _targetLocEntity = default;
@@ -78,7 +80,7 @@ public partial class MoveUnitCommand : Command
         // _path.Start = _path.Destination;
         // _path.Destination = temp;
 
-        // _path.Checkpoints = new Queue<EcsEntity>(_path.Checkpoints.Reverse());
+        // _path.Checkpoints = new Queue<Entity>(_path.Checkpoints.Reverse());
         // _path.Checkpoints.Dequeue();
         // _path.Checkpoints.Enqueue(_path.Destination);
 
@@ -86,60 +88,61 @@ public partial class MoveUnitCommand : Command
         // IsDone = false;
     }
 
-    private void OnUnitMoveFinished()
+    void OnUnitMoveFinished()
     {
-        ref var side = ref _unitEntity.Get<Side>();
-        ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
-        
+        var side = _unitEntity.Get<Side>();
+        var moves = _unitEntity.Get<Attribute<Moves>>();
+
         if (_targetLocEntity.Has<Village>())
         {
             if (_targetLocEntity.Has<IsCapturedBySide>())
             {
-                ref var captured = ref _targetLocEntity.Get<IsCapturedBySide>();
+                var captured = _targetLocEntity.Get<IsCapturedBySide>();
 
                 if (captured.Value != side.Value)
                 {
                     moves.Empty();
-                    Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                    _commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
                 }
             }
             else
             {
                 moves.Empty();
-                Main.Instance.World.Spawn().Add(new CaptureVillageEvent(_targetLocEntity, _unitEntity.Get<Side>().Value));
+                _commands.Send(new CaptureVillageTrigger(_targetLocEntity, _unitEntity.Get<Side>().Value));
             }
         }
-        
-        if (_targetLocEntity.Has<IsInZoc>())
-        {
-            moves.Empty();
-        }
+
+        if (_targetLocEntity.Has<IsInZoc>()) moves.Empty();
 
         IsDone = true;
     }
 
-    private int index;
+    int _index;
 
-    private void OnUnitStepFinished()
+    public bool IsDone { get; set; }
+    public bool IsRevertible { get; set; }
+    public bool IsReverted { get; set; }
+
+    void OnUnitStepFinished()
     {
-        if (index == _path.Checkpoints.Count)
+        if (_index == _path.Checkpoints.Count)
         {
-            index = 0;
+            _index = 0;
         }
         else
         {
-            ref var moves = ref _unitEntity.Get<Attribute<Moves>>();
-            ref var mobility = ref _unitEntity.Get<Mobility>();
+            var moves = _unitEntity.Get<Attribute<Moves>>();
+            var mobility = _unitEntity.Get<Mobility>();
 
-            if (_targetLocEntity.IsAlive() && _targetLocEntity.Has<IsInZoc>())
+            if (_targetLocEntity is not null && _targetLocEntity.IsAlive && _targetLocEntity.Has<IsInZoc>())
             {
                 _tween.Stop();
                 OnUnitMoveFinished();
                 return;
             }
-            
-            _targetLocEntity = _path.Checkpoints.ToArray()[index];
-            
+
+            _targetLocEntity = _path.Checkpoints.ToArray()[_index];
+
             var coords = _targetLocEntity.Get<Coords>();
 
             _unitView.LookAt(coords.World(), Vector3.Up);
@@ -147,16 +150,10 @@ public partial class MoveUnitCommand : Command
 
             var movementCosts = TerrainTypes.FromLocEntity(_targetLocEntity).GetMovementCost(mobility);
 
-            if (IsReverted)
-            {
-                moves.Increase(movementCosts);
-            }
-            else
-            {
-                moves.Decrease(movementCosts);
-            }
+            if (IsReverted) moves.Increase(movementCosts);
+            else moves.Decrease(movementCosts);
 
-            index += 1;
+            _index += 1;
         }
     }
 }

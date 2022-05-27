@@ -2,7 +2,7 @@ using Godot;
 
 public partial class UnitPlate : Control
 {
-    public Vector3 Position { get; set; }
+    public Vector3 WorldPosition { get; set; }
 
     public int MaxHealth { get; set; }
     public int Health { get; set; }
@@ -18,12 +18,12 @@ public partial class UnitPlate : Control
     public bool IsLeader;
     public bool IsHero;
 
-    private TextureProgressBar _healthBar;
-    private TextureProgressBar _xpBar;
-    private ColorRect _sideColorRect;
-    private ColorRect _heroColorRect;
-    private ColorRect _leaderColorRect;
-    private Control _actionContainer;
+     TextureProgressBar _healthBar;
+     TextureProgressBar _xpBar;
+     ColorRect _sideColorRect;
+     ColorRect _heroColorRect;
+     ColorRect _leaderColorRect;
+     Control _actionContainer;
 
     public override void _Ready()
     {
@@ -53,14 +53,14 @@ public partial class UnitPlate : Control
 
         _sideColorRect.Color = SideColor;
 
-        if (camera.IsPositionBehind(Position))
+        if (camera.IsPositionBehind(WorldPosition))
         {
             Hide();
         }
         else
         {
             Show();
-            RectPosition = camera.UnprojectPosition(Position);
+            Position = camera.UnprojectPosition(WorldPosition);
         }
 
         foreach (Node child in _actionContainer.GetChildren())
@@ -69,21 +69,15 @@ public partial class UnitPlate : Control
             child.QueueFree();
         }
 
-        for (int i = 0; i < MaxMoves; i++)
+        for (var i = 0; i < MaxMoves; i++)
         {
             var colorRect = new ColorRect
             {
-                SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill
+                SizeFlagsHorizontal = (int)SizeFlags.ExpandFill
             };
 
-            if (i < Moves)
-            {
-                colorRect.Color = new Color(0.8f, 1f, 0.8f);
-            }
-            else
-            {
-                colorRect.Color = new Color(0f, 0.4f, 0f);
-            }
+            colorRect.Color = i < Moves ? new Color(0.8f, 1f, 0.8f) : new Color(0f, 0.4f, 0f);
+            
             _actionContainer.AddChild(colorRect);
         }
 

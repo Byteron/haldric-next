@@ -1,5 +1,6 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using System;
 
 public partial class LoginView : Control
@@ -7,11 +8,11 @@ public partial class LoginView : Control
     [Signal] public delegate void LoginPressed(string email, string password, string username);
     [Signal] public delegate void CancelPressed();
 
-    private LineEdit _usernameText;
-    private LineEdit _emailText;
-    private LineEdit _passwordText;
+     LineEdit _usernameText;
+     LineEdit _emailText;
+     LineEdit _passwordText;
 
-    private Label _warnLabel;
+     Label _warnLabel;
 
     public override void _Ready()
     {

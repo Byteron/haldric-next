@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Godot;
 using Haldric.Wdk;
 using Nakama;
@@ -7,174 +8,192 @@ using Nakama.TinyJson;
 
 public partial class PlayState : GameState
 {
-    private partial class MarshallableState : Resource
+    public string MapName;
+    public Dictionary<int, string> Factions;
+    public Dictionary<int, int> Players;
+    public Dictionary<int, int> PlayerGolds;
+
+    public override void Init(GameStateController gameStates)
     {
-        public IMatchState State { get; set; }
+        var initSystem = new PlayStateInitSystem();
+        initSystem.MapName = MapName;
+        initSystem.Factions = Factions;
+        initSystem.Players = Players;
+        initSystem.PlayerGolds = PlayerGolds;
+
+        InitSystems.Add(initSystem)
+            .Add(new SpawnCameraOperatorSystem(this));
+
+        InputSystems.Add(new ExitFromStateSystem())
+            .Add(new SelectUnitSystem())
+            .Add(new SelectTargetSystem())
+            .Add(new DeselectUnitSystem())
+            .Add(new RecruitInputSystem())
+            .Add(new NextUnitInputSystem())
+            .Add(new SuspendUnitInputSystem());
+
+        UpdateSystems.Add(new UpdateTerrainInfoSystem())
+            .Add(new UpdatePlayerInfoSystem())
+            .Add(new UpdateUnitPlateSystem())
+            .Add(new UpdateStatsInfoSystem())
+            .Add(new UpdateHoveredLocationSystem(this))
+            .Add(new PreviewPathSystem())
+            .Add(new UpdateMapCursorSystem())
+            .Add(new UpdateCameraOperatorSystem())
+            .Add(new UpdateHoveredUnitSystem())
+            .Add(new MoveUnitSystem())
+            .Add(new FocusCameraEventSystem())
+            .Add(new UpdateMapTriggerSystem())
+            .Add(new UpdateTerrainMeshEventSystem())
+            .Add(new UpdateTerrainFeaturePopulatorEventSystem())
+            .Add(new LoadMapEventSystem())
+            .Add(new DespawnMapTriggerSystem())
+            .Add(new SpawnScheduleTriggerSystem(this))
+            .Add(new SpawnMapTriggerSystem(this))
+            .Add(new SpawnPlayersEventSystem())
+            .Add(new SpawnPlayerEventSystem())
+            .Add(new SpawnUnitTriggerSystem(this))
+            .Add(new RecruitUnitTriggerSystem(this))
+            .Add(new UnitHoveredEventSystem())
+            .Add(new UnitDeselectedEventSystem())
+            .Add(new UnitSelectedEventSystem())
+            .Add(new MoveUnitTriggerSystem())
+            .Add(new HighlightLocationsEventSystem())
+            .Add(new DamageTriggerSystem())
+            .Add(new MissTriggerSystem())
+            .Add(new GainExperienceEventSystem())
+            .Add(new AdvanceTriggerSystem())
+            .Add(new DeathTriggerSystem())
+            .Add(new CaptureVillageTriggerSystem(this))
+            .Add(new SpawnFloatingLabelEventSystem())
+            .Add(new TurnEndTriggerSystem())
+            .Add(new ChangeDaytimeTriggerSystem())
+            .Add(new CheckVictoryConditionTriggerSystem());
+
+        ExitSystems.Add(new PlayStateExitSystem())
+            .Add(new DespawnCameraOperatorSystem());
     }
+}
 
-    private string _mapName;
-    private Dictionary<int, string> _factions;
-    private Dictionary<int, int> _players;
-    private Dictionary<int, int> _playerGolds;
-
-    private ISocket _socket;
-    private IMatch _match;
-
-    public PlayState(EcsWorld world, string mapName, Dictionary<int, string> factions, Dictionary<int, int> players, Dictionary<int, int> playerGolds) : base(world)
+public class ExitFromStateSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _mapName = mapName;
+        var gameStates = commands.GetElement<GameStateController>();
 
-        _factions = factions;
-        _players = players;
-        _playerGolds = playerGolds;
-
-        AddInitSystem(new SpawnCameraOperatorSystem(this));
-
-        AddInputSystem(new SelectUnitSystem());
-        AddInputSystem(new SelectTargetSystem());
-        AddInputSystem(new DeselectUnitSystem());
-        
-        AddInputSystem(new RecruitInputSystem());
-        AddInputSystem(new NextUnitInputSystem());
-        AddInputSystem(new SuspendUnitInputSystem());
-
-        AddUpdateSystem(new UpdateTerrainInfoSystem());
-        AddUpdateSystem(new UpdatePlayerInfoSystem());
-        AddUpdateSystem(new UpdateUnitPlateSystem());
-        AddUpdateSystem(new UpdateStatsInfoSystem());
-        AddUpdateSystem(new UpdateHoveredLocationSystem(this));
-        AddUpdateSystem(new PreviewPathSystem());
-        AddUpdateSystem(new UpdateMapCursorSystem());
-        AddUpdateSystem(new UpdateCameraOperatorSystem());
-        AddUpdateSystem(new UpdateHoveredUnitSystem());
-        AddUpdateSystem(new MoveUnitSystem());
-
-        AddEventSystem<FocusCameraEvent>(new FocusCameraEventSystem());
-        AddEventSystem<UpdateMapEvent>(new UpdateMapEventSystem());
-        AddEventSystem<UpdateTerrainMeshEvent>(new UpdateTerrainMeshEventSystem());
-        AddEventSystem<UpdateTerrainFeaturePopulatorEvent>(new UpdateTerrainFeaturePopulatorEventSystem());
-        AddEventSystem<LoadMapEvent>(new LoadMapEventSystem());
-        AddEventSystem<DespawnMapEvent>(new DespawnMapEventSystem());
-        AddEventSystem<SpawnScheduleEvent>(new SpawnScheduleEventSystem(this));
-        AddEventSystem<SpawnMapEvent>(new SpawnMapEventSystem(this));
-        AddEventSystem<SpawnPlayersEvent>(new SpawnPlayersEventSystem());
-        AddEventSystem<SpawnPlayerEvent>(new SpawnPlayerEventSystem());
-        AddEventSystem<SpawnUnitEvent>(new SpawnUnitEventSystem(this));
-        AddEventSystem<RecruitUnitEvent>(new RecruitUnitEventSystem(this));
-        AddEventSystem<UnitHoveredEvent>(new UnitHoveredEventSystem());
-        AddEventSystem<UnitDeselectedEvent>(new UnitDeselectedEventSystem());
-        AddEventSystem<UnitSelectedEvent>(new UnitSelectedEventSystem());
-        AddEventSystem<MoveUnitEvent>(new MoveUnitEventSystem());
-        AddEventSystem<HighlightLocationEvent>(new HighlightLocationsEventSystem());
-        AddEventSystem<DamageEvent>(new DamageEventSystem());
-        AddEventSystem<MissEvent>(new MissEventSystem());
-        AddEventSystem<GainExperienceEvent>(new GainExperienceEventSystem());
-        AddEventSystem<AdvanceEvent>(new AdvanceEventSystem());
-        AddEventSystem<DeathEvent>(new DeathEventSystem());
-        AddEventSystem<CaptureVillageEvent>(new CaptureVillageEventSystem(this));
-        AddEventSystem<SpawnFloatingLabelEvent>(new SpawnFloatingLabelEventSystem());
-        AddEventSystem<TurnEndEvent>(new TurnEndEventSystem());
-        AddEventSystem<ChangeDaytimeEvent>(new ChangeDaytimeEventSystem());
-        AddEventSystem<CheckVictoryConditionEvent>(new CheckVictoryConditionEventSystem());
-
-        AddDestroySystem(new DespawnCameraOperatorSystem());
+        if (Input.IsActionPressed("ui_cancel"))
+        {
+            gameStates.PopState();
+        }
     }
+}
 
-    public override void Enter(GameStateController gameStates)
+public class PlayStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
     {
-        _socket = _world.GetResource<ISocket>();
+        var socket = commands.GetElement<ISocket>();
+        var match = commands.GetElement<IMatch>();
+
+        // socket.ReceivedMatchState -= OnReceivedMatchState;
+        socket.LeaveMatchAsync(match);
+
+        commands.RemoveElement<IMatch>();
+        commands.RemoveElement<LocalPlayer>();
+        commands.RemoveElement<MatchPlayers>();
+
+        commands.RemoveElement<Commander>();
+        commands.RemoveElement<Scenario>();
+        commands.RemoveElement<Schedule>();
+
+        var sidePanel = commands.GetElement<SidePanel>();
+        sidePanel.QueueFree();
+        commands.RemoveElement<SidePanel>();
+
+        var terrainPanel = commands.GetElement<TerrainPanel>();
+        terrainPanel.QueueFree();
+        commands.RemoveElement<TerrainPanel>();
+
+        var unitPanel = commands.GetElement<UnitPanel>();
+        unitPanel.QueueFree();
+        commands.RemoveElement<UnitPanel>();
+
+        var turnPanel = commands.GetElement<TurnPanel>();
+        turnPanel.QueueFree();
+        commands.RemoveElement<TurnPanel>();
+
+        commands.Send(new DespawnMapTrigger());
+    }
+}
+
+public partial class PlayStateInitSystem : Resource, ISystem
+{
+    public string MapName;
+    public Dictionary<int, string> Factions;
+    public Dictionary<int, int> Players;
+    public Dictionary<int, int> PlayerGolds;
+
+    ISocket _socket;
+    IMatch _match;
+
+    Commands _commands;
+
+    public void Run(Commands commands)
+    {
+        _commands = commands;
+
+        _socket = commands.GetElement<ISocket>();
         _socket.ReceivedMatchState += OnReceivedMatchState;
 
-        _match = _world.GetResource<IMatch>();
-        var matchPlayers = _world.GetResource<MatchPlayers>();
+        _match = commands.GetElement<IMatch>();
 
-        _world.AddResource(new Commander());
-        _world.AddResource(new Scenario());
+        commands.AddElement(new Commander());
+        commands.AddElement(new Scenario());
 
-        var canvas = _world.GetResource<Canvas>();
+        var canvas = commands.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);
 
         var turnPanel = Scenes.Instantiate<TurnPanel>();
         turnPanel.Connect(nameof(TurnPanel.EndTurnButtonPressed), new Callable(this, nameof(OnTurnEndButtonPressed)));
         canvasLayer.AddChild(turnPanel);
-        _world.AddResource(turnPanel);
+        commands.AddElement(turnPanel);
 
         var sidePanel = Scenes.Instantiate<SidePanel>();
         canvasLayer.AddChild(sidePanel);
-        _world.AddResource(sidePanel);
+        commands.AddElement(sidePanel);
 
         var unitPanel = Scenes.Instantiate<UnitPanel>();
         canvasLayer.AddChild(unitPanel);
-        _world.AddResource(unitPanel);
+        commands.AddElement(unitPanel);
 
         var terrainPanel = Scenes.Instantiate<TerrainPanel>();
         canvasLayer.AddChild(terrainPanel);
-        _world.AddResource(terrainPanel);
+        commands.AddElement(terrainPanel);
 
-        _world.Spawn().Add(new SpawnScheduleEvent("DefaultSchedule"));
-        _world.Spawn().Add(new LoadMapEvent(_mapName));
-        _world.Spawn().Add(new SpawnPlayersEvent(_factions, _players, _playerGolds));
-        _world.Spawn().Add(new TurnEndEvent());
-    }
-
-    public override void Exit(GameStateController gameStates)
-    {
-        _socket.ReceivedMatchState -= OnReceivedMatchState;
-        _socket.LeaveMatchAsync(_match);
-
-        _world.RemoveResource<IMatch>();
-        _world.RemoveResource<LocalPlayer>();
-        _world.RemoveResource<MatchPlayers>();
-        
-        _world.RemoveResource<Commander>();
-        _world.RemoveResource<Scenario>();
-        _world.RemoveResource<Schedule>();
-
-        var sidePanel = _world.GetResource<SidePanel>();
-        sidePanel.QueueFree();
-        _world.RemoveResource<SidePanel>();
-
-        var terrainPanel = _world.GetResource<TerrainPanel>();
-        terrainPanel.QueueFree();
-        _world.RemoveResource<TerrainPanel>();
-
-        var unitPanel = _world.GetResource<UnitPanel>();
-        unitPanel.QueueFree();
-        _world.RemoveResource<UnitPanel>();
-
-        var turnPanel = _world.GetResource<TurnPanel>();
-        turnPanel.QueueFree();
-        _world.RemoveResource<TurnPanel>();
-
-        _world.Spawn().Add(new DespawnMapEvent());
-    }
-
-    public override void Input(GameStateController gameStates, Godot.InputEvent e)
-    {
-        if (e.IsActionPressed("ui_cancel"))
-        {
-            gameStates.PopState();
-        }
+        commands.Send(new SpawnScheduleTrigger("DefaultSchedule"));
+        commands.Send(new LoadMapEvent(MapName));
+        commands.Send(new SpawnPlayersEvent(Factions, Players, PlayerGolds));
+        commands.Send(new TurnEndTrigger());
     }
 
     public void OnTurnEndButtonPressed()
     {
-        var opCode = (int)NetworkOperation.TurnEnd;
+        const int opCode = (int)NetworkOperation.TurnEnd;
         var state = new TurnEndMessage();
         _socket.SendMatchStateAsync(_match.Id, opCode, state.ToJson());
-        _world.Spawn().Add(new TurnEndEvent());
+        _commands.Send(new TurnEndTrigger());
     }
 
-    private void OnReceivedMatchState(IMatchState state)
+    void OnReceivedMatchState(IMatchState state)
     {
-        GD.Print("Reseived Match State");
-        CallDeferred(nameof(ProcessMatchStateChance), new MarshallableState { State = state });
+        GD.Print("Received Match State");
+        CallDeferred(nameof(ProcessMatchStateChange), new Marshallable<IMatchState>(state));
     }
 
-    private void ProcessMatchStateChance(MarshallableState marshallableState)
+    void ProcessMatchStateChange(Marshallable<IMatchState> marshallableState)
     {
-        var state = marshallableState.State;
-        var gameStateController = _world.GetResource<GameStateController>();
+        var state = marshallableState.Value;
+        var gameStateController = _commands.GetElement<GameStateController>();
 
         var enc = System.Text.Encoding.UTF8;
         var data = (string)enc.GetString(state.State);
@@ -185,50 +204,51 @@ public partial class PlayState : GameState
         switch (operation)
         {
             case NetworkOperation.TurnEnd:
-                {
-                    _world.Spawn().Add(new TurnEndEvent());
-                    break;
-                }
+            {
+                _commands.Send(new TurnEndTrigger());
+                break;
+            }
             case NetworkOperation.MoveUnit:
-                {
-                    var message = JsonParser.FromJson<MoveUnitMessage>(data);
-                    _world.Spawn().Add(new MoveUnitEvent() { From = message.From.Cube(), To = message.To.Cube() });
-                    break;
-                }
+            {
+                var message = JsonParser.FromJson<MoveUnitMessage>(data);
+                _commands.Send(new MoveUnitTrigger() { From = message.From.Cube(), To = message.To.Cube() });
+                break;
+            }
             case NetworkOperation.RecruitUnit:
-                {
-                    var map = _world.GetResource<Map>();
-                    var message = JsonParser.FromJson<RecruitUnitMessage>(data);
-                    var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
-                    var locEntity = map.Locations.Get(message.Coords.Cube());
-                    _world.Spawn().Add(new RecruitUnitEvent(message.Side, unitType, locEntity));
-                    break;
-                }
+            {
+                var map = _commands.GetElement<Map>();
+                var message = JsonParser.FromJson<RecruitUnitMessage>(data);
+                var unitType = Data.Instance.Units[message.UnitTypeId].Instantiate<UnitType>();
+                var locEntity = map.Locations.Get(message.Coords.Cube());
+                _commands.Send(new RecruitUnitTrigger(message.Side, unitType, locEntity));
+                break;
+            }
             case NetworkOperation.AttackUnit:
-                {
-                    var map = _world.GetResource<Map>();
-                    var commander = _world.GetResource<Commander>();
+            {
+                var map = _commands.GetElement<Map>();
+                var commander = _commands.GetElement<Commander>();
 
-                    var message = JsonParser.FromJson<AttackUnitMessage>(data);
+                var message = JsonParser.FromJson<AttackUnitMessage>(data);
 
-                    var attackerLocEntity = map.Locations.Get(message.From.Cube());
-                    var defenderLocEntity = map.Locations.Get(message.To.Cube());
+                var attackerLocEntity = map.Locations.Get(message.From.Cube());
+                var defenderLocEntity = map.Locations.Get(message.To.Cube());
 
-                    var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
-                    var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
+                var attackerEntity = attackerLocEntity.Get<HasUnit>().Entity;
+                var defenderEntity = defenderLocEntity.Get<HasUnit>().Entity;
 
-                    var attackerAttacks = attackerEntity.Get<Attacks>();
-                    var defenderAttacks = defenderEntity.Get<Attacks>();
+                var attackerAttacks = attackerEntity.Get<Attacks>();
+                var defenderAttacks = defenderEntity.Get<Attacks>();
 
-                    var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
-                    var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
+                var attackerAttackEntity = attackerAttacks.GetAttack(message.AttackerAttackId);
+                var defenderAttackEntity = defenderAttacks.GetAttack(message.DefenderAttackId);
 
-                    var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity, defenderLocEntity, defenderAttackEntity, message.Distance);
-                    commander.Enqueue(command);
+                var command = new CombatCommand(message.Seed, attackerLocEntity, attackerAttackEntity,
+                    defenderLocEntity, defenderAttackEntity, message.Distance);
+                commander.Enqueue(command);
 
-                    gameStateController.PushState(new CommanderState(_world));
-                    break;
-                }
+                gameStateController.PushState(new CommanderState());
+                break;
+            }
         }
     }
 }

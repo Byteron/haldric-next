@@ -1,16 +1,7 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Name : IEcsAutoReset<Name>
+public class Name
 {
     public string Value { get; set; }
-
-    public Name(string value)
-    {
-        Value = value;
-    }
-
-    public void AutoReset(ref Name c)
-    {
-        c.Value = "";
-    }
 }

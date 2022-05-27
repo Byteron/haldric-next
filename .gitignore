@@ -9,7 +9,7 @@ export.cfg
 # VS Code
 .vscode/
 .vs/
-
+.idea/
 # Excluded because it may contain sensitive information like keystore passwords
 export_presets.cfg
 

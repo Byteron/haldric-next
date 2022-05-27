@@ -1,10 +1,11 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
 public class SelectedLocation
 {
-    public EcsEntity Entity { get; set; }
+    public Entity Entity { get; set; }
 
-    public SelectedLocation(EcsEntity entity)
+    public SelectedLocation(Entity entity)
     {
         Entity = entity;
     }

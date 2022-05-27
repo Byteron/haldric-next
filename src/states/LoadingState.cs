@@ -1,31 +1,41 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Godot;
-using Bitron.Ecs;
-using System.Threading.Tasks;
+using RelEcs;
 
 public partial class LoadingState : GameState
 {
-    private struct LoadingData
+    public override void Init(GameStateController gameStates)
     {
-        public string Info { get; set; }
-        public Action Action { get; set; }
+        InitSystems.Add(new LoadingStateInitSystem());
+    }
+}
 
-        public LoadingData(string info, Action action)
+public partial class LoadingStateInitSystem : Resource, ISystem
+{
+    struct LoadingData
+    {
+        public string Info { get; }
+        public Action<Commands> Action { get; }
+
+        public LoadingData(string info, Action<Commands> action)
         {
             Info = info;
             Action = action;
         }
     }
 
-    private Queue<LoadingData> _loadingStates = new Queue<LoadingData>();
-    private LoadingStateView _view = null;
+    Queue<LoadingData> _loadingStates = new();
+    LoadingStateView _view;
 
-    public LoadingState(EcsWorld world) : base(world) { }
+    GameState _state;
 
-    public override void Enter(GameStateController gameStates)
+    Commands _commands;
+
+    public void Run(Commands commands)
     {
+        _commands = commands;
+
         _loadingStates.Enqueue(new LoadingData("Units", Data.Instance.LoadUnits));
         _loadingStates.Enqueue(new LoadingData("Schedules", Data.Instance.LoadSchedules));
         _loadingStates.Enqueue(new LoadingData("Factions", Data.Instance.LoadFactions));
@@ -33,22 +43,26 @@ public partial class LoadingState : GameState
         _loadingStates.Enqueue(new LoadingData("Maps", Data.Instance.LoadMaps));
 
         _view = Scenes.Instantiate<LoadingStateView>();
-        AddChild(_view);
 
-        Loading(gameStates);
+        commands.GetElement<CurrentGameState>().State.AddChild(_view);
+
+        Loading();
     }
 
-    async void Loading(GameStateController gameStates)
+    async void Loading()
     {
+        var sceneTree = _commands.GetElement<SceneTree>();
+        var gameStates = _commands.GetElement<GameStateController>();
+
         while (_loadingStates.Count > 0)
         {
             var loadingData = _loadingStates.Dequeue();
             _view.Label.Text = $"Loading {loadingData.Info} ...";
-            await ToSignal(GetTree(), "process_frame");
-            loadingData.Action();
+            await ToSignal(sceneTree, "process_frame");
+            loadingData.Action(_commands);
         }
 
-        gameStates.ChangeState(new MenuState(_world));
+        gameStates.ChangeState(new MenuState());
     }
 
     public void CallAction(Action action)

@@ -21,17 +21,12 @@ Scenes="*res://src/nodes/global/Scenes.tscn"
 Data="*res://src/nodes/global/Data.tscn"
 Sfx="*res://src/nodes/global/Sfx.tscn"
 
-[debug]
-
-settings/fps/force_fps=60
-
 [display]
 
-window/size/width=1920
-window/size/height=1080
-window/size/resizable=false
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/width=1920
+window/size/height=1080
 window/vsync/use_vsync=true
 
 [editor]
@@ -41,8 +36,7 @@ export/convert_text_resources_to_binary=true
 [importer_defaults]
 
 scene={
-"_subresources": {
-},
+"_subresources": {},
 "animation/fps": 15,
 "animation/import": true,
 "import_script/path": "",
@@ -155,7 +149,5 @@ debugger_agent/wait_timeout=5000
 
 [rendering]
 
-shadows/directional_shadow/soft_shadow_quality=2
-shadows/shadows/soft_shadow_quality=2
 global_illumination/gi_probes/anisotropic=true
 environment/default_environment="res://default_env.tres"

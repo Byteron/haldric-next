@@ -1,29 +1,37 @@
 using Godot;
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public class TerrainBuilder
 {
-    private EcsEntity _terrainEntity;
+    Commands _commands;
+
+    Entity _terrainEntity;
+
+    public TerrainBuilder(Commands commands)
+    {
+        this._commands = commands;
+    }
 
     public TerrainBuilder CreateBase()
     {
-        _terrainEntity = Main.Instance.World.Spawn();
+        _terrainEntity = _commands.Spawn();
         _terrainEntity.Add<IsBaseTerrain>();
-        _terrainEntity.Add<ElevationOffset>();
+        _terrainEntity.Add(new ElevationOffset());
         return this;
     }
     public TerrainBuilder CreateOverlay()
     {
-        _terrainEntity = Main.Instance.World.Spawn();
+        _terrainEntity = _commands.Spawn();
         _terrainEntity.Add<IsOverlayTerrain>();
         return this;
     }
 
     public TerrainBuilder WithCode(string code)
     {
-        _terrainEntity.Add(new TerrainCode(code));
+        _terrainEntity.Add(new TerrainCode { Value = code });
         return this;
     }
 
@@ -75,7 +83,7 @@ public class TerrainBuilder
         return this;
     }
 
-    public EcsEntity Build()
+    public Entity Build()
     {
         return _terrainEntity;
     }

@@ -1,12 +1,12 @@
-using Bitron.Ecs;
+using RelEcs;
 
 namespace Haldric.Wdk
 {   
     public partial class FlyingTrait : Trait
     {
-        public override void Apply(EcsEntity unitEntity)
+        public override void Apply(Entity unitEntity)
         {
-            ref var mobility = ref unitEntity.Get<Mobility>();
+            var mobility = unitEntity.Get<Mobility>();
             mobility.Dict.Add(TerrainType.Flat, 1);
             mobility.Dict.Add(TerrainType.Settled, 1);
             mobility.Dict.Add(TerrainType.Fortified, 1);

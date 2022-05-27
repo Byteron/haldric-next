@@ -1,7 +1,8 @@
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct Grid : IEcsAutoReset<Grid>
+public class Grid
 {
     public int Width { get; set; }
     public int Height { get; set; }
@@ -10,12 +11,6 @@ public struct Grid : IEcsAutoReset<Grid>
     {
         Width = width;
         Height = height;
-    }
-
-    public void AutoReset(ref Grid c)
-    {
-        c.Width = 0;
-        c.Height = 0;
     }
 
     public bool IsCoordsInGrid(Coords coords)

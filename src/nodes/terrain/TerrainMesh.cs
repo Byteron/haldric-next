@@ -3,20 +3,17 @@ using Godot;
 
 public partial class TerrainMesh : MeshInstance3D
 {
-    private List<int> _indices = new List<int>();
-    private List<Vector3> _vertices = new List<Vector3>();
-    private List<int> _smoothGroups = new List<int>();
-    private List<Vector3> _cellIndicies = new List<Vector3>();
-    private List<Color> _cellWeights = new List<Color>();
+    readonly List<int> _indices = new();
+    readonly List<Vector3> _vertices = new();
+    readonly List<int> _smoothGroups = new();
+    readonly List<Vector3> _cellIndices = new();
+    readonly List<Color> _cellWeights = new();
 
-    private SurfaceTool _surfaceTool;
+    SurfaceTool _surfaceTool;
 
-    private int _vertexIndex = 0;
+    int _vertexIndex;
 
-    public TerrainMesh()
-    {
-        Name = "TerrainMesh";
-    }
+    public TerrainMesh() { Name = "TerrainMesh"; }
 
     public override void _Ready()
     {
@@ -36,7 +33,7 @@ public partial class TerrainMesh : MeshInstance3D
         _indices.Clear();
         _vertices.Clear();
         _cellWeights.Clear();
-        _cellIndicies.Clear();
+        _cellIndices.Clear();
 
         _surfaceTool.Clear();
 
@@ -45,9 +42,9 @@ public partial class TerrainMesh : MeshInstance3D
 
     public void Apply()
     {
-        for (int i = 0; i < _vertices.Count; i++)
+        for (var i = 0; i < _vertices.Count; i++)
         {
-            var type = _cellIndicies[i];
+            var type = _cellIndices[i];
 
             var xy = new Vector2(type.x, type.y);
             var xz = new Vector2(type.x, type.z);
@@ -59,7 +56,7 @@ public partial class TerrainMesh : MeshInstance3D
             _surfaceTool.AddVertex(_vertices[i]);
         }
 
-        for (int i = 0; i < _indices.Count; i++)
+        for (var i = 0; i < _indices.Count; i++)
         {
             _surfaceTool.AddIndex(_indices[i]);
         }
@@ -97,16 +94,13 @@ public partial class TerrainMesh : MeshInstance3D
         _vertexIndex += 3;
     }
 
-    public void AddTriangleCellData(Vector3 indices, Color w)
-    {
-        AddTriangleCellData(indices, w, w, w);
-    }
+    public void AddTriangleCellData(Vector3 indices, Color w) { AddTriangleCellData(indices, w, w, w); }
 
     public void AddTriangleCellData(Vector3 indices, Color w1, Color w2, Color w3)
     {
-        _cellIndicies.Add(indices);
-        _cellIndicies.Add(indices);
-        _cellIndicies.Add(indices);
+        _cellIndices.Add(indices);
+        _cellIndices.Add(indices);
+        _cellIndices.Add(indices);
 
         _cellWeights.Add(w1);
         _cellWeights.Add(w2);
@@ -145,22 +139,16 @@ public partial class TerrainMesh : MeshInstance3D
         _vertexIndex += 4;
     }
 
-    public void AddQuadCellData(Vector3 indices, Color w)
-    {
-        AddQuadCellData(indices, w, w, w, w);
-    }
+    public void AddQuadCellData(Vector3 indices, Color w) { AddQuadCellData(indices, w, w, w, w); }
 
-    public void AddQuadCellData(Vector3 indices, Color w1, Color w2)
-    {
-        AddQuadCellData(indices, w1, w1, w2, w2);
-    }
+    public void AddQuadCellData(Vector3 indices, Color w1, Color w2) { AddQuadCellData(indices, w1, w1, w2, w2); }
 
     public void AddQuadCellData(Vector3 indices, Color w1, Color w2, Color w3, Color w4)
     {
-        _cellIndicies.Add(indices);
-        _cellIndicies.Add(indices);
-        _cellIndicies.Add(indices);
-        _cellIndicies.Add(indices);
+        _cellIndices.Add(indices);
+        _cellIndices.Add(indices);
+        _cellIndices.Add(indices);
+        _cellIndices.Add(indices);
 
         _cellWeights.Add(w1);
         _cellWeights.Add(w2);

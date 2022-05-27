@@ -1,17 +1,16 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
-public struct TerrainTypes
+public class TerrainTypes
 {
-    public List<TerrainType> List { get; set; }
+    public List<TerrainType> List { get; }
+    
+    public TerrainTypes() => List = new List<TerrainType>();
+    public TerrainTypes(List<TerrainType> list) => List = list;
 
-    public TerrainTypes(List<TerrainType> list)
-    {
-        List = list;
-    }
-
-    public static TerrainTypes FromLocEntity(EcsEntity locEntity)
+    public static TerrainTypes FromLocEntity(Entity locEntity)
     {
         var types = new TerrainTypes(new List<TerrainType>());
 

@@ -11,7 +11,7 @@ public struct FileData
 
 public static class Loader
 {
-    public static T LoadJson<T>(string path) where T: class
+    public static CT LoadJson<CT>(string path) where CT: class
     {
         var file = new File();
         GD.Print(path);
@@ -26,7 +26,7 @@ public static class Loader
 
         file.Close();
 
-        return JsonParser.FromJson<T>(jsonString);
+        return JsonParser.FromJson<CT>(jsonString);
     }
 
     public static List<FileData> LoadDir(string path, List<string> extentions, bool loadResource = true)
@@ -34,7 +34,7 @@ public static class Loader
         return LoadDirectoryData(path, new List<FileData>(), extentions, loadResource);
     }
 
-    private static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extentions, bool loadResource = false)
+     static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extentions, bool loadResource = false)
     {
         var directory = new Directory();
 
@@ -81,7 +81,7 @@ public static class Loader
         return directoryData;
     }
 
-    private static FileData GetFileData(string path, bool loadResource)
+     static FileData GetFileData(string path, bool loadResource)
     {
         var fileData = new FileData
         {

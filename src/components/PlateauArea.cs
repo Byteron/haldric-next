@@ -1,17 +1,14 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct PlateauArea : IEcsAutoReset<PlateauArea>
+public class PlateauArea
 {
     public float SolidFactor { get; set; }
-    public float BlendFactor { get { return 1f - SolidFactor; } }
+    public float BlendFactor => 1f - SolidFactor;
 
+    public PlateauArea() => SolidFactor = 0.75f;
     public PlateauArea(float solidFactor)
     {
         SolidFactor = solidFactor;
-    }
-
-    public void AutoReset(ref PlateauArea c)
-    {
-        c.SolidFactor = 0f;
     }
 }

@@ -1,44 +1,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
-public struct IsInZoc { }
+public class IsInZoc { }
 
-public struct Distance
+public class Distance
 {
     public int Value { get; set; }
 
-    public Distance(int value)
-    {
-        Value = value;
-    }
+    public Distance() => Value = 0;
 }
 
-public struct PathFrom
+public class PathFrom
 {
-    public EcsEntity LocEntity { get; set; }
+    public Entity LocEntity { get; set; }
 
-    public PathFrom(EcsEntity locEntity)
-    {
-        LocEntity = locEntity;
-    }
+    public PathFrom() => LocEntity = null;
+    public PathFrom(Entity locEntity) => LocEntity = locEntity;
 }
 
 public class Map
 {
-    public Grid Grid { get; set; }
-    public Locations Locations { get; set; }
-    public Vector2i ChunkSize { get; set; }
-    public PathFinder PathFinder { get; set; }
+    public Grid Grid { get; }
+    public Locations Locations { get; }
+    public Vector2i ChunkSize { get; }
+    public PathFinder PathFinder { get; }
 
     public Map(int width, int height, int chunkSize)
     {
         Grid = new Grid(width, height);
         Locations = new Locations()
         {
-            Dict = new Dictionary<Vector3, EcsEntity>()
+            Dict = new Dictionary<Vector3, Entity>()
         };
         ChunkSize = new Vector2i(chunkSize, chunkSize);
         PathFinder = new PathFinder();
@@ -56,53 +52,38 @@ public class Map
         return coords.World();
     }
 
-    public Vector3 GetCenterPosition()
-    {
-        var coords = Coords.FromOffset(Grid.Width / 2, Grid.Height / 2);
-        return coords.World();
-    }
-
     public void UpdateDistances(Coords fromCoords, int side)
     {
         foreach (var loc in Locations.Dict.Values)
         {
             loc.Get<Distance>().Value = int.MaxValue;
 
-            if (loc.Has<IsInZoc>())
-            {
-                loc.Remove<IsInZoc>();
-            }
+            if (loc.Has<IsInZoc>()) loc.Remove<IsInZoc>();
         }
 
         foreach (var loc in Locations.Dict.Values)
         {
-            if (!loc.Has<HasUnit>())
-            {
-                continue;
-            }
+            if (!loc.Has<HasUnit>()) continue;
 
             var unitEntity = loc.Get<HasUnit>().Entity;
 
-            if (unitEntity.Get<Side>().Value != side)
+            if (unitEntity.Get<Side>().Value == side) continue;
+            
+            var neighbors = loc.Get<Neighbors>();
+
+            foreach (var nLoc in neighbors.Array)
             {
-                ref var neighbors = ref loc.Get<Neighbors>();
-
-                foreach (var nLoc in neighbors.Array)
-                {
-                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
-                    {
-                        continue;
-                    }
-
-                    nLoc.Add<IsInZoc>();
-                }
+                if (!nLoc.IsAlive || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>()) continue;
+                nLoc.Add<IsInZoc>();
             }
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
         
-        Mobility mobility = new Mobility();
-        mobility.Dict = new Dictionary<TerrainType, int>();
+        var mobility = new Mobility
+        {
+            Dict = new Dictionary<TerrainType, int>()
+        };
 
         if (fromLocEntity.Has<HasUnit>())
         {
@@ -112,7 +93,7 @@ public class Map
 
         fromLocEntity.Get<Distance>().Value = 0;
 
-        List<EcsEntity> frontier = new List<EcsEntity>();
+        List<Entity> frontier = new List<Entity>();
         frontier.Add(fromLocEntity);
 
         while (frontier.Count > 0)
@@ -127,18 +108,12 @@ public class Map
 
             foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
-                if (!nLocEntity.IsAlive())
-                {
-                    continue;
-                }
+                if (nLocEntity is null || !nLocEntity.IsAlive) continue;
 
                 var nElevation = nLocEntity.Get<Elevation>().Value;
                 var elevationDifference = Mathf.Abs(cElevation - nElevation);
 
-                if (elevationDifference > 1)
-                {
-                    continue;
-                }
+                if (elevationDifference > 1) continue;
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost(mobility);
 
@@ -146,20 +121,14 @@ public class Map
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 
-                    if (unitEntity.Get<Side>().Value != side)
-                    {
-                        nMovementCost = 99;
-                    }
+                    if (unitEntity.Get<Side>().Value != side) nMovementCost = 99;
                 }
 
-                if (cLocEntity.Has<IsInZoc>())
-                {
-                    nMovementCost = 99;
-                }
+                if (cLocEntity.Has<IsInZoc>()) nMovementCost = 99;
 
                 var distance = cDistance + nMovementCost;
 
-                ref var nDistance = ref nLocEntity.Get<Distance>();
+                var nDistance = nLocEntity.Get<Distance>();
 
                 if (nDistance.Value == int.MaxValue)
                 {
@@ -181,21 +150,16 @@ public class Map
         var fromLocEntity = Locations.Get(fromCoords.Cube());
         var toLocEntity = Locations.Get(toCoords.Cube());
 
-        ref var fromElevation = ref fromLocEntity.Get<Elevation>();
-        ref var toElevation = ref toLocEntity.Get<Elevation>();
+        var fromElevation = fromLocEntity.Get<Elevation>();
+        var toElevation = toLocEntity.Get<Elevation>();
 
         var distance = Hex.GetDistance(fromCoords.Cube(), toCoords.Cube());
         var diff = Mathf.Abs(fromElevation.Value - toElevation.Value);
 
-        if (distance > 1 || diff > 1)
-        {
-            return false;
-        }
-
-        return true;
+        return distance <= 1 && diff <= 1;
     }
 
-    public int GetAttackDistance(Coords fromCoords, Coords toCoords)
+    public static int GetAttackDistance(Coords fromCoords, Coords toCoords)
     {
         return Hex.GetDistance(fromCoords.Cube(), toCoords.Cube());
     }
@@ -206,43 +170,34 @@ public class Map
         {
             loc.Get<Distance>().Value = int.MaxValue;
 
-            if (loc.Has<IsInZoc>())
-            {
-                loc.Remove<IsInZoc>();
-            }
+            if (loc.Has<IsInZoc>()) loc.Remove<IsInZoc>();
         }
 
         foreach (var loc in Locations.Dict.Values)
         {
-            if (!loc.Has<HasUnit>())
-            {
-                continue;
-            }
+            if (!loc.Has<HasUnit>()) continue;
 
             var unitEntity = loc.Get<HasUnit>().Entity;
 
-            if (unitEntity.Get<Side>().Value != side)
+            if (unitEntity.Get<Side>().Value == side) continue;
+            
+            var neighbors = loc.Get<Neighbors>();
+
+            foreach (var nLoc in neighbors.Array)
             {
-                ref var neighbors = ref loc.Get<Neighbors>();
-
-                foreach (var nLoc in neighbors.Array)
-                {
-                    if (!nLoc.IsAlive() || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>())
-                    {
-                        continue;
-                    }
-
-                    nLoc.Add<IsInZoc>();
-                }
+                if (!nLoc.IsAlive || nLoc.Has<IsInZoc>() || nLoc.Has<HasUnit>()) continue;
+                nLoc.Add<IsInZoc>();
             }
         }
 
         var fromLocEntity = Locations.Dict[fromCoords.Cube()];
         var toLocEntity = Locations.Dict[toCoords.Cube()];
 
-        var path = new Path();
-        path.Start = fromLocEntity;
-        path.Destination = toLocEntity;
+        var path = new Path
+        {
+            Start = fromLocEntity,
+            Destination = toLocEntity
+        };
 
         if (fromCoords.Cube() == toCoords.Cube())
         {
@@ -251,8 +206,10 @@ public class Map
 
         fromLocEntity.Get<Distance>().Value = 0;
 
-        Mobility mobility = new Mobility();
-        mobility.Dict = new Dictionary<TerrainType, int>();
+        var mobility = new Mobility
+        {
+            Dict = new Dictionary<TerrainType, int>()
+        };
 
         if (fromLocEntity.Has<HasUnit>())
         {
@@ -260,8 +217,7 @@ public class Map
             mobility = unitEntity.Get<Mobility>();
         }
 
-        List<EcsEntity> frontier = new List<EcsEntity>();
-        frontier.Add(fromLocEntity);
+        var frontier = new List<Entity> { fromLocEntity };
 
         while (frontier.Count > 0)
         {
@@ -284,7 +240,7 @@ public class Map
                     cPathFrom = current.Get<PathFrom>();
                 }
 
-                path.Checkpoints = new Queue<EcsEntity>(path.Checkpoints.Reverse());
+                path.Checkpoints = new Queue<Entity>(path.Checkpoints.Reverse());
                 break;
             }
 
@@ -293,18 +249,12 @@ public class Map
 
             foreach (var nLocEntity in cLocEntity.Get<Neighbors>().Array)
             {
-                if (!nLocEntity.IsAlive())
-                {
-                    continue;
-                }
+                if (nLocEntity is null || !nLocEntity.IsAlive) continue;
 
                 var nElevation = nLocEntity.Get<Elevation>().Value;
                 var elevationDifference = Mathf.Abs(cElevation - nElevation);
 
-                if (elevationDifference > 1)
-                {
-                    continue;
-                }
+                if (elevationDifference > 1) continue;
 
                 var nMovementCost = TerrainTypes.FromLocEntity(nLocEntity).GetMovementCost(mobility);
 
@@ -312,21 +262,15 @@ public class Map
                 {
                     var unitEntity = cLocEntity.Get<HasUnit>().Entity;
 
-                    if (unitEntity.Get<Side>().Value != side)
-                    {
-                        nMovementCost = 99;
-                    }
+                    if (unitEntity.Get<Side>().Value != side) nMovementCost = 99;
                 }
 
-                if (cLocEntity.Has<IsInZoc>())
-                {
-                    nMovementCost = 99;
-                }
+                if (cLocEntity.Has<IsInZoc>()) nMovementCost = 99;
 
                 var distance = cDistance + nMovementCost;
 
-                ref var nDistance = ref nLocEntity.Get<Distance>();
-                ref var nPathFrom = ref nLocEntity.Get<PathFrom>();
+                var nDistance = nLocEntity.Get<Distance>();
+                var nPathFrom = nLocEntity.Get<PathFrom>();
 
                 if (nDistance.Value == int.MaxValue)
                 {
@@ -347,9 +291,9 @@ public class Map
         return path;
     }
 
-    private List<EcsEntity> GetLocEntitiesFromCubes(Vector3[] cubes)
+     List<Entity> GetLocEntitiesFromCubes(Vector3[] cubes)
     {
-        List<EcsEntity> list = new List<EcsEntity>();
+        var list = new List<Entity>();
 
         foreach (var cube in cubes)
         {

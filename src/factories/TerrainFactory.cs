@@ -1,68 +1,69 @@
 using System.Collections.Generic;
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 using Haldric.Wdk;
 
 public class TerrainFactory
 {
-    private static TerrainBuilder _builder = new TerrainBuilder();
-
-    public static EcsEntity CreateFromDict(Dictionary<string, object> dict)
+    public static Entity CreateFromDict(Commands commands, Dictionary<string, object> dict)
     {
+        var builder = new TerrainBuilder(commands);
+
         if (dict.ContainsKey(nameof(IsBaseTerrain)))
         {
-            _builder.CreateBase();
+            builder.CreateBase();
         }
 
         if (dict.ContainsKey(nameof(IsOverlayTerrain)))
         {
-            _builder.CreateOverlay();
+            builder.CreateOverlay();
         }
 
         if (dict.ContainsKey(nameof(TerrainCode)))
         {
-            _builder.WithCode((string)dict[nameof(TerrainCode)]);
+            builder.WithCode((string)dict[nameof(TerrainCode)]);
         }
 
         if (dict.ContainsKey(nameof(TerrainTypes)))
         {
-            _builder.WithTypes((List<TerrainType>)dict[nameof(TerrainTypes)]);
+            builder.WithTypes((List<TerrainType>)dict[nameof(TerrainTypes)]);
         }
 
         if (dict.ContainsKey(nameof(ElevationOffset)))
         {
-            _builder.WithElevationOffset((float)dict[nameof(ElevationOffset)]);
+            builder.WithElevationOffset((float)dict[nameof(ElevationOffset)]);
         }
 
         if (dict.ContainsKey(nameof(CanRecruitFrom)))
         {
-            _builder.WithRecruitFrom();
+            builder.WithRecruitFrom();
         }
 
         if (dict.ContainsKey(nameof(CanRecruitTo)))
         {
-            _builder.WithRecruitTo();
+            builder.WithRecruitTo();
         }
 
         if (dict.ContainsKey(nameof(GivesIncome)))
         {
-            _builder.WithGivesIncome();
+            builder.WithGivesIncome();
         }
 
         if (dict.ContainsKey(nameof(IsCapturable)))
         {
-            _builder.WithIsCapturable();
+            builder.WithIsCapturable();
         }
 
         if (dict.ContainsKey(nameof(Heals)))
         {
-            _builder.WithHeals();
+            builder.WithHeals();
         }
 
         if (dict.ContainsKey(nameof(NoLighting)))
         {
-            _builder.WithNoLighting();
+            builder.WithNoLighting();
         }
 
-        return _builder.Build();
+        return builder.Build();
     }
 }

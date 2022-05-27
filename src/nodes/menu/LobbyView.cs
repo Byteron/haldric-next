@@ -10,15 +10,15 @@ public partial class LobbyView : Control
     [Signal] public delegate void BackButtonPressed();
     [Signal] public delegate void CancelButtonPressed();
 
-    [Export] private PackedScene ChatMessageView;
+    [Export]  PackedScene _chatMessageView;
 
-    private VBoxContainer _userListContainer;
-    private VBoxContainer _messages;
-    private LineEdit _input;
+     VBoxContainer _userListContainer;
+     VBoxContainer _messages;
+     LineEdit _input;
 
-    private OptionButton _scenarioOptions;
-    private Button _joinButton;
-    private Label _infoLabel;
+     OptionButton _scenarioOptions;
+     Button _joinButton;
+     Label _infoLabel;
 
     public override void _Ready()
     {
@@ -78,7 +78,7 @@ public partial class LobbyView : Control
 
     public void NewMessage(string username, string message, string time)
     {
-        var messageView = ChatMessageView.Instantiate<ChatMessageView>();
+        var messageView = _chatMessageView.Instantiate<ChatMessageView>();
         messageView.Message = message;
         messageView.User = username;
         messageView.Time = time;
@@ -93,27 +93,27 @@ public partial class LobbyView : Control
         }
     }
 
-    private void OnJoinButtonPressed()
+     void OnJoinButtonPressed()
     {
         EmitSignal(nameof(JoinButtonPressed));
     }
 
-    private void OnCancelButtonPressed()
+     void OnCancelButtonPressed()
     {
         EmitSignal(nameof(CancelButtonPressed));
     }
 
-    private void OnMapOptionButtonItemSelected(int index)
+     void OnMapOptionButtonItemSelected(int index)
     {
         EmitSignal(nameof(ScenarioSelected), _scenarioOptions.GetItemText(index));
     }
 
-    private void OnLineEditTextSubmitted(string text)
+     void OnLineEditTextSubmitted(string text)
     {
         OnSendButtonPressed();
     }
 
-    private void OnSendButtonPressed()
+     void OnSendButtonPressed()
     {
         if (!string.IsNullOrEmpty(_input.Text))
         {
@@ -122,7 +122,7 @@ public partial class LobbyView : Control
         }
     }
 
-    private void OnBackButtonPressed()
+     void OnBackButtonPressed()
     {
         EmitSignal(nameof(BackButtonPressed));
     }

@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 [Serializable]
-public struct Coords
+public class Coords
 {
     public static Coords FromOffset(float x, float z)
     {
@@ -13,6 +13,11 @@ public struct Coords
         coords.Z = (int)axial.z;
 
         return coords;
+    }
+
+    public Coords Clone()
+    {
+        return new  Coords { X = X, Z = Z };
     }
 
     public static Coords FromWorld(Vector3 position)

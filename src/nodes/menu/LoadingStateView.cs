@@ -2,7 +2,7 @@ using Godot;
 
 public partial class LoadingStateView : Control
 {
-    public Label Label { get; set; } = null;
+    public Label Label { get; set; }
 
     public override void _Ready()
     {

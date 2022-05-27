@@ -1,36 +1,50 @@
-using Bitron.Ecs;
+using RelEcs;
 using Godot;
 
 public partial class TestMapSelectionState : GameState
 {
-    private ScenarioSelectionView _view;
-
-    public TestMapSelectionState(EcsWorld world) : base(world) { }
-
-    public override void Enter(GameStateController gameStates)
+    public override void Init(GameStateController gameStates)
     {
-        _view = Scenes.Instantiate<ScenarioSelectionView>();
+        InitSystems.Add(new TestMapSelectionStateInitSystem());
+        ExitSystems.Add(new TestMapSelectionStateExitSystem());
+    }
+}
 
-        _view.Connect("ContinuePressed", new Callable(this, nameof(OnContinuePressed)));
-        _view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
+public class TestMapSelectionStateExitSystem : ISystem
+{
+    public void Run(Commands commands)
+    {
+        commands.GetElement<ScenarioSelectionView>().QueueFree();
+        commands.RemoveElement<ScenarioSelectionView>();
+    }
+}
 
-        AddChild(_view);
+public partial class TestMapSelectionStateInitSystem : Resource, ISystem
+{
+    Commands _commands;
+
+    public void Run(Commands commands)
+    {
+        _commands = commands;
+
+        var view = Scenes.Instantiate<ScenarioSelectionView>();
+
+        view.Connect("ContinuePressed", new Callable(this, nameof(OnContinuePressed)));
+        view.Connect("CancelPressed", new Callable(this, nameof(OnCancelPressed)));
+
+        commands.GetElement<CurrentGameState>().State.AddChild(view);
+        commands.AddElement(view);
     }
 
     public void OnContinuePressed(string mapName)
     {
-        var gameStateController = _world.GetResource<GameStateController>();
-        gameStateController.ChangeState(new TestMapState(_world, mapName));
+        var gameStateController = _commands.GetElement<GameStateController>();
+        gameStateController.ChangeState(new TestMapState(mapName));
     }
 
     public void OnCancelPressed()
     {
-        var gameStateController = _world.GetResource<GameStateController>();
+        var gameStateController = _commands.GetElement<GameStateController>();
         gameStateController.PopState();
-    }
-
-    public override void Exit(GameStateController gameStates)
-    {
-        _view.QueueFree();
     }
 }

@@ -1,16 +1,12 @@
-using Bitron.Ecs;
+using RelEcs;
+using RelEcs.Godot;
 
-public struct HasLocation : IEcsAutoReset<HasLocation>
+public class HasLocation
 {
-    public EcsEntity Entity { get; set; }
+    public Entity Entity { get; set; }
 
-    public HasLocation(EcsEntity entity)
+    public HasLocation(Entity entity)
     {
         Entity = entity;
-    }
-
-    public void AutoReset(ref HasLocation c)
-    {
-        c.Entity = default;
     }
 }
