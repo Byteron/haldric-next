@@ -4,8 +4,7 @@ using RelEcs.Godot;
 
 public partial class ApplicationState : GameState
 {
-
-    public override void Init(GameStateController gameStates)
+	public override void Init(GameStateController gameStates)
     {
         InitSystems.Add(new ApplicationStateInitSystem());
         

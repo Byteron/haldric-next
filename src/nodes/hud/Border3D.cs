@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Border3D : Node3D
 {
@@ -9,7 +8,7 @@ public partial class Border3D : Node3D
 
     public override void _Ready()
     {
-        MeshInstance3D mesh = this.GetChild<MeshInstance3D>(0);
+        var mesh = GetChild<MeshInstance3D>(0);
         mesh.Scale = new Vector3(ScaleFactor, ScaleFactor, ScaleFactor);
         mesh.GetSurfaceOverrideMaterial(0).Set("albedo_color", Color);
         Rotate(Vector3.Down, Direction);
