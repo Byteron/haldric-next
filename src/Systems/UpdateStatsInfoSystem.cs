@@ -1,3 +1,5 @@
+using System;
+using Godot;
 using RelEcs;
 
 public class UpdateStatsInfoSystem : ISystem
@@ -7,13 +9,16 @@ public class UpdateStatsInfoSystem : ISystem
         if (!commands.TryGetElement<DebugPanel>(out var panel)) return;
         if (!commands.TryGetElement<WorldInfo>(out var info)) return;
 
-        var s = $"Entities: {info.EntityCount}\nElements: {info.ElementCount}\nArchetypes: {info.ArchetypeCount}";
-        s += $"\nSystems: {info.SystemCount}\nQueries: {info.CachedQueryCount}";
+        var s = $"FPS: {Engine.GetFramesPerSecond()}\nEntities: {info.EntityCount}\nElements: {info.ElementCount}";
+        s += $"\nArchetypes: {info.ArchetypeCount}\nSystems: {info.SystemCount}\nQueries: {info.CachedQueryCount}";
+        
+        TimeSpan systemTime = default;
         
         foreach (var (type, time) in info.SystemExecutionTimes)
         {
-            s += $"\n{type.Name}: {time}";
+            systemTime += time;
         }
+        s += $"\nSystemTime: {systemTime}";
 
         panel.StatsLabel.Text = s;
     }
