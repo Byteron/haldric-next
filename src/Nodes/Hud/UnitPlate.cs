@@ -35,7 +35,7 @@ public partial class UnitPlate : Control
         _actionContainer = GetNode<Control>("VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer");
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         var camera = GetViewport().GetCamera3d();
 

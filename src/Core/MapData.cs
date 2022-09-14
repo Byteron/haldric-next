@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RelEcs;
-using RelEcs.Godot;
 
 public class MapDataPlayer
 {

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using RelEcs;
-using RelEcs.Godot;
-using Haldric.Wdk;
 
 public class Mobility
 {

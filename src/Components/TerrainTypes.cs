@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using RelEcs;
-using RelEcs.Godot;
-using Haldric.Wdk;
 
 public class TerrainTypes
 {
@@ -10,23 +8,23 @@ public class TerrainTypes
     public TerrainTypes() => List = new List<TerrainType>();
     public TerrainTypes(List<TerrainType> list) => List = list;
 
-    public static TerrainTypes FromLocEntity(Entity locEntity)
-    {
-        var types = new TerrainTypes(new List<TerrainType>());
+    // public static TerrainTypes FromLocEntity(Entity locEntity)
+    // {
+    //     var types = new TerrainTypes(new List<TerrainType>());
 
-        var baseTerrain = locEntity.Get<HasBaseTerrain>().Entity;
+    //     var baseTerrain = locEntity.Get<HasBaseTerrain>().Entity;
 
-        types.List.AddRange(baseTerrain.Get<TerrainTypes>().List);
+    //     types.List.AddRange(baseTerrain.Get<TerrainTypes>().List);
 
-        if (locEntity.Has<HasOverlayTerrain>())
-        {
-            var overlayTerrain = locEntity.Get<HasOverlayTerrain>().Entity;
+    //     if (locEntity.Has<HasOverlayTerrain>())
+    //     {
+    //         var overlayTerrain = locEntity.Get<HasOverlayTerrain>().Entity;
 
-            types.List.AddRange(overlayTerrain.Get<TerrainTypes>().List);
-        }
+    //         types.List.AddRange(overlayTerrain.Get<TerrainTypes>().List);
+    //     }
 
-        return types;
-    }
+    //     return types;
+    // }
 
     public float GetDefense()
     {

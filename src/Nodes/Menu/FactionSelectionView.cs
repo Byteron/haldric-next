@@ -5,19 +5,19 @@ using Godot;
 public partial class FactionSelectionView : PanelContainer
 {
     [Signal]
-    public delegate void FactionChanged(int side, int index);
+    public delegate void FactionChangedEventHandler(int side, int index);
 
     [Signal]
-    public delegate void PlayerChanged(int side, int index);
+    public delegate void PlayerChangedEventHandler(int side, int index);
 
     [Signal]
-    public delegate void GoldChanged(int side, int value);
+    public delegate void GoldChangedEventHandler(int side, int value);
 
     [Signal]
-    public delegate void ContinueButtonPressed();
+    public delegate void ContinueButtonPressedEventHandler();
 
     [Signal]
-    public delegate void BackButtonPressed();
+    public delegate void BackButtonPressedEventHandler();
 
     [Export] PackedScene _playerOption;
 
@@ -40,9 +40,9 @@ public partial class FactionSelectionView : PanelContainer
         for (var side = 0; side < Players.Count; side++)
         {
             var option = _playerOption.Instantiate<PlayerOption>();
-            option.Connect(nameof(PlayerOption.FactionChanged), new Callable(this, nameof(OnFactionChanged)));
-            option.Connect(nameof(PlayerOption.PlayerChanged), new Callable(this, nameof(OnPlayerChanged)));
-            option.Connect(nameof(PlayerOption.GoldChanged), new Callable(this, nameof(OnGoldChanged)));
+            option.Connect(nameof(PlayerOption.FactionChangedEventHandler), new Callable(this, nameof(OnFactionChanged)));
+            option.Connect(nameof(PlayerOption.PlayerChangedEventHandler), new Callable(this, nameof(OnPlayerChanged)));
+            option.Connect(nameof(PlayerOption.GoldChangedEventHandler), new Callable(this, nameof(OnGoldChanged)));
             _container.AddChild(option);
             option.UpdateInfo(LocalPlayerId, side, 100, Data.Instance.Factions.Keys.ToList(), Players);
             _options.Add(side, option);
@@ -102,28 +102,28 @@ public partial class FactionSelectionView : PanelContainer
 
     void OnFactionChanged(int side, int index)
     {
-        EmitSignal(nameof(FactionChanged), side, index);
+        EmitSignal(nameof(FactionChangedEventHandler), side, index);
     }
 
     void OnPlayerChanged(int side, int index)
     {
-        EmitSignal(nameof(PlayerChanged), side, index);
+        EmitSignal(nameof(PlayerChangedEventHandler), side, index);
     }
 
     void OnGoldChanged(int side, int value)
     {
-        EmitSignal(nameof(GoldChanged), side, value);
+        EmitSignal(nameof(GoldChangedEventHandler), side, value);
     }
 
     void OnContinueButtonPressed()
     {
         _continueButton.Disabled = true;
         _backButton.Disabled = true;
-        EmitSignal(nameof(ContinueButtonPressed));
+        EmitSignal(nameof(ContinueButtonPressedEventHandler));
     }
 
     void OnBackButtonPressed()
     {
-        EmitSignal(nameof(BackButtonPressed));
+        EmitSignal(nameof(BackButtonPressedEventHandler));
     }
 }

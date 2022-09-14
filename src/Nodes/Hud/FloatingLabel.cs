@@ -1,7 +1,6 @@
 using Godot;
 using System;
 using RelEcs;
-using RelEcs.Godot;
 
 public partial class FloatingLabel : Control
 {
@@ -35,7 +34,7 @@ public partial class FloatingLabel : Control
         tween.Play();
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         var camera = GetViewport().GetCamera3d();
 

@@ -2,67 +2,76 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 using RelEcs;
-using RelEcs.Godot;
-using Nakama.TinyJson;
+
+public class TerrainGraphic
+{
+    public string Code { get; set; } = "";
+    public Mesh Mesh { get; } = null;
+    public List<Mesh> Variations { get; private set; } = new();
+    public Vector3 Offset { get; set; } = Vector3.Zero;
+
+    public void AddVariation(Mesh mesh)
+    {
+        if (Variations.Count == 0)
+        {
+            Variations.Add(Mesh);
+        }
+
+        Variations.Add(mesh);
+    }
+}
 
 public partial class Data : Node
 {
     public static Data Instance { get; private set; }
 
-    public Color[] SideColors = new Color[]
+    public Color[] SideColors =
     {
-        new Color("FF0000"),
-        new Color("0000FF"),
-        new Color("00FF00"),
-        new Color("FFFF00"),
-        new Color("00FFFF"),
-        new Color("FF00FF"),
-        new Color("000000"),
-        new Color("FFFFFF"),
+        new("FF0000"),
+        new("0000FF"),
+        new("00FF00"),
+        new("FFFF00"),
+        new("00FFFF"),
+        new("FF00FF"),
+        new("000000"),
+        new("FFFFFF"),
     };
 
-    public Dictionary<string, PackedScene> Schedules { get; set; } = new Dictionary<string, PackedScene>();
-    public Dictionary<string, PackedScene> Units { get; set; } = new Dictionary<string, PackedScene>();
-    public Dictionary<string, FactionData> Factions { get; set; } = new Dictionary<string, FactionData>();
-    public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; set; } = new Dictionary<string, Dictionary<string, object>>();
-    public Dictionary<string, Entity> Terrains { get; set; } = new Dictionary<string, Entity>();
-    public Dictionary<string, MapData> Maps { get; set; } = new Dictionary<string, MapData>();
+    public Dictionary<string, PackedScene> Schedules { get; } = new();
+    public Dictionary<string, PackedScene> Units { get; } = new();
+    public Dictionary<string, FactionData> Factions { get; } = new();
+    public Dictionary<string, Dictionary<string, object>> TerrainDicts { get; } = new();
+    public Dictionary<string, Entity> Terrains { get; } = new();
+    public Dictionary<string, MapData> Maps { get; } = new();
 
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations { get; set; } = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, TerrainGraphic> WaterGraphics { get; set; } = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> WallSegments { get; set; } = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, TerrainGraphic> WallTowers { get; set; } = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> OuterCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, Dictionary<string, TerrainGraphic>> InnerCliffs = new Dictionary<string, Dictionary<string, TerrainGraphic>>();
-    public Dictionary<string, TerrainGraphic> KeepPlateaus { get; set; } = new Dictionary<string, TerrainGraphic>();
-    public Dictionary<string, Texture2D> TerrainTextures { get; set; } = new Dictionary<string, Texture2D>();
-    public Dictionary<string, Texture2D> TerrainNormalTextures { get; set; } = new Dictionary<string, Texture2D>();
-    public Dictionary<string, Texture2D> TerrainRoughnessTextures { get; set; } = new Dictionary<string, Texture2D>();
-    public Dictionary<string, string> DefaultOverlayBaseTerrains = new Dictionary<string, string>();
-    
-    public Dictionary<string, int> TextureArrayIds { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations { get; } = new();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations { get; set; } = new();
+    public Dictionary<string, TerrainGraphic> WaterGraphics { get; } = new();
+    public Dictionary<string, TerrainGraphic> WallSegments { get; } = new();
+    public Dictionary<string, TerrainGraphic> WallTowers { get; } = new();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> OuterCliffs = new();
+    public Dictionary<string, Dictionary<string, TerrainGraphic>> InnerCliffs = new();
+    public Dictionary<string, TerrainGraphic> KeepPlateaus { get; } = new();
+    public Dictionary<string, Texture2D> TerrainTextures { get; } = new();
+    public Dictionary<string, Texture2D> TerrainNormalTextures { get; } = new();
+    public Dictionary<string, Texture2D> TerrainRoughnessTextures { get; } = new();
+    public Dictionary<string, string> DefaultOverlayBaseTerrains = new();
 
-    public Texture2DArray TextureArray { get; private set; } = new Texture2DArray();
-    public Texture2DArray NormalTextureArray { get; private set; } = new Texture2DArray();
-    public Texture2DArray RoughnessTextureArray { get; private set; } = new Texture2DArray();
+    public Dictionary<string, int> TextureArrayIds { get; } = new();
+
+    public Texture2DArray TextureArray { get; private set; } = new();
+    public Texture2DArray NormalTextureArray { get; private set; } = new();
+    public Texture2DArray RoughnessTextureArray { get; private set; } = new();
 
     public override void _Ready()
     {
         Instance = this;
     }
 
-    public void LoadFactions(Commands commands)
+    public void LoadFactions(World world)
     {
         Factions.Clear();
 
-        var testFaction = new FactionData();
-        testFaction.Name = "Test";
-        testFaction.Recruits = Units.Keys.ToList();
-        testFaction.Leaders = Units.Keys.ToList();
-
-        Factions.Add(testFaction.Name, testFaction);
-        
         foreach (var data in Loader.LoadDir("res://data/factions", new List<string>() { "tres" }))
         {
             var faction = (FactionData)data.Data;
@@ -70,7 +79,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadUnits(Commands commands)
+    public void LoadUnits(World world)
     {
         Units.Clear();
 
@@ -80,7 +89,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadSchedules(Commands commands)
+    public void LoadSchedules(World world)
     {
         Schedules.Clear();
 
@@ -90,7 +99,7 @@ public partial class Data : Node
         }
     }
 
-    public void LoadTerrain(Commands commands)
+    public void LoadTerrain(World world)
     {
         TerrainDicts.Clear();
         Decorations.Clear();
@@ -100,28 +109,29 @@ public partial class Data : Node
         KeepPlateaus.Clear();
         TerrainTextures.Clear();
 
-        var terrainScript = new TerrainScript();
+        // var terrainScript = new TerrainScript();
 
-        terrainScript.Load();
+        // terrainScript.Load();
 
-        TerrainDicts = terrainScript.TerrainDicts;
+        // TerrainDicts = terrainScript.TerrainDicts;
 
-                foreach (var pair in TerrainDicts)
-        {
-            Terrains.Add(pair.Key, TerrainFactory.CreateFromDict(commands, pair.Value));
-        }
-        Decorations = terrainScript.Decorations;
-        DirectionalDecorations = terrainScript.DirectionalDecorations;
-        WaterGraphics = terrainScript.WaterGraphics;
-        WallSegments = terrainScript.WallSegments;
-        WallTowers = terrainScript.WallTowers;
-        OuterCliffs = terrainScript.OuterCliffs;
-        InnerCliffs = terrainScript.InnerCliffs;
-        KeepPlateaus = terrainScript.KeepPlateaus;
-        TerrainTextures = terrainScript.TerrainTextures;
-        TerrainNormalTextures = terrainScript.TerrainNormalTextures;
-        TerrainRoughnessTextures = terrainScript.TerrainRoughnessTextures;
-        DefaultOverlayBaseTerrains = terrainScript.DefaultOverlayBaseTerrains;
+        // foreach (var pair in TerrainDicts)
+        // {
+        //     Terrains.Add(pair.Key, TerrainFactory.CreateFromDict(world, pair.Value));
+        // }
+
+        // Decorations = terrainScript.Decorations;
+        // DirectionalDecorations = terrainScript.DirectionalDecorations;
+        // WaterGraphics = terrainScript.WaterGraphics;
+        // WallSegments = terrainScript.WallSegments;
+        // WallTowers = terrainScript.WallTowers;
+        // OuterCliffs = terrainScript.OuterCliffs;
+        // InnerCliffs = terrainScript.InnerCliffs;
+        // KeepPlateaus = terrainScript.KeepPlateaus;
+        // TerrainTextures = terrainScript.TerrainTextures;
+        // TerrainNormalTextures = terrainScript.TerrainNormalTextures;
+        // TerrainRoughnessTextures = terrainScript.TerrainRoughnessTextures;
+        // DefaultOverlayBaseTerrains = terrainScript.DefaultOverlayBaseTerrains;
 
         CreateTextureArrayIds();
 
@@ -130,7 +140,7 @@ public partial class Data : Node
         RoughnessTextureArray = CreateTextureArray(RoughnessTextureArray, TerrainRoughnessTextures);
     }
 
-    public void LoadMaps(Commands commands)
+    public void LoadMaps(World world)
     {
         Maps.Clear();
 
@@ -149,7 +159,7 @@ public partial class Data : Node
             var terrainCode = item.Key;
             var terrainEntity = item.Value;
 
-            terrainEntity.Add(new TerrainTypeIndex { Value = index });
+            // terrainEntity.Add(new TerrainTypeIndex { Value = index });
 
             TextureArrayIds.Add(terrainCode, index);
             index += 1;
@@ -177,7 +187,7 @@ public partial class Data : Node
             textures[index] = image;
         }
 
-        texArray._Images = textures;
+        // texArray._Images = textures;
 
         return texArray;
     }

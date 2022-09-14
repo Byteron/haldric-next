@@ -3,7 +3,7 @@ using System;
 
 public partial class TurnPanel : Control
 {
-    [Signal] public delegate void EndTurnButtonPressed();
+    [Signal] public delegate void EndTurnButtonPressedEventHandler();
 
     public Button EndTurnButton { get; private set; }
 
@@ -14,6 +14,6 @@ public partial class TurnPanel : Control
 
      void OnEndTurnButtonPressed()
     {
-        EmitSignal(nameof(EndTurnButtonPressed));
+        EmitSignal(nameof(EndTurnButtonPressedEventHandler));
     }
 }

@@ -11,7 +11,7 @@ public struct FileData
 
 public static class Loader
 {
-    public static CT LoadJson<CT>(string path) where CT: class
+    public static T LoadJson<T>(string path) where T: class
     {
         var file = new File();
         GD.Print(path);
@@ -26,7 +26,7 @@ public static class Loader
 
         file.Close();
 
-        return JsonParser.FromJson<CT>(jsonString);
+        return JsonParser.FromJson<T>(jsonString);
     }
 
     public static List<FileData> LoadDir(string path, List<string> extentions, bool loadResource = true)

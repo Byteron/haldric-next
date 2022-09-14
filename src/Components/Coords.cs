@@ -4,7 +4,7 @@ using Godot;
 [Serializable]
 public class Coords
 {
-    public static Coords FromOffset(float x, float z)
+    public static Coords FromOffset(int x, int z)
     {
         var coords = new Coords();
 
@@ -13,11 +13,6 @@ public class Coords
         coords.Z = (int)axial.z;
 
         return coords;
-    }
-
-    public Coords Clone()
-    {
-        return new  Coords { X = X, Z = Z };
     }
 
     public static Coords FromWorld(Vector3 position)
@@ -31,49 +26,6 @@ public class Coords
         return coords;
     }
 
-    public int X { get; set; }
-    public int Z { get; set; }
-
-    public Vector3 Axial()
-    {
-        return new Vector3(X, 0, Z);
-    }
-
-    public Vector3 Offset()
-    {
-        return Hex.Axial2Offset(Axial());
-    }
-
-    public Vector3 Cube()
-    {
-        return Hex.Axial2Cube(Axial());
-    }
-
-    public Vector3 World()
-    {
-        return Hex.Offset2World(Offset());
-    }
-
-    public bool IsNeighborOf(Coords otherCoords)
-    {
-        var neighbors = Hex.GetNeighbors(Cube());
-
-        foreach (var nCube in neighbors)
-        {
-            if (nCube == otherCoords.Cube())
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public int DistanceTo(Coords otherCoords)
-    {
-        return Hex.GetDistance(Cube(), otherCoords.Cube());
-    }
-
     public static Coords FromCube(Vector3 cube)
     {
         var coords = new Coords();
@@ -85,9 +37,42 @@ public class Coords
         return coords;
     }
 
+    public int X;
+    public int Z;
+
+    public Vector3 ToAxial()
+    {
+        return new Vector3(X, 0, Z);
+    }
+
+    public Vector3 ToOffset()
+    {
+        return Hex.Axial2Offset(ToAxial());
+    }
+
+    public Vector3 ToCube()
+    {
+        return Hex.Axial2Cube(ToAxial());
+    }
+
+    public Vector3 ToWorld()
+    {
+        return Hex.Offset2World(ToOffset());
+    }
+
+    public int DistanceTo(Coords otherCoords)
+    {
+        return Hex.GetDistance(ToCube(), otherCoords.ToCube());
+    }
+
+    public bool IsNeighborOf(Coords otherCoords)
+    {
+        return DistanceTo(otherCoords) == 1;
+    }
+
     public int GetIndex(int width)
     {
-        return (int)this.Offset().z * width + (int)this.Offset().x;
+        return (int)this.ToOffset().z * width + (int)this.ToOffset().x;
     }
 
     public override bool Equals(object obj)
@@ -98,6 +83,11 @@ public class Coords
         }
 
         return false;
+    }
+
+    public Coords Clone()
+    {
+        return new  Coords { X = X, Z = Z };
     }
 
     public override string ToString()

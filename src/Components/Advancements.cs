@@ -1,16 +1,6 @@
-using System.Collections.Generic;
+using Godot.Collections;
 
 public class Advancements
 {
-    public List<string> List { get; }
-
-    public Advancements() => List = new List<string>();
-    public Advancements(List<string> unitTypeIds)
-    {
-        List = new List<string>();
-        if (unitTypeIds != null)
-        {
-            List.AddRange(unitTypeIds);
-        }
-    }
+    public Array<string> List;
 }

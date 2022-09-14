@@ -1,12 +1,11 @@
 using Godot;
 using RelEcs;
-using RelEcs.Godot;
 using System;
 
 public partial class LoginView : Control
 {
-    [Signal] public delegate void LoginPressed(string email, string password, string username);
-    [Signal] public delegate void CancelPressed();
+    [Signal] public delegate void LoginPressedEventHandler(string email, string password, string username);
+    [Signal] public delegate void CancelPressedEventHandler();
 
      LineEdit _usernameText;
      LineEdit _emailText;
@@ -39,12 +38,12 @@ public partial class LoginView : Control
         }
         else
         {
-            EmitSignal(nameof(LoginPressed), email, password, username);
+            EmitSignal(nameof(LoginPressedEventHandler), email, password, username);
         }
     }
 
     void OnCancelButtonPressed()
     {
-        EmitSignal(nameof(CancelPressed));
+        EmitSignal(nameof(CancelPressedEventHandler));
     }
 }

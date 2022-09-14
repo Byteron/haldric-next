@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Godot;
 using RelEcs;
-using RelEcs.Godot;
 
 public partial class EditorView : CanvasLayer
 {
@@ -22,8 +21,6 @@ public partial class EditorView : CanvasLayer
     public Entity TerrainEntity => _selectedTerrain;
 
     public readonly Dictionary<Coords, int> Players = new();
-
-    public Commands Commands { get; set; }
 
     Entity _selectedTerrain;
 
@@ -90,10 +87,10 @@ public partial class EditorView : CanvasLayer
 
             var label = new Label();
             label.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
-            label.MinimumSize = new Vector2(0, 50);
+            label.CustomMinimumSize = new Vector2i(0, 50);
             label.VerticalAlignment = VerticalAlignment.Center;
             label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.Text = $"Player: {id}, Position: {coords.Offset().x}, {coords.Offset().z}";
+            label.Text = $"Player: {id}, Position: {coords.ToOffset().x}, {coords.ToOffset().z}";
 
             _playerContainer.AddChild(label);
         }
@@ -108,9 +105,9 @@ public partial class EditorView : CanvasLayer
             var code = item.Key;
 
             var button = new Button();
-            button.MinimumSize = new Vector2(50, 50);
+            button.CustomMinimumSize = new Vector2i(50, 50);
             button.Text = code;
-            button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
+            // button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
             _terrains.AddChild(button);
         }
     }
@@ -122,8 +119,8 @@ public partial class EditorView : CanvasLayer
             int width = int.Parse(_widthTextEdit.Text);
             int height = int.Parse(_heightTextEdit.Text);
 
-            Commands.Send(new DespawnMapTrigger());
-            Commands.Send(new SpawnMapTrigger(width, height));
+            // Commands.Send(new DespawnMapTrigger());
+            // Commands.Send(new SpawnMapTrigger(width, height));
         }
         else
         {
@@ -157,7 +154,7 @@ public partial class EditorView : CanvasLayer
 
         if (_mapNameTextEdit.Text.IsValidIdentifier())
         {
-            Commands.Send(new SaveMapTrigger(_mapNameTextEdit.Text));
+            // Commands.Send(new SaveMapTrigger(_mapNameTextEdit.Text));
         }
         else
         {
@@ -175,8 +172,8 @@ public partial class EditorView : CanvasLayer
 
         if (_mapNameTextEdit.Text.IsValidIdentifier())
         {
-            Commands.Send(new DespawnMapTrigger());
-            Commands.Send(new LoadMapEvent(_mapNameTextEdit.Text));
+            // Commands.Send(new DespawnMapTrigger());
+            // Commands.Send(new LoadMapEvent(_mapNameTextEdit.Text));
         }
         else
         {

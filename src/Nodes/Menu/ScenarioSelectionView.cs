@@ -2,8 +2,8 @@ using Godot;
 
 public partial class ScenarioSelectionView : PanelContainer
 {
-    [Signal] public delegate void ContinuePressed(string mapName);
-    [Signal] public delegate void CancelPressed();
+    [Signal] public delegate void ContinuePressedEventHandler(string mapName);
+    [Signal] public delegate void CancelPressedEventHandler();
 
      OptionButton _options;
 
@@ -25,11 +25,11 @@ public partial class ScenarioSelectionView : PanelContainer
      void OnContinueButtonPressed()
     {
         var mapName = _options.GetItemText(_options.GetSelectedId());
-        EmitSignal(nameof(ContinuePressed), mapName);
+        EmitSignal(nameof(ContinuePressedEventHandler), mapName);
     }
 
      void OnBackButtonPressed()
     {
-        EmitSignal(nameof(CancelPressed));
+        EmitSignal(nameof(CancelPressedEventHandler));
     }
 }

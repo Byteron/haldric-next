@@ -95,7 +95,7 @@ public partial class CameraOperator : Node3D
         _camera.Position = new Vector3(0, 0, Mathf.Lerp(_minDistance, _maxDistance, _zoom));
 
         var rotation = Rotation;
-        rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.Deg2Rad(_targetRotation), 0.08f);
+        rotation.y = Mathf.LerpAngle(Rotation.y, Mathf.DegToRad(_targetRotation), 0.08f);
         Rotation = rotation;
     }
 
@@ -104,7 +104,7 @@ public partial class CameraOperator : Node3D
         _zoom = Mathf.Lerp(_zoom, _targetZoom, 0.1f);
 
         var gimbalVRotation = _gimbalV.Rotation;
-        gimbalVRotation.x = Mathf.Deg2Rad(Mathf.Lerp(0, -90, _zoomCurve.Interpolate(_zoom)));
+        gimbalVRotation.x = Mathf.DegToRad(Mathf.Lerp(0, -90, _zoomCurve.Sample(_zoom)));
         _gimbalV.Rotation = gimbalVRotation;
     }
 

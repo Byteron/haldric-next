@@ -1,27 +1,17 @@
 using Godot;
 
-public struct Health { } // For Attribute<T>
+public class Health : Attribute { }
 
-public struct Experience { } // For Attribute<T>
+public class Experience : Attribute { }
 
-public struct Moves { } // For Attribute<T>
+public class Moves : Attribute { }
 
-public struct Actions { } // For Attribute<T>
+public class Actions : Attribute { }
 
-public class Attribute<CT>
+public class Attribute
 {
     public int Value { get; set; }
     public int Max { get; set; }
-
-    public Attribute()
-    {
-    }
-    
-    public Attribute(int max)
-    {
-        Max = max;
-        Value = Max;
-    }
 
     public int GetDifference()
     {

@@ -1,32 +1,31 @@
 using Godot;
 using RelEcs;
-using RelEcs.Godot;
 
 public partial class MainMenuView : PanelContainer
 {
-    [Signal] public delegate void LobbyButtonPressed();
-    [Signal] public delegate void TestButtonPressed();
-    [Signal] public delegate void EditorButtonPressed();
-    [Signal] public delegate void QuitButtonPressed();
+    [Signal] public delegate void LobbyButtonPressedEventHandler();
+    [Signal] public delegate void TestButtonPressedEventHandler();
+    [Signal] public delegate void EditorButtonPressedEventHandler();
+    [Signal] public delegate void QuitButtonPressedEventHandler();
 
      void OnLobbyButtonPressed()
     {
-        EmitSignal(nameof(LobbyButtonPressed));
+        EmitSignal(nameof(LobbyButtonPressedEventHandler));
     }
 
      void OnTestButtonPressed()
     {
-        EmitSignal(nameof(TestButtonPressed));
+        EmitSignal(nameof(TestButtonPressedEventHandler));
     }
 
      void OnEditorButtonPressed()
     {
-        EmitSignal(nameof(EditorButtonPressed));
+        EmitSignal(nameof(EditorButtonPressedEventHandler));
     }
 
     public void OnQuitButtonPressed()
     {
-        EmitSignal(nameof(QuitButtonPressed));
+        EmitSignal(nameof(QuitButtonPressedEventHandler));
         GetTree().Quit();
     }
 }

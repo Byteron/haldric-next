@@ -1,6 +1,5 @@
 using Godot;
 using RelEcs;
-using RelEcs.Godot;
 
 public class Grid
 {
@@ -15,8 +14,8 @@ public class Grid
 
     public bool IsCoordsInGrid(Coords coords)
     {
-        return coords.Offset().x > -1 && coords.Offset().x < Width
-            && coords.Offset().z > -1 && coords.Offset().z < Height;
+        return coords.ToOffset().x > -1 && coords.ToOffset().x < Width
+            && coords.ToOffset().z > -1 && coords.ToOffset().z < Height;
     }
 
     public override string ToString()
