@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Scenes="*res://src/Nodes/Global/Scenes.tscn"
-Data="*res://src/Nodes/Global/Data.tscn"
 Sfx="*res://src/Nodes/Global/Sfx.tscn"
 
 [display]

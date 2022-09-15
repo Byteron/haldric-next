@@ -44,7 +44,7 @@ public partial class FactionSelectionView : PanelContainer
             option.Connect(nameof(PlayerOption.PlayerChangedEventHandler), new Callable(this, nameof(OnPlayerChanged)));
             option.Connect(nameof(PlayerOption.GoldChangedEventHandler), new Callable(this, nameof(OnGoldChanged)));
             _container.AddChild(option);
-            option.UpdateInfo(LocalPlayerId, side, 100, Data.Instance.Factions.Keys.ToList(), Players);
+            // option.UpdateInfo(LocalPlayerId, side, 100, Data.Instance.Factions.Keys.ToList(), Players);
             _options.Add(side, option);
         }
     }

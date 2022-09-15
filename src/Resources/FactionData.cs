@@ -1,9 +1,8 @@
-using Godot.Collections;
-using Godot;
+using System.Collections.Generic;
 
-public partial class FactionData : Resource
+public class FactionData
 {
-    [Export] public string Name;
-    [Export] public Array<string> Recruits;
-    [Export] public Array<string> Leaders;
+    public string Name;
+    public List<string> Recruits;
+    public List<string> Leaders;
 }

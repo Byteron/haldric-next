@@ -30,10 +30,10 @@ public partial class LobbyView : Control
         _infoLabel = GetNode<Label>("PanelContainer/HBoxContainer/VBoxContainer2/Label");
         _scenarioOptions = GetNode<OptionButton>("PanelContainer/HBoxContainer/VBoxContainer2/MapOptionButton");
 
-        foreach (var mapName in Data.Instance.Maps.Keys)
-        {
-            _scenarioOptions.AddItem(mapName);
-        }
+        // foreach (var mapName in Data.Instance.Maps.Keys)
+        // {
+        //     _scenarioOptions.AddItem(mapName);
+        // }
 
         _scenarioOptions.Select(0);
         OnMapOptionButtonItemSelected(0);

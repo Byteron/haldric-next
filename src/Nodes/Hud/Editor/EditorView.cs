@@ -72,7 +72,7 @@ public partial class EditorView : CanvasLayer
         UpdatePlayers();
     }
 
-     void UpdatePlayers()
+    void UpdatePlayers()
     {
         foreach (Label child in _playerContainer.GetChildren())
         {
@@ -96,23 +96,23 @@ public partial class EditorView : CanvasLayer
         }
     }
 
-     void InitializeTerrains()
+    void InitializeTerrains()
     {
-        _selectedTerrain = Data.Instance.Terrains["Gg"];
-
-        foreach (var item in Data.Instance.Terrains)
-        {
-            var code = item.Key;
-
-            var button = new Button();
-            button.CustomMinimumSize = new Vector2i(50, 50);
-            button.Text = code;
-            // button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
-            _terrains.AddChild(button);
-        }
+        // _selectedTerrain = Data.Instance.Terrains["Gg"];
+        //
+        // foreach (var item in Data.Instance.Terrains)
+        // {
+        //     var code = item.Key;
+        //
+        //     var button = new Button();
+        //     button.CustomMinimumSize = new Vector2i(50, 50);
+        //     button.Text = code;
+        //     // button.Connect("pressed", new Callable(this, "OnTerrainSelected"), new Godot.Collections.Array() { code });
+        //     _terrains.AddChild(button);
+        // }
     }
 
-     void OnCreateButtonPressed()
+    void OnCreateButtonPressed()
     {
         if (_widthTextEdit.Text.IsValidInteger() && _heightTextEdit.Text.IsValidInteger())
         {
@@ -129,22 +129,22 @@ public partial class EditorView : CanvasLayer
         }
     }
 
-     void OnToolsTabChanged(int index)
-     {
-         Mode = index switch
-         {
-             0 => EditorMode.Terrain,
-             1 => EditorMode.Player,
-             _ => Mode
-         };
-     }
-
-     void OnTerrainSelected(string code)
+    void OnToolsTabChanged(int index)
     {
-        _selectedTerrain = Data.Instance.Terrains[code];
+        Mode = index switch
+        {
+            0 => EditorMode.Terrain,
+            1 => EditorMode.Player,
+            _ => Mode
+        };
     }
 
-     void OnSaveButtonPressed()
+    void OnTerrainSelected(string code)
+    {
+        // _selectedTerrain = Data.Instance.Terrains[code];
+    }
+
+    void OnSaveButtonPressed()
     {
         if (string.IsNullOrEmpty(_mapNameTextEdit.Text))
         {
@@ -162,7 +162,7 @@ public partial class EditorView : CanvasLayer
         }
     }
 
-     void OnLoadButtonPressed()
+    void OnLoadButtonPressed()
     {
         if (string.IsNullOrEmpty(_mapNameTextEdit.Text))
         {
