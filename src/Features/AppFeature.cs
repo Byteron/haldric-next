@@ -43,6 +43,8 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
             Hidden = false,
         });
         
+        this.AddElement(new Commander());
+        
         this.Send(new LoadTerrainDataTrigger());
         this.Send(new LoadTerrainGraphicDataTrigger());
         // this.Send(new LoadScenarioDataTrigger());
