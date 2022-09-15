@@ -1,6 +1,24 @@
 using Godot;
 using System.Collections.Generic;
 
+public class TerrainGraphic
+{
+    public string Code = string.Empty;
+    public Mesh Mesh;
+    public Vector3 Offset;
+    public List<Mesh> Variations = new();
+
+    public void AddVariation(Mesh mesh)
+    {
+        if (Variations.Count == 0)
+        {
+            Variations.Add(Mesh);
+        }
+
+        Variations.Add(mesh);
+    }
+}
+
 public abstract class TerrainLoader
 {
     public readonly Dictionary<string, Dictionary<string, object>> TerrainDicts = new();
@@ -18,8 +36,6 @@ public abstract class TerrainLoader
     public readonly Dictionary<string, string> DefaultOverlayBaseTerrains = new();
 
     readonly TerrainDictBuilder _terrainBuilder = new();
-
-    readonly TerrainGraphicBuilder _terrainGraphicBuilder = new();
 
     public abstract void Load();
 
@@ -93,14 +109,14 @@ public abstract class TerrainLoader
 
         if (string.IsNullOrEmpty(name))
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
             dict.Add(path, graphic);
         }
         else
         {
             if (!dict.ContainsKey(name))
             {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
                 dict.Add(name, graphic);
             }
             else
@@ -122,14 +138,14 @@ public abstract class TerrainLoader
 
         if (string.IsNullOrEmpty(name))
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
             dict.Add(path, graphic);
         }
         else
         {
             if (!dict.ContainsKey(name))
             {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
                 dict.Add(name, graphic);
             }
             else
@@ -142,27 +158,15 @@ public abstract class TerrainLoader
 
     protected void AddWaterGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
         WaterGraphics.Add(code, graphic);
     }
 
     protected void AddWallSegmentGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
         WallSegments.Add(code, graphic);
     }
-
-    // public void AddOuterCliffGraphic(string code, string path, string material_path = "", string name = "")
-    // {
-    //     var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
-
-    //     if (!string.IsNullOrEmpty(material_path))
-    //     {
-    //         graphic.Mesh.SurfaceSetMaterial(0, LoadAsset<Material>(material_path));
-    //     }
-
-    //     OuterCliffs.Add(code, graphic);
-    // }
 
     protected void AddOuterCliffGraphic(string code, string path, string materialPath = "", string name = "")
     {
@@ -175,7 +179,7 @@ public abstract class TerrainLoader
 
         if (string.IsNullOrEmpty(name))
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
 
             if (!string.IsNullOrEmpty(materialPath))
             {
@@ -188,7 +192,7 @@ public abstract class TerrainLoader
         {
             if (!dict.ContainsKey(name))
             {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
 
                 if (!string.IsNullOrEmpty(materialPath))
                 {
@@ -223,7 +227,7 @@ public abstract class TerrainLoader
 
         if (string.IsNullOrEmpty(name))
         {
-            var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+            var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
 
             if (!string.IsNullOrEmpty(materialPath))
             {
@@ -236,7 +240,7 @@ public abstract class TerrainLoader
         {
             if (!dict.ContainsKey(name))
             {
-                var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+                var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
 
                 if (!string.IsNullOrEmpty(materialPath))
                 {
@@ -262,19 +266,18 @@ public abstract class TerrainLoader
 
     protected void AddWallTowerGraphic(string code, string path)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).Build();
+        var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path) };
         WallTowers.Add(code, graphic);
     }
 
     public void AddKeepPlateauGraphic(string code, string path, Vector3 offset = default)
     {
-        var graphic = _terrainGraphicBuilder.Create().WithCode(code).WithMesh(LoadAsset<Mesh>(path)).WithOffset(offset)
-            .Build();
+        var graphic = new TerrainGraphic { Code = code, Mesh = LoadAsset<Mesh>(path), Offset = offset };
         KeepPlateaus.Add(code, graphic);
     }
 
-    static CT LoadAsset<CT>(string path) where CT : Resource
+    static T LoadAsset<T>(string path) where T : Resource
     {
-        return GD.Load<CT>("res://" + path);
+        return GD.Load<T>("res://" + path);
     }
 }
