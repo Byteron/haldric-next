@@ -1,27 +1,10 @@
 using Godot;
 using System.Collections.Generic;
 
-public class TerrainGraphic
-{
-    public string Code = string.Empty;
-    public Mesh Mesh;
-    public Vector3 Offset;
-    public List<Mesh> Variations = new();
 
-    public void AddVariation(Mesh mesh)
-    {
-        if (Variations.Count == 0)
-        {
-            Variations.Add(Mesh);
-        }
-
-        Variations.Add(mesh);
-    }
-}
 
 public abstract class TerrainLoader
 {
-    public readonly Dictionary<string, Dictionary<string, object>> TerrainDicts = new();
     public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new();
     public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new();
     public readonly Dictionary<string, TerrainGraphic> WaterGraphics = new();
@@ -35,48 +18,7 @@ public abstract class TerrainLoader
     public readonly Dictionary<string, Texture2D> TerrainRoughnessTextures = new();
     public readonly Dictionary<string, string> DefaultOverlayBaseTerrains = new();
 
-    readonly TerrainDictBuilder _terrainBuilder = new();
-
     public abstract void Load();
-
-    protected void NewBase(string code, List<TerrainType> types, float elevationOffset = 0)
-    {
-        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithElevationOffset(elevationOffset)
-            .Build();
-        TerrainDicts.Add(code, terrain);
-    }
-
-    protected void NewCastle(string code, List<TerrainType> types)
-    {
-        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types).WithRecruitTo().Build();
-        TerrainDicts.Add(code, terrain);
-    }
-
-    protected void NewKeep(string code, List<TerrainType> types)
-    {
-        var terrain = _terrainBuilder.CreateBase().WithCode(code).WithTypes(types)
-            .WithElevationOffset(Metrics.KeepOffset).WithRecruitFrom().WithRecruitTo().Build();
-        TerrainDicts.Add(code, terrain);
-    }
-
-    protected void NewHouses(string code, List<TerrainType> types)
-    {
-        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithGivesIncome().Build();
-        TerrainDicts.Add(code, terrain);
-    }
-
-    protected void NewVillage(string code, List<TerrainType> types)
-    {
-        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).WithIsCapturable()
-            .WithGivesIncome().WithHeals().Build();
-        TerrainDicts.Add(code, terrain);
-    }
-
-    protected void NewOverlay(string code, List<TerrainType> types)
-    {
-        var terrain = _terrainBuilder.CreateOverlay().WithCode(code).WithTypes(types).Build();
-        TerrainDicts.Add(code, terrain);
-    }
 
     protected void MapBaseToOverlay(string overlayCode, string baseCode)
     {

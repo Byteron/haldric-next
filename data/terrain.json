@@ -1,0 +1,165 @@
+{
+    "Gg": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Gg",
+        "TerrainTypes": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Rd": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Rd",
+        "TerrainTypes": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Sd": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Sd",
+        "TerrainTypes": [
+            "Rough"
+        ],
+        "ElevationOffset": 0
+    },
+    "Sm": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Sm",
+        "TerrainTypes": [
+            "Rough"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Sb": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Sb",
+        "TerrainTypes": [
+            "Rough"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Ms": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Ms",
+        "TerrainTypes": [
+            "Rocky"
+        ],
+        "ElevationOffset": 0
+    },
+    "Gll": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Gll",
+        "TerrainTypes": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Us": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Us",
+        "TerrainTypes": [
+            "Flat"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Uu": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Uu",
+        "TerrainTypes": [
+            "Flat"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Ws": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Ws",
+        "TerrainTypes": [
+            "ShallowWaters"
+        ],
+        "ElevationOffset": -2.5
+    },
+    "Wo": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Wo",
+        "TerrainTypes": [
+            "DeepWaters"
+        ],
+        "ElevationOffset": -15
+    },
+    "Wu": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Wu",
+        "TerrainTypes": [
+            "DeepWaters"
+        ],
+        "ElevationOffset": -5
+    },
+    "Xx": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Xx",
+        "TerrainTypes": [
+            "Unwalkable"
+        ],
+        "ElevationOffset": -15
+    },
+    "Xu": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Xu",
+        "TerrainTypes": [
+            "Impassable"
+        ],
+        "ElevationOffset": 0
+    },
+    "Ff": {
+        "IsOverlayTerrain": true,
+        "TerrainCode": "Ff",
+        "TerrainTypes": [
+            "Forested"
+        ]
+    },
+    "Tt": {
+        "IsOverlayTerrain": true,
+        "TerrainCode": "Tt",
+        "TerrainTypes": [
+            "Forested"
+        ]
+    },
+    "Kh": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Kh",
+        "TerrainTypes": [
+            "Fortified"
+        ],
+        "ElevationOffset": 0.5,
+        "CanRecruitFrom": true,
+        "CanRecruitTo": true
+    },
+    "Ch": {
+        "IsBaseTerrain": true,
+        "TerrainCode": "Ch",
+        "TerrainTypes": [
+            "Fortified"
+        ],
+        "CanRecruitTo": true
+    },
+    "Vh": {
+        "IsOverlayTerrain": true,
+        "TerrainCode": "Vh",
+        "TerrainTypes": [
+            "Settled"
+        ],
+        "GivesIncome": true
+    },
+    "VHh": {
+        "IsOverlayTerrain": true,
+        "TerrainCode": "VHh",
+        "TerrainTypes": [
+            "Settled",
+            "Fortified"
+        ],
+        "IsCapturable": true,
+        "GivesIncome": true,
+        "Heals": true
+    }
+}

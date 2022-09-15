@@ -9,6 +9,7 @@ public class AppFeature : Feature
 
         UpdateSystems
             .Add(new LoadTerrainDataSystem())
+            .Add(new LoadTerrainGraphicDataSystem())
             .Add(new LoadUnitDataSystem())
             .Add(new LoadScenarioDataSystem());
     }
@@ -43,6 +44,7 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
         });
         
         this.Send(new LoadTerrainDataTrigger());
+        this.Send(new LoadTerrainGraphicDataTrigger());
         // this.Send(new LoadScenarioDataTrigger());
         // this.Send(new LoadUnitDataTrigger());
 

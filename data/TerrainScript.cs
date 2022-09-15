@@ -1,36 +1,7 @@
-using System.Collections.Generic;
-
 public class TerrainScript : TerrainLoader
 {
 	public override void Load()
 	{
-		NewBase("Gg", new List<TerrainType>() { TerrainType.Flat });        // grass
-		NewBase("Rd", new List<TerrainType>() { TerrainType.Flat });        // dirt
-		NewBase("Sd", new List<TerrainType>() { TerrainType.Rough });       // sand desert
-		NewBase("Sm", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand mud
-		NewBase("Sb", new List<TerrainType>() { TerrainType.Rough }, -0.4f);        // sand beach
-		NewBase("Ms", new List<TerrainType>() { TerrainType.Rocky });       // mountains simple
-		NewBase("Gll", new List<TerrainType>() { TerrainType.Flat });       // grass leaf litter
-		NewBase("Us", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground cave
-		NewBase("Uu", new List<TerrainType>() { TerrainType.Flat }, -0.4f);        // underground impassable 
-
-		NewBase("Ws", new List<TerrainType>() { TerrainType.ShallowWaters }, -2.5f);       // shallow water
-		NewBase("Wo", new List<TerrainType>() { TerrainType.DeepWaters }, -15);     // deep water
-		NewBase("Wu", new List<TerrainType>() { TerrainType.DeepWaters }, -5);     // underground water
-
-		NewBase("Xx", new List<TerrainType>() { TerrainType.Unwalkable }, -15);		// chasm
-		NewBase("Xu", new List<TerrainType>() { TerrainType.Impassable });	// impassable void
-
-		NewOverlay("Ff", new List<TerrainType>() { TerrainType.Forested });     // forest
-		
-		NewOverlay("Tt", new List<TerrainType>() { TerrainType.Forested });     // Toadstool Forest
-
-		NewKeep("Kh", new List<TerrainType>() { TerrainType.Fortified });       // keep human
-		NewCastle("Ch", new List<TerrainType>() { TerrainType.Fortified });     // castle human
-
-		NewHouses("Vh", new List<TerrainType>() { TerrainType.Settled });       // village human
-		NewVillage("VHh", new List<TerrainType>() { TerrainType.Settled, TerrainType.Fortified });      // village hall human
-
 		MapBaseToOverlay("Ff", "Gll");
 
 		//      Grass  
