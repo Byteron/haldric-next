@@ -3,10 +3,7 @@ using RelEcs;
 
 public class TerrainTypes
 {
-    public List<TerrainType> List { get; }
-    
-    public TerrainTypes() => List = new List<TerrainType>();
-    public TerrainTypes(List<TerrainType> list) => List = list;
+    public List<TerrainType> List = new();
 
     // public static TerrainTypes FromLocEntity(Entity locEntity)
     // {
