@@ -6,12 +6,6 @@ public class AppFeature : Feature
     public override void Init()
     {
         EnableSystems.Add(new InitAppFeatureSystem());
-
-        UpdateSystems
-            .Add(new LoadTerrainDataSystem())
-            .Add(new LoadTerrainGraphicDataSystem())
-            .Add(new LoadUnitDataSystem())
-            .Add(new LoadScenarioDataSystem());
     }
 }
 
@@ -45,10 +39,10 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
         
         this.AddElement(new Commander());
         
-        this.Send(new LoadTerrainDataTrigger());
-        this.Send(new LoadTerrainGraphicDataTrigger());
-        // this.Send(new LoadScenarioDataTrigger());
-        // this.Send(new LoadUnitDataTrigger());
+        this.LoadTerrains();
+        this.LoadTerrainGraphics();
+        // this.LoadScenarios();
+        // this.LoadUnits();
 
         this.GetElement<Features>().EnableFeature<MenuFeature>();
     }

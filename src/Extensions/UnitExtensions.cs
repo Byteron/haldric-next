@@ -1,7 +1,26 @@
+using System.Collections.Generic;
+using Godot;
 using RelEcs;
 
 public static class UnitExtensions
 {
+    public static void LoadUnits(this ISystem system)
+    {
+        var unitData = new UnitData();
+        system.AddOrReplaceElement(unitData);
+
+        foreach (var data in Loader.LoadDir("res://data/units", new List<string>() { "tscn" }))
+        {
+            unitData.Units.Add(data.Id, (PackedScene)data.Data);
+        }
+
+        foreach (var data in Loader.LoadDir("res://data/factions", new List<string>() { "json" }))
+        {
+            var faction = Loader.LoadJson<FactionData>(data.Path);
+            unitData.Factions.Add(faction.Name, faction);
+        }
+    }
+    
     public static Entity CreateUnitFromUnitType(this ISystem system, UnitType unitType, Entity entity = null)
     {
         if (entity is null)
