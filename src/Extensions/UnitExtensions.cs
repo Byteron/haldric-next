@@ -29,8 +29,9 @@ public static class UnitExtensions
 
         var attacks = new Attacks();
 
-        foreach (Attack attack in unitType.Attacks.GetChildren())
+        foreach (var node in unitType.Attacks.GetChildren())
         {
+            var attack = (Attack)node;
             var attackEntity = system.Spawn()
                 .Add(new Id { Value = attack.Name })
                 .Add(new Damage { Value = attack.Damage, Type = attack.DamageType })
@@ -59,8 +60,9 @@ public static class UnitExtensions
             .Add(attacks)
             .Id();
 
-        foreach (Trait trait in unitType.Traits.GetChildren())
+        foreach (var node in unitType.Traits.GetChildren())
         {
+            var trait = (Trait)node;
             trait.Apply(system.On(entity));
         }
 
