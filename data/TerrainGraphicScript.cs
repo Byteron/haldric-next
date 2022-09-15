@@ -1,4 +1,25 @@
-public class TerrainScript : TerrainLoader
+using System.Collections.Generic;
+
+public class TerrainGraphicInfo
+{
+	public string Code;
+	public string Texture;
+	public string Normal;
+	public string Roughness;
+	public List<TerrainModelInfo> Decorations;
+	public List<TerrainModelInfo> DirectionalDecorations;
+	public List<TerrainModelInfo> InnerCliffs;
+	public List<TerrainModelInfo> OuterCliffs;
+}
+
+public class TerrainModelInfo
+{
+	string Group;
+	string Model;
+	string Material;
+}
+
+public class TerrainGraphicScript : TerrainGraphicLoader
 {
 	public override void Load()
 	{

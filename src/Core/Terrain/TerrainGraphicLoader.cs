@@ -1,9 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-
-
-public abstract class TerrainLoader
+public abstract class TerrainGraphicLoader
 {
     public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> Decorations = new();
     public readonly Dictionary<string, Dictionary<string, TerrainGraphic>> DirectionalDecorations = new();

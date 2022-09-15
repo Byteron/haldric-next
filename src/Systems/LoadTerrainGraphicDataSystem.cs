@@ -19,7 +19,7 @@ public class LoadTerrainGraphicDataSystem : ISystem
             var graphicData = new TerrainGraphicData();
             this.AddOrReplaceElement(graphicData);
 
-            var terrainScript = new TerrainScript();
+            var terrainScript = new TerrainGraphicScript();
             terrainScript.Load();
 
             graphicData.Decorations = terrainScript.Decorations;
