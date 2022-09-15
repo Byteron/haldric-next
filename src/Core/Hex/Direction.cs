@@ -3,7 +3,7 @@ public enum Direction { E, SE, SW, W, NW, NE }
 
 public static class DirectionExtentions
 {
-     static float[] rotations = new float[] {
+     static float[] rotations = {
         Godot.Mathf.Pi,
         2 * Godot.Mathf.Pi / 3,
         Godot.Mathf.Pi / 3,
