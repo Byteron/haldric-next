@@ -15,6 +15,12 @@ run/main_scene="res://src/Main.tscn"
 config/features=PackedStringArray("4.0", "C#", "Vulkan Clustered")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Scenes="*res://src/Nodes/Global/Scenes.tscn"
+Data="*res://src/Nodes/Global/Data.tscn"
+Sfx="*res://src/Nodes/Global/Sfx.tscn"
+
 [display]
 
 window/size/viewport_width=1920

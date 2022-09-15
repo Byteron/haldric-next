@@ -11,8 +11,11 @@ public partial class Main : Node3D
         _features = new Features(_world);
 
 		_world.AddElement(GetTree());
+		_world.AddElement(_features);
 		
 		InitFeatures();   
+		
+		_features.EnableFeature<AppFeature>();
     }
     
 	public override void _Process(double delta)
@@ -22,6 +25,9 @@ public partial class Main : Node3D
 
 	void InitFeatures()
 	{
+		_features.InitFeature<AppFeature>();
+		_features.InitFeature<MenuFeature>();
+		
 		_features.Init();
 	}
 

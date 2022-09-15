@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public partial class Canvas : CanvasLayer
 {
-    Dictionary<int, CanvasLayer> _canvases = new Dictionary<int, CanvasLayer>();
+    Dictionary<int, CanvasLayer> _canvases = new();
 
     public CanvasLayer GetCanvasLayer(int layer)
     {
