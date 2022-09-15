@@ -46,7 +46,7 @@ public class Features
         _features = _features.ToList().Append(new T()).ToArray();
     }
     
-    public void EnableFeature<T>() where T : Feature, new()
+    public void EnableFeature<T>() where T : Feature
     {
         var type = typeof(T);
 

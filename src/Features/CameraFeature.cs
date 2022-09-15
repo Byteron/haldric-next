@@ -18,7 +18,7 @@ public class InitCameraFeatureSystem : ISystem
 
     public void Run()
     {
-        var tree = this.GetElement<SceneTree>();
+        var tree = this.GetTree();
         var camera = Scenes.Instantiate<CameraOperator>();
         this.AddElement(camera);
         tree.CurrentScene.AddChild(camera);

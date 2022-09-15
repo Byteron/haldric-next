@@ -15,7 +15,7 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
 
     public void Run()
     {
-        var tree = this.GetElement<SceneTree>();
+        var tree = this.GetTree();
 
         var canvas = new Canvas();
         canvas.Name = "Canvas";
@@ -43,7 +43,7 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
         this.LoadTerrainGraphics();
         // this.LoadScenarios();
         // this.LoadUnits();
-
-        this.GetElement<Features>().EnableFeature<MenuFeature>();
+        
+        this.Enable<MenuFeature>();
     }
 }
