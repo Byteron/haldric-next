@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://addons/Wdk/UnitType.tscn" id="1_5pl2b"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Attack.tscn" id="2_tldcq"]
+[ext_resource type="PackedScene" uid="uid://8w3p6rl2g3ic" path="res://assets/graphics/gltf/orc_wolf_rider.gltf" id="3_pk62e"]
+
+
+[node name="Orcish Wolf Rider" instance=ExtResource( "1_5pl2b" )]
+Id = "Orcish Wolf Rider"
+Cost = 17
+Health = 32
+Moves = 8
+Alignment = 2
+Weaknesses = [1]
+
+[node name="Spear" parent="Attacks" index="0" instance=ExtResource( "2_tldcq" )]
+Damage = 5
+Strikes = 3
+DamageType = 1
+
+[node name="orc_wolf_rider" parent="UnitView" index="0" instance=ExtResource( "3_pk62e" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

@@ -40,6 +40,10 @@ public class EnableMenuFeatureSystem : ISystem
     
     void OnTestButtonPressed()
     {
+        var features = this.GetElement<Features>();
+        features.DisableFeature<MenuFeature>();
+        
+        features.EnableFeature<CameraFeature>();
     }
     
     void OnQuitButtonPressed()

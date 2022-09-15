@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/Wdk/MobilityTrait.cs" id="1_6pa8i"]
+
+
+[node name="MobileForest" type="Node"]
+script = ExtResource( "1_6pa8i" )
+Id = "Mobile: Forest"
+Description = "Units that are mobile in forested terrain only use one MP on forested terrain."
+TerrainType = 3

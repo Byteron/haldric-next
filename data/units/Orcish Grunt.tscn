@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://addons/Wdk/UnitType.tscn" id="1_4hdj6"]
+[ext_resource type="PackedScene" path="res://addons/Wdk/Attack.tscn" id="2_e5uvw"]
+[ext_resource type="PackedScene" uid="uid://4xw5atij88f8" path="res://assets/graphics/gltf/orc_grunt.gltf" id="3_cjr7j"]
+
+
+[node name="Orcish Grunt" instance=ExtResource( "1_4hdj6" )]
+Id = "Orcish Grunt"
+Cost = 12
+Health = 38
+Alignment = 2
+
+[node name="Axe" parent="Attacks" index="0" instance=ExtResource( "2_e5uvw" )]
+Damage = 9
+Strikes = 2
+
+[node name="UnitView" parent="." index="1"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="orc_grunt" parent="UnitView" index="1" instance=ExtResource( "3_cjr7j" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

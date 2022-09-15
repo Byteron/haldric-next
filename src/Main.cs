@@ -1,5 +1,5 @@
+global using World = RelEcs.World;
 using Godot;
-using World = RelEcs.World;
 
 public partial class Main : Node3D
 {
@@ -27,6 +27,7 @@ public partial class Main : Node3D
 	{
 		_features.InitFeature<AppFeature>();
 		_features.InitFeature<MenuFeature>();
+		_features.InitFeature<CameraFeature>();
 		
 		_features.Init();
 	}
