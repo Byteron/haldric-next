@@ -1,35 +1,25 @@
 global using World = RelEcs.World;
 using Godot;
 
+public class DeltaTime
+{
+    public double Value;
+}
+
 public partial class Main : Node3D
 {
     readonly World _world = new();
-    Features _features;
-    
+    GameStates _gameStates;
+
     public override void _Ready()
     {
-        _features = new Features(_world);
+        _gameStates = new GameStates(_world);
+        AddChild(_gameStates);
 
-		_world.AddElement(GetTree());
-		_world.AddElement(_features);
-		
-		InitFeatures();   
-		
-		_features.EnableFeature<AppFeature>();
+        _world.AddElement(GetTree());
+        _world.AddElement(_gameStates);
+        _world.AddElement(new DeltaTime());
+
+        _gameStates.PushState(new AppState());
     }
-    
-	public override void _Process(double delta)
-    {
-        _features.Update();
-    }
-
-	void InitFeatures()
-	{
-		_features.InitFeature<AppFeature>();
-		_features.InitFeature<MenuFeature>();
-		_features.InitFeature<CameraFeature>();
-		
-		_features.Init();
-	}
-
 }

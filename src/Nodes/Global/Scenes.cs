@@ -24,7 +24,8 @@ public partial class Scenes : Node
     [Export] PackedScene TerrainHighlighter;
 
     [Export] PackedScene CameraOperator;
-
+    [Export] PackedScene WorldEnvironment;
+    
     [Export] PackedScene FloatingLabel;
     [Export] PackedScene UnitPlate;
 

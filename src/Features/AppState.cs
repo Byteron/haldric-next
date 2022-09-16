@@ -1,15 +1,15 @@
 using Godot;
 using RelEcs;
 
-public class AppFeature : Feature
+public partial class AppState : GameState
 {
     public override void Init()
     {
-        EnableSystems.Add(new InitAppFeatureSystem());
+        Enter.Add(new EnterAppStateSystem());
     }
 }
 
-public partial class InitAppFeatureSystem : RefCounted, ISystem
+public partial class EnterAppStateSystem : RefCounted, ISystem
 {
     public World World { get; set; }
 
@@ -44,6 +44,6 @@ public partial class InitAppFeatureSystem : RefCounted, ISystem
         // this.LoadScenarios();
         // this.LoadUnits();
         
-        this.Enable<MenuFeature>();
+        this.PushState(new MenuState());
     }
 }

@@ -1,23 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwa7ykobouqda"]
+[gd_scene load_steps=3 format=3 uid="uid://dwa7ykobouqda"]
 
 [ext_resource type="Script" path="res://src/Main.cs" id="1_o5yxw"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kln4m"]
-
-[sub_resource type="Sky" id="Sky_hrd8g"]
-sky_material = SubResource("ProceduralSkyMaterial_kln4m")
-
-[sub_resource type="Environment" id="Environment_312s0"]
-background_mode = 2
-sky = SubResource("Sky_hrd8g")
 
 [sub_resource type="BoxMesh" id="BoxMesh_axsb5"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_o5yxw")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_312s0")
 
 [node name="MeshInstance3d" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_axsb5")

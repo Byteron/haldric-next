@@ -1,14 +1,10 @@
-﻿using RelEcs;
+﻿using Godot;
+using RelEcs;
 
-public static class FeatureExtensions
+public static class GodotExtensions
 {
-    public static void Enable<T>(this ISystem system) where T : Feature
+    public static SceneTree GetTree(this ISystem system)
     {
-        system.GetElement<Features>().EnableFeature<T>();
-    }
-    
-    public static void Disable<T>(this ISystem system) where T : Feature
-    {
-        system.GetElement<Features>().DisableFeature<T>();
+        return system.GetElement<SceneTree>();
     }
 }
