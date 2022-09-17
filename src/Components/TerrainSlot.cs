@@ -1,9 +1,7 @@
 using RelEcs;
 
-
-
-class Terrain
+class TerrainSlot
 {
-    public Entity BaseTypeEntity { get; set; }
-    public Entity OverlayTypeEntity { get; set; }
+    public Entity BaseTerrainEntity { get; set; }
+    public Entity OverlayTerrainEntity { get; set; }
 }

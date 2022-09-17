@@ -3,14 +3,14 @@ using Godot;
 
 public static class Hex
 {
-    static readonly Vector3[] _neighborTable =
+    static readonly Vector3[] NeighborTable =
     {
-        new(0, -1, 1), // NE
-        new(1, -1, 0), // E
-        new(1, 0, -1), // SE
-        new(0, 1, -1), // SW
-        new(-1, 1, 0), // W
-        new(-1, 0, 1), // NW
+        new(-1, 1, 0), // E
+        new(0, 1, -1), // SE
+        new(1, 0, -1), // SW
+        new(1, -1, 0), // W
+        new(0, -1, 1), // NW
+        new(-1, -0, 1), // NE
     };
 
     public static Vector3 Cube2Axial(Vector3 cube)
@@ -126,7 +126,7 @@ public static class Hex
 
     public static Vector3 GetNeighbor(Vector3 cube, Direction direction)
     {
-        return cube + _neighborTable[(int)direction];
+        return cube + NeighborTable[(int)direction];
     }
 
     public static Vector3[] GetNeighbors(Vector3 cube)
@@ -145,13 +145,13 @@ public static class Hex
     {
         var cells = new List<Vector3>();
 
-        var currentCell = _neighborTable[4] * radius;
+        var currentCell = NeighborTable[4] * radius;
         var debug = "";
         for (var i = 0; i < 6; i++)
         {
             for (var r = 0; r < radius; r++)
             {
-                currentCell += _neighborTable[i];
+                currentCell += NeighborTable[i];
                 debug += currentCell + "\n";
                 cells.Add(cube + currentCell);
             }
@@ -169,14 +169,14 @@ public static class Hex
 
         for (var i = 0; i < 3; i++)
         {
-            var cornerOffestA = Metrics.Corners[i * 2];
-            var cornerOffestB = Metrics.Corners[i * 2 + 1];
+            var cornerOffsetA = Metrics.Corners[i * 2];
+            var cornerOffsetB = Metrics.Corners[i * 2 + 1];
 
             var dirA = Direction.NE + i * 2;
 
-            var directionA = _neighborTable[(int)dirA];
+            var directionA = NeighborTable[(int)dirA];
             var dirB = dirA.Next2();
-            var directionB = _neighborTable[(int)dirB];
+            var directionB = NeighborTable[(int)dirB];
 
             for (var r = 0; r <= cellsSegments; r++)
             {
@@ -186,8 +186,8 @@ public static class Hex
                 var currentOffset = Cube2Offset(currentCube + cube);
                 var worldPos = Offset2World(currentOffset);
 
-                points.Add(worldPos + cornerOffestA);
-                points.Add(worldPos + cornerOffestB);
+                points.Add(worldPos + cornerOffsetA);
+                points.Add(worldPos + cornerOffsetB);
             }
         }
 

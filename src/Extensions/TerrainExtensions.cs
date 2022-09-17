@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RelEcs;
 using Godot;
 
-
 public static class TerrainExtensions
 {
     public static void LoadTerrains(this ISystem system)
@@ -32,7 +31,7 @@ public static class TerrainExtensions
             terrainData.TerrainEntities.Add(code, entityBuilder.Id());
         }
     }
-    
+
     public static void LoadTerrainGraphics(this ISystem system)
     {
         var terrainData = system.GetElement<TerrainData>();

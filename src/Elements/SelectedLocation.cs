@@ -1,10 +1,10 @@
 using RelEcs;
 
-public class SelectedLocation
+public class SelectedTile
 {
     public Entity Entity { get; set; }
 
-    public SelectedLocation(Entity entity)
+    public SelectedTile(Entity entity)
     {
         Entity = entity;
     }

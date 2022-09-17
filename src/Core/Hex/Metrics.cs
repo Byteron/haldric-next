@@ -17,24 +17,24 @@ public class Metrics
     public const float CellPerturbStrength = 1f;
 
     public static readonly Vector3[] Corners = {
-        new Vector3(-InnerRadius, 0f, 0.5f * OuterRadius),
-        new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
-        new Vector3(0f, 0f, -OuterRadius),
-        new Vector3(InnerRadius, 0f, -0.5f * OuterRadius),
-        new Vector3(InnerRadius, 0f, 0.5f * OuterRadius),
-        new Vector3(0f, 0f, OuterRadius)
+        new(-InnerRadius, 0f, 0.5f * OuterRadius), // E
+        new(-InnerRadius, 0f, -0.5f * OuterRadius), // SE
+        new(0f, 0f, -OuterRadius), // SW
+        new(InnerRadius, 0f, -0.5f * OuterRadius), // W
+        new(InnerRadius, 0f, 0.5f * OuterRadius), // NW
+        new(0f, 0f, OuterRadius) // NE
     };
 
     public static Color SampleNoise(Vector3 position)
     {
-        int x = (int)(position.x * NoiseScale) % 512;
-        int z = (int)(position.z * NoiseScale) % 512;
+        var x = (int)(position.x * NoiseScale) % 512;
+        var z = (int)(position.z * NoiseScale) % 512;
         return Noise.GetPixel(Mathf.Abs(x), Mathf.Abs(z));
     }
 
     public static Vector3 Perturb(Vector3 position)
     {
-        Color sample = SampleNoise(position);
+        var sample = SampleNoise(position);
 
         position.x += (sample.r * 2f - 1f) * CellPerturbStrength;
         position.z += (sample.g * 2f - 1f) * CellPerturbStrength;

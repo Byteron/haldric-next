@@ -8,15 +8,12 @@ public class IsInZoc
 
 public class Distance
 {
-    public int Value { get; set; }
-
-    public Distance() => Value = 0;
+    public int Value;
 }
 
 public class PathFrom
 {
-    public Entity LocEntity { get; set; }
-    public PathFrom() => LocEntity = null;
+    public Entity TileEntity;
 }
 
 public class Map
@@ -48,22 +45,22 @@ public class Map
 
     // public void UpdateDistances(Coords fromCoords, int side)
     // {
-    //     foreach (var loc in Tiles.Dict.Values)
+    //     foreach (var tile in Tiles.Dict.Values)
     //     {
-    //         loc.Get<Distance>().Value = int.MaxValue;
+    //         tile.Get<Distance>().Value = int.MaxValue;
 
-    //         if (loc.Has<IsInZoc>()) loc.Remove<IsInZoc>();
+    //         if (tile.Has<IsInZoc>()) tile.Remove<IsInZoc>();
     //     }
 
-    //     foreach (var loc in Tiles.Dict.Values)
+    //     foreach (var tile in Tiles.Dict.Values)
     //     {
-    //         if (!loc.Has<HasUnit>()) continue;
+    //         if (!tile.Has<HasUnit>()) continue;
 
-    //         var unitEntity = loc.Get<HasUnit>().Entity;
+    //         var unitEntity = tile.Get<HasUnit>().Entity;
 
     //         if (unitEntity.Get<Side>().Value == side) continue;
 
-    //         var neighbors = loc.Get<Neighbors>();
+    //         var neighbors = tile.Get<Neighbors>();
 
     //         foreach (var nLoc in neighbors.Array)
     //         {
@@ -159,22 +156,22 @@ public class Map
 
     // public Path FindPath(Coords fromCoords, Coords toCoords, int side)
     // {
-    //     foreach (var loc in Tiles.Dict.Values)
+    //     foreach (var tile in Tiles.Dict.Values)
     //     {
-    //         loc.Get<Distance>().Value = int.MaxValue;
+    //         tile.Get<Distance>().Value = int.MaxValue;
 
-    //         if (loc.Has<IsInZoc>()) loc.Remove<IsInZoc>();
+    //         if (tile.Has<IsInZoc>()) tile.Remove<IsInZoc>();
     //     }
 
-    //     foreach (var loc in Tiles.Dict.Values)
+    //     foreach (var tile in Tiles.Dict.Values)
     //     {
-    //         if (!loc.Has<HasUnit>()) continue;
+    //         if (!tile.Has<HasUnit>()) continue;
 
-    //         var unitEntity = loc.Get<HasUnit>().Entity;
+    //         var unitEntity = tile.Get<HasUnit>().Entity;
 
     //         if (unitEntity.Get<Side>().Value == side) continue;
 
-    //         var neighbors = loc.Get<Neighbors>();
+    //         var neighbors = tile.Get<Neighbors>();
 
     //         foreach (var nLoc in neighbors.Array)
     //         {

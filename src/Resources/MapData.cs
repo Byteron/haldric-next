@@ -6,7 +6,7 @@ public class MapDataPlayer
     public int Side;
 }
 
-public class MapDataLocation
+public class MapDataTile
 {
     public Coords Coords;
     public List<string> Terrain = new();
@@ -18,5 +18,5 @@ public class MapData
     public int Width = 0;
     public int Height = 0;
     public List<MapDataPlayer> Players = new();
-    public List<MapDataLocation> Locations = new();
+    public List<MapDataTile> Tiles = new();
 }

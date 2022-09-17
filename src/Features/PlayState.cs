@@ -26,6 +26,10 @@ public partial class PlayState : GameState
             var env = Scenes.Instantiate<WorldEnvironment>();
             this.AddElement(env);
             tree.CurrentScene.AddChild(env);
+
+            var mapData = this.LoadMapData("Valley");
+            this.SpawnMap(mapData);
+            this.UpdateTerrainMesh();
         }
     }
 

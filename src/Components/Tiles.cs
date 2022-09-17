@@ -4,7 +4,7 @@ using RelEcs;
 
 public class Tiles
 {
-    public Dictionary<Vector3, Entity> Dict { get; set; } = new();
+    public Dictionary<Vector3, Entity> Dict = new();
 
     public Dictionary<Vector3, Entity>.ValueCollection Values => Dict.Values;
 

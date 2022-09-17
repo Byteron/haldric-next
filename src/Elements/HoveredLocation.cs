@@ -1,6 +1,6 @@
 using RelEcs;
 
-public class HoveredLocation
+public class HoveredTile
 {
     public Entity Entity { get; set; }
     public bool HasChanged { get; set; }

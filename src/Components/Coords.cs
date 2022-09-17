@@ -72,7 +72,13 @@ public class Coords
 
     public int GetIndex(int width)
     {
-        return (int)this.ToOffset().z * width + (int)this.ToOffset().x;
+        return (int)ToOffset().z * width + (int)ToOffset().x;
+    }
+
+    public Vector2i GetChunk(Vector2i chunkSize)
+    {
+        var chunk = ToOffset() / new Vector3(chunkSize.x, 0f, chunkSize.y);
+        return new Vector2i((int)chunk.x, (int)chunk.z);
     }
 
     public override bool Equals(object obj)
