@@ -20,8 +20,7 @@ public class ShaderData
 
         _image = new Image();
         _image.Create(width, height, false, Image.Format.Rgba8);
-        _texture = new ImageTexture();
-        // _texture.CreateFromImage(_image);
+        _texture = ImageTexture.CreateFromImage(_image);
 
         _data = new Color[width * height];
 
