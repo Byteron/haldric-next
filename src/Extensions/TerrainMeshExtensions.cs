@@ -37,22 +37,21 @@ public static class TerrainMeshExtensions
         foreach (var (chunkEntity, chunk, mesh, collider) in chunkQuery)
         {
             if (!chunk.IsDirty) continue;
-
             chunk.IsDirty = false;
 
             mesh.Clear();
 
             // Update Terrain Mesh
 
-            var allTiles = system.Query<Index, Coords, TerrainSlot, Elevation, PlateauArea>();
+            var allTiles = system.Query<Index, Coords, BaseTerrainSlot, Elevation, PlateauArea>();
             var chunkTiles = system
-                .QueryBuilder<Index, Coords, TerrainSlot, Neighbors, Elevation, PlateauArea>()
+                .QueryBuilder<Index, Coords, BaseTerrainSlot, Neighbors, Elevation, PlateauArea>()
                 .Has<TileOf>(chunkEntity)
                 .Build();
 
-            foreach (var (index, coords, terrainSlot, neighbors, elevation, plateauArea) in chunkTiles)
+            foreach (var (index, coords, baseTerrainSlot, neighbors, elevation, plateauArea) in chunkTiles)
             {
-                var elevationOffset = elevationOffsets.Get(terrainSlot.BaseTerrainEntity);
+                var elevationOffset = elevationOffsets.Get(baseTerrainSlot.Entity);
                 
                 var center = coords.ToWorld();
                 center.y = elevation.Height + elevationOffset.Value;
@@ -75,9 +74,9 @@ public static class TerrainMeshExtensions
                         if (!neighbors.Has(direction)) continue;
                         
                         var nTileEntity = neighbors.Get(direction);
-                        var (nIndex, nCoords, nTerrainSlot, nElevation, nPlateauArea) = allTiles.Get(nTileEntity);
+                        var (nIndex, nCoords, nBaseTerrainSlot, nElevation, nPlateauArea) = allTiles.Get(nTileEntity);
 
-                        var nElevationOffset = elevationOffsets.Get(nTerrainSlot.BaseTerrainEntity);
+                        var nElevationOffset = elevationOffsets.Get(nBaseTerrainSlot.Entity);
                         
                         var nCenter = nCoords.ToWorld();
                         nCenter.y = nElevation.Height + nElevationOffset.Value;
@@ -97,9 +96,9 @@ public static class TerrainMeshExtensions
                         if (!neighbors.Has(direction.Next())) continue;
                         
                         var nextTileEntity = neighbors.Get(direction.Next());
-                        var (nextIndex, nextCoords, nextTerrainSlot, nextElevation, nextPlateauArea) = allTiles.Get(nextTileEntity);
+                        var (nextIndex, nextCoords, nextBaseTerrainSlot, nextElevation, nextPlateauArea) = allTiles.Get(nextTileEntity);
                         
-                        var nextElevationOffset = elevationOffsets.Get(nextTerrainSlot.BaseTerrainEntity);
+                        var nextElevationOffset = elevationOffsets.Get(nextBaseTerrainSlot.Entity);
                         
                         var nextCenter = nextCoords.ToWorld();
                         nextCenter.y = nextElevation.Height + nextElevationOffset.Value;
@@ -140,13 +139,13 @@ public static class TerrainMeshExtensions
 
         // Update Shader Data
 
-        foreach (var (coords, terrainSlot) in system.Query<Coords, TerrainSlot>())
+        foreach (var (coords, baseTerrainSlot) in system.Query<Coords, BaseTerrainSlot>())
         {
             var offset = coords.ToOffset();
 
             var x = (int)offset.x;
             var z = (int)offset.z;
-            var index = terrainTypeIndices.Get(terrainSlot.BaseTerrainEntity).Value;
+            var index = terrainTypeIndices.Get(baseTerrainSlot.Entity).Value;
 
             shaderData.UpdateTerrain(x, z, index);
         }

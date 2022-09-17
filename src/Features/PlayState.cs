@@ -30,6 +30,7 @@ public partial class PlayState : GameState
             var mapData = this.LoadMapData("Valley");
             this.SpawnMap(mapData);
             this.UpdateTerrainMesh();
+            this.UpdateTerrainProps();
         }
     }
 

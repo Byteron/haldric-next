@@ -4,9 +4,9 @@ using RelEcs;
 public class TerrainInfo
 {
     public string Code;
-    public float ElevationOffset;
     public List<TerrainType> Types;
     public bool IsBase;
+    public float ElevationOffset;
     public bool CanRecruitFrom;
     public bool CanRecruitTo;
     public bool GivesIncome;

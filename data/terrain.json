@@ -1,134 +1,134 @@
 {
     "Gg": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Gg",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Gg",
+        "Types": [
             "Flat"
         ],
         "ElevationOffset": 0
     },
     "Rd": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Rd",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Rd",
+        "Types": [
             "Flat"
         ],
         "ElevationOffset": 0
     },
     "Sd": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Sd",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Sd",
+        "Types": [
             "Rough"
         ],
         "ElevationOffset": 0
     },
     "Sm": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Sm",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Sm",
+        "Types": [
             "Rough"
         ],
         "ElevationOffset": -0.4
     },
     "Sb": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Sb",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Sb",
+        "Types": [
             "Rough"
         ],
         "ElevationOffset": -0.4
     },
     "Ms": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Ms",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Ms",
+        "Types": [
             "Rocky"
         ],
         "ElevationOffset": 0
     },
     "Gll": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Gll",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Gll",
+        "Types": [
             "Flat"
         ],
         "ElevationOffset": 0
     },
     "Us": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Us",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Us",
+        "Types": [
             "Flat"
         ],
         "ElevationOffset": -0.4
     },
     "Uu": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Uu",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Uu",
+        "Types": [
             "Flat"
         ],
         "ElevationOffset": -0.4
     },
     "Ws": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Ws",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Ws",
+        "Types": [
             "ShallowWaters"
         ],
         "ElevationOffset": -2.5
     },
     "Wo": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Wo",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Wo",
+        "Types": [
             "DeepWaters"
         ],
         "ElevationOffset": -15
     },
     "Wu": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Wu",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Wu",
+        "Types": [
             "DeepWaters"
         ],
         "ElevationOffset": -5
     },
     "Xx": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Xx",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Xx",
+        "Types": [
             "Unwalkable"
         ],
         "ElevationOffset": -15
     },
     "Xu": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Xu",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Xu",
+        "Types": [
             "Impassable"
         ],
         "ElevationOffset": 0
     },
     "Ff": {
         "IsOverlayTerrain": true,
-        "TerrainCode": "Ff",
-        "TerrainTypes": [
+        "Code": "Ff",
+        "Types": [
             "Forested"
         ]
     },
     "Tt": {
         "IsOverlayTerrain": true,
-        "TerrainCode": "Tt",
-        "TerrainTypes": [
+        "Code": "Tt",
+        "Types": [
             "Forested"
         ]
     },
     "Kh": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Kh",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Kh",
+        "Types": [
             "Fortified"
         ],
         "ElevationOffset": 0.5,
@@ -136,25 +136,25 @@
         "CanRecruitTo": true
     },
     "Ch": {
-        "IsBaseTerrain": true,
-        "TerrainCode": "Ch",
-        "TerrainTypes": [
+        "IsBase": true,
+        "Code": "Ch",
+        "Types": [
             "Fortified"
         ],
         "CanRecruitTo": true
     },
     "Vh": {
         "IsOverlayTerrain": true,
-        "TerrainCode": "Vh",
-        "TerrainTypes": [
+        "Code": "Vh",
+        "Types": [
             "Settled"
         ],
         "GivesIncome": true
     },
     "VHh": {
         "IsOverlayTerrain": true,
-        "TerrainCode": "VHh",
-        "TerrainTypes": [
+        "Code": "VHh",
+        "Types": [
             "Settled",
             "Fortified"
         ],

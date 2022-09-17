@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Godot;
 using RelEcs;
 
-public class TileOf { }
+public class TileOf
+{
+}
 
 public static class MapExtensions
 {
@@ -72,12 +74,8 @@ public static class MapExtensions
             var elevation = tileData.Elevation;
 
             var baseTerrainEntity = terrainData.TerrainEntities[terrainCodes[0]];
-            var terrainSlot = new TerrainSlot { BaseTerrainEntity = baseTerrainEntity };
+            var baseTerrainSlot = new BaseTerrainSlot { Entity = baseTerrainEntity };
 
-            if (terrainCodes.Count == 2)
-            {
-                terrainSlot.OverlayTerrainEntity = terrainData.TerrainEntities[terrainCodes[1]];
-            }
 
             var tileEntity = system.Spawn()
                 .Add(new Index { Value = coords.GetIndex(mapData.Width) })
@@ -86,9 +84,15 @@ public static class MapExtensions
                 .Add(new Neighbors())
                 .Add(new Distance())
                 .Add(new PathFrom())
-                .Add(terrainSlot)
+                .Add(baseTerrainSlot)
                 .Add(coords)
                 .Id();
+
+            if (terrainCodes.Count == 2)
+            {
+                system.On(tileEntity)
+                    .Add(new OverlayTerrainSlot { Entity = terrainData.TerrainEntities[terrainCodes[1]] });
+            }
 
             map.Tiles.Set(coords.ToCube(), tileEntity);
         }
@@ -121,7 +125,7 @@ public static class MapExtensions
                     var newChunk = system.Spawn()
                         .Add(new Chunk { Cell = chunkCell })
                         .Id();
-                    
+
                     chunks.Add(chunkCell, newChunk);
                 }
 
@@ -137,18 +141,18 @@ public static class MapExtensions
         {
             var terrainMesh = new TerrainMesh();
             var terrainCollider = new TerrainCollider();
-            var terrainFeaturePopulator = new TerrainFeaturePopulator();
+            var terrainFeaturePopulator = new TerrainProps();
 
             parent.AddChild(terrainMesh);
             parent.AddChild(terrainCollider);
             parent.AddChild(terrainFeaturePopulator);
-            
+
             var material = GD.Load<Material>("res://assets/graphics/materials/terrain.tres");
             material.Set("shader_param/textures", terrainGraphicData.TextureArray);
             material.Set("shader_param/normal_textures", terrainGraphicData.NormalTextureArray);
             material.Set("shader_param/roughness_textures", terrainGraphicData.RoughnessTextureArray);
             terrainMesh.MaterialOverride = material;
-            
+
             system.On(chunkEntity)
                 .Add(terrainCollider)
                 .Add(terrainFeaturePopulator)
@@ -175,19 +179,18 @@ public static class MapExtensions
 
         var canRecruitFromQuery = system.QueryBuilder().Has<CanRecruitFrom>().Build();
 
-        foreach (var (entity, slot) in system.Query<Entity, TerrainSlot>())
+        foreach (var (entity, slot) in system.Query<Entity, BaseTerrainSlot>())
         {
-            if (!canRecruitFromQuery.Has(slot.BaseTerrainEntity)) continue;
+            if (!canRecruitFromQuery.Has(slot.Entity)) continue;
 
             system.On(entity).Add(new Castle { List = system.FindConnectedTilesWith<CanRecruitTo>(entity) });
         }
 
         var capturables = system.QueryBuilder().Has<IsCapturable>().Build();
 
-        foreach (var (entity, slot) in system.Query<Entity, TerrainSlot>())
+        foreach (var (entity, slot) in system.Query<Entity, OverlayTerrainSlot>())
         {
-            if (!system.IsAlive(slot.OverlayTerrainEntity)) continue;
-            if (!capturables.Has(slot.OverlayTerrainEntity)) continue;
+            if (!capturables.Has(slot.Entity)) continue;
 
             system.On(entity).Add(new Village
             {
@@ -234,7 +237,8 @@ public static class MapExtensions
         frontier.Enqueue(locEntity);
 
         var neighbors = system.Query<Neighbors>();
-        var terrainSlots = system.Query<TerrainSlot>();
+        var baseTerrainSlots = system.Query<BaseTerrainSlot>();
+        var overlayTerrainSlots = system.Query<OverlayTerrainSlot>();
         var ts = system.QueryBuilder().Has<T>().Build();
 
         while (frontier.Count > 0)
@@ -247,13 +251,13 @@ public static class MapExtensions
                 if (!system.IsAlive(nTileEntity)) continue;
                 if (list.Contains(nTileEntity)) continue;
 
-                var nTerrainSlot = terrainSlots.Get(nTileEntity);
+                var nBaseTerrainSlot = baseTerrainSlots.Get(nTileEntity);
+                var hasT = ts.Has(nBaseTerrainSlot.Entity);
 
-                var hasT = ts.Has(nTerrainSlot.BaseTerrainEntity);
-
-                if (system.IsAlive(nTerrainSlot.OverlayTerrainEntity))
+                if (overlayTerrainSlots.Has(nTileEntity))
                 {
-                    hasT = hasT || ts.Has(nTerrainSlot.OverlayTerrainEntity);
+                    var nOverlayTerrainSlot = overlayTerrainSlots.Get(nTileEntity);
+                    hasT = hasT || ts.Has(nOverlayTerrainSlot.Entity);
                 }
 
                 if (!hasT) continue;
