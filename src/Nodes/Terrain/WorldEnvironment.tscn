@@ -11,3 +11,7 @@ sky = SubResource("Sky_hrd8g")
 
 [node name="WorldEnvironment" type="WorldEnvironment"]
 environment = SubResource("Environment_312s0")
+
+[node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.396443, 0.918059, 0, -0.918059, 0.396443, 0, 0, 0)
+shadow_enabled = true
