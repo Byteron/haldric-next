@@ -35,6 +35,7 @@ public partial class MenuState : GameState
 
         void OnEditorButtonPressed()
         {
+            this.ChangeState(new EditorState());
         }
 
         void OnTestButtonPressed()

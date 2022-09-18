@@ -1,7 +1,7 @@
 using RelEcs;
 using Godot;
 
-public partial class PlayState : GameState
+public partial class EditorState : GameState
 {
     public override void Init()
     {
@@ -31,8 +31,7 @@ public partial class PlayState : GameState
             this.AddElement(env);
             tree.CurrentScene.AddChild(env);
 
-            var mapData = this.LoadMapData("Valley");
-            this.SpawnMap(mapData);
+            this.SpawnMap(32, 32);
             this.UpdateTerrainMesh();
             this.UpdateTerrainProps();
         }
