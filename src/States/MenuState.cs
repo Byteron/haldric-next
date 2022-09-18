@@ -5,6 +5,7 @@ public partial class MenuState : GameState
     public override void Init()
     {
         Enter.Add(new EnterSystem());
+        Update.Add(new UpdateDebugInfoSystem());
         Exit.Add(new ExitSystem());
     }
 

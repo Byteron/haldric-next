@@ -8,7 +8,11 @@ public partial class PlayState : GameState
         Enter.Add(new EnterSystem());
         Exit.Add(new ExitSystem());
 
-        Update.Add(new UpdateCameraSystem());
+        Update
+            .Add(new UpdateCameraSystem())
+            .Add(new UpdateHoveredTileSystem())
+            .Add(new UpdateMapCursorSystem())
+            .Add(new UpdateDebugInfoSystem());
     }
 
     class EnterSystem : ISystem

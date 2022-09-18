@@ -50,6 +50,7 @@ public static class MapExtensions
 
         var parent = system.GetTree().CurrentScene;
 
+        system.AddElement(new HoveredTile());
         // Create Shader Data
 
         system.AddElement(new ShaderData(mapData.Width, mapData.Height));

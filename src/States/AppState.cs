@@ -44,6 +44,11 @@ public partial class EnterAppStateSystem : RefCounted, ISystem
         // this.LoadScenarios();
         // this.LoadUnits();
         
+        var layer = canvas.GetCanvasLayer(3);
+        var debugPanel = Scenes.Instantiate<DebugPanel>();
+        layer.AddChild(debugPanel);
+        this.AddElement(debugPanel);
+
         this.PushState(new MenuState());
     }
 }
