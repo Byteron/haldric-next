@@ -85,7 +85,7 @@ public class Coords
     {
         if (obj is Coords coords)
         {
-            return coords.X == this.X && coords.Z == this.Z;
+            return coords.X == X && coords.Z == Z;
         }
 
         return false;
@@ -105,4 +105,9 @@ public class Coords
     {
         return base.GetHashCode();
     }
+    
+    public static bool operator ==(Coords left, Coords right) => left is not null && left.Equals(right);
+
+    public static bool operator !=(Coords left, Coords right) =>
+        (left is null && right is not null) || (left is not null && !left.Equals(right));
 }

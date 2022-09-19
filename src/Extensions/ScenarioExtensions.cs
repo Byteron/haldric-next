@@ -20,4 +20,15 @@ public static class ScenarioExtensions
             scenarioData.Maps.Add(data.Id, mapData);
         }
     }
+
+    public static void SpawnSchedule(this ISystem system, string name, int index)
+    {
+        var scene = system.GetTree().CurrentScene;
+        var data = system.GetElement<ScenarioData>();
+        var schedule = data.Schedules[name].Instantiate<Schedule>();
+        scene.AddChild(schedule);
+        system.AddElement(schedule);
+
+        schedule.Set(index);
+    }
 }

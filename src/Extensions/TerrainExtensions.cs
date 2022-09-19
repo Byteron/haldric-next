@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using RelEcs;
 using Godot;
 
@@ -28,6 +29,11 @@ public static class TerrainExtensions
             if (data.IsCapturable) entityBuilder.Add<IsCapturable>();
             if (data.Heals) entityBuilder.Add<Heals>();
 
+            if (!string.IsNullOrEmpty(data.DefaultBase))
+            {
+                terrainData.DefaultOverlayBaseTerrains[code] = data.DefaultBase;
+            }
+            
             terrainData.TerrainEntities.Add(code, entityBuilder.Id());
         }
     }
@@ -53,7 +59,6 @@ public static class TerrainExtensions
         graphicData.TerrainTextures = terrainScript.TerrainTextures;
         graphicData.TerrainNormalTextures = terrainScript.TerrainNormalTextures;
         graphicData.TerrainRoughnessTextures = terrainScript.TerrainRoughnessTextures;
-        graphicData.DefaultOverlayBaseTerrains = terrainScript.DefaultOverlayBaseTerrains;
 
         var terrainCount = 0;
         foreach (var (code, entity) in terrainData.TerrainEntities)

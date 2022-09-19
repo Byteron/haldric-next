@@ -1,8 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://c5tvfdo641fdj"]
+[gd_scene load_steps=18 format=3 uid="uid://c5tvfdo641fdj"]
 
 [ext_resource type="Script" path="res://src/Nodes/Global/Scenes.cs" id="1"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/Editor/EditorView.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/Cursor3D.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://6p2t6yq0bb6y" path="res://src/Nodes/Hud/Editor/EditorView.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://0iipgjp26rpq" path="res://src/Nodes/Hud/Cursor3D.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://s5t50rxecs3r" path="res://src/Nodes/Menu/MainMenuView.tscn" id="3_wqxn1"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Menu/LoginView.tscn" id="4_8ipd3"]
 [ext_resource type="PackedScene" uid="uid://nwsymtspjtvo" path="res://src/Nodes/Hud/DebugPanel.tscn" id="4_gx4dp"]
@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/SidePanel.tscn" id="12_aqmga"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/TerrainPanel.tscn" id="13_weh4l"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/TurnPanel.tscn" id="14_2r1k4"]
-[ext_resource type="PackedScene" uid="uid://tfa1pv518ple" path="res://src/Nodes/Terrain/WorldEnvironment.tscn" id="14_owwm0"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/UnitPanel.tscn" id="15_ubvy6"]
 
 [node name="Scenes" type="Node"]
@@ -33,7 +32,6 @@ TurnPanel = ExtResource("14_2r1k4")
 UnitPanel = ExtResource("15_ubvy6")
 TerrainHighlighter = ExtResource("7_smnkw")
 CameraOperator = ExtResource("5_ssdct")
-WorldEnvironment = ExtResource("14_owwm0")
 FloatingLabel = ExtResource("9_liy6q")
 UnitPlate = ExtResource("10_rm84j")
 Cursor3D = ExtResource("3")

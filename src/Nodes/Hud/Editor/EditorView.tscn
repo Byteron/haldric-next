@@ -1,11 +1,25 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://6p2t6yq0bb6y"]
 
 [ext_resource type="Script" path="res://src/Nodes/Hud/Editor/EditorView.cs" id="1_sv8np"]
 
-[node name="EditorView" type="CanvasLayer"]
-script = ExtResource( "1_sv8np" )
+[node name="EditorView" type="CanvasLayer" node_paths=PackedStringArray("CreateButton", "SaveButton", "LoadButton", "ToolsTab", "BrushSizeSlider", "ElevationSlider", "ElevationCheckBox", "TerrainCheckBox", "Terrains", "WidthTextEdit", "HeightTextEdit", "MapNameTextEdit", "PlayerContainer")]
+script = ExtResource("1_sv8np")
+CreateButton = NodePath("Create/VBoxContainer/CreateButton")
+SaveButton = NodePath("VBoxContainer/HBoxContainer/SaveButton")
+LoadButton = NodePath("VBoxContainer/HBoxContainer/LoadButton")
+ToolsTab = NodePath("Tools")
+BrushSizeSlider = NodePath("Tools/Terrain/BrushSize/HSlider")
+ElevationSlider = NodePath("Tools/Terrain/Elevation/HSlider")
+ElevationCheckBox = NodePath("Tools/Terrain/Elevation/HBoxContainer/CheckBox")
+TerrainCheckBox = NodePath("Tools/Terrain/Terrains/HBoxContainer/CheckBox")
+Terrains = NodePath("Tools/Terrain/Terrains/CenterContainer/GridContainer")
+WidthTextEdit = NodePath("Create/VBoxContainer/HBoxContainer/Width/TextEdit")
+HeightTextEdit = NodePath("Create/VBoxContainer/HBoxContainer/Height/TextEdit")
+MapNameTextEdit = NodePath("VBoxContainer/MapTextEdit")
+PlayerContainer = NodePath("Tools/Players")
 
 [node name="Create" type="PanelContainer" parent="."]
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -210.0
@@ -13,55 +27,65 @@ offset_bottom = 77.0
 grow_horizontal = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Create"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 77.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Create/VBoxContainer"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 26.0
 
 [node name="Width" type="HBoxContainer" parent="Create/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 offset_right = 103.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Create/VBoxContainer/HBoxContainer/Width"]
+layout_mode = 2
 offset_right = 49.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Width"
 
 [node name="TextEdit" type="TextEdit" parent="Create/VBoxContainer/HBoxContainer/Width"]
+layout_mode = 2
 offset_left = 53.0
 offset_right = 103.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="Height" type="HBoxContainer" parent="Create/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 offset_left = 107.0
 offset_right = 210.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Create/VBoxContainer/HBoxContainer/Height"]
+layout_mode = 2
 offset_right = 52.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Height"
 
 [node name="TextEdit" type="TextEdit" parent="Create/VBoxContainer/HBoxContainer/Height"]
+layout_mode = 2
 offset_left = 56.0
 offset_right = 103.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="CreateButton" type="Button" parent="Create/VBoxContainer"]
+layout_mode = 2
 offset_top = 30.0
 offset_right = 210.0
 offset_bottom = 61.0
 text = "Create"
 
 [node name="Tools" type="TabContainer" parent="."]
+anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -70,15 +94,19 @@ offset_top = 126.0
 offset_bottom = -73.0
 
 [node name="Terrain" type="VBoxContainer" parent="Tools"]
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 31.0
 
 [node name="BrushSize" type="VBoxContainer" parent="Tools/Terrain"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 46.0
 
 [node name="Label" type="Label" parent="Tools/Terrain/BrushSize"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
@@ -87,6 +115,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HSlider" type="HSlider" parent="Tools/Terrain/BrushSize"]
+layout_mode = 2
 offset_top = 30.0
 offset_right = 210.0
 offset_bottom = 46.0
@@ -94,20 +123,24 @@ size_flags_horizontal = 3
 max_value = 5.0
 
 [node name="HSeparator" type="HSeparator" parent="Tools/Terrain"]
+layout_mode = 2
 offset_top = 50.0
 offset_right = 210.0
 offset_bottom = 54.0
 
 [node name="Elevation" type="VBoxContainer" parent="Tools/Terrain"]
+layout_mode = 2
 offset_top = 58.0
 offset_right = 210.0
 offset_bottom = 112.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tools/Terrain/Elevation"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 26.0
 
 [node name="Label" type="Label" parent="Tools/Terrain/Elevation/HBoxContainer"]
+layout_mode = 2
 offset_right = 182.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
@@ -116,11 +149,13 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="CheckBox" type="CheckBox" parent="Tools/Terrain/Elevation/HBoxContainer"]
+layout_mode = 2
 offset_left = 186.0
 offset_right = 210.0
 offset_bottom = 26.0
 
 [node name="HSlider" type="HSlider" parent="Tools/Terrain/Elevation"]
+layout_mode = 2
 offset_top = 30.0
 offset_right = 210.0
 offset_bottom = 46.0
@@ -128,21 +163,25 @@ size_flags_horizontal = 3
 max_value = 5.0
 
 [node name="HSeparator2" type="HSeparator" parent="Tools/Terrain/Elevation"]
+layout_mode = 2
 offset_top = 50.0
 offset_right = 210.0
 offset_bottom = 54.0
 
 [node name="Terrains" type="VBoxContainer" parent="Tools/Terrain"]
+layout_mode = 2
 offset_top = 116.0
 offset_right = 210.0
 offset_bottom = 146.0
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Tools/Terrain/Terrains"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 26.0
 
 [node name="Label" type="Label" parent="Tools/Terrain/Terrains/HBoxContainer"]
+layout_mode = 2
 offset_right = 182.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
@@ -151,22 +190,27 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="CheckBox" type="CheckBox" parent="Tools/Terrain/Terrains/HBoxContainer"]
+layout_mode = 2
 offset_left = 186.0
 offset_right = 210.0
 offset_bottom = 26.0
 
 [node name="CenterContainer" type="CenterContainer" parent="Tools/Terrain/Terrains"]
+layout_mode = 2
 offset_top = 30.0
 offset_right = 210.0
 offset_bottom = 30.0
 
 [node name="GridContainer" type="GridContainer" parent="Tools/Terrain/Terrains/CenterContainer"]
+layout_mode = 2
 offset_left = 105.0
 offset_right = 105.0
 columns = 3
 
 [node name="Players" type="VBoxContainer" parent="Tools"]
 visible = false
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
@@ -175,6 +219,7 @@ offset_right = -4.0
 offset_bottom = -4.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -184,28 +229,27 @@ offset_top = -63.0
 offset_right = -1.0
 
 [node name="MapTextEdit" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
 offset_right = 210.0
 offset_bottom = 8.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
 offset_top = 12.0
 offset_right = 210.0
 offset_bottom = 43.0
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 offset_right = 103.0
 offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Save"
 
 [node name="LoadButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 offset_left = 107.0
 offset_right = 210.0
 offset_bottom = 31.0
 size_flags_horizontal = 3
 text = "Load"
-
-[connection signal="pressed" from="Create/VBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
-[connection signal="tab_changed" from="Tools" to="." method="OnToolsTabChanged"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]

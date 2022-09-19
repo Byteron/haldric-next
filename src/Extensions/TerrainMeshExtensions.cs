@@ -24,6 +24,7 @@ public static class TerrainMeshExtensions
     public static void UpdateTerrainGraphics(this ISystem system)
     {
         system.UpdateTerrainMesh();
+        system.UpdateTerrainProps();
     }
 
     public static void UpdateTerrainMesh(this ISystem system)

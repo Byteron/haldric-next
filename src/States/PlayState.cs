@@ -21,17 +21,15 @@ public partial class PlayState : GameState
 
         public void Run()
         {
-            var tree = this.GetTree();
+            var scene = this.GetTree().CurrentScene;
+            var data = this.GetElement<ScenarioData>();
 
             var camera = Scenes.Instantiate<CameraOperator>();
             this.AddElement(camera);
-            tree.CurrentScene.AddChild(camera);
+            scene.AddChild(camera);
 
-            var env = Scenes.Instantiate<WorldEnvironment>();
-            this.AddElement(env);
-            tree.CurrentScene.AddChild(env);
-
-            var mapData = this.LoadMapData("Valley");
+            var mapData = data.Maps["Valley"];
+            this.SpawnSchedule("DefaultSchedule", 1);
             this.SpawnMap(mapData);
             this.UpdateTerrainMesh();
             this.UpdateTerrainProps();
@@ -45,7 +43,9 @@ public partial class PlayState : GameState
         public void Run()
         {
             this.GetElement<CameraOperator>().QueueFree();
-            this.GetElement<WorldEnvironment>().QueueFree();
+            this.RemoveElement<CameraOperator>();
+            this.GetElement<Schedule>().QueueFree();
+            this.RemoveElement<Schedule>();
         }
     }
 }

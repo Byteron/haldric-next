@@ -40,7 +40,7 @@ public partial class AppState : GameState
             
             this.LoadTerrains();
             this.LoadTerrainGraphics();
-            // this.LoadScenarios();
+            this.LoadScenarios();
             // this.LoadUnits();
             
             var layer = canvas.GetCanvasLayer(3);

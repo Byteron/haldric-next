@@ -9,13 +9,6 @@ public class TileOf
 
 public static class MapExtensions
 {
-    const string Path = "res://data/maps/";
-
-    public static MapData LoadMapData(this ISystem _, string name)
-    {
-        return Loader.LoadJson<MapData>(Path + name + ".json");
-    }
-
     public static void SpawnMap(this ISystem system, int width, int height)
     {
         var mapData = new MapData
@@ -76,7 +69,12 @@ public static class MapExtensions
 
             var baseTerrainEntity = terrainData.TerrainEntities[terrainCodes[0]];
             var baseTerrainSlot = new BaseTerrainSlot { Entity = baseTerrainEntity };
+            var overlayTerrainSlot = new OverlayTerrainSlot { Entity = Entity.None };
 
+            if (terrainCodes.Count == 2)
+            {
+                overlayTerrainSlot.Entity = terrainData.TerrainEntities[terrainCodes[1]];
+            }
 
             var tileEntity = system.Spawn()
                 .Add(new Index { Value = coords.GetIndex(mapData.Width) })
@@ -86,14 +84,9 @@ public static class MapExtensions
                 .Add(new Distance())
                 .Add(new PathFrom())
                 .Add(baseTerrainSlot)
+                .Add(overlayTerrainSlot)
                 .Add(coords)
                 .Id();
-
-            if (terrainCodes.Count == 2)
-            {
-                system.On(tileEntity)
-                    .Add(new OverlayTerrainSlot { Entity = terrainData.TerrainEntities[terrainCodes[1]] });
-            }
 
             map.Tiles.Set(coords.ToCube(), tileEntity);
         }
@@ -231,6 +224,31 @@ public static class MapExtensions
         }
     }
 
+    public static void DespawnMap(this ISystem system)
+    {
+        system.DespawnAllWith<Coords>();
+
+        foreach (var (entity, mesh, props, collider) in system.Query<Entity, TerrainMesh, TerrainProps, TerrainCollider>())
+        {
+            mesh.QueueFree();
+            props.QueueFree();
+            collider.QueueFree();
+            system.On(entity).Remove<TerrainCollider>().Remove<TerrainMesh>().Remove<TerrainProps>();
+        }
+
+        GD.Print("Terrain Nodes Freed");
+
+        system.DespawnAllWith<Chunk>();
+
+        system.RemoveElement<Map>();
+        system.RemoveElement<ShaderData>();
+        system.RemoveElement<HoveredTile>();
+        system.GetElement<Cursor3D>().QueueFree();
+        system.RemoveElement<Cursor3D>();
+        system.GetElement<TerrainHighlighter>().QueueFree();
+        system.RemoveElement<TerrainHighlighter>();
+    }
+
     static List<Entity> FindConnectedTilesWith<T>(this ISystem system, Entity locEntity) where T : class
     {
         var list = new List<Entity>();
@@ -238,8 +256,7 @@ public static class MapExtensions
         frontier.Enqueue(locEntity);
 
         var neighbors = system.Query<Neighbors>();
-        var baseTerrainSlots = system.Query<BaseTerrainSlot>();
-        var overlayTerrainSlots = system.Query<OverlayTerrainSlot>();
+        var terrainSlots = system.Query<BaseTerrainSlot, OverlayTerrainSlot>();
         var ts = system.QueryBuilder().Has<T>().Build();
 
         while (frontier.Count > 0)
@@ -252,14 +269,13 @@ public static class MapExtensions
                 if (!system.IsAlive(nTileEntity)) continue;
                 if (list.Contains(nTileEntity)) continue;
 
-                var nBaseTerrainSlot = baseTerrainSlots.Get(nTileEntity);
-                var hasT = ts.Has(nBaseTerrainSlot.Entity);
+                var (nBaseTerrainSlot, nOverlayTerrainSlot) = terrainSlots.Get(nTileEntity);
+                var hasT = ts.Has(nBaseTerrainSlot.Entity) || ts.Has(nOverlayTerrainSlot.Entity);
 
-                if (overlayTerrainSlots.Has(nTileEntity))
-                {
-                    var nOverlayTerrainSlot = overlayTerrainSlots.Get(nTileEntity);
-                    hasT = hasT || ts.Has(nOverlayTerrainSlot.Entity);
-                }
+                // if (system.IsAlive(nOverlayTerrainSlot.Entity))
+                // {
+                //     hasT = hasT || ts.Has(nOverlayTerrainSlot.Entity);
+                // }
 
                 if (!hasT) continue;
 

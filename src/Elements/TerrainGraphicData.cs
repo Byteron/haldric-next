@@ -32,7 +32,6 @@ public class TerrainGraphicData
     public Dictionary<string, Texture2D> TerrainTextures = new();
     public Dictionary<string, Texture2D> TerrainNormalTextures = new();
     public Dictionary<string, Texture2D> TerrainRoughnessTextures = new();
-    public Dictionary<string, string> DefaultOverlayBaseTerrains = new();
 
     public Dictionary<string, int> TextureArrayIds = new();
 

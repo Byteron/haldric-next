@@ -23,8 +23,6 @@ public class TerrainGraphicScript : TerrainGraphicLoader
 {
 	public override void Load()
 	{
-		MapBaseToOverlay("Ff", "Gll");
-
 		//      Grass  
 		AddTerrainTexture("Gg", "assets/graphics/images/grass_basecolor.jpg");
 		AddTerrainNormalTexture("Gg", "assets/graphics/images/grass_normal.jpg");

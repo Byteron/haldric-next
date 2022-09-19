@@ -31,17 +31,12 @@ public static class TerrainPropsExtensions
 
             terrainProps.Clear();
 
-            var chunkBaseTerrainTiles = system
-                .QueryBuilder<Entity, BaseTerrainSlot>()
+            var chunkTiles = system
+                .QueryBuilder<Entity, BaseTerrainSlot, OverlayTerrainSlot>()
                 .Has<TileOf>(chunkEntity)
                 .Build();
 
-            var chunkOverlayTerrainTiles = system
-                .QueryBuilder<Entity, OverlayTerrainSlot>()
-                .Has<TileOf>(chunkEntity)
-                .Build();
-
-            foreach (var (entity, terrainSlot) in chunkBaseTerrainTiles)
+            foreach (var (entity, terrainSlot, overlayTerrainSlot) in chunkTiles)
             {
                 AddWater(terrainProps, entity, terrainSlot.Entity);
                 AddDecoration(terrainProps, entity, terrainSlot.Entity);
@@ -50,12 +45,13 @@ public static class TerrainPropsExtensions
                 AddInnerCliffs(terrainProps, entity, terrainSlot.Entity);
                 AddWalls(terrainProps, entity, terrainSlot.Entity);
                 AddTowers(terrainProps, entity, terrainSlot.Entity);
-            }
 
-            foreach (var (entity, terrainSlot) in chunkOverlayTerrainTiles)
-            {
-                AddDecoration(terrainProps, entity, terrainSlot.Entity);
-                AddDirectionalDecoration(terrainProps, entity, terrainSlot.Entity);
+                if (system.IsAlive(overlayTerrainSlot.Entity))
+                {
+                    AddDecoration(terrainProps, entity, overlayTerrainSlot.Entity);
+                    AddDirectionalDecoration(terrainProps, entity, overlayTerrainSlot.Entity);
+
+                }
             }
 
             terrainProps.Apply();

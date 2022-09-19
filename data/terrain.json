@@ -112,14 +112,15 @@
         "ElevationOffset": 0
     },
     "Ff": {
-        "IsOverlayTerrain": true,
+        "IsBase": false,
+        "DefaultBase": "Gll",
         "Code": "Ff",
         "Types": [
             "Forested"
         ]
     },
     "Tt": {
-        "IsOverlayTerrain": true,
+        "IsBase": false,
         "Code": "Tt",
         "Types": [
             "Forested"
@@ -144,7 +145,7 @@
         "CanRecruitTo": true
     },
     "Vh": {
-        "IsOverlayTerrain": true,
+        "IsBase": false,
         "Code": "Vh",
         "Types": [
             "Settled"
@@ -152,7 +153,7 @@
         "GivesIncome": true
     },
     "VHh": {
-        "IsOverlayTerrain": true,
+        "IsBase": false,
         "Code": "VHh",
         "Types": [
             "Settled",
