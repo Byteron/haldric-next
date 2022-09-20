@@ -4,14 +4,14 @@ using Nakama.TinyJson;
 
 public struct FileData
 {
-    public string Id { get; set; }
-    public string Path { get; set; }
-    public Resource Data { get; set; }
+    public string Id;
+    public string Path;
+    public Resource Data;
 }
 
 public static class Loader
 {
-    public static T LoadJson<T>(string path) where T: class
+    public static T LoadJson<T>(string path) where T : class
     {
         var file = new File();
         GD.Print(path);
@@ -26,25 +26,26 @@ public static class Loader
 
         file.Close();
 
-        return JsonParser.FromJson<T>(jsonString);
+        return jsonString.FromJson<T>();
     }
 
-    public static List<FileData> LoadDir(string path, List<string> extentions, bool loadResource = true)
+    public static List<FileData> LoadDir(string path, List<string> extensions, bool loadResource = true)
     {
-        return LoadDirectoryData(path, new List<FileData>(), extentions, loadResource);
+        return LoadDirectoryData(path, new List<FileData>(), extensions, loadResource);
     }
 
-     static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extentions, bool loadResource = false)
+    static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extensions,
+        bool loadResource = false)
     {
         var directory = new Directory();
 
-        if (!(directory.Open(path) == Error.Ok))
+        if (directory.Open(path) != Error.Ok)
         {
             GD.PushWarning("Loader: failed to load " + path + ", return [] (open)");
             return directoryData;
         }
 
-        if (!(directory.ListDirBegin() == Error.Ok))
+        if (directory.ListDirBegin() != Error.Ok)
         {
             GD.PushWarning("Loader: failed to load " + path + ", return [] (list_dir_begin)");
             return directoryData;
@@ -52,8 +53,8 @@ public static class Loader
 
         while (true)
         {
-            string subPath = directory.GetNext();
-            if (subPath == "." || subPath == ".." || subPath.BeginsWith("_"))
+            var subPath = directory.GetNext();
+            if (subPath is "." or ".." || subPath.BeginsWith("_"))
             {
                 continue;
             }
@@ -63,16 +64,16 @@ public static class Loader
             }
             else if (directory.CurrentIsDir())
             {
-                directoryData = LoadDirectoryData(path, directoryData, extentions, loadResource);
+                directoryData = LoadDirectoryData(path, directoryData, extensions, loadResource);
             }
             else
             {
-                if (!extentions.Contains(subPath.GetExtension()))
+                if (!extensions.Contains(subPath.GetExtension()))
                 {
                     continue;
                 }
 
-                FileData data = GetFileData(directory.GetCurrentDir() + "/" + subPath, loadResource);
+                var data = GetFileData(directory.GetCurrentDir() + "/" + subPath, loadResource);
                 directoryData.Add(data);
             }
         }
@@ -81,7 +82,7 @@ public static class Loader
         return directoryData;
     }
 
-     static FileData GetFileData(string path, bool loadResource)
+    static FileData GetFileData(string path, bool loadResource)
     {
         var fileData = new FileData
         {

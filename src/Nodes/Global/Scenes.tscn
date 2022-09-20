@@ -11,12 +11,12 @@
 [ext_resource type="PackedScene" path="res://src/Nodes/Menu/ScenarioSelectionView.tscn" id="6_y4d76"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/TerrainHighlighter.tscn" id="7_smnkw"]
 [ext_resource type="PackedScene" uid="uid://d1tk3t02rpiua" path="res://src/Nodes/Hud/FloatingLabel.tscn" id="9_liy6q"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/UnitPlate.tscn" id="10_rm84j"]
+[ext_resource type="PackedScene" uid="uid://ldlmjsxoddoc" path="res://src/Nodes/Hud/UnitPlate.tscn" id="10_rm84j"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Props/FlagView.tscn" id="11_rmuwb"]
 [ext_resource type="PackedScene" path="res://src/Nodes/Hud/SidePanel.tscn" id="12_aqmga"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/TerrainPanel.tscn" id="13_weh4l"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/TurnPanel.tscn" id="14_2r1k4"]
-[ext_resource type="PackedScene" path="res://src/Nodes/Hud/UnitPanel.tscn" id="15_ubvy6"]
+[ext_resource type="PackedScene" uid="uid://bqhfoxp7bgqlm" path="res://src/Nodes/Hud/TerrainPanel.tscn" id="13_weh4l"]
+[ext_resource type="PackedScene" uid="uid://cmileeq7k8ny4" path="res://src/Nodes/Hud/TurnPanel.tscn" id="14_2r1k4"]
+[ext_resource type="PackedScene" uid="uid://c40ea5rw2s04c" path="res://src/Nodes/Hud/UnitPanel.tscn" id="15_ubvy6"]
 
 [node name="Scenes" type="Node"]
 script = ExtResource("1")

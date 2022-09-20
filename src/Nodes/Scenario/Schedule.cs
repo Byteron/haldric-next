@@ -63,7 +63,7 @@ public partial class Schedule : Node
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "ground_horizon_color",
             daytime.SkyHorizonColor, 2.5f);
 
-        for (int i = 0; i < _lights.Count; i++)
+        for (var i = 0; i < _lights.Count; i++)
         {
             var light = _lights[i];
             var config = configs[i];
@@ -94,7 +94,7 @@ public partial class Schedule : Node
             lightTween.Connect("finished", new Callable(() =>
             {
                 GD.Print("Resetting Angle: ", config.Angle);
-                _lights[i].Rotation = new Vector3(Mathf.DegToRad(config.Angle), 0, 0);
+                light.Rotation = new Vector3(Mathf.DegToRad(config.Angle), 0, 0);
             }));
 
             lightTween.Play();

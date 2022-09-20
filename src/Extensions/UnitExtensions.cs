@@ -9,12 +9,12 @@ public static class UnitExtensions
         var unitData = new UnitData();
         system.AddOrReplaceElement(unitData);
 
-        foreach (var data in Loader.LoadDir("res://data/units", new List<string>() { "tscn" }))
-        {
-            unitData.Units.Add(data.Id, (PackedScene)data.Data);
-        }
+        // foreach (var data in Loader.LoadDir("res://data/units", new List<string>() { "tscn" }))
+        // {
+        //     unitData.Units.Add(data.Id, (PackedScene)data.Data);
+        // }
 
-        foreach (var data in Loader.LoadDir("res://data/factions", new List<string>() { "json" }))
+        foreach (var data in Loader.LoadDir("res://data/factions", new List<string> { "json" }, false))
         {
             var faction = Loader.LoadJson<FactionData>(data.Path);
             unitData.Factions.Add(faction.Name, faction);

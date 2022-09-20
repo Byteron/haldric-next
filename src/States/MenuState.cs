@@ -40,7 +40,7 @@ public partial class MenuState : GameState
 
         void OnTestButtonPressed()
         {
-            this.ChangeState(new PlayState());
+            this.ChangeState(new TestState());
         }
 
         void OnQuitButtonPressed()

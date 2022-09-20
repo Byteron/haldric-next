@@ -1,7 +1,6 @@
 using RelEcs;
-using Godot;
 
-public partial class PlayState : GameState
+public partial class TestState : GameState
 {
     public override void Init()
     {
@@ -12,6 +11,7 @@ public partial class PlayState : GameState
             .Add(new UpdateCameraSystem())
             .Add(new UpdateHoveredTileSystem())
             .Add(new UpdateMapCursorSystem())
+            .Add(new TurnEndSystem())
             .Add(new UpdateDebugInfoSystem());
     }
 
@@ -33,6 +33,31 @@ public partial class PlayState : GameState
             this.SpawnMap(mapData);
             this.UpdateTerrainMesh();
             this.UpdateTerrainProps();
+
+
+            this.AddElement(new LocalPlayer { Id = 0 });
+            this.AddElement(new Scenario());
+
+            var canvas = this.GetElement<Canvas>();
+            var canvasLayer = canvas.GetCanvasLayer(1);
+
+            var turnPanel = Scenes.Instantiate<TurnPanel>();
+            turnPanel.EndTurnButton.Pressed += () => this.Send(new TurnEndTrigger());
+            canvasLayer.AddChild(turnPanel);
+            this.AddElement(turnPanel);
+
+            var unitPanel = Scenes.Instantiate<UnitPanel>();
+            canvasLayer.AddChild(unitPanel);
+            this.AddElement(unitPanel);
+
+            var terrainPanel = Scenes.Instantiate<TerrainPanel>();
+            canvasLayer.AddChild(terrainPanel);
+            this.AddElement(terrainPanel);
+
+            this.SpawnPlayer(0, 0, Coords.FromOffset(1, 1), "Humans", 1000);
+            this.SpawnPlayer(0, 1, Coords.FromOffset(2, 2), "Humans", 1000);
+
+            this.Send(new TurnEndTrigger());
         }
     }
 

@@ -3,9 +3,9 @@ using RelEcs;
 
 public class Scenario
 {
-    public int Round { get; private set; } = 0;
-    public int Side { get; private set; } = -1;
-    public Dictionary<int, Entity> Sides { get; } = new();
+    public int Round;
+    public int Side = -1;
+    public Dictionary<int, Entity> Sides = new();
 
     int _round = -1;
 

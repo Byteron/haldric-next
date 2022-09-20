@@ -41,7 +41,7 @@ public partial class AppState : GameState
             this.LoadTerrains();
             this.LoadTerrainGraphics();
             this.LoadScenarios();
-            // this.LoadUnits();
+            this.LoadUnits();
             
             var layer = canvas.GetCanvasLayer(3);
             var debugPanel = Scenes.Instantiate<DebugPanel>();

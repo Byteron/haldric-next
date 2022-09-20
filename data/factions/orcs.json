@@ -1,0 +1,11 @@
+{
+    "Name": "Orcs",
+    "Recruits": [
+        "Orcish Grunt",
+        "Orcish Archer",
+        "Orcish Wolf Rider"
+    ],
+    "Leaders": [
+        "Orcish Grunt"
+    ]
+}

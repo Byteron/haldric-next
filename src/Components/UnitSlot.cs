@@ -1,6 +1,6 @@
 using RelEcs;
 
-public class UnitSLot
+public class UnitSlot
 {
     public Entity Entity { get; set; }
 }
