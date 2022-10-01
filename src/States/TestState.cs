@@ -29,7 +29,7 @@ public partial class TestState : GameState
             scene.AddChild(camera);
 
             var mapData = data.Maps["Valley"];
-            this.SpawnSchedule("DefaultSchedule", 1);
+            this.SpawnSchedule("DefaultSchedule", 0);
             this.SpawnMap(mapData);
             this.UpdateTerrainMesh();
             this.UpdateTerrainProps();
