@@ -13,18 +13,17 @@ public static class Loader
 {
     public static T LoadJson<T>(string path) where T : class
     {
-        var file = new File();
         GD.Print(path);
 
-        if (file.Open(path, File.ModeFlags.Read) != Error.Ok)
+        var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+
+        if (file is null)
         {
-            GD.PushError("error reading file");
+            GD.PushWarning($"Error opening file at {path}: {FileAccess.GetOpenError()}");
             return null;
         }
 
         var jsonString = file.GetAsText();
-
-        file.Close();
 
         return jsonString.FromJson<T>();
     }
@@ -37,11 +36,11 @@ public static class Loader
     static List<FileData> LoadDirectoryData(string path, List<FileData> directoryData, List<string> extensions,
         bool loadResource = false)
     {
-        var directory = new Directory();
+        var directory = DirAccess.Open(path);
 
-        if (directory.Open(path) != Error.Ok)
+        if (directory is null)
         {
-            GD.PushWarning("Loader: failed to load " + path + ", return [] (open)");
+            GD.PushWarning($"Error opening directory at {path}: {DirAccess.GetOpenError()}");
             return directoryData;
         }
 
@@ -50,28 +49,21 @@ public static class Loader
             GD.PushWarning("Loader: failed to load " + path + ", return [] (list_dir_begin)");
             return directoryData;
         }
-
+        
         while (true)
         {
             var subPath = directory.GetNext();
-            if (subPath is "." or ".." || subPath.BeginsWith("_"))
-            {
-                continue;
-            }
-            else if (subPath == "")
-            {
-                break;
-            }
-            else if (directory.CurrentIsDir())
+            if (subPath is "." or ".." || subPath.BeginsWith("_")) continue;
+
+            if (subPath == "") break;
+
+            if (directory.CurrentIsDir())
             {
                 directoryData = LoadDirectoryData(path, directoryData, extensions, loadResource);
             }
             else
             {
-                if (!extensions.Contains(subPath.GetExtension()))
-                {
-                    continue;
-                }
+                if (!extensions.Contains(subPath.GetExtension())) continue;
 
                 var data = GetFileData(directory.GetCurrentDir() + "/" + subPath, loadResource);
                 directoryData.Add(data);
