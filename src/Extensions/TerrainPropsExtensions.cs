@@ -13,17 +13,17 @@ public static class TerrainPropsExtensions
     static Query<Entity> RecruitTos;
     static Query<TerrainCode, ElevationOffset> Terrains;
 
-    public static void UpdateTerrainProps(this ISystem system)
+    public static void UpdateTerrainProps(this World world)
     {
-        Data = system.GetElement<TerrainGraphicData>();
+        Data = world.GetElement<TerrainGraphicData>();
 
-        Tiles = system.Query<Coords, Elevation, PlateauArea, Neighbors>();
-        BaseTerrainSlots = system.Query<BaseTerrainSlot>();
-        RecruitFroms = system.QueryBuilder<Entity>().Has<CanRecruitFrom>().Build();
-        RecruitTos = system.QueryBuilder<Entity>().Has<CanRecruitTo>().Build();
-        Terrains = system.Query<TerrainCode, ElevationOffset>();
+        Tiles = world.Query<Coords, Elevation, PlateauArea, Neighbors>();
+        BaseTerrainSlots = world.Query<BaseTerrainSlot>();
+        RecruitFroms = world.QueryBuilder<Entity>().Has<CanRecruitFrom>().Build();
+        RecruitTos = world.QueryBuilder<Entity>().Has<CanRecruitTo>().Build();
+        Terrains = world.Query<TerrainCode, ElevationOffset>();
 
-        var chunkQuery = system.Query<Entity, Chunk, TerrainProps>();
+        var chunkQuery = world.Query<Entity, Chunk, TerrainProps>();
         foreach (var (chunkEntity, chunk, terrainProps) in chunkQuery)
         {
             // if (!chunk.IsDirty) continue;
@@ -31,7 +31,7 @@ public static class TerrainPropsExtensions
 
             terrainProps.Clear();
 
-            var chunkTiles = system
+            var chunkTiles = world
                 .QueryBuilder<Entity, BaseTerrainSlot, OverlayTerrainSlot>()
                 .Has<TileOf>(chunkEntity)
                 .Build();
@@ -46,7 +46,7 @@ public static class TerrainPropsExtensions
                 AddWalls(terrainProps, entity, terrainSlot.Entity);
                 AddTowers(terrainProps, entity, terrainSlot.Entity);
 
-                if (system.IsAlive(overlayTerrainSlot.Entity))
+                if (world.IsAlive(overlayTerrainSlot.Entity))
                 {
                     AddDecoration(terrainProps, entity, overlayTerrainSlot.Entity);
                     AddDirectionalDecoration(terrainProps, entity, overlayTerrainSlot.Entity);

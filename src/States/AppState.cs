@@ -10,18 +10,16 @@ public partial class AppState : GameState
 
     partial class EnterSystem : RefCounted, ISystem
     {
-        public World World { get; set; }
-
-        public void Run()
+        public void Run(World world)
         {
-            var tree = this.GetTree();
+            var tree = world.GetTree();
 
             var canvas = new Canvas();
             canvas.Name = "Canvas";
-            this.AddElement(canvas);
+            world.AddElement(canvas);
             tree.CurrentScene.AddChild(canvas);
 
-            this.AddElement(new ServerConfig
+            world.AddElement(new ServerConfig
             {
                 Host = "49.12.208.4",
                 Port = 7350,
@@ -29,26 +27,26 @@ public partial class AppState : GameState
                 ServerKey = "defaultkey",
             });
 
-            this.AddElement(new LobbyConfig
+            world.AddElement(new LobbyConfig
             {
                 RoomName = "general",
                 Persistence = true,
                 Hidden = false,
             });
             
-            this.AddElement(new Commander());
+            world.AddElement(new Commander());
             
-            this.LoadTerrains();
-            this.LoadTerrainGraphics();
-            this.LoadScenarios();
-            this.LoadUnits();
+            world.LoadTerrains();
+            world.LoadTerrainGraphics();
+            world.LoadScenarios();
+            world.LoadUnits();
             
             var layer = canvas.GetCanvasLayer(3);
             var debugPanel = Scenes.Instantiate<DebugPanel>();
             layer.AddChild(debugPanel);
-            this.AddElement(debugPanel);
+            world.AddElement(debugPanel);
 
-            this.PushState(new MenuState());
+            world.PushState(new MenuState());
         }
     }
 }

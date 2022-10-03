@@ -5,25 +5,27 @@ public class EditorEditTerrainSystem : ISystem
 {
     Coords _previousCoords;
 
-    public World World { get; set; }
+    World world;
 
-    public void Run()
+    public void Run(World world)
     {
-        if (!this.TryGetElement<Map>(out var map)) return;
-        if (!this.TryGetElement<HoveredTile>(out var hoveredTile)) return;
-        if (!this.TryGetElement<SelectedTerrain>(out var selectedTerrain)) return;
+        this.world = world;
+        
+        if (!world.TryGetElement<Map>(out var map)) return;
+        if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
+        if (!world.TryGetElement<SelectedTerrain>(out var selectedTerrain)) return;
 
-        var view = this.GetElement<EditorView>();
+        var view = world.GetElement<EditorView>();
 
         if (view.Mode != EditorMode.Terrain) return;
 
         var tileEntity = hoveredTile.Entity;
 
-        if (tileEntity is null || !this.IsAlive(tileEntity)) return;
+        if (tileEntity is null || !world.IsAlive(tileEntity)) return;
 
         var tiles = map.Tiles;
 
-        var coords = this.GetComponent<Coords>(tileEntity);
+        var coords = world.GetComponent<Coords>(tileEntity);
         
         if (coords == _previousCoords || !Input.IsActionPressed("editor_select")) return;
         
@@ -38,8 +40,8 @@ public class EditorEditTerrainSystem : ISystem
             var nTileEntity = tiles.Get(cube);
             EditLocation(view, nTileEntity, selectedTerrain.Entity);
             
-            var chunkEntity = this.GetTarget<TileOf>(nTileEntity);
-            var chunk = this.GetComponent<Chunk>(chunkEntity);
+            var chunkEntity = world.GetTarget<TileOf>(nTileEntity);
+            var chunk = world.GetComponent<Chunk>(chunkEntity);
             chunk.IsDirty = true;
             
             // TODO: Mark neighboring chunks as dirty too
@@ -56,27 +58,27 @@ public class EditorEditTerrainSystem : ISystem
 
         if (!view.UseTerrain && !view.UseElevation) return;
 
-        if (this.HasComponent<OverlayTerrainSlot>(selectedTerrain.Entity))
+        if (world.HasComponent<OverlayTerrainSlot>(selectedTerrain.Entity))
         {
-            this.UpdateTerrainProps();
+            world.UpdateTerrainProps();
         }
         else
         {
-            this.UpdateTerrainGraphics();
+            world.UpdateTerrainGraphics();
         }
     }
 
     void EditLocation(EditorView editorView, Entity tileEntity, Entity selectedTerrainEntity)
     {
-        var data = this.GetElement<TerrainData>();
-        var tiles = this.Query<BaseTerrainSlot, OverlayTerrainSlot, Elevation>();
-        var codes = this.Query<TerrainCode>();
+        var data = world.GetElement<TerrainData>();
+        var tiles = world.Query<BaseTerrainSlot, OverlayTerrainSlot, Elevation>();
+        var codes = world.Query<TerrainCode>();
 
         var (baseTerrain, overlayTerrain, elevation) = tiles.Get(tileEntity);
 
         if (editorView.UseTerrain)
         {
-            if (this.IsAlive(overlayTerrain.Entity))
+            if (world.IsAlive(overlayTerrain.Entity))
             {
                 if (Input.IsActionPressed("editor_no_base"))
                 {

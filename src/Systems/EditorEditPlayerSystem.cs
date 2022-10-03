@@ -7,22 +7,22 @@ public class EditorEditPlayerSystem : ISystem
 
     public World World { get; set; }
     
-    public void Run()
+    public void Run(World world)
     {
-        if (!this.TryGetElement<Map>(out var map)) return;
-        if (!this.TryGetElement<SelectedTerrain>(out var selectedTerrain)) return;
-        if (!this.TryGetElement<HoveredTile>(out var hoveredTile)) return;
+        if (!world.TryGetElement<Map>(out var map)) return;
+        if (!world.TryGetElement<SelectedTerrain>(out var selectedTerrain)) return;
+        if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
 
-        var view = this.GetElement<EditorView>();
-        var scene = this.GetCurrentScene();
+        var view = world.GetElement<EditorView>();
+        var scene = world.GetCurrentScene();
 
         if (view.Mode != EditorMode.Player) return;
 
         var tileEntity = hoveredTile.Entity;
 
-        if (!this.IsAlive(tileEntity)) return;
+        if (!world.IsAlive(tileEntity)) return;
 
-        var tiles = this.Query<Coords, Elevation, BaseTerrainSlot>();
+        var tiles = world.Query<Coords, Elevation, BaseTerrainSlot>();
         var (coords, elevation, baseTerrainSlot) = tiles.Get(tileEntity);
 
         if (coords == _previousCoords || !Input.IsActionPressed("editor_select")) return;
@@ -30,16 +30,16 @@ public class EditorEditPlayerSystem : ISystem
         _previousCoords = coords;
 
 
-        var elevationOffset = this.GetComponent<Elevation>(baseTerrainSlot.Entity);
+        var elevationOffset = world.GetComponent<Elevation>(baseTerrainSlot.Entity);
 
-        if (this.HasComponent<IsStartingPositionOfSide>(tileEntity))
+        if (world.HasComponent<IsStartingPositionOfSide>(tileEntity))
         {
-            var flagView = this.GetComponent<FlagView>(tileEntity);
+            var flagView = world.GetComponent<FlagView>(tileEntity);
 
             scene.RemoveChild(flagView);
             flagView.QueueFree();
 
-            this.On(tileEntity).Remove<FlagView>().Remove<IsStartingPositionOfSide>();
+            world.On(tileEntity).Remove<FlagView>().Remove<IsStartingPositionOfSide>();
             view.RemovePlayer(coords);
         }
         else
@@ -50,7 +50,7 @@ public class EditorEditPlayerSystem : ISystem
             pos.y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 
-            this.On(tileEntity)
+            world.On(tileEntity)
                 .Add(flagView)
                 .Add(new IsStartingPositionOfSide { Value = view.Players.Count });
 

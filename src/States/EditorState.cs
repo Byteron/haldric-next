@@ -24,14 +24,16 @@ public partial class EditorState : GameState
 
     partial class EnterSystem : RefCounted, ISystem
     {
-        public World World { get; set; }
+        World world;
 
-        public void Run()
+        public void Run(World world)
         {
-            var tree = this.GetTree();
+            this.world = world;
+
+            var tree = world.GetTree();
 
             var camera = Scenes.Instantiate<CameraOperator>();
-            this.AddElement(camera);
+            world.AddElement(camera);
             tree.CurrentScene.AddChild(camera);
 
             var view = Scenes.Instantiate<EditorView>();
@@ -40,11 +42,11 @@ public partial class EditorState : GameState
             view.SaveButton.Pressed += OnSaveButtonPressed;
             view.ToolsTab.TabChanged += OnToolsTabChanged;
             
-            this.AddElement(view);
+            world.AddElement(view);
             tree.CurrentScene.AddChild(view);
             
             var selectedTerrain = new SelectedTerrain();
-            var data = this.GetElement<TerrainData>();
+            var data = world.GetElement<TerrainData>();
             selectedTerrain.Entity = data.TerrainEntities["Gg"];
         
             foreach (var (code, entity) in data.TerrainEntities)
@@ -56,17 +58,17 @@ public partial class EditorState : GameState
                 view.Terrains.AddChild(button);
             }
             
-            this.AddElement(selectedTerrain);
+            world.AddElement(selectedTerrain);
             
-            this.SpawnSchedule("DefaultSchedule", 1);
-            this.SpawnMap(32, 32);
-            this.UpdateTerrainMesh();
-            this.UpdateTerrainProps();
+            world.SpawnSchedule("DefaultSchedule", 1);
+            world.SpawnMap(32, 32);
+            world.UpdateTerrainMesh();
+            world.UpdateTerrainProps();
         }
         
         void OnToolsTabChanged(long index)
         {
-            var view = this.GetElement<EditorView>();
+            var view = world.GetElement<EditorView>();
             
             view.Mode = index switch
             {
@@ -78,17 +80,17 @@ public partial class EditorState : GameState
         
         void OnCreateButtonPressed()
         {
-            this.Send(new CreateMapTrigger());
+            world.Send(new CreateMapTrigger());
         }
 
         void OnSaveButtonPressed()
         {
-            this.Send(new SaveMapTrigger());
+            world.Send(new SaveMapTrigger());
         }
 
         void OnLoadButtonPressed()
         {
-            this.Send(new LoadMapTrigger());
+            world.Send(new LoadMapTrigger());
         }
     }
 
@@ -96,19 +98,19 @@ public partial class EditorState : GameState
     {
         public World World { get; set; }
         
-        public void Run()
+        public void Run(World world)
         {
-            var view = this.GetElement<EditorView>();
+            var view = world.GetElement<EditorView>();
             
-            foreach (var t in this.Receive<CreateMapTrigger>())
+            foreach (var t in world.Receive<CreateMapTrigger>(this))
             {
                 if (view.WidthTextEdit.Text.IsValidInteger() && view.HeightTextEdit.Text.IsValidInteger())
                 {
                     var width = int.Parse(view.WidthTextEdit.Text);
                     var height = int.Parse(view.HeightTextEdit.Text);
 
-                    this.DespawnMap();
-                    this.SpawnMap(width, height);
+                    world.DespawnMap();
+                    world.SpawnMap(width, height);
                 }
                 else
                 {
@@ -116,7 +118,7 @@ public partial class EditorState : GameState
                 }
             }
             
-            foreach (var t in this.Receive<LoadMapTrigger>())
+            foreach (var t in world.Receive<LoadMapTrigger>(this))
             {
                 if (string.IsNullOrEmpty(view.MapNameTextEdit.Text))
                 {
@@ -126,11 +128,11 @@ public partial class EditorState : GameState
 
                 if (view.MapNameTextEdit.Text.IsValidIdentifier())
                 {
-                    var scenarioData = this.GetElement<ScenarioData>();
+                    var scenarioData = world.GetElement<ScenarioData>();
 
-                    this.DespawnMap();
+                    world.DespawnMap();
                     var mapData = scenarioData.Maps[view.MapNameTextEdit.Text];
-                    this.SpawnMap(mapData);
+                    world.SpawnMap(mapData);
                 }
                 else
                 {
@@ -138,7 +140,7 @@ public partial class EditorState : GameState
                 }
             }
             
-            foreach (var t in this.Receive<SaveMapTrigger>())
+            foreach (var t in world.Receive<SaveMapTrigger>(this))
             {
                 if (string.IsNullOrEmpty(view.MapNameTextEdit.Text))
                 {
@@ -160,17 +162,15 @@ public partial class EditorState : GameState
 
     class ExitSystem : ISystem
     {
-        public World World { get; set; }
-
-        public void Run()
+        public void Run(World world)
         {
-            this.RemoveElement<SelectedTerrain>();
-            this.GetElement<EditorView>().QueueFree();
-            this.RemoveElement<EditorView>();
-            this.GetElement<CameraOperator>().QueueFree();
-            this.RemoveElement<CameraOperator>();
-            this.GetElement<Schedule>().QueueFree();
-            this.RemoveElement<Schedule>();
+            world.RemoveElement<SelectedTerrain>();
+            world.GetElement<EditorView>().QueueFree();
+            world.RemoveElement<EditorView>();
+            world.GetElement<CameraOperator>().QueueFree();
+            world.RemoveElement<CameraOperator>();
+            world.GetElement<Schedule>().QueueFree();
+            world.RemoveElement<Schedule>();
         }
     }
 }

@@ -3,13 +3,13 @@ using RelEcs;
 
 public static class GodotExtensions
 {
-    public static SceneTree GetTree(this ISystem system)
+    public static SceneTree GetTree(this World world)
     {
-        return system.GetElement<SceneTree>();
+        return world.GetElement<SceneTree>();
     }
 
-    public static Node3D GetCurrentScene(this ISystem system)
+    public static Node3D GetCurrentScene(this World world)
     {
-        return (Node3D)system.GetElement<SceneTree>().CurrentScene;
+        return (Node3D)world.GetElement<SceneTree>().CurrentScene;
     }
 }

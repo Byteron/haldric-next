@@ -9,7 +9,7 @@ public class TileOf
 
 public static class MapExtensions
 {
-    public static void SpawnMap(this ISystem system, int width, int height)
+    public static void SpawnMap(this World world, int width, int height)
     {
         var mapData = new MapData
         {
@@ -34,31 +34,31 @@ public static class MapExtensions
             }
         }
 
-        system.SpawnMap(mapData);
+        world.SpawnMap(mapData);
     }
 
-    public static void SpawnMap(this ISystem system, MapData mapData)
+    public static void SpawnMap(this World world, MapData mapData)
     {
         if (mapData.Tiles.Count == 0) throw new Exception("Cannot spawn map, no tiles present in MapData");
 
-        var parent = system.GetTree().CurrentScene;
+        var parent = world.GetTree().CurrentScene;
 
-        system.AddElement(new HoveredTile());
+        world.AddElement(new HoveredTile());
         // Create Shader Data
 
-        system.AddElement(new ShaderData(mapData.Width, mapData.Height));
+        world.AddElement(new ShaderData(mapData.Width, mapData.Height));
 
         // Create Terrain Highlighter 
 
         var terrainHighlighter = Scenes.Instantiate<TerrainHighlighter>();
         parent.AddChild(terrainHighlighter);
-        system.AddElement(terrainHighlighter);
+        world.AddElement(terrainHighlighter);
 
 
         // Create Map Resource
 
-        var terrainData = system.GetElement<TerrainData>();
-        var terrainGraphicData = system.GetElement<TerrainGraphicData>();
+        var terrainData = world.GetElement<TerrainData>();
+        var terrainGraphicData = world.GetElement<TerrainGraphicData>();
         var map = new Map(mapData.Width, mapData.Height, 4);
 
         foreach (var tileData in mapData.Tiles)
@@ -76,7 +76,7 @@ public static class MapExtensions
                 overlayTerrainSlot.Entity = terrainData.TerrainEntities[terrainCodes[1]];
             }
 
-            var tileEntity = system.Spawn()
+            var tileEntity = world.Spawn()
                 .Add(new Index { Value = coords.GetIndex(mapData.Width) })
                 .Add(new Elevation { Value = elevation })
                 .Add(new PlateauArea(0.75f))
@@ -91,13 +91,13 @@ public static class MapExtensions
             map.Tiles.Set(coords.ToCube(), tileEntity);
         }
 
-        system.AddElement(map);
+        world.AddElement(map);
 
         // Create Cursor
 
         var cursorView = Scenes.Instantiate<Cursor3D>();
         parent.AddChild(cursorView);
-        system.AddElement(cursorView);
+        world.AddElement(cursorView);
 
         // Create Chunks
 
@@ -116,7 +116,7 @@ public static class MapExtensions
 
                 if (!chunks.ContainsKey(chunkCell))
                 {
-                    var newChunk = system.Spawn()
+                    var newChunk = world.Spawn()
                         .Add(new Chunk { Cell = chunkCell })
                         .Id();
 
@@ -127,7 +127,7 @@ public static class MapExtensions
 
                 var chunkEntity = chunks[chunkCell];
 
-                system.On(tileEntity).Add<TileOf>(chunkEntity);
+                world.On(tileEntity).Add<TileOf>(chunkEntity);
             }
         }
 
@@ -147,7 +147,7 @@ public static class MapExtensions
             material.Set("shader_param/roughness_textures", terrainGraphicData.RoughnessTextureArray);
             terrainMesh.MaterialOverride = material;
 
-            system.On(chunkEntity)
+            world.On(chunkEntity)
                 .Add(terrainCollider)
                 .Add(terrainFeaturePopulator)
                 .Add(terrainMesh);
@@ -155,7 +155,7 @@ public static class MapExtensions
 
         // Initialize Neighbors
 
-        foreach (var (coords, neighbors) in system.Query<Coords, Neighbors>())
+        foreach (var (coords, neighbors) in world.Query<Coords, Neighbors>())
         {
             for (var i = 0; i < 6; i++)
             {
@@ -171,41 +171,41 @@ public static class MapExtensions
 
         // Initialize Castles
 
-        var canRecruitFromQuery = system.QueryBuilder().Has<CanRecruitFrom>().Build();
+        var canRecruitFromQuery = world.QueryBuilder().Has<CanRecruitFrom>().Build();
 
-        foreach (var (entity, slot) in system.Query<Entity, BaseTerrainSlot>())
+        foreach (var (entity, slot) in world.Query<Entity, BaseTerrainSlot>())
         {
             if (!canRecruitFromQuery.Has(slot.Entity)) continue;
 
-            system.On(entity).Add(new Castle { List = system.FindConnectedTilesWith<CanRecruitTo>(entity) });
+            world.On(entity).Add(new Castle { List = world.FindConnectedTilesWith<CanRecruitTo>(entity) });
         }
 
-        var capturables = system.QueryBuilder().Has<IsCapturable>().Build();
+        var capturables = world.QueryBuilder().Has<IsCapturable>().Build();
 
-        foreach (var (entity, slot) in system.Query<Entity, OverlayTerrainSlot>())
+        foreach (var (entity, slot) in world.Query<Entity, OverlayTerrainSlot>())
         {
             if (!capturables.Has(slot.Entity)) continue;
 
-            system.On(entity).Add(new Village
+            world.On(entity).Add(new Village
             {
-                List = system.FindConnectedTilesWith<GivesIncome>(entity)
+                List = world.FindConnectedTilesWith<GivesIncome>(entity)
             });
         }
 
         // Initialize Pathfinding
 
-        var coordsQuery = system.Query<Coords>();
+        var coordsQuery = world.Query<Coords>();
 
         foreach (var coords in coordsQuery)
         {
             map.PathFinder.AddPoint(coords.GetIndex(map.Grid.Width), coords.ToCube(), 1);
         }
 
-        foreach (var (coords, neighbors) in system.Query<Coords, Neighbors>())
+        foreach (var (coords, neighbors) in world.Query<Coords, Neighbors>())
         {
             foreach (var nTileEntity in neighbors.Array)
             {
-                if (nTileEntity is null || !system.IsAlive(nTileEntity)) continue;
+                if (nTileEntity is null || !world.IsAlive(nTileEntity)) continue;
 
                 var nCoords = coordsQuery.Get(nTileEntity);
 
@@ -220,44 +220,44 @@ public static class MapExtensions
         foreach (var player in players)
         {
             var tileEntity = tiles.Dict[player.Coords.ToCube()];
-            system.On(tileEntity).Add(new IsStartingPositionOfSide { Value = player.Side });
+            world.On(tileEntity).Add(new IsStartingPositionOfSide { Value = player.Side });
         }
     }
 
-    public static void DespawnMap(this ISystem system)
+    public static void DespawnMap(this World world)
     {
-        system.DespawnAllWith<Coords>();
+        world.DespawnAllWith<Coords>();
 
-        foreach (var (entity, mesh, props, collider) in system.Query<Entity, TerrainMesh, TerrainProps, TerrainCollider>())
+        foreach (var (entity, mesh, props, collider) in world.Query<Entity, TerrainMesh, TerrainProps, TerrainCollider>())
         {
             mesh.QueueFree();
             props.QueueFree();
             collider.QueueFree();
-            system.On(entity).Remove<TerrainCollider>().Remove<TerrainMesh>().Remove<TerrainProps>();
+            world.On(entity).Remove<TerrainCollider>().Remove<TerrainMesh>().Remove<TerrainProps>();
         }
 
         GD.Print("Terrain Nodes Freed");
 
-        system.DespawnAllWith<Chunk>();
+        world.DespawnAllWith<Chunk>();
 
-        system.RemoveElement<Map>();
-        system.RemoveElement<ShaderData>();
-        system.RemoveElement<HoveredTile>();
-        system.GetElement<Cursor3D>().QueueFree();
-        system.RemoveElement<Cursor3D>();
-        system.GetElement<TerrainHighlighter>().QueueFree();
-        system.RemoveElement<TerrainHighlighter>();
+        world.RemoveElement<Map>();
+        world.RemoveElement<ShaderData>();
+        world.RemoveElement<HoveredTile>();
+        world.GetElement<Cursor3D>().QueueFree();
+        world.RemoveElement<Cursor3D>();
+        world.GetElement<TerrainHighlighter>().QueueFree();
+        world.RemoveElement<TerrainHighlighter>();
     }
 
-    static List<Entity> FindConnectedTilesWith<T>(this ISystem system, Entity locEntity) where T : class
+    static List<Entity> FindConnectedTilesWith<T>(this World world, Entity locEntity) where T : class
     {
         var list = new List<Entity>();
         var frontier = new Queue<Entity>();
         frontier.Enqueue(locEntity);
 
-        var neighbors = system.Query<Neighbors>();
-        var terrainSlots = system.Query<BaseTerrainSlot, OverlayTerrainSlot>();
-        var ts = system.QueryBuilder().Has<T>().Build();
+        var neighbors = world.Query<Neighbors>();
+        var terrainSlots = world.Query<BaseTerrainSlot, OverlayTerrainSlot>();
+        var ts = world.QueryBuilder().Has<T>().Build();
 
         while (frontier.Count > 0)
         {
@@ -266,7 +266,7 @@ public static class MapExtensions
 
             foreach (var nTileEntity in cNeighbors.Array)
             {
-                if (!system.IsAlive(nTileEntity)) continue;
+                if (!world.IsAlive(nTileEntity)) continue;
                 if (list.Contains(nTileEntity)) continue;
 
                 var (nBaseTerrainSlot, nOverlayTerrainSlot) = terrainSlots.Get(nTileEntity);

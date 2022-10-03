@@ -21,20 +21,20 @@ public static class TerrainMeshExtensions
     static readonly Color ColorGreen = new(0f, 1.0f, 0f);
     static readonly Color ColorBlue = new(0f, 0f, 1.0f);
 
-    public static void UpdateTerrainGraphics(this ISystem system)
+    public static void UpdateTerrainGraphics(this World world)
     {
-        system.UpdateTerrainMesh();
-        system.UpdateTerrainProps();
+        world.UpdateTerrainMesh();
+        world.UpdateTerrainProps();
     }
 
-    public static void UpdateTerrainMesh(this ISystem system)
+    public static void UpdateTerrainMesh(this World world)
     {
-        var shaderData = system.GetElement<ShaderData>();
+        var shaderData = world.GetElement<ShaderData>();
 
-        var terrainTypeIndices = system.Query<TerrainTypeIndex>();
-        var elevationOffsets = system.Query<ElevationOffset>();
+        var terrainTypeIndices = world.Query<TerrainTypeIndex>();
+        var elevationOffsets = world.Query<ElevationOffset>();
 
-        var chunkQuery = system.Query<Entity, Chunk, TerrainMesh, TerrainCollider>();
+        var chunkQuery = world.Query<Entity, Chunk, TerrainMesh, TerrainCollider>();
         foreach (var (chunkEntity, chunk, mesh, collider) in chunkQuery)
         {
             if (!chunk.IsDirty) continue;
@@ -44,8 +44,8 @@ public static class TerrainMeshExtensions
 
             // Update Terrain Mesh
 
-            var allTiles = system.Query<Index, Coords, BaseTerrainSlot, Elevation, PlateauArea>();
-            var chunkTiles = system
+            var allTiles = world.Query<Index, Coords, BaseTerrainSlot, Elevation, PlateauArea>();
+            var chunkTiles = world
                 .QueryBuilder<Index, Coords, BaseTerrainSlot, Neighbors, Elevation, PlateauArea>()
                 .Has<TileOf>(chunkEntity)
                 .Build();
@@ -140,7 +140,7 @@ public static class TerrainMeshExtensions
 
         // Update Shader Data
 
-        foreach (var (coords, baseTerrainSlot) in system.Query<Coords, BaseTerrainSlot>())
+        foreach (var (coords, baseTerrainSlot) in world.Query<Coords, BaseTerrainSlot>())
         {
             var offset = coords.ToOffset();
 

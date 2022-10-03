@@ -5,10 +5,10 @@ using RelEcs;
 
 public static class ScenarioExtensions
 {
-    public static void LoadScenarios(this ISystem system)
+    public static void LoadScenarios(this World world)
     {
         var scenarioData = new ScenarioData();
-        system.AddOrReplaceElement(scenarioData);
+        world.AddOrReplaceElement(scenarioData);
 
         foreach (var data in Loader.LoadDir("res://data/schedules", new List<string>() { "tscn" }))
         {
@@ -22,25 +22,25 @@ public static class ScenarioExtensions
         }
     }
 
-    public static void SpawnSchedule(this ISystem system, string name, int index)
+    public static void SpawnSchedule(this World world, string name, int index)
     {
-        var scene = system.GetTree().CurrentScene;
-        var data = system.GetElement<ScenarioData>();
+        var scene = world.GetTree().CurrentScene;
+        var data = world.GetElement<ScenarioData>();
         var schedule = data.Schedules[name].Instantiate<Schedule>();
         scene.AddChild(schedule);
-        system.AddElement(schedule);
+        world.AddElement(schedule);
 
         schedule.Set(index);
     }
 
-    public static void SpawnPlayer(this ISystem system, int playerId, int side, Coords coords, string faction, int gold)
+    public static void SpawnPlayer(this World world, int playerId, int side, Coords coords, string faction, int gold)
     {
-        var scenario = system.GetElement<Scenario>();
-        var data = system.GetElement<UnitData>();
+        var scenario = world.GetElement<Scenario>();
+        var data = world.GetElement<UnitData>();
 
         var username = "Username";
 
-        if (system.TryGetElement<MatchPlayers>(out var matchPlayers))
+        if (world.TryGetElement<MatchPlayers>(out var matchPlayers))
         {
             username = matchPlayers.Array[playerId].Username;
         }
@@ -59,7 +59,7 @@ public static class ScenarioExtensions
 
         GD.Print($"Spawning Player -  Id: {playerId} | Name: {username} | Side: {side}");
 
-        var sideEntity = system.Spawn()
+        var sideEntity = world.Spawn()
             .Add(new PlayerId { Value = playerId })
             .Add(new Name { Value = username })
             .Add(new Side { Value = side })
@@ -70,6 +70,6 @@ public static class ScenarioExtensions
 
         scenario.Sides.Add(side, sideEntity);
 
-        // system.Send(new SpawnUnitTrigger(side, factionData.Leaders[0], coords, true));
+        // world.Send(new SpawnUnitTrigger(side, factionData.Leaders[0], coords, true));
     }
 }

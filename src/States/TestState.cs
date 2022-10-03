@@ -19,45 +19,45 @@ public partial class TestState : GameState
     {
         public World World { get; set; }
 
-        public void Run()
+        public void Run(World world)
         {
-            var scene = this.GetTree().CurrentScene;
-            var data = this.GetElement<ScenarioData>();
+            var scene = world.GetTree().CurrentScene;
+            var data = world.GetElement<ScenarioData>();
 
             var camera = Scenes.Instantiate<CameraOperator>();
-            this.AddElement(camera);
+            world.AddElement(camera);
             scene.AddChild(camera);
 
             var mapData = data.Maps["Valley"];
-            this.SpawnSchedule("DefaultSchedule", 0);
-            this.SpawnMap(mapData);
-            this.UpdateTerrainMesh();
-            this.UpdateTerrainProps();
+            world.SpawnSchedule("DefaultSchedule", 0);
+            world.SpawnMap(mapData);
+            world.UpdateTerrainMesh();
+            world.UpdateTerrainProps();
 
 
-            this.AddElement(new LocalPlayer { Id = 0 });
-            this.AddElement(new Scenario());
+            world.AddElement(new LocalPlayer { Id = 0 });
+            world.AddElement(new Scenario());
 
-            var canvas = this.GetElement<Canvas>();
+            var canvas = world.GetElement<Canvas>();
             var canvasLayer = canvas.GetCanvasLayer(1);
 
             var turnPanel = Scenes.Instantiate<TurnPanel>();
-            turnPanel.EndTurnButton.Pressed += () => this.Send(new TurnEndTrigger());
+            turnPanel.EndTurnButton.Pressed += () => world.Send(new TurnEndTrigger());
             canvasLayer.AddChild(turnPanel);
-            this.AddElement(turnPanel);
+            world.AddElement(turnPanel);
 
             var unitPanel = Scenes.Instantiate<UnitPanel>();
             canvasLayer.AddChild(unitPanel);
-            this.AddElement(unitPanel);
+            world.AddElement(unitPanel);
 
             var terrainPanel = Scenes.Instantiate<TerrainPanel>();
             canvasLayer.AddChild(terrainPanel);
-            this.AddElement(terrainPanel);
+            world.AddElement(terrainPanel);
 
-            this.SpawnPlayer(0, 0, Coords.FromOffset(1, 1), "Humans", 1000);
-            this.SpawnPlayer(0, 1, Coords.FromOffset(2, 2), "Humans", 1000);
+            world.SpawnPlayer(0, 0, Coords.FromOffset(1, 1), "Humans", 1000);
+            world.SpawnPlayer(0, 1, Coords.FromOffset(2, 2), "Humans", 1000);
 
-            this.Send(new TurnEndTrigger());
+            world.Send(new TurnEndTrigger());
         }
     }
 
@@ -65,12 +65,12 @@ public partial class TestState : GameState
     {
         public World World { get; set; }
 
-        public void Run()
+        public void Run(World world)
         {
-            this.GetElement<CameraOperator>().QueueFree();
-            this.RemoveElement<CameraOperator>();
-            this.GetElement<Schedule>().QueueFree();
-            this.RemoveElement<Schedule>();
+            world.GetElement<CameraOperator>().QueueFree();
+            world.RemoveElement<CameraOperator>();
+            world.GetElement<Schedule>().QueueFree();
+            world.RemoveElement<Schedule>();
         }
     }
 }

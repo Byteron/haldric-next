@@ -6,10 +6,10 @@ public class UpdateDebugInfoSystem : ISystem
 {
     public World World { get; set; }
 
-    public void Run()
+    public void Run(World world)
     {
-        if (!this.TryGetElement<DebugPanel>(out var panel)) return;
-        if (!this.TryGetElement<WorldInfo>(out var info)) return;
+        if (!world.TryGetElement<DebugPanel>(out var panel)) return;
+        if (!world.TryGetElement<WorldInfo>(out var info)) return;
 
         var s = $"FPS: {Engine.GetFramesPerSecond()}\nEntities: {info.EntityCount}\nElements: {info.ElementCount}";
         s += $"\nArchetypes: {info.ArchetypeCount}\nSystems: {info.SystemCount}\nQueries: {info.CachedQueryCount}";

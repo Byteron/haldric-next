@@ -7,28 +7,28 @@ public class TurnEndSystem : ISystem
 {
     public World World { get; set; }
 
-    public void Run()
+    public void Run(World world)
     {
-        foreach (var _ in this.Receive<TurnEndTrigger>())
+        foreach (var _ in world.Receive<TurnEndTrigger>(this))
         {
-            var scenario = this.GetElement<Scenario>();
+            var scenario = world.GetElement<Scenario>();
 
             scenario.EndTurn();
 
             if (scenario.HasRoundChanged())
             {
-                var schedule = this.GetElement<Schedule>();
+                var schedule = world.GetElement<Schedule>();
                 schedule.Next();
             }
 
-            var sides = this.Query<Gold, Side, PlayerId>();
+            var sides = world.Query<Gold, Side, PlayerId>();
 
             var sideEntity = scenario.GetCurrentSideEntity();
 
             var (gold, side, playerId) = sides.Get(sideEntity);
 
-            var units = this.Query<Entity, Side, Actions, Moves, Level>();
-            var suspends = this.QueryBuilder().Has<Suspended>().Build();
+            var units = world.Query<Entity, Side, Actions, Moves, Level>();
+            var suspends = world.QueryBuilder().Has<Suspended>().Build();
 
             foreach (var (unitEntity, unitSide, actions, moves, level) in units)
             {
@@ -39,13 +39,13 @@ public class TurnEndSystem : ISystem
 
                 if (suspends.Has(unitEntity))
                 {
-                    this.On(unitEntity).Remove<Suspended>();
+                    world.On(unitEntity).Remove<Suspended>();
                 }
 
                 gold.Value -= level.Value;
             }
 
-            foreach (var (village, villageSide) in this.Query<Village, IsCapturedBySide>())
+            foreach (var (village, villageSide) in world.Query<Village, IsCapturedBySide>())
             {
                 if (side.Value == villageSide.Value)
                 {
@@ -53,9 +53,9 @@ public class TurnEndSystem : ISystem
                 }
             }
 
-            if (this.TryGetElement<TurnPanel>(out var turnPanel))
+            if (world.TryGetElement<TurnPanel>(out var turnPanel))
             {
-                var localPlayer = this.GetElement<LocalPlayer>();
+                var localPlayer = world.GetElement<LocalPlayer>();
 
                 if (playerId.Value == localPlayer.Id)
                 {
@@ -68,16 +68,16 @@ public class TurnEndSystem : ISystem
                 }
             }
 
-            var tiles = this.Query<Entity, BaseTerrainSlot, OverlayTerrainSlot, UnitSlot>();
-            var heals = this.QueryBuilder().Has<Heals>().Build();
+            var tiles = world.Query<Entity, BaseTerrainSlot, OverlayTerrainSlot, UnitSlot>();
+            var heals = world.QueryBuilder().Has<Heals>().Build();
 
-            var healthsAndSides = this.Query<Coords, Health, Side>();
+            var healthsAndSides = world.Query<Coords, Health, Side>();
 
             foreach (var (tileEntity, baseTerrain, overlayTerrain, unit) in tiles)
             {
                 var canHeal = heals.Has(baseTerrain.Entity);
 
-                if (this.IsAlive(overlayTerrain.Entity))
+                if (world.IsAlive(overlayTerrain.Entity))
                 {
                     canHeal = canHeal || heals.Has(overlayTerrain.Entity);
                 }
@@ -90,7 +90,7 @@ public class TurnEndSystem : ISystem
 
                 health.Increase(diff);
 
-                this.SpawnFloatingLabel(coords.ToWorld() + Godot.Vector3.Up * 7f, diff.ToString(), Colors.Green);
+                world.SpawnFloatingLabel(coords.ToWorld() + Godot.Vector3.Up * 7f, diff.ToString(), Colors.Green);
             }
         }
     }

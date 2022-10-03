@@ -2,18 +2,18 @@
 
 public static class GameStateExtensions
 {
-    public static void PushState(this ISystem system, GameState state)
+    public static void PushState(this World world, GameState state)
     {
-        system.GetElement<GameStates>().PushState(state);
+        world.GetElement<GameStates>().PushState(state);
     }
 
-    public static void PopState(this ISystem system)
+    public static void PopState(this World world)
     {
-        system.GetElement<GameStates>().PopState();
+        world.GetElement<GameStates>().PopState();
     }
 
-    public static void ChangeState(this ISystem system, GameState state)
+    public static void ChangeState(this World world, GameState state)
     {
-        system.GetElement<GameStates>().ChangeState(state);
+        world.GetElement<GameStates>().ChangeState(state);
     }
 }

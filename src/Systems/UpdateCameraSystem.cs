@@ -5,9 +5,9 @@ public class UpdateCameraSystem : ISystem
 {
     public World World { get; set; }
 
-    public void Run()
+    public void Run(World world)
     {
-        if (!this.TryGetElement<CameraOperator>(out var cameraOperator)) return;
+        if (!world.TryGetElement<CameraOperator>(out var cameraOperator)) return;
 
         if (Input.IsActionPressed("camera_zoom_out"))
         {
@@ -36,7 +36,7 @@ public class UpdateCameraSystem : ISystem
         cameraOperator.UpdateRotation();
         cameraOperator.UpdateZoom();
         
-        if (!this.TryGetElement<Map>(out var map)) return;
+        if (!world.TryGetElement<Map>(out var map)) return;
 
         cameraOperator.MinimumPosition = Map.GetBeginPosition();
         cameraOperator.MaximumPosition = map.GetEndPosition();

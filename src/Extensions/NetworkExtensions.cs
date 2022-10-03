@@ -4,12 +4,12 @@ using RelEcs;
 
 public static class NetworkSystemExtensions
 {
-    public static void SendNetworked<T>(this ISystem system, NetworkOperation operation, T message) where T : class
+    public static void SendNetworked<T>(this World world, NetworkOperation operation, T message) where T : class
     {
-        system.Send(message);
+        world.Send(message);
 
-        if (!system.TryGetElement<ISocket>(out var socket)) return;
-        if (!system.TryGetElement<IMatch>(out var match)) return;
+        if (!world.TryGetElement<ISocket>(out var socket)) return;
+        if (!world.TryGetElement<IMatch>(out var match)) return;
 
         var json = message.ToJson();
 

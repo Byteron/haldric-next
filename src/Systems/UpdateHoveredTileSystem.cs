@@ -4,14 +4,16 @@ using RelEcs;
 
 public class UpdateHoveredTileSystem : ISystem
 {
-    public World World { get; set; }
+    World world;
 
     Vector3 _previousCell = Vector3.Zero;
 
-    public void Run()
+    public void Run(World world)
     {
-        if (!this.HasElement<Map>()) return;
-        if (!this.TryGetElement<HoveredTile>(out var hoveredTile)) return;
+        this.world = world;
+        
+        if (!world.HasElement<Map>()) return;
+        if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
         
         var result = ShootRay();
 
@@ -22,7 +24,7 @@ public class UpdateHoveredTileSystem : ISystem
 
         if (_previousCell == coords.ToAxial()) return;
 
-        var map = this.GetElement<Map>();
+        var map = world.GetElement<Map>();
 
         var tileEntity = map.Tiles.Get(coords.ToCube());
 
@@ -37,7 +39,7 @@ public class UpdateHoveredTileSystem : ISystem
     Dictionary ShootRay()
     {
         
-        var scene = (Node3D)this.GetTree().CurrentScene;
+        var scene = (Node3D)world.GetTree().CurrentScene;
         var spaceState = scene.GetWorld3d().DirectSpaceState;
         var viewport = scene.GetViewport();
 

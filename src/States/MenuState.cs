@@ -11,11 +11,13 @@ public partial class MenuState : GameState
 
     class EnterSystem : ISystem
     {
-        public World World { get; set; }
+        World world;
 
-        public void Run()
+        public void Run(World world)
         {
-            var canvas = this.GetElement<Canvas>();
+            this.world = world;
+            
+            var canvas = world.GetElement<Canvas>();
             var layer = canvas.GetCanvasLayer(1);
 
             var menu = Scenes.Instantiate<MainMenuView>();
@@ -26,7 +28,7 @@ public partial class MenuState : GameState
             menu.EditorButton.Pressed += OnEditorButtonPressed;
             menu.QuitButton.Pressed += OnQuitButtonPressed;
 
-            this.AddElement(menu);
+            world.AddElement(menu);
         }
 
         void OnLobbyButtonPressed()
@@ -35,17 +37,17 @@ public partial class MenuState : GameState
 
         void OnEditorButtonPressed()
         {
-            this.ChangeState(new EditorState());
+            world.ChangeState(new EditorState());
         }
 
         void OnTestButtonPressed()
         {
-            this.ChangeState(new TestState());
+            world.ChangeState(new TestState());
         }
 
         void OnQuitButtonPressed()
         {
-            this.GetTree().Quit();
+            world.GetTree().Quit();
         }
     }
 
@@ -53,9 +55,9 @@ public partial class MenuState : GameState
     {
         public World World { get; set; }
 
-        public void Run()
+        public void Run(World world)
         {
-            this.GetElement<MainMenuView>().QueueFree();
+            world.GetElement<MainMenuView>().QueueFree();
         }
     }
 }

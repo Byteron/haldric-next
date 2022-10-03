@@ -5,16 +5,16 @@ using Godot;
 
 public static class TerrainExtensions
 {
-    public static void LoadTerrains(this ISystem system)
+    public static void LoadTerrains(this World world)
     {
         var terrainData = new TerrainData();
-        system.AddOrReplaceElement(terrainData);
+        world.AddOrReplaceElement(terrainData);
 
         terrainData.Terrains = Loader.LoadJson<Dictionary<string, TerrainInfo>>("res://data/terrain.json");
 
         foreach (var (code, data) in terrainData.Terrains)
         {
-            var entityBuilder = system.Spawn();
+            var entityBuilder = world.Spawn();
 
             if (data.IsBase) entityBuilder.Add<IsBaseTerrain>();
             else entityBuilder.Add<IsOverlayTerrain>();
@@ -38,12 +38,12 @@ public static class TerrainExtensions
         }
     }
 
-    public static void LoadTerrainGraphics(this ISystem system)
+    public static void LoadTerrainGraphics(this World world)
     {
-        var terrainData = system.GetElement<TerrainData>();
+        var terrainData = world.GetElement<TerrainData>();
 
         var graphicData = new TerrainGraphicData();
-        system.AddOrReplaceElement(graphicData);
+        world.AddOrReplaceElement(graphicData);
 
         var terrainScript = new TerrainGraphicScript();
         terrainScript.Load();
@@ -63,7 +63,7 @@ public static class TerrainExtensions
         var terrainCount = 0;
         foreach (var (code, entity) in terrainData.TerrainEntities)
         {
-            system.On(entity).Add(new TerrainTypeIndex { Value = terrainCount });
+            world.On(entity).Add(new TerrainTypeIndex { Value = terrainCount });
 
             graphicData.TextureArrayIds.Add(code, terrainCount);
             terrainCount += 1;

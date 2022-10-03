@@ -4,10 +4,10 @@ using RelEcs;
 
 public static class UnitExtensions
 {
-    public static void LoadUnits(this ISystem system)
+    public static void LoadUnits(this World world)
     {
         var unitData = new UnitData();
-        system.AddOrReplaceElement(unitData);
+        world.AddOrReplaceElement(unitData);
 
         // foreach (var data in Loader.LoadDir("res://data/units", new List<string>() { "tscn" }))
         // {
@@ -21,15 +21,15 @@ public static class UnitExtensions
         }
     }
     
-    public static Entity CreateUnitFromUnitType(this ISystem system, UnitType unitType, Entity entity = null)
+    public static Entity CreateUnitFromUnitType(this World world, UnitType unitType, Entity entity = null)
     {
         if (entity is null)
         {
-            entity = system.Spawn().Id();
+            entity = world.Spawn().Id();
         }
         else
         {
-            system.On(entity).Remove<Id>()
+            world.On(entity).Remove<Id>()
                 .Remove<Level>()
                 .Remove<Health>()
                 .Remove<Actions>()
@@ -51,7 +51,7 @@ public static class UnitExtensions
         foreach (var node in unitType.Attacks.GetChildren())
         {
             var attack = (Attack)node;
-            var attackEntity = system.Spawn()
+            var attackEntity = world.Spawn()
                 .Add(new Id { Value = attack.Name })
                 .Add(new Damage { Value = attack.Damage, Type = attack.DamageType })
                 .Add(new Strikes { Value = attack.Strikes })
@@ -62,7 +62,7 @@ public static class UnitExtensions
             attacks.Add(attackEntity);
         }
 
-        system.On(entity)
+        world.On(entity)
             .Add(new Id { Value = unitType.Id })
             .Add(new Level { Value = unitType.Level })
             .Add(new Health { Max = unitType.Health })
@@ -82,7 +82,7 @@ public static class UnitExtensions
         foreach (var node in unitType.Traits.GetChildren())
         {
             var trait = (Trait)node;
-            trait.Apply(system.On(entity));
+            trait.Apply(world.On(entity));
         }
 
         return entity;
