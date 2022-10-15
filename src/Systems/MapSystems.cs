@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 using RelEcs;
 
 public class TileOf
 {
 }
 
-public static class MapExtensions
+public static class MapSystems
 {
+    public static void SaveMap(this World world, string mapName)
+    {
+        
+    }
+    
     public static void SpawnMap(this World world, int width, int height)
     {
         var mapData = new MapData
@@ -105,7 +111,7 @@ public static class MapExtensions
         var grid = map.Grid;
         var chunkSize = map.ChunkSize;
 
-        var chunks = new Dictionary<Vector2i, Entity>();
+        var chunks = new System.Collections.Generic.Dictionary<Vector2i, Entity>();
 
         for (var z = 0; z < grid.Height; z++)
         {
@@ -249,6 +255,53 @@ public static class MapExtensions
         world.RemoveElement<TerrainHighlighter>();
     }
 
+    public static void UpdateMapCursor(this World world)
+    {
+        if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
+        if (!world.TryGetElement<Cursor3D>(out var cursor)) return;
+        if (!world.IsAlive(hoveredTile.Entity)) return;
+        if (!hoveredTile.HasChanged) return;
+
+        hoveredTile.HasChanged = false;
+
+        var tiles = world.Query<Coords, Elevation>();
+        var (coords, elevation) = tiles.Get(hoveredTile.Entity);
+
+        var position = coords.ToWorld();
+        position.y = elevation.Height;
+
+        cursor.Position = position;
+    }
+    
+    static Vector3 previousCell = Vector3.Zero;
+
+    public static void UpdateHoveredTile(this World world)
+    {
+        if (!world.HasElement<Map>()) return;
+        if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
+        
+        var result = world.ShootRay();
+
+        if (!result.ContainsKey("position")) return;
+
+        var position = (Vector3)result["position"];
+        var coords = Coords.FromWorld(position);
+
+        if (previousCell == coords.ToAxial()) return;
+
+        var map = world.GetElement<Map>();
+
+        var tileEntity = map.Tiles.Get(coords.ToCube());
+
+        hoveredTile.Entity = tileEntity;
+        hoveredTile.Coords = coords;
+        hoveredTile.HasChanged = true;
+        
+        GD.Print(coords);
+
+        previousCell = coords.ToAxial();
+    }
+    
     static List<Entity> FindConnectedTilesWith<T>(this World world, Entity locEntity) where T : class
     {
         var list = new List<Entity>();
@@ -285,5 +338,26 @@ public static class MapExtensions
         }
 
         return list;
+    }
+    
+    static Dictionary ShootRay(this World world)
+    {
+        var scene = (Node3D)world.GetTree().CurrentScene;
+        var spaceState = scene.GetWorld3d().DirectSpaceState;
+        var viewport = scene.GetViewport();
+
+        var camera = viewport.GetCamera3d();
+        var mousePosition = viewport.GetMousePosition();
+
+        if (camera == null) return new Dictionary();
+
+        var from = camera.ProjectRayOrigin(mousePosition);
+        var to = from + camera.ProjectRayNormal(mousePosition) * 1000f;
+
+        var parameters3D = new PhysicsRayQueryParameters3D();
+        parameters3D.From = from;
+        parameters3D.To = to;
+
+        return spaceState.IntersectRay(parameters3D);
     }
 }

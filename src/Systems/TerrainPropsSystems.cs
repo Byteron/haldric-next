@@ -3,7 +3,7 @@ using Godot;
 using RelEcs;
 
 
-public static class TerrainPropsExtensions
+public static class TerrainPropsSystems
 {
     static TerrainGraphicData Data;
 

@@ -1,11 +1,25 @@
 using RelEcs;
 using Godot;
 
-public class UpdateCameraSystem : ISystem
+public static class CameraSystems
 {
-    public World World { get; set; }
+    public static void SpawnCamera(this World world)
+    {
+        var tree = world.GetTree();
 
-    public void Run(World world)
+        var camera = Scenes.Instantiate<CameraOperator>();
+        world.AddElement(camera);
+        tree.CurrentScene.AddChild(camera);    
+    }
+    
+    public static void DespawnCamera(this World world)
+    {
+        var camera = world.GetElement<CameraOperator>();
+        world.RemoveElement<CameraOperator>();
+        camera.QueueFree(); 
+    }
+    
+    public static void UpdateCamera(this World world)
     {
         if (!world.TryGetElement<CameraOperator>(out var cameraOperator)) return;
 

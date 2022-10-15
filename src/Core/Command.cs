@@ -1,25 +1,27 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using RelEcs;
 
-public interface ICommandSystem : ISystem
+public interface ICommand
 {
     bool IsDone { get; set; }
     bool IsRevertible { get; set; }
     bool IsReverted { get; set; }
+    void Execute(World world);
     void Revert();
 }
 
 public class Commander
 {
-    readonly Stack<ICommandSystem> _history = new();
-    readonly Queue<ICommandSystem> _queue = new();
+    readonly Stack<ICommand> _history = new();
+    readonly Queue<ICommand> _queue = new();
 
-    public void Enqueue(ICommandSystem command)
+    public void Enqueue(ICommand command)
     {
         _queue.Enqueue(command);
     }
 
-    public ICommandSystem Dequeue()
+    public ICommand Dequeue()
     {
         var command = _queue.Dequeue();
 
@@ -48,5 +50,14 @@ public class Commander
     public void ClearHistory()
     {
         _history.Clear();
+    }
+}
+
+public static class CommanderSystems
+{
+    public static void Enqueue(this World world, ICommand command)
+    {
+        var commander = world.GetElement<Commander>();
+        commander.Enqueue(command);;
     }
 }

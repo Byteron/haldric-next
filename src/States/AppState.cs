@@ -1,52 +1,54 @@
 using Godot;
 using RelEcs;
 
-public partial class AppState : GameState
+public class AppState : IState
 {
-    public override void Init()
+    public void Enable(World world)
     {
-        Enter.Add(new EnterSystem());
+        var tree = world.GetTree();
+
+        var canvas = new Canvas();
+        canvas.Name = "Canvas";
+        world.AddElement(canvas);
+        tree.CurrentScene.AddChild(canvas);
+
+        world.AddElement(new ServerConfig
+        {
+            Host = "49.12.208.4",
+            Port = 7350,
+            Scheme = "http",
+            ServerKey = "defaultkey",
+        });
+
+        world.AddElement(new LobbyConfig
+        {
+            RoomName = "general",
+            Persistence = true,
+            Hidden = false,
+        });
+            
+        world.AddElement(new Commander());
+            
+        world.LoadTerrains();
+        world.LoadTerrainGraphics();
+        world.LoadScenarios();
+        world.LoadUnits();
+            
+        var layer = canvas.GetCanvasLayer(3);
+        var debugPanel = Scenes.Instantiate<DebugPanel>();
+        layer.AddChild(debugPanel);
+        world.AddElement(debugPanel);
+        
+        world.EnableState<MenuState>();
     }
 
-    partial class EnterSystem : RefCounted, ISystem
+    public void Update(World world)
     {
-        public void Run(World world)
-        {
-            var tree = world.GetTree();
+        world.UpdateDebugInfo();
+    }
 
-            var canvas = new Canvas();
-            canvas.Name = "Canvas";
-            world.AddElement(canvas);
-            tree.CurrentScene.AddChild(canvas);
-
-            world.AddElement(new ServerConfig
-            {
-                Host = "49.12.208.4",
-                Port = 7350,
-                Scheme = "http",
-                ServerKey = "defaultkey",
-            });
-
-            world.AddElement(new LobbyConfig
-            {
-                RoomName = "general",
-                Persistence = true,
-                Hidden = false,
-            });
-            
-            world.AddElement(new Commander());
-            
-            world.LoadTerrains();
-            world.LoadTerrainGraphics();
-            world.LoadScenarios();
-            world.LoadUnits();
-            
-            var layer = canvas.GetCanvasLayer(3);
-            var debugPanel = Scenes.Instantiate<DebugPanel>();
-            layer.AddChild(debugPanel);
-            world.AddElement(debugPanel);
-
-            world.PushState(new MenuState());
-        }
+    public void Disable(World world)
+    {
+        world.GetTree().Quit();
     }
 }

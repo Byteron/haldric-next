@@ -3,7 +3,7 @@ using System.Data;
 using RelEcs;
 using Godot;
 
-public static class TerrainExtensions
+public static class TerrainSystems
 {
     public static void LoadTerrains(this World world)
     {

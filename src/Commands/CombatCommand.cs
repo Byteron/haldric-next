@@ -2,18 +2,18 @@ using System.Collections.Generic;
 using RelEcs;
 using Godot;
 
-public partial class CombatCommand : Resource, ICommandSystem
+public class CombatCommand : ICommand
 {
     public bool IsDone { get; set; }
     public bool IsRevertible { get; set; }
     public bool IsReverted { get; set; }
 
-    public void Revert()
+    public void Execute(World world)
     {
-
+        
     }
 
-    public void Run(World world)
+    public void Revert()
     {
 
     }

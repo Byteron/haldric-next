@@ -9,17 +9,23 @@ public class DeltaTime
 public partial class Main : Node3D
 {
     readonly World _world = new();
-    GameStates _gameStates;
 
     public override void _Ready()
     {
-        _gameStates = new GameStates(_world);
-        AddChild(_gameStates);
 
         _world.AddElement(GetTree());
-        _world.AddElement(_gameStates);
         _world.AddElement(new DeltaTime());
+        
+        _world.EnableState<AppState>();
+    }
 
-        _gameStates.PushState(new AppState());
+    public override void _Process(double delta)
+    {
+        _world.GetElement<DeltaTime>().Value = delta;
+        
+        _world.UpdateState<AppState>();
+        _world.UpdateState<MenuState>();
+        _world.UpdateState<TestState>();
+        _world.UpdateState<EditorState>();
     }
 }

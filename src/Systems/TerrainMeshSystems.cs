@@ -15,7 +15,7 @@ public class EdgeVertices
     }
 }
 
-public static class TerrainMeshExtensions
+public static class TerrainMeshSystems
 {
     static readonly Color ColorRed = new(1.0f, 0f, 0f);
     static readonly Color ColorGreen = new(0f, 1.0f, 0f);

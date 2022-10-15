@@ -1,7 +1,7 @@
 ﻿using Godot;
 using RelEcs;
 
-public static class GodotExtensions
+public static class GodotSystems
 {
     public static SceneTree GetTree(this World world)
     {

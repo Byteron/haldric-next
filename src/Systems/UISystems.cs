@@ -1,7 +1,7 @@
 ﻿using RelEcs;
 using Godot;
 
-public static class UIExtensions
+public static class UISystems
 {
     public static void SpawnFloatingLabel(this World world, Vector3 position, string text, Color color)
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using RelEcs;
 
-public static class UnitExtensions
+public static class UnitSystems
 {
     public static void LoadUnits(this World world)
     {
