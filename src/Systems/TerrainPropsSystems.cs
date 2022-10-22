@@ -13,7 +13,7 @@ public static class TerrainPropsSystems
     static Query<Entity> RecruitTos;
     static Query<TerrainCode, ElevationOffset> Terrains;
 
-    public static void UpdateTerrainProps(this World world)
+    public static void UpdateTerrainProps(World world)
     {
         Data = world.GetElement<TerrainGraphicData>();
 

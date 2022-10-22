@@ -21,13 +21,13 @@ public static class TerrainMeshSystems
     static readonly Color ColorGreen = new(0f, 1.0f, 0f);
     static readonly Color ColorBlue = new(0f, 0f, 1.0f);
 
-    public static void UpdateTerrainGraphics(this World world)
+    public static void UpdateTerrainGraphics(World world)
     {
-        world.UpdateTerrainMesh();
-        world.UpdateTerrainProps();
+        UpdateTerrainMesh(world);
+        UpdateTerrainProps(world);
     }
 
-    public static void UpdateTerrainMesh(this World world)
+    public static void UpdateTerrainMesh(World world)
     {
         var shaderData = world.GetElement<ShaderData>();
 

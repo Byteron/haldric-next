@@ -12,10 +12,10 @@ public class TestState : IState
         scene.AddChild(camera);
 
         var mapData = data.Maps["Valley"];
-        world.SpawnSchedule("DefaultSchedule", 0);
-        world.SpawnMap(mapData);
-        world.UpdateTerrainMesh();
-        world.UpdateTerrainProps();
+        SpawnSchedule(world, "DefaultSchedule", 0);
+        SpawnMap(world, mapData);
+        UpdateTerrainMesh(world);
+        UpdateTerrainProps(world);
 
         world.AddElement(new LocalPlayer { Id = 0 });
         world.AddElement(new Scenario());
@@ -24,7 +24,7 @@ public class TestState : IState
         var canvasLayer = canvas.GetCanvasLayer(1);
 
         var turnPanel = Scenes.Instantiate<TurnPanel>();
-        turnPanel.EndTurnButton.Pressed += world.EndTurn;
+        turnPanel.EndTurnButton.Pressed += () => EndTurn(world);
         canvasLayer.AddChild(turnPanel);
         world.AddElement(turnPanel);
 
@@ -36,23 +36,23 @@ public class TestState : IState
         canvasLayer.AddChild(terrainPanel);
         world.AddElement(terrainPanel);
 
-        world.SpawnPlayer(0, 0, Coords.FromOffset(1, 1), "Humans", 1000);
-        world.SpawnPlayer(0, 1, Coords.FromOffset(2, 2), "Humans", 1000);
+        SpawnPlayer(world, 0, 0, Coords.FromOffset(1, 1), "Humans", 1000);
+        SpawnPlayer(world, 0, 1, Coords.FromOffset(2, 2), "Humans", 1000);
 
-        world.EndTurn();
+        EndTurn(world);
     }
 
     public void Update(World world)
     {
-        world.UpdateCamera();
-        world.UpdateHoveredTile();
-        world.UpdateDebugInfo();
-        world.UpdateMapCursor();
+        UpdateCamera(world);
+        UpdateHoveredTile(world);
+        UpdateDebugInfo(world);
+        UpdateMapCursor(world);
     }
 
     public void Disable(World world)
     {
-        world.DespawnMap();
+        DespawnMap(world);
         world.GetElement<CameraOperator>().QueueFree();
         world.RemoveElement<CameraOperator>();
         world.GetElement<Schedule>().QueueFree();

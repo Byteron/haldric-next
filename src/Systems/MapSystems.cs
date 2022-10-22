@@ -10,12 +10,12 @@ public class TileOf
 
 public static class MapSystems
 {
-    public static void SaveMap(this World world, string mapName)
+    public static void SaveMap(World world, string mapName)
     {
         
     }
     
-    public static void SpawnMap(this World world, int width, int height)
+    public static void SpawnMap(World world, int width, int height)
     {
         var mapData = new MapData
         {
@@ -40,10 +40,10 @@ public static class MapSystems
             }
         }
 
-        world.SpawnMap(mapData);
+        SpawnMap(world, mapData);
     }
 
-    public static void SpawnMap(this World world, MapData mapData)
+    public static void SpawnMap(World world, MapData mapData)
     {
         if (mapData.Tiles.Count == 0) throw new Exception("Cannot spawn map, no tiles present in MapData");
 
@@ -183,7 +183,7 @@ public static class MapSystems
         {
             if (!canRecruitFromQuery.Has(slot.Entity)) continue;
 
-            world.On(entity).Add(new Castle { List = world.FindConnectedTilesWith<CanRecruitTo>(entity) });
+            world.On(entity).Add(new Castle { List = FindConnectedTilesWith<CanRecruitTo>(world, entity) });
         }
 
         var capturables = world.QueryBuilder().Has<IsCapturable>().Build();
@@ -194,7 +194,7 @@ public static class MapSystems
 
             world.On(entity).Add(new Village
             {
-                List = world.FindConnectedTilesWith<GivesIncome>(entity)
+                List = FindConnectedTilesWith<GivesIncome>(world, entity)
             });
         }
 
@@ -230,7 +230,7 @@ public static class MapSystems
         }
     }
 
-    public static void DespawnMap(this World world)
+    public static void DespawnMap(World world)
     {
         world.DespawnAllWith<Coords>();
 
@@ -255,7 +255,7 @@ public static class MapSystems
         world.RemoveElement<TerrainHighlighter>();
     }
 
-    public static void UpdateMapCursor(this World world)
+    public static void UpdateMapCursor(World world)
     {
         if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
         if (!world.TryGetElement<Cursor3D>(out var cursor)) return;
@@ -275,12 +275,12 @@ public static class MapSystems
     
     static Vector3 previousCell = Vector3.Zero;
 
-    public static void UpdateHoveredTile(this World world)
+    public static void UpdateHoveredTile(World world)
     {
         if (!world.HasElement<Map>()) return;
         if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
         
-        var result = world.ShootRay();
+        var result = ShootRay(world);
 
         if (!result.ContainsKey("position")) return;
 
@@ -302,7 +302,7 @@ public static class MapSystems
         previousCell = coords.ToAxial();
     }
     
-    static List<Entity> FindConnectedTilesWith<T>(this World world, Entity locEntity) where T : class
+    static List<Entity> FindConnectedTilesWith<T>(World world, Entity locEntity) where T : class
     {
         var list = new List<Entity>();
         var frontier = new Queue<Entity>();
@@ -340,7 +340,7 @@ public static class MapSystems
         return list;
     }
     
-    static Dictionary ShootRay(this World world)
+    static Dictionary ShootRay(World world)
     {
         var scene = (Node3D)world.GetTree().CurrentScene;
         var spaceState = scene.GetWorld3d().DirectSpaceState;

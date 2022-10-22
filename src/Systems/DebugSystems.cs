@@ -4,7 +4,7 @@ using RelEcs;
 
 public static class DebugSystems
 {
-    public static void UpdateDebugInfo(this World world)
+    public static void UpdateDebugInfo(World world)
     {
         if (!world.TryGetElement<DebugPanel>(out var panel)) return;
         if (!world.TryGetElement<WorldInfo>(out var info)) return;

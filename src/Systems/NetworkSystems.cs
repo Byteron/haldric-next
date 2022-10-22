@@ -4,7 +4,7 @@ using RelEcs;
 
 public static class NetworkSystems
 {
-    public static void SendNetworked<T>(this World world, NetworkOperation operation, T message) where T : class
+    public static void SendNetworked<T>(World world, NetworkOperation operation, T message) where T : class
     {
         world.Send(message);
 
@@ -16,7 +16,7 @@ public static class NetworkSystems
         socket.SendMatchStateAsync(match.Id, (int)operation, json);
     }
     
-    public static void EnqueueNetworked(this World world, NetworkOperation operation, ICommand command)
+    public static void EnqueueNetworked(World world, NetworkOperation operation, ICommand command)
     {
         var commander = world.GetElement<Commander>();
         commander.Enqueue(command);

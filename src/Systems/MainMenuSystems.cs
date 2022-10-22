@@ -3,7 +3,7 @@ using Godot;
 
 public static class MainMenuSystems
 {
-    public static void SpawnMainMenu(this World world)
+    public static void SpawnMainMenu(World world)
     {
         var canvas = world.GetElement<Canvas>();
         var layer = canvas.GetCanvasLayer(1);
@@ -30,7 +30,7 @@ public static class MainMenuSystems
         world.AddElement(menu);
     }
 
-    public static void DespawnMainMenu(this World world)
+    public static void DespawnMainMenu(World world)
     {
         var menu = world.GetElement<MainMenuView>();
         // TODO: figure out if this is necessary

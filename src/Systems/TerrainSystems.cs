@@ -5,7 +5,7 @@ using Godot;
 
 public static class TerrainSystems
 {
-    public static void LoadTerrains(this World world)
+    public static void LoadTerrains(World world)
     {
         var terrainData = new TerrainData();
         world.AddOrReplaceElement(terrainData);
@@ -38,7 +38,7 @@ public static class TerrainSystems
         }
     }
 
-    public static void LoadTerrainGraphics(this World world)
+    public static void LoadTerrainGraphics(World world)
     {
         var terrainData = world.GetElement<TerrainData>();
 

@@ -4,7 +4,7 @@ using RelEcs;
 
 public static class UnitSystems
 {
-    public static void LoadUnits(this World world)
+    public static void LoadUnits(World world)
     {
         var unitData = new UnitData();
         world.AddOrReplaceElement(unitData);
@@ -21,7 +21,7 @@ public static class UnitSystems
         }
     }
     
-    public static Entity CreateUnitFromUnitType(this World world, UnitType unitType, Entity entity = null)
+    public static Entity CreateUnitFromUnitType(World world, UnitType unitType, Entity entity = null)
     {
         if (entity is null)
         {

@@ -28,11 +28,11 @@ public class AppState : IState
         });
             
         world.AddElement(new Commander());
-            
-        world.LoadTerrains();
-        world.LoadTerrainGraphics();
-        world.LoadScenarios();
-        world.LoadUnits();
+        
+        LoadTerrains(world);
+        LoadTerrainGraphics(world);
+        LoadScenarios(world);
+        LoadUnits(world);
             
         var layer = canvas.GetCanvasLayer(3);
         var debugPanel = Scenes.Instantiate<DebugPanel>();
@@ -44,7 +44,7 @@ public class AppState : IState
 
     public void Update(World world)
     {
-        world.UpdateDebugInfo();
+        UpdateDebugInfo(world);
     }
 
     public void Disable(World world)

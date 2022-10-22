@@ -5,16 +5,16 @@ public static class EditorSystems
 {
     static Coords _previousCoords;
 
-    public static void SpawnEditorMenu(this World world)
+    public static void SpawnEditorMenu(World world)
     {
         var tree = world.GetTree();
         var data = world.GetElement<TerrainData>();
 
         var view = Scenes.Instantiate<EditorView>();
-        view.CreateButton.Pressed += world.OnCreateButtonPressed;
-        view.LoadButton.Pressed += world.OnLoadButtonPressed;
-        view.SaveButton.Pressed += world.OnSaveButtonPressed;
-        view.ToolsTab.TabChanged += world.OnToolsTabChanged;
+        view.CreateButton.Pressed += () => OnCreateButtonPressed(world);
+        view.LoadButton.Pressed += () => OnLoadButtonPressed(world);
+        view.SaveButton.Pressed += () => OnSaveButtonPressed(world);
+        view.ToolsTab.TabChanged += (index)  => OnToolsTabChanged(world, index);
 
         world.AddElement(view);
         tree.CurrentScene.AddChild(view);
@@ -30,14 +30,14 @@ public static class EditorSystems
         }
     }
 
-    public static void DespawnEditorMenu(this World world)
+    public static void DespawnEditorMenu(World world)
     {
         var menu = world.GetElement<EditorView>();
         world.RemoveElement<EditorView>();
         menu.QueueFree();
     }
 
-    static void OnToolsTabChanged(this World world, long index)
+    static void OnToolsTabChanged(World world, long index)
     {
         var view = world.GetElement<EditorView>();
 
@@ -49,7 +49,7 @@ public static class EditorSystems
         };
     }
 
-    static void OnCreateButtonPressed(this World world)
+    static void OnCreateButtonPressed(World world)
     {
         var view = world.GetElement<EditorView>();
 
@@ -70,7 +70,7 @@ public static class EditorSystems
         }
     }
 
-    static void OnSaveButtonPressed(this World world)
+    static void OnSaveButtonPressed(World world)
     {
         var view = world.GetElement<EditorView>();
 
@@ -91,7 +91,7 @@ public static class EditorSystems
         }
     }
 
-    static void OnLoadButtonPressed(this World world)
+    static void OnLoadButtonPressed(World world)
     {
         var view = world.GetElement<EditorView>();
 
@@ -112,7 +112,7 @@ public static class EditorSystems
         }
     }
 
-    public static void EditorEditPlayer(this World world)
+    public static void EditorEditPlayer(World world)
     {
         if (!world.TryGetElement<Map>(out var map)) return;
         if (!world.TryGetElement<SelectedTerrain>(out var selectedTerrain)) return;
@@ -162,7 +162,7 @@ public static class EditorSystems
         }
     }
 
-    public static void EditorEditTile(this World world)
+    public static void EditorEditTile(World world)
     {
         if (!world.TryGetElement<Map>(out var map)) return;
         if (!world.TryGetElement<HoveredTile>(out var hoveredTile)) return;
@@ -191,7 +191,7 @@ public static class EditorSystems
             if (!tiles.Has(cube)) continue;
 
             var nTileEntity = tiles.Get(cube);
-            world.EditLocation(view, nTileEntity, selectedTerrain.Entity);
+            EditLocation(world, view, nTileEntity, selectedTerrain.Entity);
 
             var chunkEntity = world.GetTarget<TileOf>(nTileEntity);
             var chunk = world.GetComponent<Chunk>(chunkEntity);
@@ -213,15 +213,15 @@ public static class EditorSystems
 
         if (world.HasComponent<OverlayTerrainSlot>(selectedTerrain.Entity))
         {
-            world.UpdateTerrainProps();
+            UpdateTerrainProps(world);
         }
         else
         {
-            world.UpdateTerrainGraphics();
+            UpdateTerrainGraphics(world);
         }
     }
 
-    static void EditLocation(this World world, EditorView editorView, Entity tileEntity, Entity selectedTerrainEntity)
+    static void EditLocation(World world, EditorView editorView, Entity tileEntity, Entity selectedTerrainEntity)
     {
         var data = world.GetElement<TerrainData>();
         var tiles = world.Query<BaseTerrainSlot, OverlayTerrainSlot, Elevation>();

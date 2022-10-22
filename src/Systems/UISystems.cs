@@ -3,7 +3,7 @@ using Godot;
 
 public static class UISystems
 {
-    public static void SpawnFloatingLabel(this World world, Vector3 position, string text, Color color)
+    public static void SpawnFloatingLabel(World world, Vector3 position, string text, Color color)
     {
         var canvas = world.GetElement<Canvas>();
         var canvasLayer = canvas.GetCanvasLayer(1);

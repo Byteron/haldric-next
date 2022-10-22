@@ -10,6 +10,11 @@ sky_material = SubResource("ProceduralSkyMaterial_rjtho")
 [sub_resource type="Environment" id="Environment_eg5mb"]
 background_mode = 2
 sky = SubResource("Sky_p3p4s")
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
 
 [node name="Schedule" type="Node" node_paths=PackedStringArray("_daytimes", "_env", "_lightContainer")]
 script = ExtResource("1_86m31")

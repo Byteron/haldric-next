@@ -12,8 +12,8 @@ public class CreatMapCommand : ICommand
     
     public void Execute(World world)
     {
-        world.DespawnMap();
-        world.SpawnMap(Width, Height);
+        DespawnMap(world);
+        SpawnMap(world, Width, Height);
         
         IsDone = true;
     }

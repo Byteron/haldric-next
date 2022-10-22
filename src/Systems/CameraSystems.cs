@@ -1,9 +1,8 @@
-using RelEcs;
 using Godot;
 
 public static class CameraSystems
 {
-    public static void SpawnCamera(this World world)
+    public static void SpawnCamera(World world)
     {
         var tree = world.GetTree();
 
@@ -12,14 +11,14 @@ public static class CameraSystems
         tree.CurrentScene.AddChild(camera);    
     }
     
-    public static void DespawnCamera(this World world)
+    public static void DespawnCamera(World world)
     {
         var camera = world.GetElement<CameraOperator>();
         world.RemoveElement<CameraOperator>();
         camera.QueueFree(); 
     }
     
-    public static void UpdateCamera(this World world)
+    public static void UpdateCamera(World world)
     {
         if (!world.TryGetElement<CameraOperator>(out var cameraOperator)) return;
 

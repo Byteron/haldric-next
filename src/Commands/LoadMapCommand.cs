@@ -13,9 +13,9 @@ public class LoadMapCommand : ICommand
     {
         var scenarioData = world.GetElement<ScenarioData>();
 
-        world.DespawnMap();
+        DespawnMap(world);
         var mapData = scenarioData.Maps[MapName];
-        world.SpawnMap(mapData);
+        SpawnMap(world, mapData);
 
         IsDone = true;
     }

@@ -5,7 +5,7 @@ using RelEcs;
 
 public static class ScenarioSystems
 {
-    public static void LoadScenarios(this World world)
+    public static void LoadScenarios(World world)
     {
         var scenarioData = new ScenarioData();
         world.AddOrReplaceElement(scenarioData);
@@ -22,7 +22,7 @@ public static class ScenarioSystems
         }
     }
 
-    public static void SpawnSchedule(this World world, string name, int index)
+    public static void SpawnSchedule(World world, string name, int index)
     {
         var scene = world.GetTree().CurrentScene;
         var data = world.GetElement<ScenarioData>();
@@ -33,7 +33,7 @@ public static class ScenarioSystems
         schedule.Set(index);
     }
 
-    public static void SpawnPlayer(this World world, int playerId, int side, Coords coords, string faction, int gold)
+    public static void SpawnPlayer(World world, int playerId, int side, Coords coords, string faction, int gold)
     {
         var scenario = world.GetElement<Scenario>();
         var data = world.GetElement<UnitData>();
@@ -73,7 +73,7 @@ public static class ScenarioSystems
         // world.Send(new SpawnUnitTrigger(side, factionData.Leaders[0], coords, true));
     }
 
-    public static void EndTurn(this World world)
+    public static void EndTurn(World world)
     {
         var scenario = world.GetElement<Scenario>();
 
@@ -154,7 +154,7 @@ public static class ScenarioSystems
 
             health.Increase(diff);
 
-            world.SpawnFloatingLabel(coords.ToWorld() + Godot.Vector3.Up * 7f, diff.ToString(), Colors.Green);
+            SpawnFloatingLabel(world, coords.ToWorld() + Godot.Vector3.Up * 7f, diff.ToString(), Colors.Green);
         }
     }
 }

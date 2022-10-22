@@ -4,18 +4,16 @@ public class MenuState : IState
 {
     public void Enable(World world)
     {
-        world.SpawnMainMenu();
+        SpawnMainMenu(world);
     }
 
     public void Update(World world)
     {
-        world.UpdateDebugInfo();
+        UpdateDebugInfo(world);
     }
 
     public void Disable(World world)
     {
-        world.DespawnMainMenu();
+        DespawnMainMenu(world);
     }
-    
-    
 }

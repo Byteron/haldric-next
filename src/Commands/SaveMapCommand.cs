@@ -11,7 +11,7 @@ public class SaveMapCommand : ICommand
     
     public void Execute(World world)
     {
-        world.SaveMap(MapName);
+        SaveMap(world, MapName);
         IsDone = true;
     }
 

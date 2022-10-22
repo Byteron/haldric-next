@@ -27,14 +27,14 @@ public class EditorState : IState
             Entity = data.TerrainEntities["Gg"]
         });
         
-        world.SpawnEditorMenu();
-        world.SpawnCamera();
+        SpawnEditorMenu(world);
+        SpawnCamera(world);
         
-        world.SpawnSchedule("DefaultSchedule", 1);
+        SpawnSchedule(world, "DefaultSchedule", 1);
         
-        world.SpawnMap(32, 32);
-        world.UpdateTerrainMesh();
-        world.UpdateTerrainProps();
+        SpawnMap(world, 32, 32);
+        UpdateTerrainMesh(world);
+        UpdateTerrainProps(world);
     }
 
     public void Update(World world)
@@ -43,8 +43,8 @@ public class EditorState : IState
 
     public void Disable(World world)
     {
-        world.DespawnCamera();
-        world.DespawnEditorMenu();
+        DespawnCamera(world);
+        DespawnEditorMenu(world);
         
         world.RemoveElement<SelectedTerrain>();
         
