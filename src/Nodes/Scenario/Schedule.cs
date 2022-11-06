@@ -88,12 +88,12 @@ public partial class Schedule : Node
 
             lightTween.Parallel().TweenProperty(light, "shadow_enabled", config.Shadows, 2.5f);
             lightTween.Parallel().TweenProperty(light, "shadow_blur", config.ShadowBlur, 2.5f);
-
-            lightTween.Connect("finished", new Callable(() =>
+            
+            lightTween.Finished += () =>
             {
                 GD.Print("Resetting Angle: ", config.Angle);
                 light.Rotation = new Vector3(Mathf.DegToRad(config.Angle), 0, 0);
-            }));
+            };
 
             lightTween.Play();
         }
