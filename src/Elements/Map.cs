@@ -20,14 +20,14 @@ public class Map
 {
     public Grid Grid { get; }
     public Tiles Tiles { get; }
-    public Vector2i ChunkSize { get; }
+    public Vector2I ChunkSize { get; }
     public PathFinder PathFinder { get; }
 
     public Map(int width, int height, int chunkSize)
     {
         Grid = new Grid(width, height);
         Tiles = new Tiles { Dict = new Dictionary<Vector3, Entity>() };
-        ChunkSize = new Vector2i(chunkSize, chunkSize);
+        ChunkSize = new Vector2I(chunkSize, chunkSize);
         PathFinder = new PathFinder();
     }
 

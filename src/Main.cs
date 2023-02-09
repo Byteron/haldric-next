@@ -23,17 +23,16 @@ public partial class Main : Node3D
 
     public override void _Ready()
     {
-
         _world.AddElement(GetTree());
         _world.AddElement(new DeltaTime());
-        
+
         _world.EnableState<AppState>();
     }
 
     public override void _Process(double delta)
     {
         _world.GetElement<DeltaTime>().Value = delta;
-        
+
         _world.UpdateState<AppState>();
         _world.UpdateState<MenuState>();
         _world.UpdateState<TestState>();

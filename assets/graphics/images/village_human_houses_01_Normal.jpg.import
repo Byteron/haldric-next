@@ -4,23 +4,22 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b7psh50r4xtli"
 path.s3tc="res://.godot/imported/village_human_houses_01_Normal.jpg-2c26bfd4fc685c4c8f4c9f0955edc779.s3tc.ctex"
-path.etc2="res://.godot/imported/village_human_houses_01_Normal.jpg-2c26bfd4fc685c4c8f4c9f0955edc779.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/graphics/images/village_human_houses_01_Normal.jpg"
-dest_files=["res://.godot/imported/village_human_houses_01_Normal.jpg-2c26bfd4fc685c4c8f4c9f0955edc779.s3tc.ctex", "res://.godot/imported/village_human_houses_01_Normal.jpg-2c26bfd4fc685c4c8f4c9f0955edc779.etc2.ctex"]
+dest_files=["res://.godot/imported/village_human_houses_01_Normal.jpg-2c26bfd4fc685c4c8f4c9f0955edc779.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true

@@ -50,7 +50,6 @@ public static class TerrainPropsSystems
                 {
                     AddDecoration(terrainProps, entity, overlayTerrainSlot.Entity);
                     AddDirectionalDecoration(terrainProps, entity, overlayTerrainSlot.Entity);
-
                 }
             }
 
@@ -67,7 +66,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, _, _) = Tiles.Get(tileEntity);
 
         var position = coords.ToWorld();
-        position.y = elevation.Height - Metrics.ElevationStep * 0.5f;
+        position.Y = elevation.Height - Metrics.ElevationStep * 0.5f;
 
         props.AddRenderData(Data.WaterGraphics[code.Value].Mesh, position, Vector3.Zero);
     }
@@ -118,7 +117,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, plateauArea, neighbors) = Tiles.Get(tileEntity);
 
         var center = coords.ToWorld();
-        center.y = elevation.Height + offset.Value;
+        center.Y = elevation.Height + offset.Value;
 
         for (var i = 0; i < 6; i++)
         {
@@ -181,7 +180,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, _, neighbors) = Tiles.Get(tileEntity);
 
         var center = coords.ToWorld();
-        center.y = elevation.Height + offset.Value;
+        center.Y = elevation.Height + offset.Value;
 
         for (var i = 0; i < 6; i++)
         {
@@ -220,7 +219,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, _, neighbors) = Tiles.Get(tileEntity);
 
         var center = coords.ToWorld();
-        center.y = elevation.Height + offset.Value;
+        center.Y = elevation.Height + offset.Value;
 
         for (var i = 0; i < 6; i++)
         {
@@ -274,7 +273,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, _, neighbors) = Tiles.Get(tileEntity);
 
         var center = coords.ToWorld();
-        center.y = elevation.Height + offset.Value;
+        center.Y = elevation.Height + offset.Value;
 
         for (var i = 0; i < 6; i++)
         {
@@ -337,7 +336,7 @@ public static class TerrainPropsSystems
         var (coords, elevation, _, neighbors) = Tiles.Get(tileEntity);
 
         var center = coords.ToWorld();
-        center.y = elevation.Height + offset.Value;
+        center.Y = elevation.Height + offset.Value;
 
         for (var i = 0; i < 6; i++)
         {
@@ -359,7 +358,7 @@ public static class TerrainPropsSystems
 
             if (elevationDiff < 2) continue;
 
-            center.y = nElevation.Height + nOffset.Value;
+            center.Y = nElevation.Height + nOffset.Value;
 
             var position = center + Metrics.GetEdgeMiddle(direction);
 

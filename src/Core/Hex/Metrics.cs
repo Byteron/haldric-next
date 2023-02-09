@@ -27,8 +27,8 @@ public class Metrics
 
     public static Color SampleNoise(Vector3 position)
     {
-        var x = (int)(position.x * NoiseScale) % 512;
-        var z = (int)(position.z * NoiseScale) % 512;
+        var x = (int)(position.X * NoiseScale) % 512;
+        var z = (int)(position.Z * NoiseScale) % 512;
         return Noise.GetPixel(Mathf.Abs(x), Mathf.Abs(z));
     }
 
@@ -36,8 +36,8 @@ public class Metrics
     {
         var sample = SampleNoise(position);
 
-        position.x += (sample.r * 2f - 1f) * CellPerturbStrength;
-        position.z += (sample.g * 2f - 1f) * CellPerturbStrength;
+        position.X += (sample.R * 2f - 1f) * CellPerturbStrength;
+        position.Z += (sample.G * 2f - 1f) * CellPerturbStrength;
 
         return position;
     }

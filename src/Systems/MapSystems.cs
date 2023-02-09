@@ -111,7 +111,7 @@ public static class MapSystems
         var grid = map.Grid;
         var chunkSize = map.ChunkSize;
 
-        var chunks = new System.Collections.Generic.Dictionary<Vector2i, Entity>();
+        var chunks = new System.Collections.Generic.Dictionary<Vector2I, Entity>();
 
         for (var z = 0; z < grid.Height; z++)
         {
@@ -268,7 +268,7 @@ public static class MapSystems
         var (coords, elevation) = tiles.Get(hoveredTile.Entity);
 
         var position = coords.ToWorld();
-        position.y = elevation.Height;
+        position.Y = elevation.Height;
 
         cursor.Position = position;
     }
@@ -343,10 +343,10 @@ public static class MapSystems
     static Dictionary ShootRay(World world)
     {
         var scene = (Node3D)world.GetTree().CurrentScene;
-        var spaceState = scene.GetWorld3d().DirectSpaceState;
+        var spaceState = scene.GetWorld3D().DirectSpaceState;
         var viewport = scene.GetViewport();
 
-        var camera = viewport.GetCamera3d();
+        var camera = viewport.GetCamera3D();
         var mousePosition = viewport.GetMousePosition();
 
         if (camera == null) return new Dictionary();

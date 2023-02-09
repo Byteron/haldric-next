@@ -12,6 +12,13 @@ public class Path
 
 public partial class PathFinder : AStar3D
 {
-    public override double _ComputeCost(long fromId, long toId) { return 1.0f; }
-    public override double _EstimateCost(long fromId, long toId) { return 1.0f; }
+    public override float _ComputeCost(long fromId, long toId)
+    {
+        return 1.0f;
+    }
+
+    public override float _EstimateCost(long fromId, long toId)
+    {
+        return 1.0f;
+    }
 }

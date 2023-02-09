@@ -59,7 +59,8 @@ public partial class Schedule : Node
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_curve", daytime.SkyCurve, 2.5f);
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyTopColor, 2.5f);
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyHorizonColor, 2.5f);
-        tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "ground_horizon_color", daytime.SkyHorizonColor, 2.5f);
+        tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "ground_horizon_color",
+            daytime.SkyHorizonColor, 2.5f);
 
         for (var i = 0; i < _lights.Count; i++)
         {
@@ -71,8 +72,8 @@ public partial class Schedule : Node
             lightTween.SetTrans(Tween.TransitionType.Sine);
             lightTween.SetEase(Tween.EaseType.InOut);
 
-            GD.Print(light.Rotation.x);
-            var currentAngle = Mathf.RadToDeg(light.Rotation.x);
+            GD.Print(light.Rotation.X);
+            var currentAngle = Mathf.RadToDeg(light.Rotation.X);
             var angle = config.Angle;
 
             GD.Print($"Angle: {angle} Current Angle: {currentAngle}");
@@ -88,7 +89,7 @@ public partial class Schedule : Node
 
             lightTween.Parallel().TweenProperty(light, "shadow_enabled", config.Shadows, 2.5f);
             lightTween.Parallel().TweenProperty(light, "shadow_blur", config.ShadowBlur, 2.5f);
-            
+
             lightTween.Finished += () =>
             {
                 GD.Print("Resetting Angle: ", config.Angle);

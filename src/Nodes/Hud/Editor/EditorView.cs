@@ -19,7 +19,7 @@ public partial class EditorView : CanvasLayer
     [Export] public Button LoadButton;
 
     [Export] public TabContainer ToolsTab;
-    
+
     [Export] public HSlider BrushSizeSlider;
     [Export] public HSlider ElevationSlider;
 
@@ -64,11 +64,11 @@ public partial class EditorView : CanvasLayer
         foreach (var (coords, id) in Players)
         {
             var label = new Label();
-            label.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
-            label.CustomMinimumSize = new Vector2i(0, 50);
+            label.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+            label.CustomMinimumSize = new Vector2I(0, 50);
             label.VerticalAlignment = VerticalAlignment.Center;
             label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.Text = $"Player: {id}, Position: {coords.ToOffset().x}, {coords.ToOffset().z}";
+            label.Text = $"Player: {id}, Position: {coords.ToOffset().X}, {coords.ToOffset().Z}";
 
             PlayerContainer.AddChild(label);
         }

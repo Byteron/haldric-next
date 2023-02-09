@@ -12,12 +12,12 @@ public partial class FloatingLabel : Control
         label.Color = color;
         return label;
     }
-    
+
     public Vector3 WorldPosition { get; set; }
     public Color Color { get; set; }
     public string Text { get; set; }
 
-     Label _label;
+    Label _label;
 
     public override void _Ready()
     {
@@ -36,14 +36,14 @@ public partial class FloatingLabel : Control
 
     public override void _Process(double delta)
     {
-        var camera = GetViewport().GetCamera3d();
+        var camera = GetViewport().GetCamera3D();
 
         if (camera == null)
         {
             QueueFree();
             return;
         }
-        
+
         if (camera.IsPositionBehind(WorldPosition))
         {
             Hide();

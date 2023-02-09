@@ -16,23 +16,23 @@ public static class Hex
     public static Vector3 Cube2Axial(Vector3 cube)
     {
         //return new Vector3(cube.x, 0, cube.z);
-        cube.y = 0;
+        cube.Y = 0;
         return cube;
     }
 
     public static Vector3 Axial2Cube(Vector3 axial)
     {
         //return new Vector3(axial.x, -axial.x - axial.z, axial.z);
-        axial.y = -axial.x - axial.z;
+        axial.Y = -axial.X - axial.Z;
         return axial;
     }
 
     public static Vector3 World2Axial(Vector3 position)
     {
-        var fx = position.x / (Metrics.InnerRadius * 2.0f);
+        var fx = position.X / (Metrics.InnerRadius * 2.0f);
         var fy = -fx;
 
-        var offset = position.z / (Metrics.OuterRadius * 3.0f);
+        var offset = position.Z / (Metrics.OuterRadius * 3.0f);
         fx -= offset;
         fy -= offset;
 
@@ -61,8 +61,8 @@ public static class Hex
 
     public static int Offset2Id(Vector3 offset, int width)
     {
-        var x = (int)offset.x;
-        var z = (int)offset.z;
+        var x = (int)offset.X;
+        var z = (int)offset.Z;
 
         return z * width + x;
     }
@@ -83,9 +83,9 @@ public static class Hex
 
     public static Vector3 Offset2World(Vector3 offset)
     {
-        var zOffset = System.Math.Abs(offset.z);
-        var x = ((int)offset.x + (int)zOffset * 0.5f - (int)zOffset / 2) * (Metrics.InnerRadius * 2.0f);
-        var z = (int)offset.z * Metrics.OuterRadius * 1.5f;
+        var zOffset = System.Math.Abs(offset.Z);
+        var x = ((int)offset.X + (int)zOffset * 0.5f - (int)zOffset / 2) * (Metrics.InnerRadius * 2.0f);
+        var z = (int)offset.Z * Metrics.OuterRadius * 1.5f;
         return new Vector3(x, 0, z);
     }
 
@@ -112,15 +112,15 @@ public static class Hex
 
     public static Vector3 Cube2Offset(Vector3 cube)
     {
-        cube.x += (cube.z - ((int)cube.z & 1)) / 2;
-        cube.y = 0;
+        cube.X += (cube.Z - ((int)cube.Z & 1)) / 2;
+        cube.Y = 0;
         return cube;
     }
 
     public static Vector3 Offset2Cube(Vector3 offset)
     {
-        offset.x -= (offset.z - ((int)offset.z & 1)) / 2;
-        offset.y = -offset.x - offset.z;
+        offset.X -= (offset.Z - ((int)offset.Z & 1)) / 2;
+        offset.Y = -offset.X - offset.Z;
         return offset;
     }
 
@@ -212,7 +212,7 @@ public static class Hex
 
     public static int GetDistance(Vector3 cube1, Vector3 cube2)
     {
-        return (int)Mathf.Max(Mathf.Abs(cube1.x - cube2.x),
-            Mathf.Max(Mathf.Abs(cube1.y - cube2.y), Mathf.Abs(cube1.z - cube2.z)));
+        return (int)Mathf.Max(Mathf.Abs(cube1.X - cube2.X),
+            Mathf.Max(Mathf.Abs(cube1.Y - cube2.Y), Mathf.Abs(cube1.Z - cube2.Z)));
     }
 }

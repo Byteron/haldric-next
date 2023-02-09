@@ -23,7 +23,7 @@ public static class EditorSystems
         foreach (var (code, entity) in data.TerrainEntities)
         {
             var button = new Button();
-            button.CustomMinimumSize = new Vector2i(50, 50);
+            button.CustomMinimumSize = new Vector2I(50, 50);
             button.Text = code;
             button.Pressed += () => world.GetElement<SelectedTerrain>().Entity = entity;
             view.Terrains.AddChild(button);
@@ -53,7 +53,7 @@ public static class EditorSystems
     {
         var view = world.GetElement<EditorView>();
 
-        if (view.WidthTextEdit.Text.IsValidInteger() && view.HeightTextEdit.Text.IsValidInteger())
+        if (view.WidthTextEdit.Text.IsValidInt() && view.HeightTextEdit.Text.IsValidInt())
         {
             var width = int.Parse(view.WidthTextEdit.Text);
             var height = int.Parse(view.HeightTextEdit.Text);
@@ -151,7 +151,7 @@ public static class EditorSystems
             var flagView = Scenes.Instantiate<FlagView>();
             scene.AddChild(flagView);
             var pos = coords.ToWorld();
-            pos.y = elevation.Height + elevationOffset.Value;
+            pos.Y = elevation.Height + elevationOffset.Value;
             flagView.Position = pos;
 
             world.On(tileEntity)

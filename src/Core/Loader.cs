@@ -53,7 +53,7 @@ public static class Loader
         while (true)
         {
             var subPath = directory.GetNext();
-            if (subPath is "." or ".." || subPath.BeginsWith("_")) continue;
+            if (subPath is "." or ".." || subPath.StartsWith("_")) continue;
 
             if (subPath == "") break;
 

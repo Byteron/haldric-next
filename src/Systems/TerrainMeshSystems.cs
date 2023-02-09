@@ -55,7 +55,7 @@ public static class TerrainMeshSystems
                 var elevationOffset = elevationOffsets.Get(baseTerrainSlot.Entity);
                 
                 var center = coords.ToWorld();
-                center.y = elevation.Height + elevationOffset.Value;
+                center.Y = elevation.Height + elevationOffset.Value;
                 
                 for (var direction = Direction.E; direction <= Direction.NE; direction++)
                 {
@@ -80,10 +80,10 @@ public static class TerrainMeshSystems
                         var nElevationOffset = elevationOffsets.Get(nBaseTerrainSlot.Entity);
                         
                         var nCenter = nCoords.ToWorld();
-                        nCenter.y = nElevation.Height + nElevationOffset.Value;
+                        nCenter.Y = nElevation.Height + nElevationOffset.Value;
                         
                         var bridge = Metrics.GetBridge(direction, nPlateauArea.BlendFactor);
-                        bridge.y = nCenter.y - center.y;
+                        bridge.Y = nCenter.Y - center.Y;
 
                         var e2 = new EdgeVertices(
                             e1.V1 + bridge,
@@ -102,32 +102,32 @@ public static class TerrainMeshSystems
                         var nextElevationOffset = elevationOffsets.Get(nextBaseTerrainSlot.Entity);
                         
                         var nextCenter = nextCoords.ToWorld();
-                        nextCenter.y = nextElevation.Height + nextElevationOffset.Value;
+                        nextCenter.Y = nextElevation.Height + nextElevationOffset.Value;
 
                         var v6 = e1.V5 + Metrics.GetBridge(direction.Next(), nextPlateauArea.BlendFactor);
-                        v6.y = nextCenter.y;
+                        v6.Y = nextCenter.Y;
                         
                         var indices = new Vector3();
                         
                         if (elevation.Value <= nElevation.Value)
                         {
-                            indices.x = index.Value;
-                            indices.y = nIndex.Value;
-                            indices.z = nextIndex.Value;
+                            indices.X = index.Value;
+                            indices.Y = nIndex.Value;
+                            indices.Z = nextIndex.Value;
                             mesh.TriangulateCorner(e1.V5, e2.V5, v6, indices);
                         }
                         else if (nElevation.Value <= nextElevation.Value)
                         {
-                            indices.x = nIndex.Value;
-                            indices.y = nextIndex.Value;
-                            indices.z = index.Value;
+                            indices.X = nIndex.Value;
+                            indices.Y = nextIndex.Value;
+                            indices.Z = index.Value;
                             mesh.TriangulateCorner(e2.V5, v6, e1.V5, indices);
                         }
                         else
                         {
-                            indices.x = nextIndex.Value;
-                            indices.y = index.Value;
-                            indices.z = nIndex.Value;
+                            indices.X = nextIndex.Value;
+                            indices.Y = index.Value;
+                            indices.Z = nIndex.Value;
                             mesh.TriangulateCorner(v6, e1.V5, e2.V5, indices);
                         }
                     }
@@ -144,8 +144,8 @@ public static class TerrainMeshSystems
         {
             var offset = coords.ToOffset();
 
-            var x = (int)offset.x;
-            var z = (int)offset.z;
+            var x = (int)offset.X;
+            var z = (int)offset.Z;
             var index = terrainTypeIndices.Get(baseTerrainSlot.Entity).Value;
 
             shaderData.UpdateTerrain(x, z, index);

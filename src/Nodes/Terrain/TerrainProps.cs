@@ -9,9 +9,9 @@ public struct RenderData
 
 public partial class TerrainProps : Node3D
 {
-    public readonly Dictionary<ulong, RID> MultiMeshRids = new();
+    public readonly Dictionary<ulong, Rid> MultiMeshRids = new();
     public readonly Dictionary<ulong, List<RenderData>> RenderData = new();
-    public readonly List<RID> Rids = new();
+    public readonly List<Rid> Rids = new();
     public readonly Dictionary<Vector3, int> RandomIndices = new();
     
     public TerrainProps() => Name = "TerrainProps";
@@ -37,14 +37,14 @@ public partial class TerrainProps : Node3D
     {
         foreach (var (meshId, renderDataList) in RenderData)
         {
-            RenderingServer.MultimeshAllocateData(MultiMeshRids[meshId], renderDataList.Count, RenderingServer.MultimeshTransformFormat.Transform3d);
+            RenderingServer.MultimeshAllocateData(MultiMeshRids[meshId], renderDataList.Count, RenderingServer.MultimeshTransformFormat.Transform3D);
             RenderingServer.MultimeshSetVisibleInstances(MultiMeshRids[meshId], renderDataList.Count);
 
             var index = 0;
             foreach (var renderData in renderDataList)
             {
                 var xform = new Transform3D(Basis.Identity, renderData.Position);
-                xform.basis = xform.basis.Rotated(Vector3.Up, renderData.Rotation.y);
+                xform.Basis = xform.Basis.Rotated(Vector3.Up, renderData.Rotation.Y);
                 RenderingServer.MultimeshInstanceSetTransform(MultiMeshRids[meshId], index, xform);
                 index += 1;
             }
@@ -76,12 +76,12 @@ public partial class TerrainProps : Node3D
         renderDatas.Add(renderData);
     }
 
-    RID NewMultiMesh(Resource mesh)
+    Rid NewMultiMesh(Resource mesh)
     {
         var multiMeshRid = RenderingServer.MultimeshCreate();
         var instanceRid = RenderingServer.InstanceCreate();
 
-        var scenarioRid = GetWorld3d().Scenario;
+        var scenarioRid = GetWorld3D().Scenario;
 
         RenderingServer.MultimeshSetMesh(multiMeshRid, mesh.GetRid());
         RenderingServer.InstanceSetScenario(instanceRid, scenarioRid);

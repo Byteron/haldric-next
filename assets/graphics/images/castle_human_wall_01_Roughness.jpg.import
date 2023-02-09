@@ -4,23 +4,22 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cc70cx434txea"
 path.s3tc="res://.godot/imported/castle_human_wall_01_Roughness.jpg-b9105d2badeb1c674770406044f4c8cd.s3tc.ctex"
-path.etc2="res://.godot/imported/castle_human_wall_01_Roughness.jpg-b9105d2badeb1c674770406044f4c8cd.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/graphics/images/castle_human_wall_01_Roughness.jpg"
-dest_files=["res://.godot/imported/castle_human_wall_01_Roughness.jpg-b9105d2badeb1c674770406044f4c8cd.s3tc.ctex", "res://.godot/imported/castle_human_wall_01_Roughness.jpg-b9105d2badeb1c674770406044f4c8cd.etc2.ctex"]
+dest_files=["res://.godot/imported/castle_human_wall_01_Roughness.jpg-b9105d2badeb1c674770406044f4c8cd.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true

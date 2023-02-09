@@ -33,7 +33,7 @@ public class ShaderData
     public void UpdateTerrain(int x, int z, int terrainTypeIndex)
     {
         var index = z * _width + x;
-        _data[index].a8 = terrainTypeIndex;
+        _data[index].A8 = terrainTypeIndex;
     }
 
     public void UpdateLighting(int x, int z, bool isLit)
@@ -45,14 +45,14 @@ public class ShaderData
             return;
         }
 
-        _data[index].b8 = isLit ? 255 : 0;
+        _data[index].B8 = isLit ? 255 : 0;
     }
 
     void ResetLighting(bool isLit)
     {
         for (var i = 0; i < _data.Length; i++)
         {
-            _data[i].b8 = isLit ? 255 : 0;
+            _data[i].B8 = isLit ? 255 : 0;
         }
     }
 
@@ -62,14 +62,14 @@ public class ShaderData
 
         if (index >= _data.Length || index < 0) return;
 
-        _data[index].r8 = isVisible ? 255 : 0;
+        _data[index].R8 = isVisible ? 255 : 0;
     }
 
     void ResetVisibility(bool isVisible)
     {
         for (var i = 0; i < _data.Length; i++)
         {
-            _data[i].r8 = isVisible ? 255 : 0;
+            _data[i].R8 = isVisible ? 255 : 0;
         }
     }
 

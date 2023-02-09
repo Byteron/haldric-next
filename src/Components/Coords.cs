@@ -9,8 +9,8 @@ public class Coords
         var coords = new Coords();
 
         var axial = Hex.Offset2Axial(new Vector3(x, 0, z));
-        coords.X = (int)axial.x;
-        coords.Z = (int)axial.z;
+        coords.X = (int)axial.X;
+        coords.Z = (int)axial.Z;
 
         return coords;
     }
@@ -20,8 +20,8 @@ public class Coords
         var coords = new Coords();
 
         var axial = Hex.World2Axial(position);
-        coords.X = (int)axial.x;
-        coords.Z = (int)axial.z;
+        coords.X = (int)axial.X;
+        coords.Z = (int)axial.Z;
 
         return coords;
     }
@@ -31,8 +31,8 @@ public class Coords
         var coords = new Coords();
 
         var axial = Hex.Cube2Axial(cube);
-        coords.X = (int)axial.x;
-        coords.Z = (int)axial.z;
+        coords.X = (int)axial.X;
+        coords.Z = (int)axial.Z;
 
         return coords;
     }
@@ -72,13 +72,13 @@ public class Coords
 
     public int GetIndex(int width)
     {
-        return (int)ToOffset().z * width + (int)ToOffset().x;
+        return (int)ToOffset().Z * width + (int)ToOffset().X;
     }
 
-    public Vector2i GetChunk(Vector2i chunkSize)
+    public Vector2I GetChunk(Vector2I chunkSize)
     {
-        var chunk = ToOffset() / new Vector3(chunkSize.x, 0f, chunkSize.y);
-        return new Vector2i((int)chunk.x, (int)chunk.z);
+        var chunk = ToOffset() / new Vector3(chunkSize.X, 0f, chunkSize.Y);
+        return new Vector2I((int)chunk.X, (int)chunk.Z);
     }
 
     public override bool Equals(object obj)

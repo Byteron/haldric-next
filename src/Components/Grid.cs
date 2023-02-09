@@ -3,8 +3,8 @@ using RelEcs;
 
 public class Grid
 {
-    public int Width { get; set; }
-    public int Height { get; set; }
+    public int Width { get; }
+    public int Height { get; }
 
     public Grid(int width, int height)
     {
@@ -14,8 +14,8 @@ public class Grid
 
     public bool IsCoordsInGrid(Coords coords)
     {
-        return coords.ToOffset().x > -1 && coords.ToOffset().x < Width
-            && coords.ToOffset().z > -1 && coords.ToOffset().z < Height;
+        return coords.ToOffset().X > -1 && coords.ToOffset().X < Width
+            && coords.ToOffset().Z > -1 && coords.ToOffset().Z < Height;
     }
 
     public override string ToString()
