@@ -146,18 +146,15 @@ public static class Hex
         var cells = new List<Vector3>();
 
         var currentCell = NeighborTable[4] * radius;
-        var debug = "";
         for (var i = 0; i < 6; i++)
         {
             for (var r = 0; r < radius; r++)
             {
                 currentCell += NeighborTable[i];
-                debug += currentCell + "\n";
                 cells.Add(cube + currentCell);
             }
         }
 
-        //Debug.Log(debug);
         return cells.ToArray();
     }
 
@@ -212,7 +209,9 @@ public static class Hex
 
     public static int GetDistance(Vector3 cube1, Vector3 cube2)
     {
-        return (int)Mathf.Max(Mathf.Abs(cube1.X - cube2.X),
-            Mathf.Max(Mathf.Abs(cube1.Y - cube2.Y), Mathf.Abs(cube1.Z - cube2.Z)));
+        var dx = Mathf.Abs(cube1.X - cube2.X);
+        var dy = Mathf.Abs(cube1.Y - cube2.Y);
+        var dz = Mathf.Abs(cube1.Z - cube2.Z);
+        return (int)Mathf.Max(dx, Mathf.Max(dy, dz));
     }
 }

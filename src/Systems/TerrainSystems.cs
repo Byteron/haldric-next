@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
-using RelEcs;
 using Godot;
 
 public static class TerrainSystems
@@ -33,7 +31,7 @@ public static class TerrainSystems
             {
                 terrainData.DefaultOverlayBaseTerrains[code] = data.DefaultBase;
             }
-            
+
             terrainData.TerrainEntities.Add(code, entityBuilder.Id());
         }
     }

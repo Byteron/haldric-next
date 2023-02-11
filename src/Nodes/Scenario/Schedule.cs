@@ -55,7 +55,7 @@ public partial class Schedule : Node
         tween.SetTrans(Tween.TransitionType.Sine);
         tween.SetEase(Tween.EaseType.InOut);
 
-        tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_energy", daytime.SkyEnergy, 2.5f);
+        tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_energy_multiplier", daytime.SkyEnergy, 2.5f);
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_curve", daytime.SkyCurve, 2.5f);
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_top_color", daytime.SkyTopColor, 2.5f);
         tween.Parallel().TweenProperty(_env.Environment.Sky.SkyMaterial, "sky_horizon_color", daytime.SkyHorizonColor, 2.5f);

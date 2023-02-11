@@ -1,7 +1,9 @@
 <Project Sdk="Godot.NET.Sdk/4.0.0-rc.1">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nakama">
