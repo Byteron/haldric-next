@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://c6qntdwp2fv6m"]
+[gd_resource type="Shader" format=3 uid="uid://tuxf4qhxqhxn"]
 
 [resource]
 code = "shader_type spatial;
@@ -7,6 +7,9 @@ render_mode unshaded;
 uniform vec4 chasm_color : source_color = vec4(0.2, 0.1, 0.35, 1.0);
 uniform vec4 chasm_bottom_color : source_color = vec4(0, 0, 0,1.0);
 uniform float chasm_intensity : hint_range(0, 20, 0.01) = 0.3;
+uniform sampler2D depth_texture : hint_depth_texture;
+uniform sampler2D screen_texture : hint_screen_texture;
+
 varying mat4 CAMERA;
 
 void vertex() {
@@ -16,7 +19,7 @@ void vertex() {
 void fragment() {
 
 	// extract world position for everything behind the mesh
-	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).x; // read depth_texture
+	float depth = texture(depth_texture, SCREEN_UV).x; // read depth_texture
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth); // convert to Normalized Device Coordinates in (-1,1) space
 	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0); // convert NDC to view space. View space is positions relative to the camera, so z is the distance to the point
 	view.xyz /= view.w;
@@ -33,7 +36,7 @@ void fragment() {
 	
 	// add chasm color
 	vec4 color_gradient = mix(chasm_bottom_color, chasm_color, offset_depth); // bottom color comes first in the mix due to exp(-Z) above
-	vec4 depth_color = mix(color_gradient, texture(SCREEN_TEXTURE,SCREEN_UV), offset_depth); // mix color gradient and underlying terrain
+	vec4 depth_color = mix(color_gradient, texture(screen_texture, SCREEN_UV), offset_depth); // mix color gradient and underlying terrain
 	
 //	ALBEDO = vec3 (color_gradient.rgb); // use only for previewing the color gradient
 	ALBEDO = vec3 (depth_color.rgb);

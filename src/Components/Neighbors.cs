@@ -1,14 +1,20 @@
 using RelEcs;
-using RelEcs.Godot;
 
 public class Neighbors
 {
-    public Entity[] Array { get; } = new Entity[6];
+    public Entity[] Array =
+    {
+        Entity.None,
+        Entity.None,
+        Entity.None,
+        Entity.None,
+        Entity.None,
+        Entity.None,
+    };
 
     public bool Has(Direction direction)
     {
-        var entity = Array[(int)direction];
-        return entity is not null && entity.IsAlive;
+        return Array[(int)direction] != Entity.None;
     }
 
     public Entity Get(Direction direction)

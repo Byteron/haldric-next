@@ -1,0 +1,11 @@
+{
+    "Name": "Elves",
+    "Recruits": [
+        "Elvish Fighter",
+        "Elvish Scout",
+        "Elvish Archer"
+    ],
+    "Leaders": [
+        "Elvish Fighter"
+    ]
+}

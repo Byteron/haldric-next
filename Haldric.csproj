@@ -1,0 +1,13 @@
+<Project Sdk="Godot.NET.Sdk/4.0.0-rc.1">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Nakama">
+      <HintPath>addons\nakama\Nakama.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

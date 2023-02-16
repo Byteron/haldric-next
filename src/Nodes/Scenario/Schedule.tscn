@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://80gmh4nc6ksl"]
+
+[ext_resource type="Script" path="res://src/Nodes/Scenario/Schedule.cs" id="1_86m31"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rjtho"]
+
+[sub_resource type="Sky" id="Sky_p3p4s"]
+sky_material = SubResource("ProceduralSkyMaterial_rjtho")
+
+[sub_resource type="Environment" id="Environment_eg5mb"]
+background_mode = 2
+sky = SubResource("Sky_p3p4s")
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+
+[node name="Schedule" type="Node" node_paths=PackedStringArray("_daytimes", "_env", "_lightContainer")]
+script = ExtResource("1_86m31")
+_daytimes = NodePath("Daytimes")
+_env = NodePath("WorldEnvironment")
+_lightContainer = NodePath("Pivot/LightContainer")
+
+[node name="Daytimes" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eg5mb")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="LightContainer" type="Node3D" parent="Pivot"]

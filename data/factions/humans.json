@@ -1,0 +1,11 @@
+{
+    "Name": "Humans",
+    "Recruits": [
+        "Spearman",
+        "Bowman",
+        "Cavalryman"
+    ],
+    "Leaders": [
+        "Spearman"
+    ]
+}

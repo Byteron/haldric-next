@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://f676imqjh3bw"]
+[gd_resource type="Shader" format=3 uid="uid://cjs1mmhcndgt5"]
 
 [resource]
 code = "shader_type spatial;
@@ -30,6 +30,9 @@ uniform float far = 100.0;
 uniform vec2 wave_strength = vec2(0.5, 0.25);
 uniform vec2 wave_frequ = vec2(12.0, 12.0);
 uniform vec2 time_factor = vec2(1.0, 2.0);
+
+uniform sampler2D depth_texture : hint_depth_texture;
+uniform sampler2D screen_texture : hint_screen_texture;
 
 //float waves(vec2 pos, float time) {
 //	return (wave_strength.y * sin(pos.y * wave_frequ.y + time * time_factor.y)) + (wave_strength.x * sin(pos.x * wave_frequ.x + time * time_factor.x));
@@ -70,13 +73,13 @@ void fragment() {
 	
 	float sum = (n1.r + n2.r) - 1.0;
 	
-	float z_depth = rim(texture(DEPTH_TEXTURE, SCREEN_UV).x);
+	float z_depth = rim(texture(depth_texture, SCREEN_UV).x);
 	float z_pos = rim(FRAGCOORD.z);
 	float diff = z_depth - z_pos;
 	
 	// depth-fade
 	vec2 disp = vec2(sum * 0.05);
-	float z_depth_fade = calc_depth_fade(texture(DEPTH_TEXTURE, SCREEN_UV + disp).x, PROJECTION_MATRIX, FRAGCOORD, beer_law_factor, _distance, VERTEX);
+	float z_depth_fade = calc_depth_fade(texture(depth_texture, SCREEN_UV + disp).x, PROJECTION_MATRIX, FRAGCOORD, beer_law_factor, _distance, VERTEX);
 	float z_fade = rim(FRAGCOORD.z);
 	float fade_diff = z_depth_fade - z_fade;
 	
@@ -87,7 +90,7 @@ void fragment() {
 	
 	vec4 col = mix(edge_color, gradientcolor, step(edge_scale, diff));
 	
-	vec4 alpha = texture(SCREEN_TEXTURE, SCREEN_UV + displacement);
+	vec4 alpha = texture(screen_texture, SCREEN_UV + displacement);
 	
 	
 	float fin = 0.0;

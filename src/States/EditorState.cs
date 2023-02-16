@@ -1,74 +1,54 @@
-using Godot;
 using RelEcs;
-using Haldric.Wdk;
+using Godot;
 
-public partial class EditorState : GameState
+public class EditorState : IState
 {
-    public override void Init(GameStateController gameStates)
+    // public override void Init()
+    // {
+    //     Enter.Add(new EnterSystem());
+    //     Exit.Add(new ExitSystem());
+    //
+    //     Update
+    //         .Add(new UpdateSystem())
+    //         .Add(new EditorEditTerrainSystem())
+    //         .Add(new EditorSystems())
+    //         .Add(new CameraSystems())
+    //         .Add(new UpdateHoveredTileSystem())
+    //         .Add(new UpdateMapCursorSystem())
+    //         .Add(new DebugSystems());
+    // }
+
+    public void Enable(World world)
     {
-        InitSystems.Add(new EditorStateInitSystem())
-            .Add(new SpawnCameraOperatorSystem(this));
-
-        InputSystems.Add(new ChangeDaytimeSystem())
-            .Add(new EditorEditTerrainSystem(this))
-            .Add(new EditorEditPlayerSystem(this));
-
-        UpdateSystems.Add(new UpdateTerrainInfoSystem())
-            .Add(new UpdateHoveredLocationSystem(this))
-            .Add(new UpdateMapCursorSystem())
-            .Add(new UpdateCameraOperatorSystem())
-            .Add(new UpdateStatsInfoSystem())
-            .Add(new UpdateMapTriggerSystem())
-            .Add(new UpdateTerrainMeshEventSystem())
-            .Add(new UpdateTerrainFeaturePopulatorEventSystem())
-            .Add(new SaveMapTriggerSystem())
-            .Add(new LoadMapEventSystem())
-            .Add(new DespawnMapTriggerSystem())
-            .Add(new SpawnScheduleTriggerSystem(this))
-            .Add(new SpawnMapTriggerSystem(this))
-            .Add(new ChangeDaytimeTriggerSystem());
-
-        ExitSystems.Add(new EditorStateExitSystem())
-            .Add(new DespawnCameraOperatorSystem());
+        var data = world.GetElement<TerrainData>();
+        
+        world.AddElement(new SelectedTerrain
+        {
+            Entity = data.TerrainEntities["Gg"]
+        });
+        
+        SpawnEditorMenu(world);
+        SpawnCamera(world);
+        
+        SpawnSchedule(world, "DefaultSchedule", 1);
+        
+        SpawnMap(world, 32, 32);
+        UpdateTerrainMesh(world);
+        UpdateTerrainProps(world);
     }
-}
 
-public class EditorStateExitSystem : ISystem
-{
-    public void Run(Commands commands)
+    public void Update(World world)
     {
-        commands.RemoveElement<Commander>();
-        commands.RemoveElement<EditorView>();
-        commands.RemoveElement<Schedule>();
-        commands.Send(new DespawnMapTrigger());
     }
-}
 
-public class EditorStateInitSystem : ISystem
-{
-    public void Run(Commands commands)
+    public void Disable(World world)
     {
-        commands.AddElement(new Commander());
-
-        var editorView = Scenes.Instantiate<EditorView>();
-        editorView.Commands = commands;
-        commands.GetElement<CurrentGameState>().State.AddChild(editorView);
-
-        commands.AddElement(editorView);
-
-        commands.Send(new SpawnScheduleTrigger("DefaultSchedule"));
-        commands.Send(new SpawnMapTrigger());
-        commands.Send(new ChangeDaytimeTrigger());
-    }
-}
-
-public class ChangeDaytimeSystem : ISystem
-{
-    public void Run(Commands commands)
-    {
-        if (!commands.TryGetElement<GameStateController>(out var gameStates)) return;
-
-        if (Input.IsActionPressed("ui_cancel")) gameStates.PopState();
-        if (Input.IsActionPressed("ui_accept")) commands.Send(new ChangeDaytimeTrigger());
+        DespawnCamera(world);
+        DespawnEditorMenu(world);
+        
+        world.RemoveElement<SelectedTerrain>();
+        
+        world.GetElement<Schedule>().QueueFree();
+        world.RemoveElement<Schedule>();
     }
 }

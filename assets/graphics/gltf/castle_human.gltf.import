@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/castle_human.gltf-35e3c0870bb13d379d0aec32317
 
 nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
 meshes/generate_lods=false
@@ -38,11 +39,23 @@ _subresources={
 },
 "meshes": {
 "castle_human_tower_01": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": "",
 "save_to_file/path": "res://assets/graphics/models/castle_human_tower_01.tres"
 },
 "castle_human_wall_01": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
 "save_to_file/enabled": true,
+"save_to_file/make_streamable": "",
 "save_to_file/path": "res://assets/graphics/models/castle_human_wall_01.tres"
 }
 }

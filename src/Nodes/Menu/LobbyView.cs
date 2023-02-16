@@ -4,11 +4,11 @@ using Nakama;
 
 public partial class LobbyView : Control
 {
-    [Signal] public delegate void MessageSubmitted(string message);
-    [Signal] public delegate void ScenarioSelected(string mapName);
-    [Signal] public delegate void JoinButtonPressed();
-    [Signal] public delegate void BackButtonPressed();
-    [Signal] public delegate void CancelButtonPressed();
+    [Signal] public delegate void MessageSubmittedEventHandler(string message);
+    [Signal] public delegate void ScenarioSelectedEventHandler(string mapName);
+    [Signal] public delegate void JoinButtonPressedEventHandler();
+    [Signal] public delegate void BackButtonPressedEventHandler();
+    [Signal] public delegate void CancelButtonPressedEventHandler();
 
     [Export]  PackedScene _chatMessageView;
 
@@ -30,10 +30,10 @@ public partial class LobbyView : Control
         _infoLabel = GetNode<Label>("PanelContainer/HBoxContainer/VBoxContainer2/Label");
         _scenarioOptions = GetNode<OptionButton>("PanelContainer/HBoxContainer/VBoxContainer2/MapOptionButton");
 
-        foreach (var mapName in Data.Instance.Maps.Keys)
-        {
-            _scenarioOptions.AddItem(mapName);
-        }
+        // foreach (var mapName in Data.Instance.Maps.Keys)
+        // {
+        //     _scenarioOptions.AddItem(mapName);
+        // }
 
         _scenarioOptions.Select(0);
         OnMapOptionButtonItemSelected(0);
@@ -95,17 +95,17 @@ public partial class LobbyView : Control
 
      void OnJoinButtonPressed()
     {
-        EmitSignal(nameof(JoinButtonPressed));
+        EmitSignal(nameof(JoinButtonPressedEventHandler));
     }
 
      void OnCancelButtonPressed()
     {
-        EmitSignal(nameof(CancelButtonPressed));
+        EmitSignal(nameof(CancelButtonPressedEventHandler));
     }
 
      void OnMapOptionButtonItemSelected(int index)
     {
-        EmitSignal(nameof(ScenarioSelected), _scenarioOptions.GetItemText(index));
+        EmitSignal(nameof(ScenarioSelectedEventHandler), _scenarioOptions.GetItemText(index));
     }
 
      void OnLineEditTextSubmitted(string text)
@@ -117,13 +117,13 @@ public partial class LobbyView : Control
     {
         if (!string.IsNullOrEmpty(_input.Text))
         {
-            EmitSignal(nameof(MessageSubmitted), _input.Text);
+            EmitSignal(nameof(MessageSubmittedEventHandler), _input.Text);
             _input.Text = "";
         }
     }
 
      void OnBackButtonPressed()
     {
-        EmitSignal(nameof(BackButtonPressed));
+        EmitSignal(nameof(BackButtonPressedEventHandler));
     }
 }

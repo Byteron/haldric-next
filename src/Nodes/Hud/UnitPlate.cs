@@ -18,12 +18,12 @@ public partial class UnitPlate : Control
     public bool IsLeader;
     public bool IsHero;
 
-     TextureProgressBar _healthBar;
-     TextureProgressBar _xpBar;
-     ColorRect _sideColorRect;
-     ColorRect _heroColorRect;
-     ColorRect _leaderColorRect;
-     Control _actionContainer;
+    TextureProgressBar _healthBar;
+    TextureProgressBar _xpBar;
+    ColorRect _sideColorRect;
+    ColorRect _heroColorRect;
+    ColorRect _leaderColorRect;
+    Control _actionContainer;
 
     public override void _Ready()
     {
@@ -35,9 +35,9 @@ public partial class UnitPlate : Control
         _actionContainer = GetNode<Control>("VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer");
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
-        var camera = GetViewport().GetCamera3d();
+        var camera = GetViewport().GetCamera3D();
 
         if (camera == null)
         {
@@ -73,11 +73,11 @@ public partial class UnitPlate : Control
         {
             var colorRect = new ColorRect
             {
-                SizeFlagsHorizontal = (int)SizeFlags.ExpandFill
+                SizeFlagsHorizontal = SizeFlags.ExpandFill
             };
 
             colorRect.Color = i < Moves ? new Color(0.8f, 1f, 0.8f) : new Color(0f, 0.4f, 0f);
-            
+
             _actionContainer.AddChild(colorRect);
         }
 

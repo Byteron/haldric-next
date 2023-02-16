@@ -19,19 +19,19 @@ public partial class TerrainHighlighter : Node3D
 
         Path.Clear();
     }
-    public void ShowPath(Path path)
-    {
-        foreach (var pLocEntity in path.Checkpoints)
-        {
-            var coords = pLocEntity.Get<Coords>();
-            var elevation = pLocEntity.Get<Elevation>();
+    // public void ShowPath(Path path)
+    // {
+    //     foreach (var pLocEntity in path.Checkpoints)
+    //     {
+    //         var coords = pLocEntity.Get<Coords>();
+    //         var elevation = pLocEntity.Get<Elevation>();
 
-            var pos = coords.World();
-            pos.y = elevation.Height;
+    //         var pos = coords.World();
+    //         pos.y = elevation.Height;
 
-            PlaceHighlight(pos, new Color("FFFFFF"), 0.7f);
-        }
-    }
+    //         PlaceHighlight(pos, new Color("FFFFFF"), 0.7f);
+    //     }
+    // }
 
     public void PlaceHighlight(Vector3 position, Color color, float scaleFactor)
     {

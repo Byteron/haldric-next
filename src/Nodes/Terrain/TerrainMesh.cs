@@ -13,17 +13,14 @@ public partial class TerrainMesh : MeshInstance3D
 
     int _vertexIndex;
 
-    public TerrainMesh() { Name = "TerrainMesh"; }
+    public TerrainMesh()
+    {
+        Name = "TerrainMesh";
+    }
 
     public override void _Ready()
     {
         _surfaceTool = new SurfaceTool();
-
-        var material = GD.Load<Material>("res://assets/graphics/materials/terrain.tres");
-        material.Set("shader_param/textures", Data.Instance.TextureArray);
-        material.Set("shader_param/normal_textures", Data.Instance.NormalTextureArray);
-        material.Set("shader_param/roughness_textures", Data.Instance.RoughnessTextureArray);
-        MaterialOverride = material;
     }
 
     public void Clear()
@@ -46,13 +43,13 @@ public partial class TerrainMesh : MeshInstance3D
         {
             var type = _cellIndices[i];
 
-            var xy = new Vector2(type.x, type.y);
-            var xz = new Vector2(type.x, type.z);
+            var xy = new Vector2(type.X, type.Y);
+            var xz = new Vector2(type.X, type.Z);
 
             _surfaceTool.SetColor(_cellWeights[i]);
             _surfaceTool.SetSmoothGroup((uint)_smoothGroups[i]);
-            _surfaceTool.SetUv(xy);
-            _surfaceTool.SetUv2(xz);
+            _surfaceTool.SetUV(xy);
+            _surfaceTool.SetUV2(xz);
             _surfaceTool.AddVertex(_vertices[i]);
         }
 
@@ -94,7 +91,10 @@ public partial class TerrainMesh : MeshInstance3D
         _vertexIndex += 3;
     }
 
-    public void AddTriangleCellData(Vector3 indices, Color w) { AddTriangleCellData(indices, w, w, w); }
+    public void AddTriangleCellData(Vector3 indices, Color w)
+    {
+        AddTriangleCellData(indices, w, w, w);
+    }
 
     public void AddTriangleCellData(Vector3 indices, Color w1, Color w2, Color w3)
     {
@@ -139,9 +139,15 @@ public partial class TerrainMesh : MeshInstance3D
         _vertexIndex += 4;
     }
 
-    public void AddQuadCellData(Vector3 indices, Color w) { AddQuadCellData(indices, w, w, w, w); }
+    public void AddQuadCellData(Vector3 indices, Color w)
+    {
+        AddQuadCellData(indices, w, w, w, w);
+    }
 
-    public void AddQuadCellData(Vector3 indices, Color w1, Color w2) { AddQuadCellData(indices, w1, w1, w2, w2); }
+    public void AddQuadCellData(Vector3 indices, Color w1, Color w2)
+    {
+        AddQuadCellData(indices, w1, w1, w2, w2);
+    }
 
     public void AddQuadCellData(Vector3 indices, Color w1, Color w2, Color w3, Color w4)
     {

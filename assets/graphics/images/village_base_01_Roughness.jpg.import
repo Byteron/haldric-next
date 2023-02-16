@@ -4,23 +4,22 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://83sxwne6hmic"
 path.s3tc="res://.godot/imported/village_base_01_Roughness.jpg-277fb9e15a76002fe98b515208f4cdc7.s3tc.ctex"
-path.etc2="res://.godot/imported/village_base_01_Roughness.jpg-277fb9e15a76002fe98b515208f4cdc7.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/graphics/images/village_base_01_Roughness.jpg"
-dest_files=["res://.godot/imported/village_base_01_Roughness.jpg-277fb9e15a76002fe98b515208f4cdc7.s3tc.ctex", "res://.godot/imported/village_base_01_Roughness.jpg-277fb9e15a76002fe98b515208f4cdc7.etc2.ctex"]
+dest_files=["res://.godot/imported/village_base_01_Roughness.jpg-277fb9e15a76002fe98b515208f4cdc7.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true

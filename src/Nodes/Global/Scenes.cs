@@ -24,7 +24,7 @@ public partial class Scenes : Node
     [Export] PackedScene TerrainHighlighter;
 
     [Export] PackedScene CameraOperator;
-
+    
     [Export] PackedScene FloatingLabel;
     [Export] PackedScene UnitPlate;
 
@@ -36,8 +36,8 @@ public partial class Scenes : Node
         Instance = this;
     }
 
-    public static CT Instantiate<CT>() where CT: Node
+    public static T Instantiate<T>() where T: Node
     {
-        return (Instance.Get(typeof(CT).ToString()) as PackedScene).Instantiate<CT>();
+        return (Instance.Get(typeof(T).Name).AsGodotObject() as PackedScene).Instantiate<T>();
     }
 }

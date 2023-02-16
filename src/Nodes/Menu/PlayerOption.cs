@@ -3,9 +3,9 @@ using Godot;
 
 public partial class PlayerOption : HBoxContainer
 {
-    [Signal] public delegate void FactionChanged(int side, int index);
-    [Signal] public delegate void PlayerChanged(int side, int index);
-    [Signal] public delegate void GoldChanged(int side, int value);
+    [Signal] public delegate void FactionChangedEventHandler(int side, int index);
+    [Signal] public delegate void PlayerChangedEventHandler(int side, int index);
+    [Signal] public delegate void GoldChangedEventHandler(int side, int value);
 
     public int LocalPlayerId { get; set; }
     public int Side { get; set; }
@@ -90,18 +90,18 @@ public partial class PlayerOption : HBoxContainer
 
      void OnPlayerOptionButtonItemSelected(int index)
     {
-        EmitSignal(nameof(PlayerChanged), Side, index);
+        EmitSignal(nameof(PlayerChangedEventHandler), Side, index);
     }
 
      void OnFactionOptionButtonItemSelected(int index)
     {
-        EmitSignal(nameof(FactionChanged), Side, index);
+        EmitSignal(nameof(FactionChangedEventHandler), Side, index);
     }
 
      void OnGoldSliderValueChanged(int value)
     {
         Gold = value;
         _goldLabel.Text = $"Gold: {Gold}";
-        EmitSignal(nameof(GoldChanged), Side, Gold);
+        EmitSignal(nameof(GoldChangedEventHandler), Side, Gold);
     }
 }
