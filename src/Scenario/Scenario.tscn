@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bk7yq4ttk3d6h"]
+[gd_scene load_steps=9 format=3 uid="uid://bk7yq4ttk3d6h"]
 
 [ext_resource type="Script" path="res://src/Scenario/Scenario.cs" id="1_ly5lp"]
 [ext_resource type="PackedScene" uid="uid://jkoh2decm7ry" path="res://src/Camera/CameraOperator.tscn" id="2_mcv2u"]
+[ext_resource type="PackedScene" uid="uid://bmq0edies1rl4" path="res://src/Unit/Unit.tscn" id="3_ich66"]
 [ext_resource type="PackedScene" uid="uid://dh8l0ahkbynv8" path="res://src/Map/Map.tscn" id="3_t7h7g"]
 [ext_resource type="PackedScene" uid="uid://dikc4cney8yht" path="res://src/Scenario/Hud/ScenarioHud.tscn" id="4_vegfg"]
 
@@ -21,6 +22,7 @@ tonemap_mode = 3
 script = ExtResource("1_ly5lp")
 _hud = NodePath("ScenarioHud")
 _mapScene = ExtResource("3_t7h7g")
+_unitScene = ExtResource("3_ich66")
 _cameraOperator = NodePath("CameraOperator")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

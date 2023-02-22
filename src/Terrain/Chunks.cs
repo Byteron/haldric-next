@@ -65,8 +65,7 @@ public partial class Chunks : Node3D
             var chunk = _chunks[tile.ChunkCell];
             var mesh = chunk.Mesh;
 
-            var center = coords.ToWorld();
-            center.Y = tile.Elevation * Metrics.ElevationStep;
+            var center = tile.WorldPosition;
 
             for (var direction = Direction.E; direction <= Direction.Ne; direction++)
             {
@@ -82,8 +81,7 @@ public partial class Chunks : Node3D
                 var nTile = tile.Neighbors.Get(direction);
                 if (nTile is null) continue;
 
-                var nCenter = nTile.Coords.ToWorld();
-                nCenter.Y = nTile.Elevation * Metrics.ElevationStep;
+                var nCenter = nTile.WorldPosition;
 
                 var bridge = Metrics.GetBridge(direction, nTile.BlendFactor);
                 bridge.Y = nCenter.Y - center.Y;
@@ -99,8 +97,7 @@ public partial class Chunks : Node3D
                 var nextTile = tile.Neighbors.Get(direction.Next());
                 if (nextTile is null) continue;
 
-                var nextCenter = nextTile.Coords.ToWorld();
-                nextCenter.Y = nextTile.Elevation * Metrics.ElevationStep;
+                var nextCenter = nextTile.WorldPosition;
 
                 var v6 = e1.V5 + Metrics.GetBridge(direction.Next(), nextTile.BlendFactor);
                 v6.Y = nextCenter.Y;
@@ -191,11 +188,8 @@ public partial class Chunks : Node3D
 
         if (!Data.Instance.WaterGraphics.ContainsKey(code)) return;
 
-        var coords = tile.Coords;
-        var elevation = tile.Elevation;
-
-        var position = coords.ToWorld();
-        position.Y = elevation * Metrics.ElevationStep - Metrics.ElevationStep * 0.5f;
+        var position = tile.WorldPosition;
+        position.Y -= Metrics.ElevationStep * 0.5f;
 
         props.AddRenderData(Data.Instance.WaterGraphics[code].Mesh, position, Vector3.Zero);
     }
@@ -207,10 +201,8 @@ public partial class Chunks : Node3D
 
         if (!Data.Instance.Decorations.ContainsKey(code)) return;
 
-        var coords = tile.Coords;
-        var elevation = tile.Elevation;
-
-        var position = coords.ToWorld() + new Vector3(0f, elevation * Metrics.ElevationStep + offset, 0f);
+        var position = tile.WorldPosition;
+        position.Y += offset;
 
         foreach (var terrainGraphic in Data.Instance.Decorations[code].Values)
         {
@@ -246,13 +238,12 @@ public partial class Chunks : Node3D
 
         if (!Data.Instance.DirectionalDecorations.ContainsKey(code)) return;
 
-        var coords = tile.Coords;
         var elevation = tile.Elevation;
         var solidFactor = tile.SolidFactor;
         var neighbors = tile.Neighbors;
 
-        var center = coords.ToWorld();
-        center.Y = elevation * Metrics.ElevationStep + offset;
+        var center = tile.WorldPosition;
+        center.Y += offset;
 
         for (var i = 0; i < 6; i++)
         {
@@ -317,8 +308,8 @@ public partial class Chunks : Node3D
         var elevation = tile.Elevation;
         var neighbors = tile.Neighbors;
 
-        var center = coords.ToWorld();
-        center.Y = elevation * Metrics.ElevationStep + offset;
+        var center = tile.WorldPosition;
+        center.Y += offset;
 
         for (var i = 0; i < 6; i++)
         {
@@ -358,8 +349,8 @@ public partial class Chunks : Node3D
         var elevation = tile.Elevation;
         var neighbors = tile.Neighbors;
 
-        var center = coords.ToWorld();
-        center.Y = elevation * Metrics.ElevationStep + offset;
+        var center = tile.WorldPosition;
+        center.Y += offset;
 
         for (var i = 0; i < 6; i++)
         {
@@ -410,8 +401,8 @@ public partial class Chunks : Node3D
         var elevation = tile.Elevation;
         var neighbors = tile.Neighbors;
 
-        var center = coords.ToWorld();
-        center.Y = elevation * Metrics.ElevationStep + offset;
+        var center = tile.WorldPosition;
+        center.Y += offset;
 
         for (var i = 0; i < 6; i++)
         {
@@ -476,8 +467,8 @@ public partial class Chunks : Node3D
         var elevation = tile.Elevation;
         var neighbors = tile.Neighbors;
 
-        var center = coords.ToWorld();
-        center.Y = elevation * Metrics.ElevationStep + offset;
+        var center = tile.WorldPosition;
+        center.Y += offset;
 
         for (var i = 0; i < 6; i++)
         {

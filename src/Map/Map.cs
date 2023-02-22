@@ -9,7 +9,8 @@ public partial class Map : Node3D
     public delegate void TileHoveredEventHandler(Tile tile);
     
     Grid _grid;
-    Coords _hoveredCoords;
+    public Coords HoveredCoords { get; private set; }
+    public Tile HoveredTile => _tiles[HoveredCoords];
 
     readonly System.Collections.Generic.Dictionary<Coords, Tile> _tiles = new();
 
@@ -79,6 +80,11 @@ public partial class Map : Node3D
         _chunks.UpdateTerrainProps(_tiles);
     }
 
+    public Tile GetTile(Coords coords)
+    {
+        return _tiles[coords];
+    }
+
     void UpdateHoveredCoords()
     {
         var result = ShootRay();
@@ -88,12 +94,12 @@ public partial class Map : Node3D
         var position = (Vector3)result["position"];
         var coords = Coords.FromWorld(position);
 
-        if (_hoveredCoords == coords) return;
+        if (HoveredCoords == coords) return;
         if (!_tiles.TryGetValue(coords, out var tile)) return;
         
-        _hoveredCoords = coords;
+        HoveredCoords = coords;
         
-        GD.Print(_hoveredCoords);
+        GD.Print(HoveredCoords);
         EmitSignal(SignalName.TileHovered, tile);
     }
 

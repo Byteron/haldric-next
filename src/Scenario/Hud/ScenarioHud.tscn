@@ -2,10 +2,19 @@
 
 [ext_resource type="Script" path="res://src/Scenario/Hud/ScenarioHud.cs" id="1_xf2fp"]
 
-[node name="ScenarioHud" type="CanvasLayer" node_paths=PackedStringArray("_terrainLabel")]
+[node name="ScenarioHud" type="CanvasLayer" node_paths=PackedStringArray("_terrainLabel", "_unitLabel")]
 script = ExtResource("1_xf2fp")
 _terrainLabel = NodePath("TerrainLabel")
+_unitLabel = NodePath("UnitLabel")
 
 [node name="TerrainLabel" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="UnitLabel" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0

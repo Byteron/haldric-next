@@ -19,8 +19,12 @@ public partial class Tile : RefCounted
     public Terrain BaseTerrain = default!;
     public Terrain? OverlayTerrain;
 
+    public Unit? Unit;
+    
     public int Distance;
     public Coords PathFrom;
+
+    public Vector3 WorldPosition => Coords.ToWorld() + new Vector3(0, Elevation * Metrics.ElevationStep, 0);
 }
 
 public class Neighbors
