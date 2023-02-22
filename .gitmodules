@@ -1,6 +1,0 @@
-[submodule "addons/RelEcs"]
-	path = addons/RelEcs
-	url = https://github.com/Byteron/RelEcs
-[submodule "addons/RelEcsGodot"]
-	path = addons/RelEcsGodot
-	url = https://github.com/Byteron/RelEcsGodot

@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://btfu5vqdkro0v"]
-
-[ext_resource type="PackedScene" uid="uid://gxwfifx2mip" path="res://assets/graphics/gltf/orc_archer.gltf" id="1_lafdl"]
-
-[node name="orc_archer" instance=ExtResource( "1_lafdl" )]
-
-[node name="AnimationPlayer" parent="." index="1"]
-blend_times = []
