@@ -1,0 +1,105 @@
+[gd_resource type="Shader" format=3 uid="uid://car74vsradi2t"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform float texture_zoom : hint_range(0,1);
+uniform sampler2DArray textures : source_color;
+uniform sampler2D cell_texture : source_color;
+
+uniform sampler2DArray normal_textures : hint_normal;
+uniform float normal_scale : hint_range(-16,16);
+
+uniform float roughness : hint_range(0,1);
+uniform sampler2DArray roughness_textures : source_color;
+
+uniform vec2 texel_size;
+
+varying vec3 terrain;
+varying vec3 visibility;
+
+vec4 get_cell_data(vec3 uvw, int index)
+{
+	vec2 uv;
+	
+	uv.x = (uvw[index] + 0.5) * texel_size.x;
+	
+	float row = floor(uv.x);
+	uv.x -= row;
+	uv.y = (row + 0.5) * texel_size.y;
+	
+	vec4 data = texture(cell_texture, uv);
+	data.a *= 255.0;
+	return data;
+}
+
+vec4 get_terrain_color(vec4 color, vec2 position, int index)
+{
+	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
+	vec4 c = texture(textures, uvw);
+	return c * color[index] * visibility[index];
+}
+
+vec4 get_terrain_normal(vec2 position, int index)
+{
+	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
+	vec4 n = texture(normal_textures, uvw);
+	return n;
+}
+
+float get_terrain_roughness(vec2 position, int index)
+{
+	vec3 uvw = vec3(position.xy * texture_zoom, terrain[index]);
+	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
+	float r = dot(texture(roughness_textures, uvw), roughness_texture_channel);
+	return r;
+}
+
+void vertex()
+{
+	vec3 uvw = vec3(UV, UV2.y);
+	vec4 cell0 = get_cell_data(uvw, 0);
+	vec4 cell1 = get_cell_data(uvw, 1);
+	vec4 cell2 = get_cell_data(uvw, 2);
+	
+	terrain.x = cell0.a;
+	terrain.y = cell1.a;
+	terrain.z = cell2.a;
+	
+	visibility.x = cell0.r;
+	visibility.y = cell1.r;
+	visibility.z = cell2.r;
+	
+	visibility = mix(vec3(0.25), vec3(1.0), visibility);
+}
+
+//void light()
+//{
+//	vec3 uvw = vec3(UV, UV2.y);
+//	vec4 cell0 = get_cell_data(uvw, 0);
+//	vec4 cell1 = get_cell_data(uvw, 1);
+//	vec4 cell2 = get_cell_data(uvw, 2);
+//
+//	vec3 lighting;
+//
+//	lighting.x = cell0.b;
+//	lighting.y = cell1.b;
+//	lighting.z = cell2.b;
+//
+//	DIFFUSE_LIGHT = mix(vec3(0.0), vec3(1.0), visibility);
+//}
+
+void fragment()
+{
+	vec2 pos = ((INV_VIEW_MATRIX) * vec4(VERTEX, 1.0)).xz;
+	
+	vec4 c = get_terrain_color(COLOR, pos, 0) + get_terrain_color(COLOR, pos, 1) + get_terrain_color(COLOR, pos, 2);
+	vec4 n = get_terrain_normal(pos, 0) + get_terrain_normal(pos, 1) + get_terrain_normal(pos, 2);
+	float r = get_terrain_roughness(pos, 0) + get_terrain_roughness(pos, 1) + get_terrain_roughness(pos, 2);
+	
+	ALBEDO = c.rgb;
+	NORMAL_MAP = n.rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
+	ROUGHNESS = r * roughness;
+}"

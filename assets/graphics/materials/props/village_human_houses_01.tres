@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://blpjmsbdf2j56"]
+
+[ext_resource type="Texture2D" uid="uid://tryxjwcl3sx4" path="res://assets/graphics/images/props/village_human_houses_01_BaseColor.jpg" id="1_1q67s"]
+[ext_resource type="Texture2D" uid="uid://d36f8ew7nfjxk" path="res://assets/graphics/images/props/village_human_houses_01_Emissive.jpg" id="2_sucin"]
+[ext_resource type="Texture2D" uid="uid://cavv854pea6we" path="res://assets/graphics/images/props/village_human_houses_01_Normal.jpg" id="3_splyy"]
+[ext_resource type="Texture2D" uid="uid://b5vawk4bylbol" path="res://assets/graphics/images/props/village_human_houses_01_Roughness.jpg" id="4_26mgu"]
+
+[resource]
+resource_name = "village_human_houses_01"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_1q67s")
+roughness_texture = ExtResource("4_26mgu")
+emission_enabled = true
+emission_texture = ExtResource("2_sucin")
+normal_enabled = true
+normal_texture = ExtResource("3_splyy")

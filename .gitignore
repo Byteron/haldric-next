@@ -2,19 +2,19 @@
 # For more information on what files should be excluded from version control,
 # see <https://docs.godotengine.org/en/stable/getting_started/workflow/project_setup/version_control_systems.html#files-to-exclude-from-vcs>
 
-.import/
 .godot/
-export.cfg
 
-# VS Code
-.vscode/
-.vs/
-.idea/
 # Excluded because it may contain sensitive information like keystore passwords
+export.cfg
 export_presets.cfg
 
 # Exclude imported translations
 *.translation
+
+# IDEs
+.vscode/
+.vs/
+.idea/
 
 # Mono-specific
 .mono/

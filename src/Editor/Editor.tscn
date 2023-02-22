@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://darlo0yq3e8b6"]
+
+[ext_resource type="Script" path="res://src/Editor/Editor.cs" id="1_eido2"]
+[ext_resource type="PackedScene" uid="uid://jkoh2decm7ry" path="res://src/Camera/CameraOperator.tscn" id="2_xbept"]
+[ext_resource type="PackedScene" uid="uid://dh8l0ahkbynv8" path="res://src/Map/Map.tscn" id="3_tqsfh"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jeebv"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_5w4u3"]
+sky_material = SubResource("ProceduralSkyMaterial_jeebv")
+
+[sub_resource type="Environment" id="Environment_td4v5"]
+background_mode = 2
+sky = SubResource("Sky_5w4u3")
+tonemap_mode = 3
+
+[node name="Editor" type="Node3D" node_paths=PackedStringArray("_map", "_cameraOperator")]
+script = ExtResource("1_eido2")
+_mapScene = ExtResource("3_tqsfh")
+_map = NodePath("")
+_cameraOperator = NodePath("CameraOperator")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_td4v5")
+
+[node name="CameraOperator" parent="." instance=ExtResource("2_xbept")]

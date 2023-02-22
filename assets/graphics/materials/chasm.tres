@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ysox4alh1ulj"]
+
+[ext_resource type="Shader" uid="uid://c6qntdwp2fv6m" path="res://assets/graphics/shaders/chasm_shader.tres" id="1_sw7e6"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_sw7e6")
+shader_parameter/chasm_color = Color(0.2, 0.1, 0.35, 1)
+shader_parameter/chasm_bottom_color = Color(0, 0, 0, 1)
+shader_parameter/chasm_intensity = 1.0

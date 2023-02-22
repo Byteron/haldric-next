@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh8l0ahkbynv8"]
+
+[ext_resource type="Script" path="res://src/Map/Map.cs" id="1_shceg"]
+[ext_resource type="PackedScene" uid="uid://cxw4nibndhfio" path="res://src/Terrain/Chunks.tscn" id="2_gg8ni"]
+
+[node name="Map" type="Node3D" node_paths=PackedStringArray("_chunks")]
+script = ExtResource("1_shceg")
+_chunks = NodePath("Chunks")
+
+[node name="Chunks" parent="." instance=ExtResource("2_gg8ni")]

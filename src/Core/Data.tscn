@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1piwal15dwyu"]
+
+[ext_resource type="Script" path="res://src/Core/Data.cs" id="1_nvokt"]
+
+[node name="Data" type="Node"]
+script = ExtResource("1_nvokt")

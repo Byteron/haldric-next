@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxw4nibndhfio"]
+
+[ext_resource type="Script" path="res://src/Terrain/Chunks.cs" id="1_cbnap"]
+
+[node name="Chunks" type="Node3D"]
+script = ExtResource("1_cbnap")

@@ -1,0 +1,7 @@
+[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://dmgbx2flxv0pe"]
+
+[ext_resource type="Material" uid="uid://ysox4alh1ulj" path="res://assets/graphics/materials/chasm.tres" id="1_owiff"]
+
+[resource]
+material = ExtResource("1_owiff")
+size = Vector2(13, 13)

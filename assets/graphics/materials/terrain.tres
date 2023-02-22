@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://sbfy0v30000y"]
+
+[ext_resource type="Shader" uid="uid://car74vsradi2t" path="res://assets/graphics/shaders/terrain_shader.tres" id="1_fs63g"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_fs63g")
+shader_parameter/texture_zoom = 0.05
+shader_parameter/normal_scale = 0.100001
+shader_parameter/roughness = 1.0
+shader_parameter/texel_size = null

@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://2xkda8ts63cp"]
+
+[ext_resource type="Texture2D" uid="uid://c8alo0ckey43f" path="res://assets/graphics/images/props/village_base_01_BaseColor.jpg" id="1_bpbps"]
+[ext_resource type="Texture2D" uid="uid://creub0yv8lfe0" path="res://assets/graphics/images/props/village_base_01_Roughness.jpg" id="2_jwpbt"]
+
+[resource]
+resource_name = "village_base"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_bpbps")
+roughness_texture = ExtResource("2_jwpbt")

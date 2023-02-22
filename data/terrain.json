@@ -1,0 +1,166 @@
+{
+    "Gg": {
+        "IsBase": true,
+        "Code": "Gg",
+        "Types": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Rd": {
+        "IsBase": true,
+        "Code": "Rd",
+        "Types": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Sd": {
+        "IsBase": true,
+        "Code": "Sd",
+        "Types": [
+            "Rough"
+        ],
+        "ElevationOffset": 0
+    },
+    "Sm": {
+        "IsBase": true,
+        "Code": "Sm",
+        "Types": [
+            "Rough"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Sb": {
+        "IsBase": true,
+        "Code": "Sb",
+        "Types": [
+            "Rough"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Ms": {
+        "IsBase": true,
+        "Code": "Ms",
+        "Types": [
+            "Rocky"
+        ],
+        "ElevationOffset": 0
+    },
+    "Gll": {
+        "IsBase": true,
+        "Code": "Gll",
+        "Types": [
+            "Flat"
+        ],
+        "ElevationOffset": 0
+    },
+    "Us": {
+        "IsBase": true,
+        "Code": "Us",
+        "Types": [
+            "Flat"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Uu": {
+        "IsBase": true,
+        "Code": "Uu",
+        "Types": [
+            "Flat"
+        ],
+        "ElevationOffset": -0.4
+    },
+    "Ws": {
+        "IsBase": true,
+        "Code": "Ws",
+        "Types": [
+            "ShallowWaters"
+        ],
+        "ElevationOffset": -2.5
+    },
+    "Wo": {
+        "IsBase": true,
+        "Code": "Wo",
+        "Types": [
+            "DeepWaters"
+        ],
+        "ElevationOffset": -15
+    },
+    "Wu": {
+        "IsBase": true,
+        "Code": "Wu",
+        "Types": [
+            "DeepWaters"
+        ],
+        "ElevationOffset": -5
+    },
+    "Xx": {
+        "IsBase": true,
+        "Code": "Xx",
+        "Types": [
+            "Unwalkable"
+        ],
+        "ElevationOffset": -15
+    },
+    "Xu": {
+        "IsBase": true,
+        "Code": "Xu",
+        "Types": [
+            "Impassable"
+        ],
+        "ElevationOffset": 0
+    },
+    "Ff": {
+        "IsBase": false,
+        "DefaultBase": "Gll",
+        "Code": "Ff",
+        "Types": [
+            "Forested"
+        ]
+    },
+    "Tt": {
+        "IsBase": false,
+        "Code": "Tt",
+        "Types": [
+            "Forested"
+        ]
+    },
+    "Kh": {
+        "IsBase": true,
+        "Code": "Kh",
+        "Types": [
+            "Fortified"
+        ],
+        "ElevationOffset": 0.5,
+        "CanRecruitFrom": true,
+        "CanRecruitTo": true
+    },
+    "Ch": {
+        "IsBase": true,
+        "Code": "Ch",
+        "Types": [
+            "Fortified"
+        ],
+        "CanRecruitTo": true
+    },
+    "Vh": {
+        "IsBase": false,
+        "Code": "Vh",
+        "Types": [
+            "Settled"
+        ],
+        "GivesIncome": true
+    },
+    "VHh": {
+        "IsBase": false,
+        "Code": "VHh",
+        "Types": [
+            "Settled",
+            "Fortified"
+        ],
+        "IsCapturable": true,
+        "GivesIncome": true,
+        "Heals": true
+    }
+}

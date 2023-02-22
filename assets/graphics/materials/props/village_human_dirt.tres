@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cmli1gxwdd25"]
+
+[ext_resource type="Texture2D" uid="uid://cevbttcgowvix" path="res://assets/graphics/images/props/village_human_dirt_BaseColor.png" id="1_se0ni"]
+[ext_resource type="Texture2D" uid="uid://d1x1fhn6xq03e" path="res://assets/graphics/images/props/village_human_dirt_Roughness.jpg" id="2_orini"]
+
+[resource]
+resource_name = "village_human_dirt"
+transparency = 1
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_se0ni")
+roughness_texture = ExtResource("2_orini")

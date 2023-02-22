@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dikc4cney8yht"]
+
+[ext_resource type="Script" path="res://src/Scenario/Hud/ScenarioHud.cs" id="1_xf2fp"]
+
+[node name="ScenarioHud" type="CanvasLayer" node_paths=PackedStringArray("_terrainLabel")]
+script = ExtResource("1_xf2fp")
+_terrainLabel = NodePath("TerrainLabel")
+
+[node name="TerrainLabel" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2fn88xou3m4y"]
+
+[ext_resource type="Script" path="res://src/Menu/MainMenu.cs" id="1_5d25g"]
+
+[node name="MainMenu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5d25g")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Project Haldric"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Play"
+
+[node name="TestButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Test"
+
+[node name="EditorButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Editor"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Quit"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/EditorButton" to="." method="OnEditorButtonPressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="OnQuitButtonPressed"]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://jkoh2decm7ry"]
+
+[ext_resource type="Script" path="res://src/Camera/CameraOperator.cs" id="1_vukrc"]
+
+[sub_resource type="Curve" id="Curve_7827d"]
+_data = [Vector2(0, 0.331288), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="CameraOperator" type="Node3D" node_paths=PackedStringArray("_gimbalH", "_gimbalV", "_camera")]
+script = ExtResource("1_vukrc")
+_walkSpeed = 120.0
+_minDistance = 15.0
+_maxDistance = 120.0
+_zoomCurve = SubResource("Curve_7827d")
+_gimbalH = NodePath("GimbalH")
+_gimbalV = NodePath("GimbalH/GimbalV")
+_camera = NodePath("GimbalH/GimbalV/Camera3D")
+metadata/_edit_group_ = true
+
+[node name="GimbalH" type="Node3D" parent="."]
+
+[node name="GimbalV" type="Node3D" parent="GimbalH"]
+
+[node name="Camera3D" type="Camera3D" parent="GimbalH/GimbalV"]

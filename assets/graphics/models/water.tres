@@ -1,0 +1,9 @@
+[gd_resource type="PlaneMesh" load_steps=2 format=3 uid="uid://0k3axwlwo5oj"]
+
+[ext_resource type="Material" uid="uid://jjnbwddt1rdq" path="res://assets/graphics/materials/water.tres" id="1_m4dgq"]
+
+[resource]
+material = ExtResource( "1_m4dgq" )
+size = Vector2(13, 13)
+subdivide_width = 10
+subdivide_depth = 10

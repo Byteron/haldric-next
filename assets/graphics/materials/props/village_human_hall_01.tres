@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://dydjjcw3vyc2y"]
+
+[ext_resource type="Texture2D" uid="uid://cbc6773hmxm4l" path="res://assets/graphics/images/props/village_human_hall_01_BaseColor.jpg" id="1_usytd"]
+[ext_resource type="Texture2D" uid="uid://cb8f7wxbxjmvc" path="res://assets/graphics/images/props/village_human_hall_01_Emissive.jpg" id="2_quti8"]
+[ext_resource type="Texture2D" uid="uid://bplo6435q73jv" path="res://assets/graphics/images/props/village_human_hall_01_Normal.jpg" id="3_ilof0"]
+[ext_resource type="Texture2D" uid="uid://c3p6xvt5vy3h4" path="res://assets/graphics/images/props/village_human_hall_01_Roughness.jpg" id="4_drygy"]
+
+[resource]
+resource_name = "village_human_hall_01"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_usytd")
+roughness_texture = ExtResource("4_drygy")
+emission_enabled = true
+emission_texture = ExtResource("2_quti8")
+normal_enabled = true
+normal_texture = ExtResource("3_ilof0")
