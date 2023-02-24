@@ -53,19 +53,20 @@ public partial class Chunks : Node3D
         }
     }
 
-    public void UpdateMesh(Dictionary<Coords, Tile> tiles)
+    public void UpdateTerrainMeshes(Dictionary<Coords, Tile> tiles)
     {
         foreach (var chunk in _chunks.Values)
         {
             chunk.Mesh.Clear();
         }
 
-        foreach (var (coords, tile) in tiles)
+        foreach (var tile in tiles.Values)
         {
             var chunk = _chunks[tile.ChunkCell];
             var mesh = chunk.Mesh;
 
             var center = tile.WorldPosition;
+            center.Y += tile.BaseTerrain.ElevationOffset;
 
             for (var direction = Direction.E; direction <= Direction.Ne; direction++)
             {
@@ -82,7 +83,8 @@ public partial class Chunks : Node3D
                 if (nTile is null) continue;
 
                 var nCenter = nTile.WorldPosition;
-
+                nCenter.Y += nTile.BaseTerrain.ElevationOffset;
+                
                 var bridge = Metrics.GetBridge(direction, nTile.BlendFactor);
                 bridge.Y = nCenter.Y - center.Y;
 
@@ -98,7 +100,8 @@ public partial class Chunks : Node3D
                 if (nextTile is null) continue;
 
                 var nextCenter = nextTile.WorldPosition;
-
+                nextCenter.Y += nextTile.BaseTerrain.ElevationOffset;
+                
                 var v6 = e1.V5 + Metrics.GetBridge(direction.Next(), nextTile.BlendFactor);
                 v6.Y = nextCenter.Y;
 
@@ -134,9 +137,9 @@ public partial class Chunks : Node3D
             chunk.Collider.CollisionShape.Shape = chunk.Mesh.Mesh.CreateTrimeshShape();
         }
 
-        foreach (var (coords, tile) in tiles)
+        foreach (var tile in tiles.Values)
         {
-            var offset = coords.ToOffset();
+            var offset = tile.Coords.ToOffset();
 
             var x = (int)offset.X;
             var z = (int)offset.Z;
@@ -157,7 +160,7 @@ public partial class Chunks : Node3D
             chunk.Props.Clear();
         }
 
-        foreach (var (_, tile) in tiles)
+        foreach (var tile in tiles.Values)
         {
             var chunk = _chunks[tile.ChunkCell];
             var props = chunk.Props;
