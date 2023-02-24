@@ -76,7 +76,7 @@ public partial class Map : Node3D
         }
 
         _chunks.Initialize(_grid, _tiles);
-        _chunks.UpdateMesh(_tiles);
+        _chunks.UpdateTerrainMeshes(_tiles);
         _chunks.UpdateTerrainProps(_tiles);
     }
 
