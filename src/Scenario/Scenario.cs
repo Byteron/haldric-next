@@ -47,7 +47,7 @@ public partial class Scenario : Node3D
     {
         SpawnMap("Valley");
     }
-    
+
     void DeselectTile()
     {
         _selectedTile = null;
@@ -60,12 +60,15 @@ public partial class Scenario : Node3D
         {
             if (_map.HoveredTile.Unit is null)
             {
-                _map.MoveUnit(_selectedTile.Coords, _map.HoveredTile.Coords);
+                _map.MoveUnit(_map.HoveredTile.Coords);
             }
         }
-        
+
+        if (_map.HoveredTile.Unit is null) return;
+
         _selectedTile = _map.HoveredTile;
-        
+        _map.UpdatePathInfo(_selectedTile.Coords, 0);
+
         GD.Print("Tile Selected");
     }
 

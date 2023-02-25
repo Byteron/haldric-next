@@ -21,8 +21,9 @@ public partial class Tile : RefCounted
 
     public Unit? Unit;
 
+    public Tile? PathFromTile;
     public int Distance;
-    public Coords PathFrom;
+    public bool IsInZoc;
 
     public Vector3 WorldPosition => Coords.ToWorld() + new Vector3(0, Elevation * Metrics.ElevationStep, 0);
 }

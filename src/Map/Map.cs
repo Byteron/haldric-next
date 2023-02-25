@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -84,26 +86,136 @@ public partial class Map : Node3D
     {
         return _tiles[coords];
     }
-
-    public void MoveUnit(Coords startCoords, Coords endCoords)
+    
+    // We only need the end coords, because the start position is known through UpdatePathInfo
+    public void MoveUnit(Coords endCoords)
     {
-        var startTile = _tiles[startCoords];
-        var endTile = _tiles[endCoords];
+        var maybePath = FindPath(endCoords);
+
+        if (maybePath is not { } path) return;
+        
+        var startTile = path.StartTile;
+        var endTile = path.EndTile;
 
         if (startTile.Unit is not { } unit) return;
         if (endTile.Unit is not null) return;
 
         startTile.Unit = null;
-
-        var newPosition = endTile.WorldPosition;
-        newPosition.Y += endTile.BaseTerrain.ElevationOffset;
-
-        var tween = GetTree().CreateTween();
-        tween.SetTrans(Tween.TransitionType.Linear)
-            .TweenProperty(unit, "position", newPosition, 0.5f);
-        tween.Play();
-        
         endTile.Unit = unit;
+        
+        var tween = GetTree().CreateTween();
+        tween.SetParallel(false);
+        
+        foreach (var tile in path.Checkpoints)
+        {
+            var pos = tile.WorldPosition;
+            pos.Y += tile.BaseTerrain.ElevationOffset;
+
+            tween.SetTrans(Tween.TransitionType.Linear)
+                .TweenProperty(unit, "position", pos, 0.2f);
+        }
+        
+        tween.Play();
+
+    }
+
+    public void UpdatePathInfo(Coords fromCoords, int side)
+    {
+        // Clear Path Info
+        foreach (var tile in _tiles.Values)
+        {
+            tile.PathFromTile = null;
+            tile.Distance = int.MaxValue;
+            tile.IsInZoc = false;
+        }
+        
+        // Update ZoC
+        foreach (var tile in _tiles.Values)
+        {
+            if (tile.Unit is not { } unit) continue;
+
+            if (unit.Side == side) continue;
+
+            foreach (var nTile in tile.Neighbors.Array)
+            {
+                if (nTile is null || nTile.IsInZoc || nTile.Unit is not null) continue;
+                nTile.IsInZoc = true;
+            }
+        }
+        
+        var fromTile = _tiles[fromCoords];
+        fromTile.Distance = 0;
+        
+        var frontier = new List<Tile> { fromTile };
+
+        while (frontier.Count > 0)
+        {
+            var cTile = frontier[0];
+            frontier.RemoveAt(0);
+
+            var cCoords = cTile.Coords;
+
+            var cDistance = cTile.Distance;
+            var cElevation = cTile.Elevation;
+
+            foreach (var nTile in cTile.Neighbors.Array)
+            {
+                if (nTile is null) continue;
+
+                var nElevation = nTile.Elevation;
+                var elevationDifference = Mathf.Abs(cElevation - nElevation);
+
+                if (elevationDifference > 1) continue;
+
+                var nMovementCost = 1;
+
+                if (cTile.Unit is { } unit && cCoords != fromCoords)
+                {
+                    if (unit.Side != side) nMovementCost = 99;
+                }
+
+                if (cTile.IsInZoc) nMovementCost = 99;
+
+                var distance = cDistance + nMovementCost;
+
+                if (distance < nTile.Distance)
+                {
+                    if (nTile.Distance == int.MaxValue) frontier.Add(nTile);
+                    nTile.Distance = distance;
+                    nTile.PathFromTile = cTile;
+                }
+
+                frontier.Sort((locA, locB) => locA.Distance.CompareTo(locB.Distance));
+            }
+        }
+        
+        GD.Print("Path Info Updated");
+    }
+
+    public Path? FindPath(Coords endCoords)
+    {
+        var endTile = _tiles[endCoords];
+
+        if (endTile.PathFromTile is null) return null;
+        
+        var startTile = endTile.PathFromTile;
+        
+        var checkpoints = new Queue<Tile>();
+        checkpoints.Enqueue(endTile);
+        checkpoints.Enqueue(startTile);
+        
+        while (startTile.PathFromTile is not null)
+        {
+            startTile = startTile.PathFromTile;
+            checkpoints.Enqueue(startTile);
+        }
+        
+        return new Path
+        {
+            StartTile = startTile,
+            EndTile = endTile,
+            Checkpoints = new Queue<Tile>(checkpoints.Reverse()),
+        };
     }
 
     void UpdateHoveredCoords()
