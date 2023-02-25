@@ -47,17 +47,26 @@ public partial class Scenario : Node3D
     {
         SpawnMap("Valley");
     }
-
+    
     void DeselectTile()
     {
-        GD.Print("Tile Deselected");
         _selectedTile = null;
+        GD.Print("Tile Deselected");
     }
 
     void SelectTile()
     {
-        GD.Print("Tile Selected");
+        if (_selectedTile?.Unit != null)
+        {
+            if (_map.HoveredTile.Unit is null)
+            {
+                _map.MoveUnit(_selectedTile.Coords, _map.HoveredTile.Coords);
+            }
+        }
+        
         _selectedTile = _map.HoveredTile;
+        
+        GD.Print("Tile Selected");
     }
 
     void SpawnMap(string name)

@@ -85,6 +85,27 @@ public partial class Map : Node3D
         return _tiles[coords];
     }
 
+    public void MoveUnit(Coords startCoords, Coords endCoords)
+    {
+        var startTile = _tiles[startCoords];
+        var endTile = _tiles[endCoords];
+
+        if (startTile.Unit is not { } unit) return;
+        if (endTile.Unit is not null) return;
+
+        startTile.Unit = null;
+
+        var newPosition = endTile.WorldPosition;
+        newPosition.Y += endTile.BaseTerrain.ElevationOffset;
+
+        var tween = GetTree().CreateTween();
+        tween.SetTrans(Tween.TransitionType.Linear)
+            .TweenProperty(unit, "position", newPosition, 0.5f);
+        tween.Play();
+        
+        endTile.Unit = unit;
+    }
+
     void UpdateHoveredCoords()
     {
         var result = ShootRay();
