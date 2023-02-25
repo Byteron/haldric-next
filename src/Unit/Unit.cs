@@ -4,5 +4,5 @@ namespace Haldric;
 
 public partial class Unit : Node3D
 {
-	public Coords Coords;
+    public Coords Coords;
 }

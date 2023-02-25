@@ -51,7 +51,7 @@ public static class Loader
             GD.PushWarning("Loader: failed to load " + path + ", return [] (list_dir_begin)");
             return directoryData;
         }
-        
+
         while (true)
         {
             var subPath = directory.GetNext();

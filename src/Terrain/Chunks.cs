@@ -84,7 +84,7 @@ public partial class Chunks : Node3D
 
                 var nCenter = nTile.WorldPosition;
                 nCenter.Y += nTile.BaseTerrain.ElevationOffset;
-                
+
                 var bridge = Metrics.GetBridge(direction, nTile.BlendFactor);
                 bridge.Y = nCenter.Y - center.Y;
 
@@ -101,7 +101,7 @@ public partial class Chunks : Node3D
 
                 var nextCenter = nextTile.WorldPosition;
                 nextCenter.Y += nextTile.BaseTerrain.ElevationOffset;
-                
+
                 var v6 = e1.V5 + Metrics.GetBridge(direction.Next(), nextTile.BlendFactor);
                 v6.Y = nextCenter.Y;
 

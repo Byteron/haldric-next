@@ -20,7 +20,7 @@ public partial class Tile : RefCounted
     public Terrain? OverlayTerrain;
 
     public Unit? Unit;
-    
+
     public int Distance;
     public Coords PathFrom;
 

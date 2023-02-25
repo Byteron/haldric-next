@@ -16,9 +16,9 @@ public class TerrainShader
     {
         _width = width;
         _height = height;
-        
+
         GD.Print(_width, _height);
-        
+
         _image = Image.Create(width, height, false, Image.Format.Rgba8);
         _texture = ImageTexture.CreateFromImage(_image);
 
@@ -28,10 +28,10 @@ public class TerrainShader
         var texelY = 1f / height;
         var texelSize = new Vector2(texelX, texelY);
         Data.Instance.TerrainMaterial.Set("shader_parameter/texel_size", texelSize);
-        
+
         ResetVisibility(true);
         ResetLighting(true);
-        
+
         Apply();
     }
 

@@ -6,7 +6,7 @@ public class MapData
     public int Height;
     public MapDataPlayer[] Players;
     public MapDataLocation[] Locations;
-    
+
     public static MapData Create(int width, int height)
     {
         var mapData = new MapData

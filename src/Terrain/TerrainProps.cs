@@ -9,7 +9,7 @@ public partial class TerrainProps : Node3D
     public readonly Dictionary<ulong, List<RenderData>> RenderData = new();
     public readonly List<Rid> Rids = new();
     public readonly Dictionary<Vector3, int> RandomIndices = new();
-    
+
     public TerrainProps() => Name = "TerrainProps";
 
     public override void _ExitTree()
@@ -33,7 +33,8 @@ public partial class TerrainProps : Node3D
     {
         foreach (var (meshId, renderDataList) in RenderData)
         {
-            RenderingServer.MultimeshAllocateData(MultiMeshRids[meshId], renderDataList.Count, RenderingServer.MultimeshTransformFormat.Transform3D);
+            RenderingServer.MultimeshAllocateData(MultiMeshRids[meshId], renderDataList.Count,
+                RenderingServer.MultimeshTransformFormat.Transform3D);
             RenderingServer.MultimeshSetVisibleInstances(MultiMeshRids[meshId], renderDataList.Count);
 
             var index = 0;
@@ -95,4 +96,3 @@ public struct RenderData
     public Vector3 Position;
     public Vector3 Rotation;
 }
-

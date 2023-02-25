@@ -5,7 +5,7 @@ namespace Haldric;
 public class Terrain
 {
     public int Index;
-    
+
     public string Code;
     public List<TerrainType> Types;
     public bool IsBase;

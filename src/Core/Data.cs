@@ -7,7 +7,7 @@ namespace Haldric;
 public partial class Data : Node
 {
     public static Data Instance { get; private set; } = default!;
-    
+
     public Dictionary<string, Terrain> Terrains = new();
 
     public readonly Dictionary<string, MapData> Maps = new();
@@ -29,7 +29,7 @@ public partial class Data : Node
     public Texture2DArray TextureArray = new();
     public Texture2DArray NormalTextureArray = new();
     public Texture2DArray RoughnessTextureArray = new();
-    
+
     public Material TerrainMaterial = default!;
 
     public override void _Ready()
@@ -48,6 +48,7 @@ public partial class Data : Node
             Maps.Add(data.Id, mapData);
         }
     }
+
     public void LoadTerrains()
     {
         Terrains = Loader.LoadJson<Dictionary<string, Terrain>>("res://data/terrain.json")!;
@@ -57,7 +58,7 @@ public partial class Data : Node
     {
         var terrainScript = new TerrainGraphicScript();
         terrainScript.Load();
-        
+
         Decorations = terrainScript.Decorations;
         DirectionalDecorations = terrainScript.DirectionalDecorations;
         WaterGraphics = terrainScript.WaterGraphics;
@@ -81,15 +82,16 @@ public partial class Data : Node
         TextureArray = CreateTextureArray(terrainCount, TextureArray, TerrainTextures);
         NormalTextureArray = CreateTextureArray(terrainCount, NormalTextureArray, TerrainNormalTextures);
         RoughnessTextureArray = CreateTextureArray(terrainCount, RoughnessTextureArray, TerrainRoughnessTextures);
-        
+
         TerrainMaterial = ResourceLoader.Load<Material>("res://assets/graphics/materials/terrain.tres");
-        
+
         TerrainMaterial.Set("shader_parameter/textures", TextureArray);
         TerrainMaterial.Set("shader_parameter/normal_textures", NormalTextureArray);
         TerrainMaterial.Set("shader_parameter/roughness_textures", RoughnessTextureArray);
     }
-    
-    Texture2DArray CreateTextureArray(int terrainCount, Texture2DArray texArray, Dictionary<string, Texture2D> textureDict)
+
+    Texture2DArray CreateTextureArray(int terrainCount, Texture2DArray texArray,
+        Dictionary<string, Texture2D> textureDict)
     {
         var textures = new Godot.Collections.Array<Image>();
         textures.Resize(terrainCount);

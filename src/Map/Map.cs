@@ -7,7 +7,7 @@ public partial class Map : Node3D
 {
     [Signal]
     public delegate void TileHoveredEventHandler(Tile tile);
-    
+
     Grid _grid;
     public Coords HoveredCoords { get; private set; }
     public Tile HoveredTile => _tiles[HoveredCoords];
@@ -25,7 +25,7 @@ public partial class Map : Node3D
     {
         Initialize(MapData.Create(width, height));
     }
-    
+
     public void Initialize(MapData mapData)
     {
         if (mapData.Locations.Length == 0)
@@ -62,7 +62,7 @@ public partial class Map : Node3D
                 BaseTerrain = baseTerrain,
                 OverlayTerrain = overlayTerrain,
             };
-            
+
             _tiles.Add(tileData.Coords, tile);
         }
 
@@ -96,9 +96,9 @@ public partial class Map : Node3D
 
         if (HoveredCoords == coords) return;
         if (!_tiles.TryGetValue(coords, out var tile)) return;
-        
+
         HoveredCoords = coords;
-        
+
         GD.Print(HoveredCoords);
         EmitSignal(SignalName.TileHovered, tile);
     }
