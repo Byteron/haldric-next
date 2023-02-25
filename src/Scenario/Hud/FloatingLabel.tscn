@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpqgqxxe52il6"]
+
+[ext_resource type="Script" path="res://src/Scenario/Hud/FloatingLabel.cs" id="1_470yl"]
+
+[node name="FloatingLabel" type="Control" node_paths=PackedStringArray("_label")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_470yl")
+_label = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = -20.0
+offset_right = 84.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Some Text Here"
+horizontal_alignment = 1
+vertical_alignment = 1
