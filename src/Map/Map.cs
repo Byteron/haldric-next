@@ -103,20 +103,27 @@ public partial class Map : Node3D
         startTile.Unit = null;
         endTile.Unit = unit;
         
-        var tween = GetTree().CreateTween();
-        tween.SetParallel(false);
-        
+        var tween = GetTree().CreateTween().SetParallel(false);
+
         foreach (var tile in path.Checkpoints)
         {
             var pos = tile.WorldPosition;
             pos.Y += tile.BaseTerrain.ElevationOffset;
 
+            tween.TweenCallback(Callable.From(() =>
+            {
+                unit.LookAt(pos, Vector3.Up);
+                var rot = unit.Rotation;
+                rot.X = 0;
+                rot.Z = 0;
+                unit.Rotation = rot;
+            }));
+            
             tween.SetTrans(Tween.TransitionType.Linear)
-                .TweenProperty(unit, "position", pos, 0.2f);
+                .TweenProperty(unit, "position", pos, 0.25f);
         }
         
         tween.Play();
-
     }
 
     public void UpdatePathInfo(Coords fromCoords, int side)
@@ -197,24 +204,23 @@ public partial class Map : Node3D
         var endTile = _tiles[endCoords];
 
         if (endTile.PathFromTile is null) return null;
+
+        var stack = new Stack<Tile>();
+        stack.Push(endTile);
+        stack.Push(endTile.PathFromTile);
         
-        var startTile = endTile.PathFromTile;
-        
-        var checkpoints = new Queue<Tile>();
-        checkpoints.Enqueue(endTile);
-        checkpoints.Enqueue(startTile);
-        
-        while (startTile.PathFromTile is not null)
+        while (true)
         {
-            startTile = startTile.PathFromTile;
-            checkpoints.Enqueue(startTile);
+            var tile = stack.Peek();
+            if (tile.PathFromTile is null) break;
+            stack.Push(tile.PathFromTile);
         }
-        
+
         return new Path
         {
-            StartTile = startTile,
+            StartTile = stack.Pop(),
             EndTile = endTile,
-            Checkpoints = new Queue<Tile>(checkpoints.Reverse()),
+            Checkpoints = new Queue<Tile>(stack),
         };
     }
 

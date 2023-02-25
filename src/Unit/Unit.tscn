@@ -1,12 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://bmq0edies1rl4"]
 
 [ext_resource type="Script" path="res://src/Unit/Unit.cs" id="1_vbvql"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_mgyl1"]
+[ext_resource type="PackedScene" uid="uid://ddx5jmp60f5pe" path="res://assets/graphics/gltf/archer.gltf" id="2_n8ov1"]
 
 [node name="Unit" type="Node3D"]
 script = ExtResource("1_vbvql")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(5, 0, 0, 0, 10, 0, 0, 0, 5, 0, 5, 0)
-mesh = SubResource("BoxMesh_mgyl1")
+[node name="archer" parent="." instance=ExtResource("2_n8ov1")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
