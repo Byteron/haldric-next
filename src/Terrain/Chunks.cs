@@ -79,7 +79,7 @@ public partial class Chunks : Node3D
 
                 if (direction > Direction.Sw) continue;
 
-                var nTile = tile.Neighbors.Get(direction);
+                var nTile = tile.Neighbors[(int)direction];
                 if (nTile is null) continue;
 
                 var nCenter = nTile.WorldPosition;
@@ -96,7 +96,7 @@ public partial class Chunks : Node3D
                 TriangulateSlope(mesh, e1, e2, tile.Index, nTile.Index);
 
 
-                var nextTile = tile.Neighbors.Get(direction.Next());
+                var nextTile = tile.Neighbors[(int)direction.Next()];
                 if (nextTile is null) continue;
 
                 var nextCenter = nextTile.WorldPosition;
@@ -255,7 +255,7 @@ public partial class Chunks : Node3D
             var rotation = direction.Rotation();
 
 
-            var nTile = neighbors.Get(direction);
+            var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;
@@ -319,7 +319,7 @@ public partial class Chunks : Node3D
             var direction = (Direction)i;
             var rotation = direction.Rotation();
 
-            var nTile = neighbors.Get(direction);
+            var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;
@@ -360,7 +360,7 @@ public partial class Chunks : Node3D
             var direction = (Direction)i;
             var rotation = direction.Rotation();
 
-            var nTile = neighbors.Get(direction);
+            var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;
@@ -413,9 +413,8 @@ public partial class Chunks : Node3D
 
             // cliffs want to rotate the other way it seems?
             var rotation = direction.Rotation();
-
-
-            var nTile = neighbors.Get(direction);
+            
+            var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;
@@ -481,7 +480,7 @@ public partial class Chunks : Node3D
             var rotation = direction.Opposite().Rotation();
 
 
-            var nTile = neighbors.Get(direction);
+            var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;

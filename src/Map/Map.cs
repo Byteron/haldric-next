@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -68,13 +67,39 @@ public partial class Map : Node3D
             _tiles.Add(tileData.Coords, tile);
         }
 
+        // Initialize Neighbors
         foreach (var (coords, tile) in _tiles)
         {
             foreach (var (direction, nCoords) in coords.GetNeighbors())
             {
                 if (!_tiles.TryGetValue(nCoords, out var nTile)) continue;
-                tile.Neighbors.Set(direction, nTile);
+                tile.Neighbors[(int)direction] = nTile;
             }
+        }
+
+        // Initialize Castles
+        foreach (var tile in _tiles.Values)
+        {
+            var canRecruitFrom = tile.OverlayTerrain is null
+                ? tile.BaseTerrain.CanRecruitFrom
+                : tile.BaseTerrain.CanRecruitFrom || tile.OverlayTerrain.CanRecruitFrom;
+            
+            if (!canRecruitFrom) continue;
+            tile.Castle = FindConnectedCastleTiles(tile);
+            GD.Print($"Castle: {tile.Castle.Count}");
+        }
+
+        // Initialize Villages
+        foreach (var tile in _tiles.Values)
+        {
+            var isCapturable = tile.OverlayTerrain is null
+                ? tile.BaseTerrain.IsCapturable
+                : tile.BaseTerrain.IsCapturable || tile.OverlayTerrain.IsCapturable;
+            
+            if (!isCapturable) continue;
+            
+            tile.Village = FindConnectedVillageTiles(tile);
+            GD.Print($"Village: {tile.Village.Count}");
         }
 
         _chunks.Initialize(_grid, _tiles);
@@ -86,14 +111,14 @@ public partial class Map : Node3D
     {
         return _tiles[coords];
     }
-    
+
     // We only need the end coords, because the start position is known through UpdatePathInfo
     public void MoveUnit(Coords endCoords)
     {
         var maybePath = FindPath(endCoords);
 
         if (maybePath is not { } path) return;
-        
+
         var startTile = path.StartTile;
         var endTile = path.EndTile;
 
@@ -102,7 +127,7 @@ public partial class Map : Node3D
 
         startTile.Unit = null;
         endTile.Unit = unit;
-        
+
         var tween = GetTree().CreateTween().SetParallel(false);
 
         foreach (var tile in path.Checkpoints)
@@ -118,11 +143,11 @@ public partial class Map : Node3D
                 rot.Z = 0;
                 unit.Rotation = rot;
             }));
-            
+
             tween.SetTrans(Tween.TransitionType.Linear)
                 .TweenProperty(unit, "position", pos, 0.25f);
         }
-        
+
         tween.Play();
     }
 
@@ -135,7 +160,7 @@ public partial class Map : Node3D
             tile.Distance = int.MaxValue;
             tile.IsInZoc = false;
         }
-        
+
         // Update ZoC
         foreach (var tile in _tiles.Values)
         {
@@ -143,16 +168,16 @@ public partial class Map : Node3D
 
             if (unit.Side == side) continue;
 
-            foreach (var nTile in tile.Neighbors.Array)
+            foreach (var nTile in tile.Neighbors)
             {
                 if (nTile is null || nTile.IsInZoc || nTile.Unit is not null) continue;
                 nTile.IsInZoc = true;
             }
         }
-        
+
         var fromTile = _tiles[fromCoords];
         fromTile.Distance = 0;
-        
+
         var frontier = new List<Tile> { fromTile };
 
         while (frontier.Count > 0)
@@ -165,7 +190,7 @@ public partial class Map : Node3D
             var cDistance = cTile.Distance;
             var cElevation = cTile.Elevation;
 
-            foreach (var nTile in cTile.Neighbors.Array)
+            foreach (var nTile in cTile.Neighbors)
             {
                 if (nTile is null) continue;
 
@@ -195,8 +220,6 @@ public partial class Map : Node3D
                 frontier.Sort((locA, locB) => locA.Distance.CompareTo(locB.Distance));
             }
         }
-        
-        GD.Print("Path Info Updated");
     }
 
     public Path? FindPath(Coords endCoords)
@@ -208,7 +231,7 @@ public partial class Map : Node3D
         var stack = new Stack<Tile>();
         stack.Push(endTile);
         stack.Push(endTile.PathFromTile);
-        
+
         while (true)
         {
             var tile = stack.Peek();
@@ -222,6 +245,76 @@ public partial class Map : Node3D
             EndTile = endTile,
             Checkpoints = new Queue<Tile>(stack),
         };
+    }
+
+    static List<Tile> FindConnectedCastleTiles(Tile tile)
+    {
+        var list = new List<Tile>();
+        var frontier = new Queue<Tile>();
+        frontier.Enqueue(tile);
+
+        while (frontier.Count > 0)
+        {
+            var cTile = frontier.Dequeue();
+            var cNeighbors = cTile.Neighbors;
+
+            foreach (var nTile in cNeighbors)
+            {
+                if (nTile is null) continue;
+                if (list.Contains(nTile)) continue;
+
+                var nBaseTerrain = nTile.BaseTerrain;
+
+                var canRecruitTo = nBaseTerrain.CanRecruitTo;
+
+                if (nTile.OverlayTerrain is { } nOverlayTerrain)
+                {
+                    canRecruitTo = canRecruitTo || nOverlayTerrain.CanRecruitTo;
+                }
+
+                if (!canRecruitTo) continue;
+
+                frontier.Enqueue(nTile);
+                list.Add(nTile);
+            }
+        }
+
+        return list;
+    }
+
+    static List<Tile> FindConnectedVillageTiles(Tile tile)
+    {
+        var list = new List<Tile>();
+        var frontier = new Queue<Tile>();
+        frontier.Enqueue(tile);
+
+        while (frontier.Count > 0)
+        {
+            var cTile = frontier.Dequeue();
+            var cNeighbors = cTile.Neighbors;
+
+            foreach (var nTile in cNeighbors)
+            {
+                if (nTile is null) continue;
+                if (list.Contains(nTile)) continue;
+
+                var nBaseTerrain = nTile.BaseTerrain;
+
+                var givesIncome = nBaseTerrain.GivesIncome;
+
+                if (nTile.OverlayTerrain is { } nOverlayTerrain)
+                {
+                    givesIncome = givesIncome || nOverlayTerrain.GivesIncome;
+                }
+
+                if (!givesIncome) continue;
+
+                frontier.Enqueue(nTile);
+                list.Add(nTile);
+            }
+        }
+
+        return list;
     }
 
     void UpdateHoveredCoords()
@@ -271,8 +364,8 @@ public struct Grid
 
     public bool IsCoordsInGrid(Coords coords)
     {
-        return coords.ToOffset().X > -1 && coords.ToOffset().X < Width && coords.ToOffset().Z > -1 &&
-               coords.ToOffset().Z < Height;
+        var offset = coords.ToOffset();
+        return offset.X > -1 && offset.X < Width && offset.Z > -1 && offset.Z < Height;
     }
 
     public override string ToString()
