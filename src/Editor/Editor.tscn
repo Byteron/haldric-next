@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://darlo0yq3e8b6"]
+[gd_scene load_steps=8 format=3 uid="uid://darlo0yq3e8b6"]
 
 [ext_resource type="Script" path="res://src/Editor/Editor.cs" id="1_eido2"]
 [ext_resource type="PackedScene" uid="uid://jkoh2decm7ry" path="res://src/Camera/CameraOperator.tscn" id="2_xbept"]
 [ext_resource type="PackedScene" uid="uid://dh8l0ahkbynv8" path="res://src/Map/Map.tscn" id="3_tqsfh"]
+[ext_resource type="PackedScene" uid="uid://y3tn8pydockj" path="res://src/Editor/Hud/EditorHud.tscn" id="4_kle17"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jeebv"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,10 +17,9 @@ background_mode = 2
 sky = SubResource("Sky_5w4u3")
 tonemap_mode = 3
 
-[node name="Editor" type="Node3D" node_paths=PackedStringArray("_map", "_cameraOperator")]
+[node name="Editor" type="Node3D" node_paths=PackedStringArray("_cameraOperator")]
 script = ExtResource("1_eido2")
 _mapScene = ExtResource("3_tqsfh")
-_map = NodePath("")
 _cameraOperator = NodePath("CameraOperator")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -30,3 +30,7 @@ shadow_enabled = true
 environment = SubResource("Environment_td4v5")
 
 [node name="CameraOperator" parent="." instance=ExtResource("2_xbept")]
+
+[node name="EditorHud" parent="." instance=ExtResource("4_kle17")]
+
+[connection signal="CreateButtonPressed" from="EditorHud" to="." method="OnEditorHudCreateButtonPressed"]
