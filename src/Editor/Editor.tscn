@@ -17,10 +17,11 @@ background_mode = 2
 sky = SubResource("Sky_5w4u3")
 tonemap_mode = 3
 
-[node name="Editor" type="Node3D" node_paths=PackedStringArray("_cameraOperator")]
+[node name="Editor" type="Node3D" node_paths=PackedStringArray("_cameraOperator", "_hud")]
 script = ExtResource("1_eido2")
 _mapScene = ExtResource("3_tqsfh")
 _cameraOperator = NodePath("CameraOperator")
+_hud = NodePath("EditorHud")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
@@ -33,4 +34,6 @@ environment = SubResource("Environment_td4v5")
 
 [node name="EditorHud" parent="." instance=ExtResource("4_kle17")]
 
-[connection signal="CreateButtonPressed" from="EditorHud" to="." method="OnEditorHudCreateButtonPressed"]
+[connection signal="CreateButtonPressed" from="EditorHud" to="." method="OnCreateButtonPressed"]
+[connection signal="LoadButtonPressed" from="EditorHud" to="." method="OnLoadButtonPressed"]
+[connection signal="SaveButtonPressed" from="EditorHud" to="." method="OnSaveButtonPressed"]

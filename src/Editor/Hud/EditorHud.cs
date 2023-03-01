@@ -25,7 +25,7 @@ public partial class EditorHud : CanvasLayer
 
     public readonly Dictionary<Coords, int> Players = new();
     
-    Terrain? SelectedTerrain;
+    public Terrain SelectedTerrain = default!;
 
     [Export] HSlider _brushSizeSlider = default!;
     [Export] HSlider _elevationSlider = default!;
@@ -40,6 +40,7 @@ public partial class EditorHud : CanvasLayer
     public override void _Ready()
     {
         InitializeTerrains();
+        OnTerrainSelected("Gg");
     }
 
     public void AddPlayer(Coords coords)

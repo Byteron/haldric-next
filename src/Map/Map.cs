@@ -103,13 +103,31 @@ public partial class Map : Node3D
         }
 
         _chunks.Initialize(_grid, _tiles);
-        _chunks.UpdateTerrainMeshes(_tiles);
-        _chunks.UpdateTerrainProps(_tiles);
+        
+        UpdateTerrain();
     }
 
     public Tile GetTile(Coords coords)
     {
         return _tiles[coords];
+    }
+
+    public bool HasTile(Coords coords)
+    {
+        return _tiles.ContainsKey(coords);
+    }
+
+    public void UpdateTerrain()
+    {
+        _chunks.UpdateTerrainMeshes(_tiles);
+        _chunks.UpdateTerrainProps(_tiles);
+        _chunks.CleanDirtyChunks();
+    }
+
+    public void UpdateTerrainPropsOnly()
+    {
+        _chunks.UpdateTerrainProps(_tiles);
+        _chunks.CleanDirtyChunks();
     }
 
     // We only need the end coords, because the start position is known through UpdatePathInfo
@@ -330,8 +348,7 @@ public partial class Map : Node3D
         if (!_tiles.TryGetValue(coords, out var tile)) return;
 
         HoveredCoords = coords;
-
-        GD.Print(HoveredCoords);
+        
         EmitSignal(SignalName.TileHovered, tile);
     }
 

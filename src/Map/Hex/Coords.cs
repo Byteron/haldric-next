@@ -81,6 +81,11 @@ public struct Coords
         var i = 0;
         return Hex.GetNeighbors(ToCube()).Select(n => ((Direction)i++, FromCube(n)));
     }
+    
+    public IEnumerable<Coords> GetCoordsInRange(int range)
+    {
+        return Hex.GetCellsInRange(ToCube(), range).Select(FromCube);
+    }
 
     public bool IsNeighborOf(Coords otherCoords)
     {

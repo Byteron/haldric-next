@@ -14,7 +14,7 @@ public partial class Tile : RefCounted
     public List<Tile>? Castle = null;
     public List<Tile>? Village = null;
     
-    public Vector2I ChunkCell;
+    public Chunk Chunk = default!;
 
     public float BlendFactor = 0.25f;
     public float SolidFactor = 0.75f;

@@ -18,51 +18,54 @@ public partial class Chunks : Node3D
 
         var chunkSize = new Vector2I(4, 4);
 
-        for (var z = 0; z < grid.Height; z++)
+        foreach (var (coords, tile) in tiles)
         {
-            for (var x = 0; x < grid.Height; x++)
+            var chunkVector = coords.ToOffset() / new Vector3(chunkSize.X, 0f, chunkSize.Y);
+            var chunkCell = new Vector2I((int)chunkVector.X, (int)chunkVector.Z);
+
+            if (!_chunks.TryGetValue(chunkCell, out var chunk))
             {
-                var coords = Coords.FromOffset(x, z);
+                var terrainMesh = new TerrainMesh();
+                var terrainCollider = new TerrainCollider();
+                var terrainProps = new TerrainProps();
 
-                var chunkVector = coords.ToOffset() / new Vector3(chunkSize.X, 0f, chunkSize.Y);
-                var chunkCell = new Vector2I((int)chunkVector.X, (int)chunkVector.Z);
+                AddChild(terrainMesh);
+                AddChild(terrainCollider);
+                AddChild(terrainProps);
 
-                if (!_chunks.ContainsKey(chunkCell))
+                chunk = new Chunk
                 {
-                    var terrainMesh = new TerrainMesh();
-                    var terrainCollider = new TerrainCollider();
-                    var terrainProps = new TerrainProps();
+                    Mesh = terrainMesh,
+                    Collider = terrainCollider,
+                    Props = terrainProps,
+                    IsDirty = true,
+                };
 
-                    AddChild(terrainMesh);
-                    AddChild(terrainCollider);
-                    AddChild(terrainProps);
-
-                    var chunk = new Chunk
-                    {
-                        Cell = chunkCell,
-                        Mesh = terrainMesh,
-                        Collider = terrainCollider,
-                        Props = terrainProps
-                    };
-
-                    _chunks.Add(chunkCell, chunk);
-                }
-
-                tiles[coords].ChunkCell = chunkCell;
+                _chunks.Add(chunkCell, chunk);
             }
+
+            tile.Chunk = chunk;
         }
     }
-
+    
+    public void CleanDirtyChunks()
+    {
+        foreach (var chunk in _chunks.Values) chunk.IsDirty = false;
+    }
+    
     public void UpdateTerrainMeshes(Dictionary<Coords, Tile> tiles)
     {
         foreach (var chunk in _chunks.Values)
         {
+            if (!chunk.IsDirty) continue;
             chunk.Mesh.Clear();
         }
 
         foreach (var tile in tiles.Values)
         {
-            var chunk = _chunks[tile.ChunkCell];
+            var chunk = tile.Chunk;
+            if (!chunk.IsDirty) continue;
+            
             var mesh = chunk.Mesh;
 
             var center = tile.WorldPosition;
@@ -133,6 +136,8 @@ public partial class Chunks : Node3D
 
         foreach (var chunk in _chunks.Values)
         {
+            if (!chunk.IsDirty) continue;
+            
             chunk.Mesh.Apply();
             chunk.Collider.CollisionShape.Shape = chunk.Mesh.Mesh.CreateTrimeshShape();
         }
@@ -157,12 +162,15 @@ public partial class Chunks : Node3D
     {
         foreach (var chunk in _chunks.Values)
         {
+            if (!chunk.IsDirty) continue;
             chunk.Props.Clear();
         }
 
         foreach (var tile in tiles.Values)
         {
-            var chunk = _chunks[tile.ChunkCell];
+            var chunk = tile.Chunk;
+            if (!chunk.IsDirty) continue;
+            
             var props = chunk.Props;
 
             AddWater(props, tile, tile.BaseTerrain);
@@ -181,6 +189,7 @@ public partial class Chunks : Node3D
 
         foreach (var chunk in _chunks.Values)
         {
+            if (!chunk.IsDirty) continue;
             chunk.Props.Apply();
         }
     }

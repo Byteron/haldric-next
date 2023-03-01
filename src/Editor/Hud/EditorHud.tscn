@@ -184,3 +184,5 @@ size_flags_horizontal = 3
 text = "Load"
 
 [connection signal="pressed" from="Create/CenterContainer/VBoxContainer/CreateButton" to="." method="OnCreateButtonPressed"]
+[connection signal="pressed" from="SaveLoad/VBoxContainer/HBoxContainer/SaveButton" to="." method="OnSaveButtonPressed"]
+[connection signal="pressed" from="SaveLoad/VBoxContainer/HBoxContainer/LoadButton" to="." method="OnLoadButtonPressed"]
