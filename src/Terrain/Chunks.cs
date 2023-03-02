@@ -47,12 +47,12 @@ public partial class Chunks : Node3D
             tile.Chunk = chunk;
         }
     }
-    
+
     public void CleanDirtyChunks()
     {
         foreach (var chunk in _chunks.Values) chunk.IsDirty = false;
     }
-    
+
     public void UpdateTerrainMeshes(Dictionary<Coords, Tile> tiles)
     {
         foreach (var chunk in _chunks.Values)
@@ -65,7 +65,7 @@ public partial class Chunks : Node3D
         {
             var chunk = tile.Chunk;
             if (!chunk.IsDirty) continue;
-            
+
             var mesh = chunk.Mesh;
 
             var center = tile.WorldPosition;
@@ -137,7 +137,7 @@ public partial class Chunks : Node3D
         foreach (var chunk in _chunks.Values)
         {
             if (!chunk.IsDirty) continue;
-            
+
             chunk.Mesh.Apply();
             chunk.Collider.CollisionShape.Shape = chunk.Mesh.Mesh.CreateTrimeshShape();
         }
@@ -170,7 +170,7 @@ public partial class Chunks : Node3D
         {
             var chunk = tile.Chunk;
             if (!chunk.IsDirty) continue;
-            
+
             var props = chunk.Props;
 
             AddWater(props, tile, tile.BaseTerrain);
@@ -209,7 +209,7 @@ public partial class Chunks : Node3D
     static void AddDecoration(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.Decorations.ContainsKey(code)) return;
 
@@ -246,7 +246,7 @@ public partial class Chunks : Node3D
     static void AddDirectionalDecoration(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.DirectionalDecorations.ContainsKey(code)) return;
 
@@ -263,14 +263,11 @@ public partial class Chunks : Node3D
 
             var rotation = direction.Rotation();
 
-
             var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
             var nElevation = nTile.Elevation;
-
-            var nTerrain = tile.BaseTerrain;
-            var nOffset = nTerrain.ElevationOffset;
+            var nOffset = nTile.BaseTerrain.ElevationOffset;
 
             if (elevation != nElevation) continue;
 
@@ -312,11 +309,10 @@ public partial class Chunks : Node3D
     public static void AddWalls(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.WallSegments.ContainsKey(code)) return;
 
-        var coords = tile.Coords;
         var elevation = tile.Elevation;
         var neighbors = tile.Neighbors;
 
@@ -353,7 +349,7 @@ public partial class Chunks : Node3D
     static void AddTowers(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.WallTowers.ContainsKey(code)) return;
 
@@ -405,7 +401,7 @@ public partial class Chunks : Node3D
     static void AddOuterCliffs(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.OuterCliffs.ContainsKey(code)) return;
 
@@ -422,7 +418,7 @@ public partial class Chunks : Node3D
 
             // cliffs want to rotate the other way it seems?
             var rotation = direction.Rotation();
-            
+
             var nTile = neighbors[(int)direction];
             if (nTile is null) continue;
 
@@ -470,7 +466,7 @@ public partial class Chunks : Node3D
     static void AddInnerCliffs(TerrainProps props, Tile tile, Terrain terrain)
     {
         var code = terrain.Code;
-        var offset = terrain.ElevationOffset;
+        var offset = tile.BaseTerrain.ElevationOffset;
 
         if (!Data.Instance.InnerCliffs.ContainsKey(code)) return;
 
