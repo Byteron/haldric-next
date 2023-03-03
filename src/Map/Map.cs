@@ -16,7 +16,8 @@ public partial class Map : Node3D
     readonly System.Collections.Generic.Dictionary<Coords, Tile> _tiles = new();
 
     [Export] Chunks _chunks = default!;
-
+    [Export] Node3D _cursor = default!;
+    
     public override void _Process(double delta)
     {
         UpdateHoveredCoords();
@@ -348,6 +349,7 @@ public partial class Map : Node3D
         if (!_tiles.TryGetValue(coords, out var tile)) return;
 
         HoveredCoords = coords;
+        _cursor.Position = tile.WorldPosition;
         
         EmitSignal(SignalName.TileHovered, tile);
     }
