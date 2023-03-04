@@ -147,7 +147,7 @@ public partial class Map : Node3D
         startTile.Unit = null;
         endTile.Unit = unit;
 
-        var tween = GetTree().CreateTween().SetParallel(false);
+        var tween = GetTree().CreateTween();
 
         foreach (var tile in path.Checkpoints)
         {
