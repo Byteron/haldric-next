@@ -12,12 +12,17 @@ public partial class Editor : Node3D
 
     Coords _prevCoords = Coords.Invalid;
 
-    public override void _Input(InputEvent e)
+    bool _painting;
+
+    public override void _UnhandledInput(InputEvent e)
     {
         if (e.IsActionPressed("ui_cancel"))
         {
             GetTree().ChangeSceneToFile("res://src/Menu/MainMenu.tscn");
         }
+
+        if (e.IsActionPressed("editor_select")) _painting = true;
+        if (e.IsActionReleased("editor_select")) _painting = false;
     }
 
     public override void _Ready()
@@ -30,7 +35,7 @@ public partial class Editor : Node3D
 
     public override void _Process(double delta)
     {
-        if (!Input.IsActionPressed("editor_select") || _map.HoveredTile.Coords == _prevCoords) return;
+        if (!_painting || _map.HoveredTile.Coords == _prevCoords) return;
 
         _prevCoords = _map.HoveredTile.Coords;
 
