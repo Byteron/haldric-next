@@ -45,6 +45,12 @@ public partial class Data : Node
         foreach (var data in Loader.LoadDir("res://data/maps", new List<string> { "json" }, false))
         {
             var mapData = Loader.LoadJson<MapData>(data.Path);
+            if (mapData is null)
+            {
+                GD.PushWarning($"could not load {data.Path}");
+                return;
+            }
+            
             Maps.Add(data.Id, mapData);
         }
     }
