@@ -166,8 +166,6 @@ public partial class Map : Node3D
             tween.SetTrans(Tween.TransitionType.Linear)
                 .TweenProperty(unit, "position", pos, 0.25f);
         }
-
-        tween.Play();
     }
 
     public void UpdatePathInfo(Coords fromCoords, int side)
